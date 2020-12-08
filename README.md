@@ -6,14 +6,20 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 ### Useful links:
 
 1. Very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free:
+
 [08.12.2020] https://ep.com.pl/podzespoly/12992-risc-v-budujemy-wlasny-mikrokontroler-1
+
 The second part of the course is available in the issue from: 10.2019, pages 116-123/140
+
 The third part of the course is available in the issue from: 11.2019, pages 131-137/140
+
 The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140
 2. 
 
 #### Simulator
-For learning assembly language, I highly recommend using this simulator: [08.12.2020] https://www.kvakil.me/venus/
+For learning assembly language, I highly recommend using this simulator:
+
+[08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
 - Editor - here we can write our code
 - Simulator - here you can test the code and check the results
