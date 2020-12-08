@@ -1,5 +1,5 @@
 # learningRISC-V
-![logo]https://riscv.org/wp-content/uploads/2018/06/RISC-V-Logo-2.png
+![logo](https://riscv.org/wp-content/uploads/2018/06/RISC-V-Logo-2.png)
 _________________
 In this project I'll put everything related to RISC-V. I learn this technology from scratch, so there may be a lot of simple things. I hope to avoid mistakes due to being inexperienced.
 
@@ -14,11 +14,12 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     The third part of the course is available in the issue from: 11.2019, pages 131-137/140
 
     The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140
-2. 
+2.
 
 #### Simulator
 For learning assembly language, I highly recommend using this simulator:
 [08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
 - Editor - here we can write our code
+When you click "Simulator" the code will be compiled[?] automatically.
 - Simulator - here you can test the code and check the results
