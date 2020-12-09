@@ -1,7 +1,7 @@
 # learningRISC-V
 ![logo](https://riscv.org/wp-content/uploads/2018/06/RISC-V-Logo-2.png)
 _________________
-In this project I'll put everything related to RISC-V. I learn this technology from scratch, so there may be a lot of simple things. I hope to avoid mistakes due to being inexperienced.
+In this project I'll put everything related to RISC-V. I learn this technology from scratch, so there may be a lot of simple things. I hope to avoid mistakes due to being inexperienced. I will try to keep up to date this repo.
 
 ### Table of contents
 
@@ -53,13 +53,18 @@ The documentation consists of three documents:
 There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E and RV64I.
 What does ISA means is in *Terms needing explanation*.
 2. Privileged ISA specification
-It describes the elements of the processor, which are related with management of priority levels. 
+It describes the elements of the processor, which are related with management of priority levels. It's used to how to start the operating system. Also are definied here interrupt handling or physical memory management.
 3. Debug specification
+Describes a standard, that enables debugging.
+
+### A little bit about registers
+here desc registers
+
+### About the instructions
 
 ### Terms needing explanation
-
-
-
+1. ISA - lorem ipsum
+2. Opcode - lorem ipsum
 
 
 
