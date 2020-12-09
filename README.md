@@ -28,17 +28,18 @@ In `Editor`  part I entered the code:
 addi x1, x1, 0x1
 addi x2, x1, 0x1
 ```
-In the screenshot, you can see at the top `Editor` and `Simulator`. 
+In the screenshot, you can see at the top bookmarks `Editor` and `Simulator`.
 ![venus](https://user-images.githubusercontent.com/43972902/101664067-b34c1c80-3a4b-11eb-83a7-e17bc51d1271.png)
-If you click `Run`  all code will be executed. In this case, the x1 and x2 registers will change:
-![venus_memory](https://user-images.githubusercontent.com/43972902/101665262-0e324380-3a4d-11eb-80f6-ef268bbe9608.png)
-If you click `Reset`, the effect will be the same as a page refresh [?]. 
-`Step` is of course next code line, `Prev` means previous code line. 
+If you click `Reset`, the effect will be the same as a page refresh [?]. It means that all registers will be in factory state and we will go back to the first line of code.
+`Step` is of course next code line, `Prev` means previous code line.
 If you click `Dump` then at the bottom of the page in the` console output` field will appear machine code, that is executed by the processor.
 ```
 00108093
 00108113
 ```
+If you click `Run`  all code will be executed. In this case, the x1 and x2 registers will change:
+![venus_memory](https://user-images.githubusercontent.com/43972902/101665262-0e324380-3a4d-11eb-80f6-ef268bbe9608.png)
+On the left side you can see register numbers (from 0 to 31) with their mnemonics. The contents of registers are displayed hexadecimal, this is the default. If you want to change it, in this part of page, at the bottom you have drop-down list `Display Settings`. There you can choose how you want to display the numbers: hexadecimal, decimal, unsigned or ASCII.
 
 
 
