@@ -3,7 +3,9 @@
 _________________
 In this project I'll put everything related to RISC-V. I learn this technology from scratch, so there may be a lot of simple things. I hope to avoid mistakes due to being inexperienced.
 
-### Useful links:
+### Table of contents
+
+### Tutorials:
 
 1. First link is about very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free:
 
@@ -16,14 +18,13 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140
 2.
 
-#### Simulator
+### Simulator
 For learning assembly language, I highly recommend using this simulator:
 [08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
 - Editor - here we can write our code
 When you click "Simulator" the code will be compiled[?] automatically.
-- Simulator - here you can test the code and check the results.
-
+- Simulator - here you can test the code and check the results
 In `Editor`  part I entered the code:
 ```
 addi x1, x1, 0x1
@@ -40,10 +41,22 @@ If you click `Dump` then at the bottom of the page in the` console output` field
 ```
 If you click `Run`  all code will be executed. In this case, the x1 and x2 registers will change:
 ![venus_memory](https://user-images.githubusercontent.com/43972902/101665262-0e324380-3a4d-11eb-80f6-ef268bbe9608.png)
+
 On the left side you can see register numbers (from 0 to 31) with their mnemonics. The contents of registers are displayed hexadecimal, this is the default. If you want to change it, in this part of page, at the bottom you have drop-down list `Display Settings`. There you can choose how you want to display the numbers: hexadecimal, decimal, unsigned or ASCII. In this part of page you have two bookmarks: `Registers` (I just described this part) and `Memory`. If you switch to the `Memory` tab, then you can see what is in the memory part: Text, Data, Heap or Stack. The default is Text.
 ![venus_memory_part](https://user-images.githubusercontent.com/43972902/101669479-438d6000-3a52-11eb-9fc6-58f44239e7ec.png)
+
 Very important thing. If you go from the `Simulator` tab to the` Editor` it is the same as clicking on the `Reset` button, so all registers will return to the factory state.
 
+### Documentation
+The documentation consists of three documents:
+1. User-Level ISA Specification
+There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E and RV64I.
+What does ISA means is in *Terms needing explanation*.
+2. Privileged ISA specification
+It describes the elements of the processor, which are related with management of priority levels. 
+3. Debug specification
+
+### Terms needing explanation
 
 
 
