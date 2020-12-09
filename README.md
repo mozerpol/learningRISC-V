@@ -32,8 +32,13 @@ In the screenshot, you can see at the top `Editor` and `Simulator`.
 ![venus](https://user-images.githubusercontent.com/43972902/101664067-b34c1c80-3a4b-11eb-83a7-e17bc51d1271.png)
 If you click `Run`  all code will be executed. In this case, the x1 and x2 registers will change:
 ![venus_memory](https://user-images.githubusercontent.com/43972902/101665262-0e324380-3a4d-11eb-80f6-ef268bbe9608.png)
-
-
+If you click `Reset`, the effect will be the same as a page refresh [?]. 
+`Step` is of course next code line, `Prev` means previous code line. 
+If you click `Dump` then at the bottom of the page in the` console output` field will appear machine code, that is executed by the processor.
+```
+00108093
+00108113
+```
 
 
 
