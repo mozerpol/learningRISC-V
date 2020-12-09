@@ -4,6 +4,12 @@ _________________
 In this project I'll put everything related to RISC-V. I learn this technology from scratch, so there may be a lot of simple things. I hope to avoid mistakes due to being inexperienced. I will try to keep up to date this repo.
 
 ### Table of contents
+1. [Tutorials](#Tutorials)
+2. [Simulator](#Simulator)
+3. [Documentation](#Documentation)
+4. [A little bit about registers](#A little bit about registers)
+5. [About the instructions](#About the instructions)
+6. [Terms needing explanation](#Terms needing explanation)
 
 ### Tutorials:
 
@@ -43,9 +49,10 @@ If you click `Run`  all code will be executed. In this case, the x1 and x2 regis
 ![venus_memory](https://user-images.githubusercontent.com/43972902/101665262-0e324380-3a4d-11eb-80f6-ef268bbe9608.png)
 
 On the left side you can see register numbers (from 0 to 31) with their mnemonics. The contents of registers are displayed hexadecimal, this is the default. If you want to change it, in this part of page, at the bottom you have drop-down list `Display Settings`. There you can choose how you want to display the numbers: hexadecimal, decimal, unsigned or ASCII. In this part of page you have two bookmarks: `Registers` (I just described this part) and `Memory`. If you switch to the `Memory` tab, then you can see what is in the memory part: Text, Data, Heap or Stack. The default is Text.
+
 ![venus_memory_part](https://user-images.githubusercontent.com/43972902/101669479-438d6000-3a52-11eb-9fc6-58f44239e7ec.png)
 
-Very important thing. If you go from the `Simulator` tab to the` Editor` it is the same as clicking on the `Reset` button, so all registers will return to the factory state.
+Very important thing. If you go from the `Simulator` tab to the` Editor` it will be the same as clicking on the `Reset` button, so all registers will return to the factory state.
 
 ### Documentation
 The documentation consists of three documents:
