@@ -65,7 +65,10 @@ It describes the elements of the processor, which are related with management of
 Describes a standard, that enables debugging.
 
 ### A little bit about registers <a name="registers"></a>
-here desc registers
+In this repository, I will focus on the RV32I version. RV32I means, that we have 32 general purpose registers, which are marked from x0 up to x31. x0 register is equal always 0! Each registry has a own purpose and it is good practice to follow this:
+| ![register_meaning_eng](https://user-images.githubusercontent.com/43972902/101699645-cd9dee80-3a7b-11eb-8cf3-f64590fea00f.png) |
+|:--:|
+| *Space* |
 
 ### About the instructions <a name="instructions"></a>
 
