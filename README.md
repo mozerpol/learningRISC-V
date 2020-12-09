@@ -7,9 +7,9 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 1. [Tutorials](#Tutorials)
 2. [Simulator](#Simulator)
 3. [Documentation](#Documentation)
-4. [A little bit about registers](#A little bit about registers)
-5. [About the instructions](#About the instructions)
-6. [Terms needing explanation](#Terms needing explanation)
+4. [A little bit about registers](#registers)
+5. [About the instructions](#instructions)
+6. [Terms needing explanation](#terms)
 
 ### Tutorials:
 
@@ -64,12 +64,12 @@ It describes the elements of the processor, which are related with management of
 3. Debug specification
 Describes a standard, that enables debugging.
 
-### A little bit about registers
+### A little bit about registers <a name="registers"></a>
 here desc registers
 
-### About the instructions
+### About the instructions <a name="instructions"></a>
 
-### Terms needing explanation
+### Terms needing explanation <a name="terms"></a>
 1. ISA - lorem ipsum
 2. Opcode - lorem ipsum
 
