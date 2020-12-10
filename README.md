@@ -86,14 +86,22 @@ There are 6 instruction formats in RISC-V:
 5. **U** - upper immediates, e.g. *lui* or *auipc*
 6. **UJ** - jump instruction, e.g. *jal*
 In RV32I version all instructions are 32 bits long. The first seven bits of LSB are opcode. The figure below shows what each bit means:
+
 | ![opcodeexample](https://user-images.githubusercontent.com/43972902/101715627-1b2a5380-3a9c-11eb-887e-a9e0aac7de4a.png) |
 |:--:|
 | Source: *https://inst.eecs.berkeley.edu/~cs61c/resources/su18_lec/Lecture7.pdf*  [10.12.2020] |
 
 The simplest family of instructions which operate on registers and constants is the OP family. It consists of 10 instructions operating on the *rs1* and *rs2* registers, and then writes the result to *rd*:
-| ![obraz](https://user-images.githubusercontent.com/43972902/101716069-e5399f00-3a9c-11eb-8ada-3df2ba8d2c0d.png) |
+| ![opfamily](https://user-images.githubusercontent.com/43972902/101716069-e5399f00-3a9c-11eb-8ada-3df2ba8d2c0d.png) |
 |:--:|
 | Source: *Elektronika Praktyczna 09.2019, p. 109*  |
+
+The OP family is of type R. Instructions from the OP-IMM family are shown below, as you can see, from the OP family it differs in bits 20 - 31:
+| ![opimmfamily](https://user-images.githubusercontent.com/43972902/101716069-e5399f00-3a9c-11eb-8ada-3df2ba8d2c0d.png) |
+|:--:|
+| Source: *Elektronika Praktyczna 09.2019, p. 109*  |
+
+The OP-IMM family allows code numbers in the range from -2048 to 2047. OP-IMM consists of 9 instructions corresponding to the OP, but mnemonics have the letter I.
 
 ### Terms needing explanation <a name="terms"></a>
 1. ISA - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
@@ -102,7 +110,7 @@ The simplest family of instructions which operate on registers and constants is 
 	- addressing mode - way to transfer data from registers to memory and vice versa,
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
-Examples of ISA: ARM, AMD64 or Intel 64. 
+Examples of ISA: ARM, AMD64 or Intel 64.
 2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
 
 
