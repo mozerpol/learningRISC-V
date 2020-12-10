@@ -65,15 +65,17 @@ It describes the elements of the processor, which are related with management of
 Describes a standard, that enables debugging.
 
 ### A little bit about registers <a name="registers"></a>
-In this repository, I will focus on the RV32I version. RV32I means, that we have 32 general purpose registers, which are marked from x0 up to x31. x0 register is equal always 0! Each registry has a own purpose and it is good practice to follow this:
-
-<center>
-
+In this repository, I will focus on the RV32I version. RV32I means, that we have 32 general purpose registers, which are marked from x0 up to x31. x0 register is equal always 0! Each registry has a own purpose and it's good practice to follow this (eng version):
 | ![register_meaning_eng](https://user-images.githubusercontent.com/43972902/101699645-cd9dee80-3a7b-11eb-8cf3-f64590fea00f.png) |
 |:--:|
-| *Space* |
+| Source: *https://web.eecs.utk.edu/~smarz1/courses/ece356/notes/risc/imgs/regfile.png*  [10.12.2020] |
 
-</center>
+Pl version:
+| ![register_meaning_pl](https://user-images.githubusercontent.com/43972902/101699692-e8706300-3a7b-11eb-9c24-c183df05ee2e.png) |
+|:--:|
+| Source: *Elektronika Praktyczna 09.2019, p. 109*  |
+
+For example x4 register is used as a thread pointer. 
 
 ### About the instructions <a name="instructions"></a>
 
