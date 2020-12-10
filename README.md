@@ -79,9 +79,16 @@ For example x4 register is used as a thread pointer.
 
 ### About the instructions <a name="instructions"></a>
 
+
 ### Terms needing explanation <a name="terms"></a>
-1. ISA - lorem ipsum
-2. Opcode - lorem ipsum
+1. ISA - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
+	- instruction listings - the set of instructions that the processor can execute,
+	- data types - kind and range,
+	- addressing mode - way to transfer data from registers to memory and vice versa,
+	- set of registers available for the developer,
+	- rules for handling threads and interrupts.
+Examples of ISA: ARM, AMD64 or Intel 64. 
+2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
 
 
 
