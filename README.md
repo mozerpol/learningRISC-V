@@ -57,7 +57,7 @@ Very important thing. If you go from the `Simulator` tab to the` Editor` it will
 ### Documentation
 The documentation consists of three documents:
 1. User-Level ISA Specification
-There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E and RV64I.
+There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I.
 What does ISA means is in *Terms needing explanation*.
 2. Privileged ISA specification
 It describes the elements of the processor, which are related with management of priority levels. It's used to how to start the operating system. Also are definied here interrupt handling or physical memory management.
@@ -78,7 +78,22 @@ Pl version:
 For example x4 register is used as a thread pointer. 
 
 ### About the instructions <a name="instructions"></a>
+There are 6 instruction formats in RISC-V:
+1. **R** - instructions that use three registers as input, e.g. *add*, *xor* or *mul*
+2. **I** - instructions with immediate loading, e.g. *lw*, *addi*, *jalr* or *slli*
+3. **S** - storage instructions, e.g. *sw* or *sb*
+4. **SB** - branch instructions, e.g. *bge* or *beq*
+5. **U** - upper immediates, e.g. *lui* or *auipc*
+6. **UJ** - jump instruction, e.g. *jal*
+In RV32I version all instructions are 32 bits long. The first seven bits of LSB are opcode. The figure below shows what each bit means:
+| ![opcodeexample](https://user-images.githubusercontent.com/43972902/101715627-1b2a5380-3a9c-11eb-887e-a9e0aac7de4a.png) |
+|:--:|
+| Source: *https://inst.eecs.berkeley.edu/~cs61c/resources/su18_lec/Lecture7.pdf*  [10.12.2020] |
 
+The simplest family of instructions which operate on registers and constants is the OP family. It consists of 10 instructions operating on the *rs1* and *rs2* registers, and then writes the result to *rd*:
+| ![obraz](https://user-images.githubusercontent.com/43972902/101716069-e5399f00-3a9c-11eb-8ada-3df2ba8d2c0d.png) |
+|:--:|
+| Source: *Elektronika Praktyczna 09.2019, p. 109*  |
 
 ### Terms needing explanation <a name="terms"></a>
 1. ISA - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
