@@ -102,7 +102,7 @@ The OP family is of type R. Instructions from the OP-IMM family are shown below,
 | Source: *Elektronika Praktyczna 09.2019, p. 109*  |
 
 The OP-IMM family allows code numbers in the range from -2048 to 2047. OP-IMM consists of 9 instructions corresponding to the OP, but mnemonics have the letter I.
-Instructions from the OP or OP-IMM family carry out operations directly on constants and registers, but assembly language for RISC-V supports the use of something like abbreviations. By the abbreviation I mean a mnemonic name for one or few instructions. For example `nop` instruction is equal `addi x0, x0, 0`. `nop` means do nothing. The developers of RISC-V have made a lot of pseudo-instructions. It's much easier and cleaner write `nop` than `addi x0, x0, 0`.The most common used pseudo instructions are presented below:
+Instructions from the OP or OP-IMM family carry out operations directly on constants and registers, but assembly language for RISC-V supports the use of something like abbreviations. By the abbreviation I mean a mnemonic name for one or few instructions. For example `nop` instruction is equal `addi x0, x0, 0`. `nop` means do nothing. The developers of RISC-V have made a lot of pseudo instructions (it's correct name for this: *pseudo instruction*). It's much easier and cleaner write `nop` than `addi x0, x0, 0`.The most common used pseudo instructions are presented below:
 In English language:
 | ![pseudoinstructionsENG](https://user-images.githubusercontent.com/43972902/101987122-76259b80-3c92-11eb-9275-cc6081bfb4b1.png) |
 |:--:|
@@ -113,6 +113,8 @@ In Polish language:
 |:--:|
 | Source: *Elektronika Praktyczna 09.2019, p. 110*  |
 
+[Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
+
 ### Terms needing explanation <a name="terms"></a>
 1. ISA - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
@@ -122,8 +124,6 @@ In Polish language:
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
 2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-
-
 
 
 
