@@ -22,7 +22,6 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     The third part of the course is available in the issue from: 11.2019, pages 131-137/140
 
     The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140
-2.
 
 ### Simulator
 For learning assembly language, I highly recommend using this simulator:
@@ -57,12 +56,14 @@ Very important thing. If you go from the `Simulator` tab to the` Editor` it will
 ### Documentation
 The documentation consists of three documents:
 1. User-Level ISA Specification
-There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I.
-What does ISA means is in *Terms needing explanation*.
+There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I. What does ISA means is in [Terms needing explanation](#terms).
+Link v2.2 [13.12.2020]: https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
 2. Privileged ISA specification
 It describes the elements of the processor, which are related with management of priority levels. It's used to how to start the operating system. Also are definied here interrupt handling or physical memory management.
+Link v1.10 [13.12.2020]: https://riscv.org/wp-content/uploads/2017/05/riscv-privileged-v1.10.pdf
 3. Debug specification
 Describes a standard, that enables debugging.
+Link 0.13.2 [13.12.2020]: https://riscv.org/wp-content/uploads/2019/03/riscv-debug-release.pdf
 
 ### A little bit about registers <a name="registers"></a>
 In this repository, I will focus on the RV32I version. RV32I means, that we have 32 general purpose registers, which are marked from x0 up to x31. x0 register is equal always 0! Each registry has a own purpose and it's good practice to follow this (eng version):
