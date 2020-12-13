@@ -1,0 +1,30 @@
+### ADDI
+This instruction allows add number and register together and save result in register. For example: `addi 	x2, x1, 0x5`. It means add *0x5* number to *x1* register and save result in *x2* register. As each instruction consists of 32 bits. Below I posted two photos of the frame that describes what the bits do. The information inside them is exacly the same, but in a bit different way.
+| ![addi1](https://user-images.githubusercontent.com/43972902/102025580-32698980-3d99-11eb-9c07-55b1bddc380b.png) |
+|:--:|
+| Source: *https://media.cheggcdn.com/media%2F707%2F707147b6-fa2f-4328-afd2-7a3d68c54a68%2FphpMU4I6Z.png*  [13.12.2020] |
+| ![addi2](https://user-images.githubusercontent.com/43972902/102025595-5200b200-3d99-11eb-81fc-fd77af53dbcc.png) |
+|:--:|
+| Source: *RISC-V Instruction Set Manual v2.2, p 13*  [13.12.2020] |
+
+**0 - 6:** 0010011 - It's *opcode*
+
+**7 - 11:**  *rd* - it's destination register, e.g. x3 register
+
+**12 - 14:** *funct3* - for ADDI it's 000
+
+**15 - 19:** *rs1* - first argument, e.g. x1 register
+
+**20 - 31:** *imm* - it's number what we want add together with *rs1* register and save in *rd* register. This register is 12 bits long, so we can load <img src="https://render.githubusercontent.com/render/math?math=2^{12}-1">  size number. <img src="https://render.githubusercontent.com/render/math?math=2^{12}-1"> is equal 4095 in dec and 0xFFF in hex. But very **important** thing, we can **load only numbers from -2048 to 2047**.
+
+`ADDI` is instruction from *OP-IMM* family.
+If we run instruction `addi x2, x1, 0x5` in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code 00308113.  00308113 means in binary: 00011 00001 000 00010 0010011. What does it mean:
+- First seven bits is our opcode: 0010011. Exacly the same like in manual :)
+- Next five bits is our *rd*: 00010. 00010 in hex means 2, 2 like x2 register, it's our destination register :)
+- Next three bits mean *func3* and in this case is 000, like in manual.
+- Next five bits is *rs1*: 00001, like x1 register.
+- Next is five bits it's number what we want add - *rs2*: 00011, in hex it is 5
+
+Instruction ADDI is used to implementation `MV` pseudo-instruction: `ADDI rd, rs, 0`. 
+
+This instruction is described on page 15 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
