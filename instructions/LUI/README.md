@@ -7,5 +7,5 @@ As each instruction consists of 32 bits. Below is a photo of the frame that desc
 
 <span style="color:red">0 - 6</span>: 0110111 - It's *opcode*
 <span style="color:red">7 - 11</span>: *rd* - it's destination, e.g. x1 register
-<span style="color:red">12 - 31</span>: *imm* - it's number what we want load. This register is 20 bits long, so we can load $2_{20}$ - 1  size number. $2_{20}$ - 1 is equal 1048575 in dec and 0xFFFFF in hex.
+<span style="color:red">12 - 31</span>: *imm* - it's number what we want load. This register is 20 bits long, so we can load <img src="https://render.githubusercontent.com/render/math?math=2^{20}-1">  size number. <img src="https://render.githubusercontent.com/render/math?math=2^{20}-1"> is equal 1048575 in dec and 0xFFFFF in hex.
 
