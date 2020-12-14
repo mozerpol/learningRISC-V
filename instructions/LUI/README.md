@@ -15,8 +15,14 @@ As each instruction consists of 32 bits. Below I posted two photos of the frame 
 
 **12 - 31:** *imm* - it's number what we want load. This register is 20 bits long, so we can load <img src="https://render.githubusercontent.com/render/math?math=2^{20}-1">  size number. <img src="https://render.githubusercontent.com/render/math?math=2^{20}-1"> is equal 1048575 in dec and 0xFFFFF in hex.
 
-If we run instruction `lui		x1, 0xFFFFF` in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code fffff0b7. fffff0b7 means in binary: 11111111111111111111 00001 0110111. What does it mean:
+If we run instruction `lui x1, 0xFFFFF` in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code fffff0b7. fffff0b7 means in binary: 11111111111111111111 00001 0110111. What does it mean:
 - First seven bits is our opcode: 0110111. Exacly the same like in manual :)
 - Next five bits is our destination: 00001. 00001 like `x1` register :)
 - The rest of the bits (20 bits): 11111111111111111111. This numbers means our number, which we want load to x1 register. If we translate 11111111111111111111 to hex we will get 0xFFFFF :)
 
+Ok, but how exactly does this instruction work? `lui` operates on numbers with a length up to 20 bits (as 0xFFFFF), but our general purpose registers (like x1, x2...) have 32 bits length. So the result of `lui` is saved in first twenty bits, the rest of the bits are not touched. For example:
+- If we run instruction `lui x1, 0xFFFFF` in `x1` register the `0xFFFFF000` value will be written.
+- If we run instruction `lui x1, 0xFFFF` in `x1` register the `0x0FFFF000` value will be written.
+- If we run instruction `lui x1, 0xFFF` in `x1` register the `0x00FFF000` value will be written.
+- If we run instruction `lui x1, 0xFF` in `x1` register the `0x000FF000` value will be written.
+- If we run instruction `lui x1, 0xF` in `x1` register the `0x0000F000` value will be written.
