@@ -21,7 +21,7 @@ As each instruction consists of 32 bits. Below I posted two photos of the frame 
 
 **25 - 31:** *funct7* - in this case is 0000000 (seven zeros)
 
-`ADD` is instruction from *OP* family. In this family the differences between commands are in *funct3* and *funct7*. The *opcode* is exacly the same. In this type RISC-V we have 32 general purpose registers, for this reason the *rd*, *rs1* and *rs2* have 5 bits long. Why? because src="https://render.githubusercontent.com/render/math?math=2^{5}"> is equal 32 :) So thanks to five bits we can address 32 registers.
+`ADD` is instruction from *OP* family. In this family the differences between commands are in *funct3* and *funct7*. The *opcode* is exacly the same. In this type RISC-V we have 32 general purpose registers, for this reason the *rd*, *rs1* and *rs2* have 5 bits long. Why? because <img src="https://render.githubusercontent.com/render/math?math=2^{5}"> is equal 32 :) So thanks to five bits we can address 32 registers.
 If we run instruction `ADD x3, x1, x2` in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code 002081b3.  002081b3 means in binary: 0000000 00010 00001 000 00011 0110011. What does it mean:
 - First seven bits is our opcode: 0110011. Exacly the same like in manual :)
 - Next five bits is our *rd*: 00011. 00011 in hex means 3, 3 like x3 register, it's our destination register :)
