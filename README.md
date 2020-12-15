@@ -125,7 +125,26 @@ In Polish language:
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
 2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
+3. Two's complement - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integers in a binary system. MSB number tells us, whether the number is negative. 
 
+| U2 | Calculations | Value |
+|---|---|---|
+| 0000 | 0 | 0 |
+| 0001 | <img src="https://render.githubusercontent.com/render/math?math=2^{0}"> | 1 |
+| 0010 | <img src="https://render.githubusercontent.com/render/math?math=2^{1}"> | 2 |
+| 0011 | <img src="https://render.githubusercontent.com/render/math?math=2^{1}%2B2^{0}"> | 3 |
+| 0100 | <img src="https://render.githubusercontent.com/render/math?math=2^{2}"> | 4 |
+| 0101 | <img src="https://render.githubusercontent.com/render/math?math=2^{2}%2B2^{0}"> | 5 |
+| 0110 | <img src="https://render.githubusercontent.com/render/math?math=2^{2}%2B2^{1}"> | 6 |
+| 0111 | <img src="https://render.githubusercontent.com/render/math?math=2^{2}%2B2^{1}%2B2^{0}"> | 7 |
+| 1000 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}"> | -8 |
+| 1001 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{0}"> | -7 |
+| 1010 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{1}"> | -6 |
+| 1011 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{1}%2B2^{0}"> | -5 |
+| 1100 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}"> | -4 |
+| 1101 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{0}"> | -3 |
+| 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
+| 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 |
 
 
 
