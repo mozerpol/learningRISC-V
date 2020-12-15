@@ -125,8 +125,14 @@ In Polish language:
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
 2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integers in a binary system. MSB number tells us, whether the number is negative. 
+3. Two's complement - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. 
+How to convert U2 to dec? It is easy :) If we have number in U2 for example take 0b101. 101 - there are three numbers, first: 1, second: 0, third: 1. Take first from left (it is 1) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2})">. Why 2? Because we have three numbers, but **in computer science we count from zero** :).
+Example (from wikipedia):
+We have number in U2: `11101101`
+<img src="https://render.githubusercontent.com/render/math?math=11101101%20 = 1*(-2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">
 
+
+I put below table with all the possible 4-bit numbers in U2 notation:
 | U2 | Calculations | Value |
 |---|---|---|
 | 0000 | 0 | 0 |
@@ -144,7 +150,7 @@ Examples of ISA: ARM, AMD64 or Intel 64.
 | 1100 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}"> | -4 |
 | 1101 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{0}"> | -3 |
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
-| 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 |
+| 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 |  
 
 
 
