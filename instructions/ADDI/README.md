@@ -1,5 +1,5 @@
 ### ADDI
-This instruction allows add number and register together and save result in register. For example: `addi 	x2, x1, 0x5`. It means add *0x5* number to *x1* register and save result in *x2* register. As each instruction consists of 32 bits. Below I posted two photos of the frame that describes what the bits do. The information inside them is exacly the same, but in a bit different way.
+This instruction allows add number and register together and save result in register. For example: `addi x2, x1, 0x5`. It means add *0x5* number to *x1* register and save result in *x2* register. As each instruction consists of 32 bits. Below I posted two photos of the frame that describes what the bits do. The information inside them is exacly the same, but in a bit different way.
 | ![addi1](https://user-images.githubusercontent.com/43972902/102025580-32698980-3d99-11eb-9c07-55b1bddc380b.png) |
 |:--:|
 | Source: *https://media.cheggcdn.com/media%2F707%2F707147b6-fa2f-4328-afd2-7a3d68c54a68%2FphpMU4I6Z.png*  [13.12.2020] |
@@ -24,6 +24,36 @@ If we run instruction `addi x2, x1, 0x5` in [simulator](https://www.kvakil.me/ve
 - Next three bits mean *func3* and in this case is 000, like in manual.
 - Next five bits is *rs1*: 00001, like x1 register.
 - Next is five bits it's number what we want add - *rs2*: 00011, in hex it is 5
+
+Ok, but how exactly does this instruction work? It'll be the easiest explain on few examples, suppose `x1` and `x2` is equal zero:
+1. `addi x2, x1, 0x3` - add 0x3 number to x1 register: 
+``` 
+    0x00000000      <-- x1 register
+    0x00000003      <-- 0x3 number
+---------------- +  <-- add x1 and 0x3
+    0x00000003      <-- result saved in x2 register
+```
+2. `addi x2, x1, 2047` - add 0x3 number to x1 register: 
+``` 
+    0x00000000      <-- x1 register
+    0x000007FF      <-- 2047 number in hex representation
+---------------- +  <-- add x1 and 0x3
+    0x000007FF      <-- result saved in x2 register
+```
+3. `addi x2, x1, -0x3` - add 0x3 number to x1 register: 
+``` 
+    0x00000000      <-- x1 register
+    0xfffffffd      <-- -3 number in hex representation
+---------------- +  <-- add x1 and 0x3
+    0x000007FF      <-- result saved in x2 register
+```
+4. `addi x2, x1, -2048` - add 0x3 number to x1 register: 
+``` 
+    0x00000000      <-- x1 register
+    0xfffffffd      <-- -3 number in hex representation
+---------------- +  <-- add x1 and 0x3
+    0xfffff800      <-- result saved in x2 register
+```
 
 Instruction ADDI is used to implementation `MV` pseudo-instruction: `ADDI rd, rs, 0`. 
 
