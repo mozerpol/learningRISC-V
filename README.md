@@ -113,15 +113,15 @@ In Polish language:
 [Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
 
 ### Terms needing explanation <a name="terms"></a> [UP↑](#tof)
-1. ######ISA###### - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
+1. ###### ISA ###### - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
 	- data types - kind and range,
 	- addressing mode - way to transfer data from registers to memory and vice versa,
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
-2. ######Opcode###### - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. ######Two's complement###### - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
+2. ###### Opcode ###### - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
+3. ###### Two's complement ###### - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 <ins>How to convert U2 to dec?</ins> It is easy :) 
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
 <ins>Another example</ins>(from wikipedia): <br/>
@@ -132,7 +132,7 @@ Next number is also *1*, so will be <img src="https://render.githubusercontent.c
 Next number is *0*, so will be <img src="https://render.githubusercontent.com/render/math?math=0*2^{4}">.
 Some calculations further...
 <img src="https://render.githubusercontent.com/render/math?math=11101101 = -1*(2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">. <br/>
-I put below table with all the possible 4-bit numbers in U2 notation: </br>
+I put below table with all the possible 4-bit numbers in U2 notation: 
 | U2 | Calculations | Value |
 |:---:|:---:|:---:|
 | 0000 | 0 | 0 |
