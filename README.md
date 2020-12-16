@@ -3,7 +3,7 @@
 _________________
 In this project I'll put everything related to RISC-V. I learn this technology from scratch, so there may be a lot of simple things. I hope to avoid mistakes due to being inexperienced. I will try to keep up to date this repo.
 
-### Table of contents
+### Table of contents <a name="tof"></a>
 1. [Tutorials](#Tutorials)
 2. [Simulator](#Simulator)
 3. [Documentation](#Documentation)
@@ -13,17 +13,13 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 
 ### Tutorials:
 
-1. First link is about very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free:
+1. First link is about very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free: <br/>
+    [08.12.2020] https://ep.com.pl/podzespoly/12992-risc-v-budujemy-wlasny-mikrokontroler-1 <br/>
+    The second part of the course is available in the issue from: 10.2019, pages 116-123/140 <br/>
+    The third part of the course is available in the issue from: 11.2019, pages 131-137/140 <br/>
+    The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140 <br/>
 
-    [08.12.2020] https://ep.com.pl/podzespoly/12992-risc-v-budujemy-wlasny-mikrokontroler-1
-
-    The second part of the course is available in the issue from: 10.2019, pages 116-123/140
-
-    The third part of the course is available in the issue from: 11.2019, pages 131-137/140
-
-    The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140
-
-### Simulator
+### Simulator [UP↑](#tof)
 For learning assembly language, I highly recommend using this simulator:
 [08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
@@ -53,7 +49,7 @@ On the left side you can see register numbers (from 0 to 31) with their mnemonic
 
 Very important thing. If you go from the `Simulator` tab to the` Editor` it will be the same as clicking on the `Reset` button, so all registers will return to the factory state.
 
-### Documentation
+### Documentation [UP↑](#tof)
 The documentation consists of three documents:
 1. User-Level ISA Specification
 There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I. What does ISA means is in [Terms needing explanation](#terms).
@@ -65,7 +61,7 @@ Link v1.10 [13.12.2020]: https://riscv.org/wp-content/uploads/2017/05/riscv-priv
 Describes a standard, that enables debugging.
 Link 0.13.2 [13.12.2020]: https://riscv.org/wp-content/uploads/2019/03/riscv-debug-release.pdf
 
-### A little bit about registers <a name="registers"></a>
+### A little bit about registers <a name="registers"></a> [UP↑](#tof)
 In this repository, I will focus on the RV32I version. RV32I means, that we have 32 general purpose registers, which are marked from x0 up to x31. x0 register is equal always 0! Each registry has a own purpose and it's good practice to follow this (eng version):
 | ![register_meaning_eng](https://user-images.githubusercontent.com/43972902/101699645-cd9dee80-3a7b-11eb-8cf3-f64590fea00f.png) |
 |:--:|
@@ -78,7 +74,7 @@ Pl version:
 
 For example x4 register is used as a thread pointer. 
 
-### About the instructions <a name="instructions"></a>
+### About the instructions <a name="instructions"></a> [UP↑](#tof)
 There are 6 instruction formats in RISC-V:
 1. **R** - instructions that use three registers as input, e.g. *add*, *xor* or *mul*
 2. **I** - instructions with immediate loading, e.g. *lw*, *addi*, *jalr* or *slli*
@@ -116,33 +112,29 @@ In Polish language:
 
 [Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
 
-### Terms needing explanation <a name="terms"></a>
-1. ISA - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
+### Terms needing explanation <a name="terms"></a> [UP↑](#tof)
+1. ######ISA###### - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
 	- data types - kind and range,
 	- addressing mode - way to transfer data from registers to memory and vice versa,
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
-2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles.
- 
-How to convert U2 to dec? It is easy :) 
-For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">.
-
-Another example (from wikipedia):
-
-We have number in U2: `11101101` 
+2. ######Opcode###### - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
+3. ######Two's complement###### - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
+<ins>How to convert U2 to dec?</ins> It is easy :) 
+For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
+<ins>Another example</ins>(from wikipedia): <br/>
+We have number in U2: `11101101` <br/>
 And we must to do the same as in previous example. We have eight numbers. First number is *1*, so we must multiply <img src="https://render.githubusercontent.com/render/math?math=2^{7}"> by *-1*. Why *7*? Because we have eight numbers and in this method we count from zero. Why *-1*? because first number says whether the number is positive or negative (*1* - number is negative, *0* - number is positive). 
 Next number is also *1*, so will be <img src="https://render.githubusercontent.com/render/math?math=1*2^{6}">.
 Next number is also *1*, so will be <img src="https://render.githubusercontent.com/render/math?math=1*2^{5}">.
 Next number is *0*, so will be <img src="https://render.githubusercontent.com/render/math?math=0*2^{4}">.
 Some calculations further...
-<img src="https://render.githubusercontent.com/render/math?math=11101101 = -1*(2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">.
-
-I put below table with all the possible 4-bit numbers in U2 notation:
+<img src="https://render.githubusercontent.com/render/math?math=11101101 = -1*(2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">. <br/>
+I put below table with all the possible 4-bit numbers in U2 notation: </br>
 | U2 | Calculations | Value |
-|---|---|---|
+|:---:|:---:|:---:|
 | 0000 | 0 | 0 |
 | 0001 | <img src="https://render.githubusercontent.com/render/math?math=2^{0}"> | 1 |
 | 0010 | <img src="https://render.githubusercontent.com/render/math?math=2^{1}"> | 2 |
@@ -158,7 +150,7 @@ I put below table with all the possible 4-bit numbers in U2 notation:
 | 1100 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}"> | -4 |
 | 1101 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{0}"> | -3 |
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
-| 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 |  
+| 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
 
 
