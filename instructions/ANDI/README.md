@@ -8,3 +8,15 @@ ANDI perform bitwise AND between register sign-extended 12-bit value. For exampl
 | ![andi2](https://user-images.githubusercontent.com/43972902/102528734-3a7a3f80-409f-11eb-8efe-54fa799ae0b3.png) |
 |:--:|
 | Source: *RISC-V Instruction Set Manual v2.2, p 13*  [13.12.2020] |
+
+**0 - 6:** 0010011 - It's *opcode*
+
+**7 - 11:**  *rd* - it's destination register, e.g. x3 register
+
+**12 - 14:** *funct3* - for ADDI it's 000
+
+**15 - 19:** *rs1* - first argument, e.g. x1 register
+
+**20 - 31:** *imm* - it's number what we want add together with *rs1* register and save in *rd* register. This register is 12 bits long, so we can load <img src="https://render.githubusercontent.com/render/math?math=2^{12}-1">  size number. <img src="https://render.githubusercontent.com/render/math?math=2^{12}-1"> is equal 4095 in dec and 0xFFF in hex. But very **important** thing, we can **load only numbers from -2048 to 2047**.
+
+`ANDI` is instruction from *OP-IMM* family.
