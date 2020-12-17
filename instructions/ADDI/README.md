@@ -25,7 +25,7 @@ If we run instruction `addi x2, x1, 0x5` in [simulator](https://www.kvakil.me/ve
 - Next five bits is *rs1*: 00001, like x1 register.
 - Next is five bits it's number what we want add - *rs2*: 00011, in hex it is 5
 
-Ok, but how exactly does this instruction work? It'll be the easiest explain on few examples, suppose `x1` and `x2` is equal zero:
+Ok, but how exactly does this instruction work? It'll be the easiest explain on few examples, suppose `x1` and `x2` is equal zero at the beginning:
 1. `addi x2, x1, 0x3` - add 0x3 number to x1 register: 
 ``` 
     0x00000000      <-- x1 register
@@ -33,25 +33,29 @@ Ok, but how exactly does this instruction work? It'll be the easiest explain on 
 ---------------- +  <-- add x1 and 0x3
     0x00000003      <-- result saved in x2 register
 ```
-2. `addi x2, x1, 2047` - add 0x3 number to x1 register: 
+`addi` instruction saves the result in LSB.
+2. `addi x2, x1, 2047` - add 2047 number to x1 register: 
 ``` 
     0x00000000      <-- x1 register
     0x000007FF      <-- 2047 number in hex representation
----------------- +  <-- add x1 and 0x3
+---------------- +  <-- add x1 and 2047
     0x000007FF      <-- result saved in x2 register
 ```
-3. `addi x2, x1, -0x3` - add 0x3 number to x1 register: 
+`addi` instruction is using [two's complement](https://github.com/mozerpol/learningRISC-V/blob/main/README.md#terms) to show the result. In this system of representation if you need negative number, you must replace *1* with *0* and add *1* to the finally result. Ok, but what I mean? Usually if we have number e.g. *0010* it is *2*, but in two's complement value *-2* looks: *1110*. In first step we replace *0* on *1* and *1* on *0*, so *0010* -> *1101* and then add to this number *1*. So the result is *1110*. Another example. Typically value *9* means *1001*. In first step we replace *0* on *1* and *1* on *0*, so *1001* -> *0110* and then add to this number *1*. So the result is *0111*.
+3. `addi x2, x1, -0x3` - subtract 0x3 number to x1 register: 
 ``` 
     0x00000000      <-- x1 register
     0xfffffffd      <-- -3 number in hex representation
----------------- +  <-- add x1 and 0x3
+---------------- +  <-- subtract x1 and 0x3
     0x000007FF      <-- result saved in x2 register
 ```
-4. `addi x2, x1, -2048` - add 0x3 number to x1 register: 
+Ok. *3* in binary is *0011*. If we need negative number, we must replace *1* with *0* and add *1* to the finally result. *0011* -> *1100* and add *1* -> *1101*.
+Why `0xfffffffd` means *-3*? `0xfffffffd` in binary is `11111111111111111111111111111101`. Look at last three bits, it's our *-3*.
+4. `addi x2, x1, -2048` - subtract 2048 number to x1 register: 
 ``` 
     0x00000000      <-- x1 register
-    0xfffffffd      <-- -3 number in hex representation
----------------- +  <-- add x1 and 0x3
+    0xfffffffd      <-- -2048 number in hex representation
+---------------- +  <-- subtract x1 and 2048
     0xfffff800      <-- result saved in x2 register
 ```
 
