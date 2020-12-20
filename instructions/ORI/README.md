@@ -45,4 +45,8 @@ Logical OR between `0b11001110011` and `0b10101010101`:
 *1* ≥1 *0* = *1* <br/>
 *0* ≥1 *1* = *1* <br/>
 *0* ≥1 *0* = *0* <br/>
+There is a nice method for copying value frome one to other register:
+`ori    rd, rs, 0` <br/>
+*rd* - our destination <br/>
+*rs* - frome where copy the value <br/>
 This instruction is described on page 13 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
