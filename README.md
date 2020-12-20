@@ -133,6 +133,7 @@ Next number is *0*, so will be <img src="https://render.githubusercontent.com/re
 Some calculations further...
 <img src="https://render.githubusercontent.com/render/math?math=11101101 = -1*(2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">. <br/>
 I put below table with all the possible 4-bit numbers in U2 notation: 
+
 | U2 | Calculations | Value |
 |:---:|:---:|:---:|
 | 0000 | 0 | 0 |
