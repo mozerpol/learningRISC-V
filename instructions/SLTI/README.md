@@ -20,3 +20,14 @@ As each instruction consists of 32 bits. Below I posted two photos of the frame 
 **15 - 19:** *rs1* - first argument, e.g. x1 register
 
 **20 - 31:** *imm* - it's number what we want compare with *rs1* register and save in *rd* register. This register is 12 bits long, so we can load <img src="https://render.githubusercontent.com/render/math?math=2^{12}-1">  size number. <img src="https://render.githubusercontent.com/render/math?math=2^{12}-1"> is equal 4095 in dec and 0xFFF in hex. But very **important** thing, we can **load only numbers from -2048 to 2047**.
+
+`SLTI` is instruction from *OP-IMM* family. <br/>
+If we run instruction `slti	x2, x1, 4` in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code 0040a113. <br/>
+0040a113 means in binary: 00000000100 00001 010 00010 0010011. What does it mean:
+- First seven bits is our opcode: 0010011. Exacly the same like in manual :)
+- Next five bits is our *rd*: 00010. 00010 in hex means 2, 2 like x2 register, it's our destination register :)
+- Next three bits mean *func3* and in this case is 010, like in manual.
+- Next five bits is *rs1*: 00001, like x1 register.
+- Next is eleven bits are number what we want to compare: 00000000100, in hex it is 4.
+The range of value in this instruction is from -2048 to 2047. <br/> 
+This instruction is described on page 13 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
