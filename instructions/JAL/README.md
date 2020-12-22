@@ -41,3 +41,11 @@ loop:
     addi 	x5, x5, 1
 jal 	x4, loop
 ```
+in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code:
+```
+00128293
+00128293
+ff9ff26f
+```
+00128293 means in binary: *000000000001 00101 000 00101 0010011* and it's our `addi` instruction. <br/>
+ff9ff26f means in binary: *11111111100111111111 00100 1101111* and it's our `jal` instruction.
