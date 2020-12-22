@@ -19,7 +19,7 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     The third part of the course is available in the issue from: 11.2019, pages 131-137/140 <br/>
     The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140 <br/>
 
-### Simulator [UP↑](#tof)
+### Simulator <a name="Simulator"></a> [UP↑](#tof)
 For learning assembly language, I highly recommend using this simulator:
 [08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
@@ -49,7 +49,7 @@ On the left side you can see register numbers (from 0 to 31) with their mnemonic
 
 Very important thing. If you go from the `Simulator` tab to the` Editor` it will be the same as clicking on the `Reset` button, so all registers will return to the factory state.
 
-### Documentation [UP↑](#tof)
+### Documentation <a name="Documentation"></a> [UP↑](#tof)
 The documentation consists of three documents:
 1. User-Level ISA Specification
 There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I. What does ISA means is in [Terms needing explanation](#terms).
@@ -113,15 +113,15 @@ In Polish language:
 [Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
 
 ### Terms needing explanation <a name="terms"></a> [UP↑](#tof)
-1. ISA - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
+1. ISA <a name="ISA"></a> - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
 	- data types - kind and range,
 	- addressing mode - way to transfer data from registers to memory and vice versa,
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
-2. Opcode - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
+2. Opcode <a name="Opcode"></a> - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
+3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 <ins>How to convert U2 to dec?</ins> It is easy :) 
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
 <ins>Another example</ins>(from wikipedia): <br/>
@@ -153,7 +153,7 @@ I put below table with all the possible 4-bit numbers in U2 notation:
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-
+4. Program Counter (PC) <a name="PC"></a> - 
 
 
 
