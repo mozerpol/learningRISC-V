@@ -49,3 +49,5 @@ ff9ff26f
 ```
 00128293 means in binary: *000000000001 00101 000 00101 0010011* and it's our `addi` instruction. <br/>
 ff9ff26f means in binary: *11111111100111111111 00100 1101111* and it's our `jal` instruction.
+
+This instruction is described on page 16 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
