@@ -15,3 +15,5 @@ loop:
     addi 	x5, x5, 1
 jal x0, loop
 ```
+`JAL` was described [here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions/JAL).
+This instruction is described on page 110 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
