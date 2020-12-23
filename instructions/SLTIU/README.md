@@ -24,3 +24,11 @@ As each instruction consists of 32 bits. Below I posted two photos of the frame 
 
 `SLTIU` is instruction from *OP-IMM* family. <br/>
 If we run instruction `sltiu x2, x1, -2048` in [simulator](https://www.kvakil.me/venus/), which is described on the main repository page, we can see that the instruction will be "translated" into corresponding machine code 8000b113. <br/>
+8000b113 means in binary: 100000000000 00001 011 00010 0010011. What does it mean:
+- First seven bits is our opcode: 0010011. Exacly the same like in manual :)
+- Next five bits is our *rd*: 00010. 00010 in hex means 2, 2 like x2 register, it's our destination register :)
+- Next three bits mean *func3* and in this case is 010, like in manual.
+- Next five bits is *rs1*: 00001, like x1 register.
+- Next is eleven bits are number what we want to compare: 100000000000, in dec it is -2048.
+The range of value in this instruction is from -2048 to 2047. <br/> 
+This instruction is described on page 13 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
