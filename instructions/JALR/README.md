@@ -24,11 +24,11 @@ Let's assume this instruction: `jalr x1, x2, 4`. This instruction means:
 
 | ![jalr2](https://user-images.githubusercontent.com/43972902/106524720-41d89980-64e3-11eb-883a-ed026be81d0a.png) |
 |:--:|
-| Source: *https://media.cheggcdn.com/media%2F707%2F707147b6-fa2f-4328-afd2-7a3d68c54a68%2FphpMU4I6Z.png*  [01.02.2021] |
+| Source: *https://media.cheggcdn.com/media%2F707%2F707147b6-fa2f-4328-afd2-7a3d68c54a68%2FphpMU4I6Z.png* [01.02.2021] |
 
 | ![jalr1](https://user-images.githubusercontent.com/43972902/106525687-a7795580-64e4-11eb-8fd0-44aeecc67213.png) |
-|:--:|100010011
-| Source: *RISC-V Instruction Set Manual v2.2, p 16*  [01.02.2021]|
+|:--:|
+| Source: *RISC-V Instruction Set Manual v2.2, p 16* [01.02.2021]|
 
 **0 - 6:** 1101111 - It's *opcode*
 
