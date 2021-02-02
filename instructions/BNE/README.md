@@ -40,6 +40,29 @@ If we translate it into machine code, we get:
 00000113
 00208093
 00310113
-fe111ce3
+fe111ce3 
 ```
-Ok, first four lines are `addi` instruction. The last one is `bne` instruction: `fe111ce3`, which means in binary: `11111110000100010001110011100011`.
+Ok, first four lines are `addi` instruction. The last one is `bne` instruction: `fe111ce3`, which means in binary: `1111111 00001 00010 001 11001 1100011`.
+- *1111111* - *imm*, 127 in dec
+- *00001* - *rs2*
+- *00010* - *rs1*
+- *001* - *funct3*
+- *11001* - *imm*, 25 in dec
+- *1100011* - *opcode*
+
+**I DON'T KNOW HOW *IMM* PART WORKS**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
