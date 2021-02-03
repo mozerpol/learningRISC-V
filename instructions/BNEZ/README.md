@@ -4,3 +4,18 @@ All branch instructions use the B-type instruction format. As each instruction c
 | ![bnez1](https://user-images.githubusercontent.com/43972902/106786355-c0057f00-664e-11eb-81cb-c81710be4f92.png) |
 |:--:|
 | Source: *RISC-V Instruction Set Manual v2.2, p 110*  [03.01.2021] |
+
+How the instruction works will be easiest to explain on example. Let's assume such an example: 
+``` assembly
+addi x1, x0, 0
+isNotEqualZero:
+	addi x1, x0, 1
+	bnez x1, isNotEqualZero
+```
+And this instruction will be translated into: 
+``` assembly
+addi x1, x0, 0
+isNotEqualZero:
+	addi x1, x0, 1
+	bne x1, x0, isNotEqualZero
+```
