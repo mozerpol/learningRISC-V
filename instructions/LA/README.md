@@ -20,16 +20,20 @@ addi	x2, x0, 0
 numb:
 	addi	x2, x0, 0
 ```
-First line reset *x2* register. Next `la x1, numb` is translated into: <br/>
+First, third and last line reset *x2* register. Second line `la x1, numb` is translated into: <br/>
 ```assembly
 auipc x1 0
 addi x1 x1 12
 ```
-This two lines reset *x1* register and then add to *x1* register value *12*. Why *12*? Because our label *numb* has *12* value in PC register.
+First line reset *x1* register and then add to *x1* register value *12*. Why *12*? Because our label *numb* has *12* value in PC register.
 | Line number: | Instruction: | Program counter status [hex]: |
 |:--:|:--:|:--:|
-| 1. | `addi x2, x0, 0` | 4 |
-| 2. | `la x1, numb` | 8 |
-| 3. | `addi x2, x0, 0` | c |
-| 4. | `numb:` | 10 |
+| 1. | `addi x2, x0, 0` | 0 |
+| 2. | `la x1, numb` | 4 |
+| 3. | `addi x2, x0, 0` | 8 |
+| 4. | `numb:` | c (12 in dec) |
 | 5. | `addi x2, x0, 0` | 10 |
+
+So in *x1* register we will save *12*, because *numb* label will occur in fourth line.
+`auipc` was described [here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions/AUIPC).
+This instruction is described on page 110 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
