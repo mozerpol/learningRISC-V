@@ -153,7 +153,7 @@ I put below table with all the possible 4-bit numbers in U2 notation:
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) - it's program counter/pointer, is the register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns. are implemented. 
+4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) - it's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns. are implemented. 
 
 
 
