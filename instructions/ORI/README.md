@@ -1,6 +1,5 @@
 ### ORI
-ORI
-ANDI perform bitwise OR between register sign-extended 12-bit value. For example: `x2, x1, 0b101`. It means logical OR between *x1* register and *0b101* value. As each instruction consists of 32 bits. Below I posted two photos of the frame that describes what the bits do. The information inside them is exacly the same, but in a bit different way. 
+ORI perform bitwise OR between register sign-extended 12-bit value. For example: `x2, x1, 0b101`. It means logical OR between *x1* register and *0b101* value. As each instruction consists of 32 bits. Below I posted two photos of the frame that describes what the bits do. The information inside them is exacly the same, but in a bit different way. 
 
 | ![ori1](https://user-images.githubusercontent.com/43972902/102725489-64d63200-4317-11eb-8ee5-2102077862f5.png) |
 |:--:|
