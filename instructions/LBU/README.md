@@ -22,4 +22,15 @@ In brief:
 | 4. | `array:` |  |
 | 5. | `.asciiz "ABC"` | Save *"ABC"* string in memory |
 
-![lbuins](https://user-images.githubusercontent.com/43972902/113752787-a72c4f00-970d-11eb-85ff-6217ddf50176.png)
+This instruction is mentioned on page 19 and 104 in [ISA manual](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf).
+
+As each instruction consists of 32 bits. Below I posted photo of the frame that describes what the bits do.
+| ![lbuins](https://user-images.githubusercontent.com/43972902/113752787-a72c4f00-970d-11eb-85ff-6217ddf50176.png) |
+|:--:|
+| Source: *RISC-V Instruction Set Manual v2.2, p 14*  [06.04.2021] |
+
+- **0 - 6**: *0000011* - It’s opcode 
+- **7 - 11**: *rd* - it’s destination, e.g. x2 register like in our example
+- **12 - 14**: *100* - funct3 which is 100
+- **15 - 19**: *rs1* - argument, e.g. x1 register
+- **20 - 31**: *imm[11:0]* - which byte we want take. In our example we want fetch first byte (because we have 0). It's very important - the range of this instruction is from 0 to 11 bits it means 2^12 = 4096, **but** the real range is from -2048 to 2047. It means we can take byte from -2048 position up to 2047.
