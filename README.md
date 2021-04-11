@@ -23,8 +23,7 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 For learning assembly language, I highly recommend using this simulator:
 [08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
-- Editor - here we can write our code
-When you click "Simulator" the code will be compiled[?] automatically.
+- Editor - here we can write our code. When you click "Simulator" the code will be compiled[?] automatically.
 - Simulator - here you can test the code and check the results
 In `Editor`  part I entered the code:
 ```
@@ -35,7 +34,7 @@ In the screenshot, you can see at the top bookmarks `Editor` and `Simulator`.
 ![venus](https://user-images.githubusercontent.com/43972902/101664067-b34c1c80-3a4b-11eb-83a7-e17bc51d1271.png)
 If you click `Reset`, the effect will be the same as a page refresh [?]. It means that all registers will be in factory state and we will go back to the first line of code.
 `Step` is of course next code line, `Prev` means previous code line.
-If you click `Dump` then at the bottom of the page in the` console output` field will appear machine code, that is executed by the processor.
+If you click `Dump` then at the bottom of the page in the `console output` field will appear machine code, that is executed by the processor.
 ```
 00108093
 00108113
@@ -47,22 +46,22 @@ On the left side you can see register numbers (from 0 to 31) with their mnemonic
 
 ![venus_memory_part](https://user-images.githubusercontent.com/43972902/101669479-438d6000-3a52-11eb-9fc6-58f44239e7ec.png)
 
-Very important thing. If you go from the `Simulator` tab to the` Editor` it will be the same as clicking on the `Reset` button, so all registers will return to the factory state.
+Very important thing. If you go from the `Simulator` tab to the `Editor` it will be the same as clicking on the `Reset` button, so all registers will return to the factory state.
 
 ### Documentation <a name="Documentation"></a> [UP↑](#tof)
 The documentation consists of three documents:
-1. User-Level ISA Specification
+1. User-Level ISA Specification <br/>
 There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I. What does ISA means is in [Terms needing explanation](#terms).
 Link v2.2 [13.12.2020]: https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
-2. Privileged ISA specification
+2. Privileged ISA specification <br/>
 It describes the elements of the processor, which are related with management of priority levels. It's used to how to start the operating system. Also are definied here interrupt handling or physical memory management.
 Link v1.10 [13.12.2020]: https://riscv.org/wp-content/uploads/2017/05/riscv-privileged-v1.10.pdf
-3. Debug specification
+3. Debug specification <br/>
 Describes a standard, that enables debugging.
 Link 0.13.2 [13.12.2020]: https://riscv.org/wp-content/uploads/2019/03/riscv-debug-release.pdf
 
 ### A little bit about registers <a name="registers"></a> [UP↑](#tof)
-In this repository, I will focus on the RV32I version. RV32I means, that we have 32 general purpose registers, which are marked from x0 up to x31. x0 register is equal always 0! Each registry has a own purpose and it's good practice to follow this (eng version):
+In this repository, I will focus on the RV32I version. RV32I means, that we have *32* general purpose registers, which are marked from *x0* up to *x31*. *x0* register is equal always *0*! Each registry has a own purpose and it's good practice to follow this (eng version):
 | ![register_meaning_eng](https://user-images.githubusercontent.com/43972902/101699645-cd9dee80-3a7b-11eb-8cf3-f64590fea00f.png) |
 |:--:|
 | Source: *https://web.eecs.utk.edu/~smarz1/courses/ece356/notes/risc/imgs/regfile.png*  [10.12.2020] |
@@ -72,16 +71,16 @@ Pl version:
 |:--:|
 | Source: *Elektronika Praktyczna 09.2019, p. 109*  |
 
-For example x4 register is used as a thread pointer. 
+For example *x4* register is used as a thread pointer. 
 
 ### About the instructions <a name="instructions"></a> [UP↑](#tof)
 There are 6 instruction formats in RISC-V:
-1. **R** - instructions that use three registers as input, e.g. *add*, *xor* or *mul*
-2. **I** - instructions with immediate loading, e.g. *lw*, *addi*, *jalr* or *slli*
-3. **S** - storage instructions, e.g. *sw* or *sb*
-4. **SB** - branch instructions, e.g. *bge* or *beq*
-5. **U** - upper immediates, e.g. *lui* or *auipc*
-6. **UJ** - jump instruction, e.g. *jal*
+1. **R** - instructions that use three registers as input, e.g. *add*, *xor* or *mul*.
+2. **I** - instructions with immediate loading, e.g. *lw*, *addi*, *jalr* or *slli*.
+3. **S** - storage instructions, e.g. *sw* or *sb*.
+4. **SB** - branch instructions, e.g. *bge* or *beq*.
+5. **U** - upper immediates, e.g. *lui* or *auipc*.
+6. **UJ** - jump instruction, e.g. *jal*.
 In RV32I version all instructions are 32 bits long. The first seven bits of LSB are opcode. The figure below shows what each bit means:
 
 | ![opcodeexample](https://user-images.githubusercontent.com/43972902/101715627-1b2a5380-3a9c-11eb-887e-a9e0aac7de4a.png) |
@@ -98,8 +97,8 @@ The OP family is of type R. Instructions from the OP-IMM family are shown below,
 |:--:|
 | Source: *Elektronika Praktyczna 09.2019, p. 109*  |
 
-The OP-IMM family allows code numbers in the range from -2048 to 2047. OP-IMM consists of 9 instructions corresponding to the OP, but mnemonics have the letter I.
-Instructions from the OP or OP-IMM family carry out operations directly on constants and registers, but assembly language for RISC-V supports the use of something like abbreviations. By the abbreviation I mean a mnemonic name for one or few instructions. For example `nop` instruction is equal `addi x0, x0, 0`. `nop` means do nothing. The developers of RISC-V have made a lot of pseudo instructions (it's correct name for this: *pseudo instruction*). It's much easier and cleaner write `nop` than `addi x0, x0, 0`.The most common used pseudo instructions are presented below:
+The OP-IMM family allows code numbers in the range from -2048 to 2047. OP-IMM consists of 9 instructions corresponding to the OP, but mnemonics have the letter *I*. <br/>
+Instructions from the OP or OP-IMM family carry out operations directly on constants and registers, but assembly language for RISC-V supports the use of something like abbreviations. By the abbreviation I mean a mnemonic name for one or few instructions. For example `nop` instruction is equal `addi x0, x0, 0`. `nop` means do nothing. The developers of RISC-V have made a lot of pseudo-instructions (it's correct name for this: *pseudo-instruction*). It's much easier and cleaner write `nop` than `addi x0, x0, 0`.The most common used pseudo-instructions are presented below: <br/>
 In English language:
 | ![pseudoinstructionsENG](https://user-images.githubusercontent.com/43972902/101987122-76259b80-3c92-11eb-9275-cc6081bfb4b1.png) |
 |:--:|
@@ -123,11 +122,11 @@ It is an abstract model of a computer. On this model consists of:
 Examples of ISA: ARM, AMD64 or Intel 64.
 2. Opcode <a name="Opcode"></a>
 It's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*)
+3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). <br/>
 It's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
-<ins>How to convert U2 to dec?</ins> It is easy :) 
+How to convert U2 to dec? It is easy :) <br/>
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
-<ins>Another example</ins>(from wikipedia): <br/>
+Another example (from wikipedia): <br/>
 We have number in U2: `11101101` <br/>
 And we must to do the same as in previous example. We have eight numbers. First number is *1*, so we must multiply <img src="https://render.githubusercontent.com/render/math?math=2^{7}"> by *-1*. Why *7*? Because we have eight numbers and in this method we count from zero. Why *-1*? because first number says whether the number is positive or negative (*1* - number is negative, *0* - number is positive). 
 Next number is also *1*, so will be <img src="https://render.githubusercontent.com/render/math?math=1*2^{6}">.
@@ -156,34 +155,39 @@ I put below table with all the possible 4-bit numbers in U2 notation: <br/>
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) 
-It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns. are implemented. 
+4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) <br/>
+It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns are implemented. 
 
-5. Address space <a name="adrSpac"></a>
+5. Address space <a name="adrSpac"></a> <br/>
 It is a memory map, which is available for memory process, which may correspond to a network host, peripheral device or disk sector. The most common things of the address space is: 
 - [Machine code](https://en.wikipedia.org/wiki/Machine_code) - is a low-level programming language used to directly control a computer's central processing unit (CPU). 
 - [Shared memory](https://en.wikipedia.org/wiki/Shared_memory) - is memory that may be simultaneously accessed by multiple programs. 
 - [Dynamic library](https://en.wikipedia.org/wiki/Dynamic-link_library) - a kind of library that is connected with the executable program only at the moment of its execution. Example of dynamic library is *Dynamic-Link Library* (*.dll), typical dynamic library for Microsoft Windows. 
-- [Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) - it is an mathematical model for data types that serves as a collection of elements, with two main principal operations: **push**, which adds an element to the collection, and **pop**, which removes the most recently added element that was not yet removed. <br/>
+- [Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) - it is an mathematical model for data types that serves as a collection of elements, with two main principal operations: **push**, which adds an element to the collection, and **pop**, which removes the most recently added element that was not yet removed.
+
 | ![stack](https://user-images.githubusercontent.com/43972902/114309406-49ba4880-9ae7-11eb-87e9-18666f06925a.png) |
 |:--:|
 | *Simple representation of a stack runtime with push and pop operations* |
 
-- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) - it's a tree-based data structure in which the values of the children are in a constant relationship to the parent's value (for example, the parent's value is not less than its child's values). In a heap, the highest (or lowest) priority element is always stored at the root (root means top node). The heap is not a sorted structure. The heap is a useful data structure when it is necessary to repeatedly remove the object with the highest (or lowest) priority. <br/>
+- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) - it's a tree-based data structure in which the values of the children are in a constant relationship to the parent's value (for example, the parent's value is not less than its child's values). In a heap, the highest (or lowest) priority element is always stored at the root (root means top node). The heap is not a sorted structure. The heap is a useful data structure when it is necessary to repeatedly remove the object with the highest (or lowest) priority.
+
 | ![heap](https://user-images.githubusercontent.com/43972902/114309615-0c09ef80-9ae8-11eb-9dda-6b57d44c6365.png) |
 |:--:|
 | *Example of a binary max-heap with node keys being integers between 1 and 100* |
 
-- Initialized data - so called *.data* - The .data segment contains any global or static variables which have a pre-defined value and can be modified. That is any variables that are not defined within a function (and thus can be accessed from anywhere) or are defined in a function but are defined as static so they retain their address across subsequent calls. <br/>
+- Initialized data - so called *.data* <br/>
+The .data segment contains any global or static variables which have a pre-defined value and can be modified. That is any variables that are not defined within a function (and thus can be accessed from anywhere) or are defined in a function but are defined as static so they retain their address across subsequent calls.
+
 | ![bsslay](https://user-images.githubusercontent.com/43972902/114317995-1c7f9180-9b0b-11eb-96ee-3a91ae016376.png) |
 |:--:|
 | *This shows the typical layout of a simple computer's program memory with the text, various data, and stack and heap sections* |
 | Source: *https://en.wikipedia.org/wiki/.bss* |
 
-- Uninitialized data - so called *BSS section* - *block starting symbol* - is the portion of (pol. *jest częścią*) code that contains statically allocated variables that are declared but have not been assigned a value yet. On some platforms, some or all of the bss section is initialized to zeroes.
+- Uninitialized data - so called *BSS section* - *block starting symbol* <br/>
+It's the portion of (pol. *jest częścią*) code that contains statically allocated variables that are declared but have not been assigned a value yet. On some platforms, some or all of the bss section is initialized to zeroes.
 - Text - the code segment, also known as a text segment, contains executable instructions and is generally read-only and fixed size. <br/><br/>
 Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
-6. Virtual memory <a name="virtMem"></a>
+6. Virtual memory <a name="virtMem"></a> <br/>
 It's a computer memory management mechanism that gives the process the impression (pol. *wrażenie*) of working in one large, continuous/uniform area of main memory while physically it may be fragmented, discontinuous, and partially stored on storage devices. Using different words. It's a computer concept where the main memory is broken up into a series of individual pages. Those pages can be moved in memory as a unit, or they can even be moved to secondary storage to make room in main memory for new data. In essence, virtual memory allows a computer to use more RAM then it has available.
 7. C-string <a name="Cstr"></a> - a string of characters in the style of the *C language*, that is, a byte array terminated with a zero.  
 
