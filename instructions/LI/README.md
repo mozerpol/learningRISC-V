@@ -26,6 +26,7 @@ addi    x1, x1, -1096
 ```
 
 Thanks to this it's not needed calculate everything. So above code means:
+1. First instruction <br/>
 ```assembly
     0x00000000      <-- x1 register
     0x00000001      <-- 1 number in hex representation
@@ -33,27 +34,18 @@ Thanks to this it's not needed calculate everything. So above code means:
     0x00001000      <-- result of lui instruction
 ```
 
-After these: 
+2. Second instruction <br/> 
 ```assembly
     0x00001000      <-- x1 register
     0x00000448      <-- -1096 number in hex representation
 ---------------- +  <-- addi    x1, x1, -1096
-    0x00001000      <-- result of addi instruction
+    0x00000bb8      <-- result of addi instruction
 ```
 
-=======================
-
-
-So our code means: save in *x2* register result of adding *x0* reg and *3* number, which is our argument. In this case *LI* instruction will save in *x2* reg *3* number on LSB:
+Thanks *LI* instruction we can load even up to *0xFFFFFFFF* numbers to register without calculation. Just write:
 ```assembly
-    0x00000000      <-- x0 register
-    0x00000003      <-- 3 number in hex representation
----------------- +  <-- add x0 and 3
-    0x00000003      <-- result saved in x2 register
+li      x1, 0xffffffff
 ```
-
-The range of *LI* instruction is 
-
 
 `LUI` was described [here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions/LUI).
 `ADDI` was described [here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions/ADDI).
