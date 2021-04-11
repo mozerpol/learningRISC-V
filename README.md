@@ -136,6 +136,7 @@ Next number is *0*, so will be <img src="https://render.githubusercontent.com/re
 Some calculations further...
 <img src="https://render.githubusercontent.com/render/math?math=11101101 = -1*(2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">. <br/>
 I put below table with all the possible 4-bit numbers in U2 notation: <br/>
+
 | U2 | Calculations | Value |
 |:---:|:---:|:---:|
 | 0000 | 0 | 0 |
@@ -183,7 +184,8 @@ It is a memory map, which is available for memory process, which may correspond 
 - Text - the code segment, also known as a text segment, contains executable instructions and is generally read-only and fixed size. <br/><br/>
 Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
 6. Virtual memory <a name="virtMem"></a>
-7. C-string <a name="Cstr"></a>
+It's a computer memory management mechanism that gives the process the impression (pol. *wrażenie*) of working in one large, continuous/uniform area of main memory while physically it may be fragmented, discontinuous, and partially stored on storage devices. Using different words. It's a computer concept where the main memory is broken up into a series of individual pages. Those pages can be moved in memory as a unit, or they can even be moved to secondary storage to make room in main memory for new data. In essence, virtual memory allows a computer to use more RAM then it has available.
+7. C-string <a name="Cstr"></a> - a string of characters in the style of the *C language*, that is, a byte array terminated with a zero.  
 
 
 
