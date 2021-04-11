@@ -1,5 +1,5 @@
 ### LI
-**LI** - load immediate. *LI* is a pseudoinstruction. It will save in register our argument. So far if we want save in register (e.g.) *x1* number *3* we do:
+**LI** - load immediate. *LI* is a pseudoinstruction. It will save in register the argument. So far if we want save in register (e.g.) *x1* number *3* we do:
 ```assembly
 addi x2, x0, 0x3
 ```
@@ -21,20 +21,28 @@ li      x1, 3000
 
 This instruction will be replace at:
 ```assembly
-lui     x1, 1	li
+lui     x1, 1
 addi    x1, x1, -1096
 ```
 
-=======================
-**LI** - load immediate. *LI* is a pseudoinstruction. *LI* will save at *LSB* (least significant bit) result of adding our argument and *0* number. The instruction:
+Thanks to this it's not needed calculate everything. So above code means:
 ```assembly
-li		x2, 3
+    0x00000000      <-- x1 register
+    0x00000001      <-- 1 number in hex representation
+---------------- +  <-- lui x1, 1
+    0x00001000      <-- result of lui instruction
 ```
 
-will change to:
+After these: 
 ```assembly
-addi    x2, x0, 3
+    0x00001000      <-- x1 register
+    0x00000448      <-- -1096 number in hex representation
+---------------- +  <-- addi    x1, x1, -1096
+    0x00001000      <-- result of addi instruction
 ```
+
+=======================
+
 
 So our code means: save in *x2* register result of adding *x0* reg and *3* number, which is our argument. In this case *LI* instruction will save in *x2* reg *3* number on LSB:
 ```assembly
