@@ -172,8 +172,15 @@ It is a memory map, which is available for memory process, which may correspond 
 | ![heap](https://user-images.githubusercontent.com/43972902/114309615-0c09ef80-9ae8-11eb-9dda-6b57d44c6365.png) |
 |:--:|
 | *Example of a binary max-heap with node keys being integers between 1 and 100* |
-- Initialized data
-- Uninitialized data - so called *BBS section*
+
+- Initialized data - so called *.data* - The .data segment contains any global or static variables which have a pre-defined value and can be modified. That is any variables that are not defined within a function (and thus can be accessed from anywhere) or are defined in a function but are defined as static so they retain their address across subsequent calls. <br/>
+| ![bsslay](https://user-images.githubusercontent.com/43972902/114317995-1c7f9180-9b0b-11eb-96ee-3a91ae016376.png) |
+|:--:|
+| *This shows the typical layout of a simple computer's program memory with the text, various data, and stack and heap sections* |
+| Source: *https://en.wikipedia.org/wiki/.bss* |
+
+- Uninitialized data - so called *BSS section* - *block starting symbol* - is the portion of (pol. *jest częścią*) code that contains statically allocated variables that are declared but have not been assigned a value yet. On some platforms, some or all of the bss section is initialized to zeroes.
+- Text - the code segment, also known as a text segment, contains executable instructions and is generally read-only and fixed size. <br/><br/>
 Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
 6. Virtual memory <a name="virtMem"></a>
 7. C-string <a name="Cstr"></a>
