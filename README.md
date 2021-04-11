@@ -158,13 +158,20 @@ I put below table with all the possible 4-bit numbers in U2 notation: <br/>
 4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) 
 It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns. are implemented. 
 
-5. Adress space <a name="adrSpac"></a>
+5. Address space <a name="adrSpac"></a>
 It is a memory map, which is available for memory process, which may correspond to a network host, peripheral device or disk sector. The most common things of the address space is: 
 - [Machine code](https://en.wikipedia.org/wiki/Machine_code) - is a low-level programming language used to directly control a computer's central processing unit (CPU). 
-- [Shared memory](https://en.wikipedia.org/wiki/Shared_memory) - is memory that may be simultaneously accessed by multiple programs with an intent to provide communication among them or avoid redundant copies. 
-- [Dynamic library](https://en.wikipedia.org/wiki/Dynamic-link_library)
-- [Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
-- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure))
+- [Shared memory](https://en.wikipedia.org/wiki/Shared_memory) - is memory that may be simultaneously accessed by multiple programs. 
+- [Dynamic library](https://en.wikipedia.org/wiki/Dynamic-link_library) - a kind of library that is connected with the executable program only at the moment of its execution. Example of dynamic library is *Dynamic-Link Library* (*.dll), typical dynamic library for Microsoft Windows. 
+- [Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) - it is an mathematical model for data types that serves as a collection of elements, with two main principal operations: **push**, which adds an element to the collection, and **pop**, which removes the most recently added element that was not yet removed. <br/>
+| ![stack](https://user-images.githubusercontent.com/43972902/114309406-49ba4880-9ae7-11eb-87e9-18666f06925a.png) |
+|:--:|
+| *Simple representation of a stack runtime with push and pop operations* |
+
+- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) - it's a tree-based data structure in which the values of the children are in a constant relationship to the parent's value (for example, the parent's value is not less than its child's values). In a heap, the highest (or lowest) priority element is always stored at the root (root means top node). The heap is not a sorted structure. The heap is a useful data structure when it is necessary to repeatedly remove the object with the highest (or lowest) priority. <br/>
+| ![heap](https://user-images.githubusercontent.com/43972902/114309615-0c09ef80-9ae8-11eb-9dda-6b57d44c6365.png) |
+|:--:|
+| *Example of a binary max-heap with node keys being integers between 1 and 100* |
 - Initialized data
 - Uninitialized data - so called *BBS section*
 Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
