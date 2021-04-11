@@ -113,15 +113,18 @@ In Polish language:
 [Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
 
 ### Terms needing explanation <a name="terms"></a> [UP↑](#tof)
-1. ISA <a name="ISA"></a> - *instruction set architecture* - is an abstract model of a computer. On this model consists of:
+1. ISA <a name="ISA"></a> - *instruction set architecture*
+It is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
 	- data types - kind and range,
 	- addressing mode - way to transfer data from registers to memory and vice versa,
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
-2. Opcode <a name="Opcode"></a> - it's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*) - it's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
+2. Opcode <a name="Opcode"></a>
+It's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
+3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl: *kod uzupełnień do dwóch*)
+It's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 <ins>How to convert U2 to dec?</ins> It is easy :) 
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
 <ins>Another example</ins>(from wikipedia): <br/>
@@ -132,8 +135,7 @@ Next number is also *1*, so will be <img src="https://render.githubusercontent.c
 Next number is *0*, so will be <img src="https://render.githubusercontent.com/render/math?math=0*2^{4}">.
 Some calculations further...
 <img src="https://render.githubusercontent.com/render/math?math=11101101 = -1*(2^{7}) %2B 1*2^{6} %2B 1*2^{5} %2B 0*2^{4} %2B 1*2^{3} %2B 1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -128 %2B 109 = -19">. <br/>
-I put below table with all the possible 4-bit numbers in U2 notation: 
-
+I put below table with all the possible 4-bit numbers in U2 notation: <br/>
 | U2 | Calculations | Value |
 |:---:|:---:|:---:|
 | 0000 | 0 | 0 |
@@ -153,11 +155,21 @@ I put below table with all the possible 4-bit numbers in U2 notation:
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) - it's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns. are implemented. 
+4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) 
+It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns. are implemented. 
 
-
-
-
+5. Adress space <a name="adrSpac"></a>
+It is a memory map, which is available for memory process, which may correspond to a network host, peripheral device or disk sector. The most common things of the address space is: 
+- [Machine code](https://en.wikipedia.org/wiki/Machine_code) - is a low-level programming language used to directly control a computer's central processing unit (CPU). 
+- [Shared memory](https://en.wikipedia.org/wiki/Shared_memory) - is memory that may be simultaneously accessed by multiple programs with an intent to provide communication among them or avoid redundant copies. 
+- [Dynamic library](https://en.wikipedia.org/wiki/Dynamic-link_library)
+- [Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
+- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure))
+- Initialized data
+- Uninitialized data - so called *BBS section*
+Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
+6. Virtual memory <a name="virtMem"></a>
+7. C-string <a name="Cstr"></a>
 
 
 
