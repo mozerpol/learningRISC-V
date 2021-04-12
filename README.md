@@ -10,6 +10,7 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 4. [A little bit about registers](#registers)
 5. [About the instructions](#instructions)
 6. [Terms needing explanation](#terms)
+7. [Core structure](#core)
 
 ### Tutorials:
 
@@ -195,11 +196,15 @@ The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembl
 9. .asciiz - assembly directive <br/>
 `.asciiz` means that the string is terminated by the `\0` (ASCII code *0*, *NULL* character). They are even called *C-strings*.
 
+### Core structure <a name="core"></a> [UP↑](#tof)
+The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *data path*. 
 
+| ![dataPath](https://user-images.githubusercontent.com/43972902/114409650-f3aed900-9baa-11eb-99fb-3b099da377fd.png) |
+|:--:|
+| *Diagram of the data path of the implemented microcontroller* |
+| Source: *Elektronika Praktyczna 10.2019, p. 117*  |
 
-
-
-
+Above diagram shows the *data path* without *clock* and reset *paths* (for clarity). Dark blue mark registers and light blue is for combinational logic (mux, alu, etc.). Paths terminated with arrows are connected to *control path*. Memory address to which the microcontroller wants to access is set on the *ADDR* path. 
 
 
 
