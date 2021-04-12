@@ -190,6 +190,16 @@ Not all memory from memory map has to be equivalent in physical memory, it can b
 6. Virtual memory <a name="virtMem"></a> <br/>
 It's a computer memory management mechanism that gives the process the impression (pol. *wrażenie*) of working in one large, continuous/uniform area of main memory while physically it may be fragmented, discontinuous, and partially stored on storage devices. Using different words. It's a computer concept where the main memory is broken up into a series of individual pages. Those pages can be moved in memory as a unit, or they can even be moved to secondary storage to make room in main memory for new data. In essence, virtual memory allows a computer to use more RAM then it has available.
 7. C-string <a name="Cstr"></a> - a string of characters in the style of the *C language*, that is, a byte array terminated with a zero.  
+8. Assembly directives - also called pseudo-opcodes <br/>
+The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembly directives are commands for assembler that tell to perform operations other than assembler instructions. Directives affect how the assembler operates and may affect the finish code.
+9. .asciiz - assembly directive <br/>
+`.asciiz` means that the string is terminated by the `\0` (ASCII code *0*, *NULL* character). They are even called *C-strings*.
+
+
+
+
+
+
 
 
 
