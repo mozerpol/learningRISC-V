@@ -204,12 +204,18 @@ The core can be divided into: *data path* and *control path*. *Data path* consis
 | *Diagram of the data path of the implemented microcontroller* |
 | Source: *Elektronika Praktyczna 10.2019, p. 117*  |
 
-Above diagram shows the *data path* without *clock* and reset *paths* (for clarity). Dark blue mark registers and light blue is for combinational logic (mux, alu, etc.). Paths terminated with arrows are connected to *control path*. Memory address to which the microcontroller wants to access is set on the *ADDR* path. The read value will appear in the *RDATA* register in the next clock cycle. <br/>
+Above diagram shows the *data path* without *clock* and reset *paths* (for clarity). Dark blue mark registers and light blue is for combinational logic (mux, alu, etc.). Paths terminated with arrows are connected to *control path*. Memory address to which the microcontroller wants to access is set in the *ADDR*. The read value will appear in the *RDATA* register in the next clock cycle. <br/>
 Part on this diagram *mux_mem_addr* is responsible for value in *PC* register, on the next rising edge. Usually it'll be an address of the next instruction (*PC+4*), however, in the case of jumps will select value from *ALU* (this *ALU* in the upper right corner). Sometimes it may be a good idea to go back to the last instruction, for it responsible is *PC-4*. THe decision is made by *pc_sel* it's part of *control path*. <br/>
 Next multiplexer (between *PC* and *ADDR*) is controlled by *mem_sel*, it's responsible for whether memory is to be addressed from *PC* register or output of *ALU*. First option allow load next instruction, second allow fetch or save data. So a little bit I don't understand... So from one hand I have two possibilities: 1. load to memory next instruction from *PC*, 2. save or download data from somewhere. Sounds very slow, because I want in the same time save data and load next instruction, but maybe I don't understand something. Ok, but... <br/>
-In the next clock cycle the value from the given address will be taken to *RDATA* and simultaneously go to input two parts: *inst_mgm* and *select_rd*. 
-
-
+In the next clock cycle the value from the given address will be taken to *RDATA* and simultaneously go to input two parts: *inst_mgm* and *select_rd*. *select_rd* is responsible for downloading data from memory. <br/>
+Thanks to path *init_sel* we can select wheter next instruction will be *nop* or the same as previous instruction. <br/>
+From *INST* register instruction will go to the *decode* block. *decode* block is responsible for dividing instruction on smaller parts. <br/>
+Next important part is *reg_file*. It has five inputs (exactly six - clock - but not shown in this diagram):
+1. *rs1*, *rs2* and *rd* - allow the selection of vectors for writing and reading 
+2. *rd_d* - bring the data
+3. *wr* - allowing for saving data
+In this block (*reg_file*) we have only two outputs:
+1. *rs_1_d* and *rs_2_d* - contain data from selecting registers. 
 
 
 
