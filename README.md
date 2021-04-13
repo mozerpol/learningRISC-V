@@ -216,6 +216,18 @@ Next important part is *reg_file*. It has five inputs (exactly six - clock - but
 3. *wr* - allowing for saving data
 In this block (*reg_file*) we have only two outputs:
 1. *rs_1_d* and *rs_2_d* - contain data from selecting registers. 
+Blocks *select_wr* and *select_rd* allow the selection of bytes that may be write or read from memory. <br/>
+Module *z^-2* (right upper corner) is responsible for delaying signal for two clocks. 
+
+Access to the memory, loading data into the *INST* register takes one clock for each step, a total three clocks. It means that fetching and executing one instruction takes three clocks: <br/>
+1. set memory addres -> 2. fetch instruction -> 3. execute
+
+However, it's possible to shorten this time for a larger number of instructions. It's called [pipelining](https://github.com/mozerpol/NotesFromLearning/tree/main/Microprocessor-Design#Pipelining). Thanks to this we can execute three instructions in 5 clocks instead 9. <br/>
+In first step we are setting the adress of first instruction. <br/> 
+Next during second clock first step are saving to the *INST* reg and simultaneously we are setting the addres of second instruciton. <br/>
+During third clock first instruction is executing, second instruction is saving to the *INST* reg and we are setting the address of third instruction. <br/>
+So we can say that our pipelinig has three stages, thanks to this we can execute three instructions in 5 clocks instead 9. Generally execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*. But sometimes pipelining, especially in large processors is a problem. For example when we have jump instructions. The address of next instruction we know on the last stage (in our case it'll be third stage - then we know in case jump instruction which instruction will be next). It means that sometimes in pipelining, core must have clean the all instructions from pipeline. In our case cleaning pipeline will take two clocks more for filling pipeline once again. In our processor it's not a big problem, but for large devices with a lot of stages it can be very time-consuming, so sometimes to avoid this (cleaning pipeline) engineers are implementing branch prediction methods.   
+
 
 
 
