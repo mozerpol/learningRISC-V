@@ -204,7 +204,15 @@ The core can be divided into: *data path* and *control path*. *Data path* consis
 | *Diagram of the data path of the implemented microcontroller* |
 | Source: *Elektronika Praktyczna 10.2019, p. 117*  |
 
-Above diagram shows the *data path* without *clock* and reset *paths* (for clarity). Dark blue mark registers and light blue is for combinational logic (mux, alu, etc.). Paths terminated with arrows are connected to *control path*. Memory address to which the microcontroller wants to access is set on the *ADDR* path. 
+Above diagram shows the *data path* without *clock* and reset *paths* (for clarity). Dark blue mark registers and light blue is for combinational logic (mux, alu, etc.). Paths terminated with arrows are connected to *control path*. Memory address to which the microcontroller wants to access is set on the *ADDR* path. The read value will appear in the *RDATA* register in the next clock cycle. <br/>
+Part on this diagram *mux_mem_addr* is responsible for value in *PC* register, on the next rising edge. Usually it'll be an address of the next instruction (*PC+4*), however, in the case of jumps will select value from *ALU* (this *ALU* in the upper right corner). Sometimes it may be a good idea to go back to the last instruction, for it responsible is *PC-4*. THe decision is made by *pc_sel* it's part of *control path*. <br/>
+
+
+
+
+
+
+
 
 
 
