@@ -235,15 +235,21 @@ So we can say that our pipelinig has three stages, thanks to this we can execute
 |:--:|
 | *Data flow for operations on registers and constant direct* |
 
-Steps executing instruction `aadi` based on the image above:
+Steps executing instruction `aadi` (from *OP-IMM* family) based on the image above:
 1. Program execution begins by resetting the entire circuit. It means that *PC* reg has value *0* at the begining. Value *0* points at first instruction.
 2. Before instruction `aadi` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
 3. At begining, during two first clock cycles we must load to *INST* register *nop* instruction. 
 Above three steps aren't marked in the picture, but they are very important. Next steps will show how data flow looks in the circuit. The orange line show dataflow for instruction from *OP-IMM* family, that is our `addi` instruction.
 4. Multiplexer in *mux_mem_addr* select that *PC* will be increment by *4*, it means, that now *PC* reg shows at our `addi` instruction.
 5. Multiplexer *mem_sel* select, that memory will be addressed value from *PC* reg.
-6. 
-
+6. *inst_sel* load instruction from *RDATA*, where is `addi`. 
+Currently, at this moment we have inside *INST* register `addi` instruction.
+7. From *INST* instrution is going to *decode* block, which divide instruction to smaller parts such as *opcode* or different values. 
+8. Every time *decode* will generate every possibility, for every family, even it doesn't make sense. Which possibility will be used is decided by the control block by multiplexers with *imm_type* path. In our case (*addi* belongs to *OP-IMM* family) will be *rs1*, *rd* and *imm_I* (just look at frame for *OP-IMM* family. We have *imm*, *rs1*, *func3*, *rd* and *opcode*). 
+9. Value *imm* (in *OP-IMM* family) and value *rs2_d* (this argument is from different family) are at the same bits. So if we have *OP-IMM* family we don't want use *rs2_d* value. What to choose is decided by the multiplexer which is control by *alu2_sel*. We can notice in the diagram, that we have two possibilities: 1. *imm_I* 2. *rs2_d*, but in *OP-IMM* family we want *imm_I*, not *rs2_d*.
+10. The operation that *ALU* must do will be selected in the path *alu_op*. *alu_op* will be set based on the field *func3*.
+11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
+12. High state on the *wr* will cause, taht result will be save in register. 
 
 |ADDR|Content|
 |:--:|:--:|
