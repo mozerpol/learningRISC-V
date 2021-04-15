@@ -233,11 +233,12 @@ So we can say that our pipelinig has three stages, thanks to this we can execute
 
 | ![flowDiagram](https://user-images.githubusercontent.com/43972902/114609471-24703a80-9c9f-11eb-8357-ac53b80aba46.png) |
 |:--:|
-| *Data flow for operations on registers and constant direct* |
+| *Data flow for OP-IMM family* |
+| Source: *https://gitlab.com/rysy_core/rysy_core* |
 
 Steps executing instruction `aadi` (from *OP-IMM* family) based on the image above:
 1. Program execution begins by resetting the entire circuit. It means that *PC* reg has value *0* at the begining. Value *0* points at first instruction.
-2. Before instruction `aadi` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
+2. Before when instruction `aadi` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
 3. At begining, during two first clock cycles we must load to *INST* register *nop* instruction. 
 Above three steps aren't marked in the picture, but they are very important. Next steps will show how data flow looks in the circuit. The orange line show dataflow for instruction from *OP-IMM* family, that is our `addi` instruction.
 4. Multiplexer in *mux_mem_addr* select that *PC* will be increment by *4*, it means, that now *PC* reg shows at our `addi` instruction.
@@ -251,13 +252,38 @@ Currently, at this moment we have inside *INST* register `addi` instruction.
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
-|ADDR|Content|
-|:--:|:--:|
-|0x00|addi x1, x0, 10|
-|0x04|addi x2, x0, 5|
-|0x08|add x3, x2, x1|
-|0x0c|nop|
-|0x10|nop|
+Below is diagram which presents dataflow for *OP* instructions family. 
+| ![flowDiagramOP](https://user-images.githubusercontent.com/43972902/114924566-6d0a2e00-9e2e-11eb-8aa6-8cf3cd445599.png) |
+|:--:|
+| *Data flow for OP family* |
+| Source: *https://gitlab.com/rysy_core/rysy_core* |
+
+Steps executing instruction `aad` (from *OP* family) based on the image above. The steps are exactly the same as above, exept 12 and 13 steps:
+1. Program execution begins by resetting the entire circuit. It means that *PC* reg has value *0* at the begining. Value *0* points at first instruction.
+2. Before when instruction `aad` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
+3. At the begining, during two first clock cycles we must load to *INST* register *nop* instruction. 
+This three steps from above aren't marked in the picture, but they are very important. Next steps will show how data flow looks in the circuit. The orange line show dataflow for instruction from *OP* family, that is our `add` instruction.
+4. Multiplexer in *mux_mem_addr* select that *PC* will be increment by *4*, it means, that now *PC* reg shows at our `add` instruction.
+5. Multiplexer *mem_sel* select, that memory will be addressed value from *PC* reg.
+6. *inst_sel* load instruction from *RDATA*, where is `add`. 
+Currently, at this moment we have inside *INST* register `add` instruction.
+7. From *INST* instrution is going to *decode* block, which divide instruction to smaller parts such as *opcode* or different values. 
+
+DOKONCZYC 
+
+8. Every time *decode* will generate every possibility, for every family, even it doesn't make sense. Which possibility will be used is decided by the control block by multiplexers with *imm_type* path. In our case (*add* belongs to *OP* family) will be *rs1*, *rs2* and *imm_I* (just look at frame for *OP* family. We have *rs1*, *rs2*, *func3*, *func7*, *rd* and *opcode*). 
+9. Value *imm* (in *OP-IMM* family) and value *rs2_d* (this argument is from different family) are at the same bits. So if we have *OP-IMM* family we don't want use *rs2_d* value. What to choose is decided by the multiplexer which is control by *alu2_sel*. We can notice in the diagram, that we have two possibilities: 1. *imm_I* 2. *rs2_d*, but in *OP-IMM* family we want *imm_I*, not *rs2_d*.
+10. The operation that *ALU* must do will be selected in the path *alu_op*. *alu_op* will be set based on the field *func3*.
+11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
+12. High state on the *wr* will cause, taht result will be save in register. 
+
+
+
+
+
+
+
+
 
 
 
