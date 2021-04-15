@@ -11,6 +11,7 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 5. [About the instructions](#instructions)
 6. [Terms needing explanation](#terms)
 7. [Core structure](#core)
+8. [Operations on registers](#oper)
 
 ### Tutorials:
 
@@ -197,7 +198,7 @@ The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembl
 `.asciiz` means that the string is terminated by the `\0` (ASCII code *0*, *NULL* character). They are even called *C-strings*.
 
 ### Core structure <a name="core"></a> [UP↑](#tof)
-The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *data path*. 
+The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *datinzynierzya path*. 
 
 | ![dataPath](https://user-images.githubusercontent.com/43972902/114409650-f3aed900-9baa-11eb-99fb-3b099da377fd.png) |
 |:--:|
@@ -226,8 +227,31 @@ However, it's possible to shorten this time for a larger number of instructions.
 In first step we are setting the adress of first instruction. <br/> 
 Next during second clock first step are saving to the *INST* reg and simultaneously we are setting the addres of second instruciton. <br/>
 During third clock first instruction is executing, second instruction is saving to the *INST* reg and we are setting the address of third instruction. <br/>
-So we can say that our pipelinig has three stages, thanks to this we can execute three instructions in 5 clocks instead 9. Generally execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*. But sometimes pipelining, especially in large processors is a problem. For example when we have jump instructions. The address of next instruction we know on the last stage (in our case it'll be third stage - then we know in case jump instruction which instruction will be next). It means that sometimes in pipelining, core must have clean the all instructions from pipeline. In our case cleaning pipeline will take two clocks more for filling pipeline once again. In our processor it's not a big problem, but for large devices with a lot of stages it can be very time-consuming, so sometimes to avoid this (cleaning pipeline) engineers are implementing branch prediction methods.   
+So we can say that our pipelinig has three stages, thanks to this we can execute three instructions in 5 clocks instead 9. Generally execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*. But sometimes pipelining, especially in large processors is a problem. For example when we have jump instructions. The address of next instruction we know on the last stage (in our case it'll be third stage - then we know in case jump instruction which instruction will be next). It means that sometimes in pipelining, core must have clean the all instructions from pipeline. In our case cleaning pipeline will take two clocks more for filling pipeline once again. In our processor it's not a big problem, but for large devices with a lot of stages it can be very time-consuming, so sometimes to avoid this (cleaning pipeline) engineers are implementing branch prediction methods.
 
+### Operations on registers <a name="oper"></a> [UP↑](#tof)
+
+| ![flowDiagram](https://user-images.githubusercontent.com/43972902/114609471-24703a80-9c9f-11eb-8357-ac53b80aba46.png) |
+|:--:|
+| *Data flow for operations on registers and constant direct* |
+
+Steps executing instruction `aadi` based on the image above:
+1. Program execution begins by resetting the entire circuit. It means that *PC* reg has value *0* at the begining. Value *0* points at first instruction.
+2. Before instruction `aadi` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
+3. At begining, during two first clock cycles we must load to *INST* register *nop* instruction. 
+Above three steps aren't marked in the picture, but they are very important. Next steps will show how data flow looks in the circuit. The orange line show dataflow for instruction from *OP-IMM* family, that is our `addi` instruction.
+4. Multiplexer in *mux_mem_addr* select that *PC* will be increment by *4*, it means, that now *PC* reg shows at our `addi` instruction.
+5. Multiplexer *mem_sel* select, that memory will be addressed value from *PC* reg.
+6. 
+
+
+|ADDR|Content|
+|:--:|:--:|
+|0x00|addi x1, x0, 10|
+|0x04|addi x2, x0, 5|
+|0x08|add x3, x2, x1|
+|0x0c|nop|
+|0x10|nop|
 
 
 
