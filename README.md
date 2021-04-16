@@ -284,22 +284,22 @@ We know that execution the three instructions will take five cycle clocks (inste
 
 Above picture is horizontally divided by five parts (because we have five clock cycles) and vertically divided by three pats (because we have three instructions). The *ALU* execute simultaneously during one clock three small parts: 1. set address, fetch, execute, in our case:
 1. First clock, ALU will simultaneously execute:
-    - `addi x1, x0, 10`; `rubbish`; `nop`
+    - `addi x1, x0, 10`; `rubbish`; `nop` <br/>
     As we can see in the picture in the first clock cycle address point to first instruction: `addi x1, x0, 10`. <br/>
     In the same time small part of *ALU* will fetch rubbish to *RDATA* register, because we don't know on which address was previously pointed, but it's not a proble. It's only fetching data to register, wihtout executing. <br/>
     At the same time *ALU* will execute *nop* instruction which was placed there during reset device.
 2. Second clock, ALU will simultaneously execute:
-    - `addi x2, x0, 5`; `addi x1, x0, 10`; `nop`
+    - `addi x2, x0, 5`; `addi x1, x0, 10`; `nop` <br/>
     In the next clock cycle (second) address was set to instruction number two (`addi x2, x0, 5`), while instruction number one was saved in *INST* register. <br/>
     In the execution phase we would have previously loaded *rubbish*, but the control part will have to ensure that it will be overwritten by the second *nop* instruction. 
 3. Third clock, ALU will simultaneously execute:
-    - `add x3, x2, x1`; `addi x2, x0, 5`; `addi x1, x0, 10`
+    - `add x3, x2, x1`; `addi x2, x0, 5`; `addi x1, x0, 10` <br/>
     In the third clock cycle will execute first our instruction `addi x1, x0, 10`. Now, in this time (third clock cycle), when each part our core is busy.
 4. Fourth clock, ALU will simultaneously execute:
-    - `nop`; `add x3, x2, x1`; `addi x2, x0, 5`
+    - `nop`; `add x3, x2, x1`; `addi x2, x0, 5` <br/>
     In the fourth clock cycle will execute second our instruction `addi x2, x0, 5`, while address is pointing to first *nop* instruction.
 5. Fifth clock, ALU will simultaneously execute:
-    - `nop`; `nop`; `add x3, x2, x1`
+    - `nop`; `nop`; `add x3, x2, x1` <br/>
     In the fifth will be executed last part our code `add x3, x2, x1`.
 
 
