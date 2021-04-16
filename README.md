@@ -12,6 +12,7 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 6. [Terms needing explanation](#terms)
 7. [Core structure](#core)
 8. [Operations on registers](#oper)
+9. [Pipelining](#pipel)
 
 ### Tutorials:
 
@@ -268,19 +269,18 @@ This three steps from above aren't marked in the picture, but they are very impo
 6. *inst_sel* load instruction from *RDATA*, where is `add`. 
 Currently, at this moment we have inside *INST* register `add` instruction.
 7. From *INST* instrution is going to *decode* block, which divide instruction to smaller parts such as *opcode* or different values. 
-
-DOKONCZYC 
-
-8. Every time *decode* will generate every possibility, for every family, even it doesn't make sense. Which possibility will be used is decided by the control block by multiplexers with *imm_type* path. In our case (*add* belongs to *OP* family) will be *rs1*, *rs2* and *imm_I* (just look at frame for *OP* family. We have *rs1*, *rs2*, *func3*, *func7*, *rd* and *opcode*). 
-9. Value *imm* (in *OP-IMM* family) and value *rs2_d* (this argument is from different family) are at the same bits. So if we have *OP-IMM* family we don't want use *rs2_d* value. What to choose is decided by the multiplexer which is control by *alu2_sel*. We can notice in the diagram, that we have two possibilities: 1. *imm_I* 2. *rs2_d*, but in *OP-IMM* family we want *imm_I*, not *rs2_d*.
-10. The operation that *ALU* must do will be selected in the path *alu_op*. *alu_op* will be set based on the field *func3*.
+8. Every time *decode* will generate every possibility, for every family, even it doesn't make sense. 
+9. Values *rs1* and *rs2* will go to the *reg_file*, so in this case is not necessary use multiplexer by *imm_type*. 
+10. We are using *rs2* so multiplexer will be control by *alu2_sel* and take value *rs2_d* from *reg_file*. This is the only difference between the *OP-IMM* and *OP* family. 
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
+| ![pipePhase](https://user-images.githubusercontent.com/43972902/115012618-56a4b680-9eb0-11eb-918d-9a93095925b8.png) |
+|:--:|
+| *Each phase for pipelining* |
+| Source: *Elektronika Praktyczna 10.2019, p. 122*  |
 
-
-
-
+### Pipelining <a name="pipel"></a> [UP↑](#tof)
 
 
 
