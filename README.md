@@ -275,14 +275,28 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
+### Pipelining <a name="pipel"></a> [UP↑](#tof)
+We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
 | ![pipePhase](https://user-images.githubusercontent.com/43972902/115012618-56a4b680-9eb0-11eb-918d-9a93095925b8.png) |
 |:--:|
 | *Each phase for pipelining* |
 | Source: *Elektronika Praktyczna 10.2019, p. 122*  |
 
-### Pipelining <a name="pipel"></a> [UP↑](#tof)
+Above picture is horizontally divided by five parts (because we have five clock cycles) and vertically divided by three pats (because we have three instructions). The *ALU* execute simultaneously during one clock three small parts: 1. set address, fetch, execute, in our case:
+1. First clock, ALU will simultaneously execute:
+    - `addi x1, x0, 10`; `rubbish`; `nop`
+2. Second clock, ALU will simultaneously execute:
+    - `addi x2, x0, 5`; `addi x1, x0, 10`; `nop`
+3. Third clock, ALU will simultaneously execute:
+    - `add x3, x2, x1`; `addi x2, x0, 5`; `addi x1, x0, 10`
+4. Fourth clock, ALU will simultaneously execute:
+    - `nop`; `add x3, x2, x1`; `addi x2, x0, 5`
+5. Fifth clock, ALU will simultaneously execute:
+    - `nop`; `nop`; `add x3, x2, x1`
 
-
+As we can see in the picture in the first clock cycle address point to first instruction: `addi x1, x0, 10`. <br/>
+In the same time small part of *ALU* will fetch rubbish to *RDATA* register, because we don't know on which address was previously pointed, but it's not a proble. It's only fetching data to register, wihtout executing. <br/>
+At the same time *ALU* will execute *nop* instruction which was placed there during reset device.
 
 
 
