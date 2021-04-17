@@ -277,7 +277,7 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 
 ### Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
-| ![pipePhase](https://user-images.githubusercontent.com/43972902/115012618-56a4b680-9eb0-11eb-918d-9a93095925b8.png) |
+| ![pipePhase](https://user-images.githubusercontent.com/43972902/115115423-b5dbf700-9f94-11eb-8fc9-7bd260f1bc31.png) |
 |:--:|
 | *Each phase for pipelining* |
 | Source: *Elektronika Praktyczna 10.2019, p. 122*  |
@@ -302,7 +302,19 @@ Above picture is horizontally divided by five parts (because we have five clock 
     - `nop`; `nop`; `add x3, x2, x1` <br/>
     In the fifth will be executed last part our code `add x3, x2, x1`.
 
+So we run these instructions:
+| Instruction | Equivalent machine code |
+|:--:|:--:|
+| addi x1, x0, 10 | 00a00093 |
+| addi x2, x0, 5 | 00500113 |
+| add x3, x2, x1 | 001101b3 |
+| addi x0, x0, 0 | 00000013 |
+| addi x0, x0, 0 | 00000013 |
 
+Now we can run our code in *ModelSim* to see how core works. After execution above code in simulator we will see this waveform:
+![waveform1](https://user-images.githubusercontent.com/43972902/115115237-8d9fc880-9f93-11eb-9c29-401874341ec0.png)
+
+Number meanings:
 
 
 
