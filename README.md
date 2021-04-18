@@ -285,6 +285,14 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 | *Data flow for jal instruction* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
 
+The initial data flow for *UJ*-type instructions is very similar as for *OP* family (above steps). The example is for *jal* instruction which perform jump to the selected adress and save in chosen register how many steps you want to go back. <br/>
+Path *pc_sel* gives value to *PC* register, which directly comes from *ALU*. It means that address for next instruction (because *PC* point to next instruction) is the result of *ALU*. <br/>
+The instruction from the new address will enter to the execution phase after two cycles, for this reason the control part (*inst_mgm* part) will have to replace the next two instructions with *nop* instructions. This is controlled by *inst_sel* path. <br/>
+
+
+The multiplexer which is controlled by *imm_type* select *J* constant type, then multiplexer which is controlled by *alu2_sel* allow *J* constant type go to *ALU*. <br/>
+Path *alu_op* select adding for this instruction.  
+
 #### Data flow for "U" format
 
 | ![luidataflow](https://user-images.githubusercontent.com/43972902/115145328-45df7680-a051-11eb-80c1-86d4ec8d3c84.png) |
