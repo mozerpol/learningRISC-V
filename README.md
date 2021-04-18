@@ -317,12 +317,12 @@ Now we can run our code in *ModelSim* to see how core works. After execution abo
 Number meanings:
 1. First line - *clk*. Clock cycle, every event in our processor can happen only when is rising edge. 
 2. Second line - *rst*. Reset processor, it's activated by rising edge. In our waveform it happened at the beginning (0 sec), but deactivating reset took place in 2,5 μs, so our processor can work from the next edge of the rising clock cycle (it's 3 μs). 
-3. Third line - *PC* value. It shows value inside PC counter. With the first rising clock cycle value inside *PC* is *0*, it happend in 1 μs. Next *PC* value, during the nearest rising clock cycle is immposible, beacue *rst* is active. So after deactivating reset with rising clock cycle we can change value in *PC*. So next value is 3 μs and is equal 4
-4. Fourth line - **.
-5. Fifth line - **.
-6. Sixth line - **.
-7. Seventh line - **.
-8. Eigth line - **.
+3. Third line - *PC* value. It shows value inside PC counter. With the first rising clock cycle value inside *PC* is *0*, it happend in 1 μs. Next *PC* value, during the nearest rising clock cycle is immposible, beacue *rst* is active. So, after deactivating reset with rising clock cycle, then we can change value in *PC*. So the next value is in 3 μs and is equal 4. Thus, if *rst* is deactivated, the value of *PC* will increment by 4 with each incremental clock cycle. 
+4. Fourth line - *q signal*. This is the value read from memory. We can see in the screenshot, that the first value in *q* is `00a00093`. If we look at the table with our code, which we run in the simulator (to see this waveform) we can notice that first instruction is `addi x1, x0, 10` and the equivalent machine code for this instruction is `00a00093`. Next instruction in our table is `addi x2, x0, 5` and the equivalent machine code for this is `00500113`, exactly the same as *q signal*. Thus, *q signal* corresponds to the value read from memory. 
+5. Fifth line - *inst*. This is the register that stores the code of the currently executing instruction. At the beginning in our pipeline we have *nop* instruction for executing. *nop* is `00000013`. After *nop* in *inst* we can see instructions from *q signal*, like `00a00093` or `00500113`. The last instruction to execute is also *nop*.
+6. Sixth line - *x1*. The last three lines contain register values *x1*, *x2*, *x3*.
+7. Seventh line - *x2*.
+8. Eigth line - *x3*.
 
 
 
