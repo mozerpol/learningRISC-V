@@ -315,8 +315,14 @@ Now we can run our code in *ModelSim* to see how core works. After execution abo
 ![waveform1](https://user-images.githubusercontent.com/43972902/115115237-8d9fc880-9f93-11eb-9c29-401874341ec0.png)
 
 Number meanings:
-
-
+1. First line - *clk*. Clock cycle, every event in our processor can happen only when is rising edge. 
+2. Second line - *rst*. Reset processor, it's activated by rising edge. In our waveform it happened at the beginning (0 sec), but deactivating reset took place in 2,5 μs, so our processor can work from the next edge of the rising clock cycle (it's 3 μs). 
+3. Third line - *PC* value. It shows value inside PC counter. With the first rising clock cycle value inside *PC* is *0*, it happend in 1 μs. Next *PC* value, during the nearest rising clock cycle is immposible, beacue *rst* is active. So after deactivating reset with rising clock cycle we can change value in *PC*. So next value is 3 μs and is equal 4
+4. Fourth line - **.
+5. Fifth line - **.
+6. Sixth line - **.
+7. Seventh line - **.
+8. Eigth line - **.
 
 
 
