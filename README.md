@@ -275,6 +275,16 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
+| ![luidataflow](https://user-images.githubusercontent.com/43972902/115145328-45df7680-a051-11eb-80c1-86d4ec8d3c84.png) |
+|:--:|
+| *Data flow for lui instruction* |
+| Source: *https://gitlab.com/rysy_core/rysy_core* |
+
+| ![auipcdataflow](https://user-images.githubusercontent.com/43972902/115145384-8808b800-a051-11eb-8b71-55fe9ca276d6.png) |
+|:--:|
+| *Data flow for auipc instruction* |
+| Source: *https://gitlab.com/rysy_core/rysy_core* |
+
 ### Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
 | ![pipePhase](https://user-images.githubusercontent.com/43972902/115115423-b5dbf700-9f94-11eb-8fc9-7bd260f1bc31.png) |
