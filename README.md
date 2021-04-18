@@ -11,7 +11,7 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 5. [About the instructions](#instructions)
 6. [Terms needing explanation](#terms)
 7. [Core structure](#core)
-8. [Operations on registers](#oper)
+8. [Operations on registers and data flow](#oper)
 9. [Pipelining](#pipel)
 
 ### Tutorials:
@@ -230,16 +230,17 @@ Next during second clock first step are saving to the *INST* reg and simultaneou
 During third clock first instruction is executing, second instruction is saving to the *INST* reg and we are setting the address of third instruction. <br/>
 So we can say that our pipelinig has three stages, thanks to this we can execute three instructions in 5 clocks instead 9. Generally execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*. But sometimes pipelining, especially in large processors is a problem. For example when we have jump instructions. The address of next instruction we know on the last stage (in our case it'll be third stage - then we know in case jump instruction which instruction will be next). It means that sometimes in pipelining, core must have clean the all instructions from pipeline. In our case cleaning pipeline will take two clocks more for filling pipeline once again. In our processor it's not a big problem, but for large devices with a lot of stages it can be very time-consuming, so sometimes to avoid this (cleaning pipeline) engineers are implementing branch prediction methods.
 
-### Operations on registers <a name="oper"></a> [UP↑](#tof)
+### Operations on registers and data flow <a name="oper"></a> [UP↑](#tof)
+#### Data flow for "I" format (OP-IMM family)
 
 | ![flowDiagram](https://user-images.githubusercontent.com/43972902/114609471-24703a80-9c9f-11eb-8357-ac53b80aba46.png) |
 |:--:|
-| *Data flow for OP-IMM family* |
+| *Data flow for "I" format* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
 
-Steps executing instruction `aadi` (from *OP-IMM* family) based on the image above:
+Steps executing instruction `addi` (from *OP-IMM* family) based on the image above:
 1. Program execution begins by resetting the entire circuit. It means that *PC* reg has value *0* at the begining. Value *0* points at first instruction.
-2. Before when instruction `aadi` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
+2. Before when instruction `addi` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
 3. At begining, during two first clock cycles we must load to *INST* register *nop* instruction. 
 Above three steps aren't marked in the picture, but they are very important. Next steps will show how data flow looks in the circuit. The orange line show dataflow for instruction from *OP-IMM* family, that is our `addi` instruction.
 4. Multiplexer in *mux_mem_addr* select that *PC* will be increment by *4*, it means, that now *PC* reg shows at our `addi` instruction.
@@ -253,15 +254,17 @@ Currently, at this moment we have inside *INST* register `addi` instruction.
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
-Below is diagram which presents dataflow for *OP* instructions family. 
+#### Data flow for "R" format (OP family)
+
+Below is diagram which presents dataflow for "I" format instructions (*OP* family). 
 | ![flowDiagramOP](https://user-images.githubusercontent.com/43972902/114924566-6d0a2e00-9e2e-11eb-8aa6-8cf3cd445599.png) |
 |:--:|
-| *Data flow for OP family* |
+| *Data flow for "R" format* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
 
-Steps executing instruction `aad` (from *OP* family) based on the image above. The steps are exactly the same as above, exept 12 and 13 steps:
+Steps executing instruction `add` (from *OP* family) based on the image above. The steps are exactly the same as above, exept 12 and 13 steps:
 1. Program execution begins by resetting the entire circuit. It means that *PC* reg has value *0* at the begining. Value *0* points at first instruction.
-2. Before when instruction `aad` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
+2. Before when instruction `add` will go to the *INST* reg we must wait two clock cycles, because we must fill pipeline.
 3. At the begining, during two first clock cycles we must load to *INST* register *nop* instruction. 
 This three steps from above aren't marked in the picture, but they are very important. Next steps will show how data flow looks in the circuit. The orange line show dataflow for instruction from *OP* family, that is our `add` instruction.
 4. Multiplexer in *mux_mem_addr* select that *PC* will be increment by *4*, it means, that now *PC* reg shows at our `add` instruction.
@@ -274,6 +277,15 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 10. We are using *rs2* so multiplexer will be control by *alu2_sel* and take value *rs2_d* from *reg_file*. This is the only difference between the *OP-IMM* and *OP* family. 
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
+
+#### Data flow for "UJ" format
+
+| ![jaldataflow](https://user-images.githubusercontent.com/43972902/115146035-29453d80-a055-11eb-9c28-62a3e85a302e.png) |
+|:--:|
+| *Data flow for jal instruction* |
+| Source: *https://gitlab.com/rysy_core/rysy_core* |
+
+#### Data flow for "U" format
 
 | ![luidataflow](https://user-images.githubusercontent.com/43972902/115145328-45df7680-a051-11eb-80c1-86d4ec8d3c84.png) |
 |:--:|
