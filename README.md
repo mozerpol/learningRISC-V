@@ -383,7 +383,10 @@ So we can say that this code is an infinite loop that increments the register *x
 
 Above we can see pipeline for two first loops. As we know, after restart processor the first two instructions to execute are *nop* (the control part forces the execution of these instructions, the control part is *inst_mgm*). <br/>
 In the third cycle is executing instruction which is placed at *0x00* position in memory, in our case it's `addi x5, x0, 0`. <br/>
-In fourth clock cycle is executing next instruction: `addi x5, x5, 1`. This instruction is the part of our loop, which increment *x5* register. **BUT** in the same time we can see, that the address of the next instruction is *0x0c*. When we look at table, we notice that we don't have instruction at this address. The red color symbolizes that this memory fragment like *0x0c* doesn't contain any meaningful data. 
+In fourth clock cycle is executing next instruction: `addi x5, x5, 1`. This instruction is the part of our loop, which increment *x5* register. **BUT** in the same time we can see, that the address of the next instruction is *0x0c*. When we look at table, we notice that we don't have instruction at this address. The red color symbolizes that this memory fragment like *0x0c* doesn't contain any meaningful data. At this stage, the processor doesn't know that will be perform jump to another address than *0x0c* and this address (*0x0c*) is wrong. The jump instruction is executed in the next clock cycle. <br/>
+In fifth clock cycle we have two wrong instructions: *0x0c* and *0x10*. At this stage, the control part (the control part is *inst_mgm*) must work. As in the case of a reset, the control part replaces two wrong instructions with the *nop* instruction. During this action, the processor will clean pipeline from wrong instructions until the last instruction from executable phase (*0x04*) will be perform. It'll take two clock cycles: sixth and seventh. <br/>
+So we can notice on the contrary to the instructions which perform simple saving to the register like *addi* or *add* jump will take three clock cycles.  
+
 
 
 
