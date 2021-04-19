@@ -370,16 +370,20 @@ So we run these instructions:
 | 0x04 | addi x5, x5, 1 | addi x5, x5, 1 | 0x00128293 |
 | 0x08 | jal x1, loop | jal x1, -4 | 0xffdff0ef |
 
-| ![jalpipe](https://user-images.githubusercontent.com/43972902/115230543-ce731b00-a114-11eb-9476-01041a9441c0.png) |
-|:--:|
-| *Instruction pipeline during program execution from above table for two jump iteration. The numbers indicate the address from which the instruction comes.* |
-| Source: *Elektronika Praktyczna 11.2019, p. 132*  |
-
 For the record: *jal* instruction perform jump to the selected adress and save in chosen register how many steps you want to go back. So if we run these code from our table:
 1. First line. Reset the *x5* register.
 2. Second line. Increment *x5* register.
 3. Third line. Jump to previous line (because we're going to *loop* label) and execute this line, so we jumped to previous line and increment once again *x5* register. <br/>
 So we can say that this code is an infinite loop that increments the register *x5*. 
+
+| ![jalpipe](https://user-images.githubusercontent.com/43972902/115230543-ce731b00-a114-11eb-9476-01041a9441c0.png) |
+|:--:|
+| *Instruction pipeline during program execution from above table for two jump iteration. The numbers indicate the address from which the instruction comes. The red color symbolizes that this memory fragment does not contain any meaningful data.* |
+| Source: *Elektronika Praktyczna 11.2019, p. 132*  |
+
+Above we can see pipeline for two first loops. As we know, after restart processor the first two instructions to execute are *nop* (the control part forces the execution of these instructions, the control part is *inst_mgm*). <br/>
+In the third cycle is executing instruction which is placed at *0x00* position in memory, in our case it's `addi x5, x0, 0`. <br/>
+In fourth clock cycle is executing next instruction: `addi x5, x5, 1`. This instruction is the part of our loop, which increment *x5* register. **BUT** in the same time we can see, that the address of the next instruction is *0x0c*. When we look at table, we notice that we don't have instruction at this address. The red color symbolizes that this memory fragment like *0x0c* doesn't contain any meaningful data. 
 
 
 
