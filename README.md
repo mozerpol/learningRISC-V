@@ -388,6 +388,25 @@ In fifth clock cycle we have two wrong instructions: *0x0c* and *0x10*. At this 
 So we can notice on the contrary to the instructions which perform simple saving to the register like *addi* or *add* jump will take three clock cycles.  
 
 
+When we run the above code in ModelSim until 13 μs (13 μs is exactly equal two jump instructions) we get the following waveforms:
+| ![jaalpipel](https://user-images.githubusercontent.com/43972902/115244586-5876b000-a124-11eb-8abf-412fd1ee9d04.png) |
+|:--:|
+| *Simulation in ModelSim of the above code for two jump iterations.* |
+
+As previously: <br/>
+First line is *clk*, clock cycle. <br/>
+Second line is *rst*, reset. When the reset fall down, the processor can start working. Until the first instruction is executed (`addi x5, x0, 0`, machine code: *0x00000293*, time: 4 μs), the value of *x5* register (the last waveform) is undetermined, thanks to this we can see red line. It's very important. In the 4 μs we can see that processor is executing instruction *0x00000293* and after this processor will save to *x5* register value *0*. Not in the same time!! Processor will reset register only **after** execution instruction, in the next clock cycle. We can notice it in the waveforms. <br/>
+
+DOKONCZYC
+ 
+
+
+
+
+
+
+
+
 
 
 
