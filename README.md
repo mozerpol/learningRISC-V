@@ -361,8 +361,7 @@ Number meanings:
 7. Seventh line - *x2*.
 8. Eigth line - *x3*.
 
-#### Pipelining for jump instruction (*jal*)
-
+#### Pipelining for jump instruction (in case of *jal*)
 So we run these instructions:
 | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
 |:--:|:--:|:--:|:--:|
@@ -370,6 +369,22 @@ So we run these instructions:
 |  | loop: |  |  |
 | 0x04 | addi x5, x5, 1 | addi x5, x5, 1 | 0x00128293 |
 | 0x08 | jal x1, loop | jal x1, -4 | 0xffdff0ef |
+
+| ![jalpipe](https://user-images.githubusercontent.com/43972902/115230543-ce731b00-a114-11eb-9476-01041a9441c0.png) |
+|:--:|
+| *Instruction pipeline during program execution from above table for two jump iteration. The numbers indicate the address from which the instruction comes.* |
+| Source: *Elektronika Praktyczna 11.2019, p. 132*  |
+
+For the record: *jal* instruction perform jump to the selected adress and save in chosen register how many steps you want to go back. So if we run these code from our table:
+1. First line. Reset the *x5* register.
+2. Second line. Increment *x5* register.
+3. Third line. Jump to previous line (because we're going to *loop* label) and execute this line, so we jumped to previous line and increment once again *x5* register. <br/>
+So we can say that this code is an infinite loop that increments the register *x5*. 
+
+
+
+
+
 
 
 
