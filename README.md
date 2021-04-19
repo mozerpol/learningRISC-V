@@ -285,8 +285,8 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 | *Data flow for jal instruction* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
 
-The initial data flow for *UJ*-type instructions is very similar as for *OP* family (above steps). The example is for *jal* instruction which perform jump to the selected adress and save in chosen register how many steps you want to go back. <br/>
-Path *pc_sel* gives value to *PC* register, which directly comes from *ALU*. It means that address for next instruction (because *PC* point to next instruction) is the result of *ALU*. <br/>
+The initial data flow for *UJ*-type instructions is very similar as for *OP* family (above steps). The above example is for *jal* instruction, which perform jump to the selected adress and save in chosen register how many steps you want to go back. <br/>
+Path *pc_sel* gives value to *PC* register, which directly comes from *ALU*. It means that address for next instruction (because *PC* point to the next instruction) is the result of *ALU*. <br/>
 The instruction from the new address will enter to the execution phase after two cycles, for this reason the control part (*inst_mgm* part) will have to replace the next two instructions with *nop* instructions. This is controlled by *inst_sel* path. <br/>
 The multiplexer which is controlled by *imm_type* select *J* constant type, then multiplexer which is controlled by *alu2_sel* allow *J* constant type go to *ALU*. <br/>
 To the *rd* register (in *reg_file*) will be saved the address of the next instruction, which would have been (pol. *która byłaby*) executed if the instruction had not been jumped. This value which would have been executed is the *PC* value delayed by one clock cycle (it's the address of the next instruction). <br/>
@@ -298,7 +298,7 @@ Path *alu_op* select adding for this instruction.
 | *Data flow for jalr instruction* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
 
-*JALR* instruction belongs to *I* type format which was fully described above.
+*JALR* instruction belongs to *I* type format which was fully described above (by the way of the instruction *addi*). The data flow is very similar to *JAL* instruction.
 
 #### Data flow for "U" format
 
@@ -361,26 +361,15 @@ Number meanings:
 7. Seventh line - *x2*.
 8. Eigth line - *x3*.
 
+#### Pipelining for jump instruction (*jal*)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+So we run these instructions:
+| Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
+|:--:|:--:|:--:|:--:|
+| 0x00 | addi x5, x0, 0 | addi x5, x0, 0 | 0x00000293 |
+|  | loop: |  |  |
+| 0x04 | addi x5, x5, 1 | addi x5, x5, 1 | 0x00128293 |
+| 0x08 | jal x1, loop | jal x1, -4 | 0xffdff0ef |
 
 
 
