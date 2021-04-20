@@ -321,6 +321,37 @@ Path *alu_op* select adding for this instruction.
 
 From *reg_file* two instruction arguments *rs1_d* and *rs2_d* are passed to *CMP*. Thanks to *cmp_op* is selected the type of condition. If this condition is fulfilled then path *b* becomes high. In the same time *ALU* sums up the value in PC rgister (delayed by two cycles) with *imm* variable. Based on path state *b* control part (*inst_mgm* part) will consider whether next value for *PC* will be increment by 4 (no jump) or from *ALU* (jump). 
 
+#### Data flow of writing to memory 
+
+To find out how data flow works when writing to memory we need to remind the type of architectures. <br/>
+First is Harvard architecture (picture below) in which the data memory is independent of the program memory (code and data have their own part of memory ). Thanks to this reading and writing data to RAM doesn't affect to the loading instructions from Flash. But unfortunately reading data from memory Flash is more complicated and run program from RAM is impossible. The example of Harvard architecture is *AVR*.  
+
+| ![hrvarch](https://user-images.githubusercontent.com/43972902/115418565-df498c80-a1f9-11eb-8cc9-d5eeed648eff.png) |
+|:--:|
+| *Harvard architecture with separated space for program and data* |
+| Source: *Elektronika Praktyczna 11.2019, p. 133*  |
+
+Below we have picture which presents von Neumann architecture. In this type of architecture data and code share the same space. They are accessed via the same address bus. The example of this type fo architecture is *Cortex-M0*.  
+
+| ![vonNeu](https://user-images.githubusercontent.com/43972902/115418633-eec8d580-a1f9-11eb-8ba0-76a7ce76e75b.png) |
+|:--:|
+| *Von Neumann architecture* |
+| Source: *Elektronika Praktyczna 11.2019, p. 133*  |
+
+For faster processors are using different approach which is modified Harvard architecture (picture below). Data and code are still are in the same memory, but access to them is via the cache. Cache is small, but very fast memory which indirect in access to memory. This solves the problem of von Neumann architecture where we have one bus for data and code (so we can only have one piece of information at a time). The example of this type fo architecture is *Cortex-M7* or most typical x86 processors. 
+
+| ![hrvarchcac](https://user-images.githubusercontent.com/43972902/115418708-fd16f180-a1f9-11eb-8ff5-e487075ca727.png) |
+|:--:|
+| *Harvard Architecture with a cache* |
+| Source: *Elektronika Praktyczna 11.2019, p. 133* |
+
+Below is picture which presents data flow while writing to memory:
+
+| ![memdat](https://user-images.githubusercontent.com/43972902/115455775-aeca1880-a222-11eb-9686-a2eadf7acf95.png) |
+|:--:|
+| *Data flow while writing to memory* |
+| Source: *Elektronika Praktyczna 11.2019, p. 134*  |
+
 ### Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
 | ![pipePhase](https://user-images.githubusercontent.com/43972902/115115423-b5dbf700-9f94-11eb-8fc9-7bd260f1bc31.png) |
@@ -438,11 +469,14 @@ For the record: *bne* instruction compares the contents of two registers, if the
 As before, the the effect of the work of the first instruction (`addi x1, x0, 2`) will be saved during third rising clock edge. Before this in the exectution part, at the begining we have two instructions *nop*, exactly as before. <br/>
 First jump (bne x0, x1, loop) will be executeed during from seventh to ninth rising clock edge. During seventh clock cycle we're executing jump instruction and thanks to this we must clean pipeline, for this reason we have two *nop* instructions after jump. <br/>
 During the twelfth clock cycle, the second execution of the jump instruction occurs, but in this case, the condition is not satisfied. Well, thanks to this it's not necessary clean the pipeline, so checking the condition took only one clock cycle. <br/>
+If we want to use conditional loops to generate delays, we need to remember that some loops can take three clock cycles (in our case when condition is fulfilled) or can take one clock cycle (in our case when condition isn't fulfilled). 
 
+When we run the above code in ModelSim we get the following waveforms:
+| ![conjmp](https://user-images.githubusercontent.com/43972902/115405249-5e38c800-a1ee-11eb-929a-fec6184333e4.png) |
+|:--:|
+| *Simulation in ModelSim of the above code.* |
 
-
-
-
+The processor starts working after resetting *reset* signal (it's 2 μs).
 
 
 
