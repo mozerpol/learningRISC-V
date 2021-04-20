@@ -409,25 +409,42 @@ In 7 μs we can see that *jal* saved to *x1* register return address (*12* in de
 #### Pipelining for conditional jumps  <a name="pipeljump"></a> [UP↑](#tof)
 
 So we run these instructions: <br/>
-| Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
-|:--:|:--:|:--:|:--:|
-|    |  start:  |    |    |
-| 0x00 | addi x1, x0, 2 | addi x1, x0, 2 | 0x00200093 |
-| 0x04 | addi x2, x0, 0 | addi x2, x0, 0 | 0x00000113 |
-|  | loop: |  |  |
-| 0x08 | add  x2, x2, x1 | add  x2, x2, x1 | 0x00110133 |
-| 0x0c | addi x1, x1, -1 | addi x1, x1, -1 | 0xfff08093 |
-| 0x10 | bne  x0, x1, loop | bne  x0, x1, -8 | 0xfe101ce3 |
-| 0x14 | j start | jal  x0, -20 | 0xfedff06f |
+| Line number: | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
+|:--:|:--:|:--:|:--:|:--:|
+| 1. |    |  start:  |    |    |
+| 2. | 0x00 | addi x1, x0, 2 | addi x1, x0, 2 | 0x00200093 |
+| 3. | 0x04 | addi x2, x0, 0 | addi x2, x0, 0 | 0x00000113 |
+| 4. |  | loop: |  |  |
+| 5. | 0x08 | add  x2, x2, x1 | add  x2, x2, x1 | 0x00110133 |
+| 6. | 0x0c | addi x1, x1, -1 | addi x1, x1, -1 | 0xfff08093 |
+| 7. | 0x10 | bne  x0, x1, loop | bne  x0, x1, -8 | 0xfe101ce3 |
+| 8. | 0x14 | j start | jal  x0, -20 | 0xfedff06f |
 
-For the record: *bne* instruction compares the contents of two registers, if they are different, then jump to the label. So if we run these code from our table:
-1. First line. Reset the x5 register.
-2. Second line. Increment x5 register.
-3. Third line. 
+For the record: *bne* instruction compares the contents of two registers, if they are different, then jump to the label. So if we run these code from our table (code sums the numbers from 1 to 2):
+1. Label *start*.
+2. Second line. Add number *2* to *x1* register. This determines the number of iterations of the loop. 
+3. Third line. Reset *x2* register.
+4. Label *loop*.
+5. Fifth line. Save in *x2* register sum of registers *x2* and *x1*.
+6. Sixth line. Decrement *x1* register.
+7. Seventh line. Compare *x0* and *x1*, if *x1* is not equal *0* then jump to label *loop* (*loop* label are two instructions back, so we must subtract number *8* from the *PC*).
+8. Eighth line. When *x1* will be equal *0* (it will be after two iterations) then we can execute this line. In this line we'll jump to the beginning of the program (because *20* in dec is equal *14* inx hex, this line is equal *0x14* in *PC*, so *0x14* - *0x14* = *0x00* and *0x00* means beginning of the program).
+
+Jump to previous line (because we’re going to loop label) and execute this line, so we jumped to previous line and increment once again x5 register. <br/
 
 | ![bnepip](https://user-images.githubusercontent.com/43972902/115384253-1f4b4800-a1d7-11eb-8780-77b88917ff6c.png) |
 |:--:|
 | *Instruction pipeline during program execution from above table for two jump iterations. The numbers indicate the address from which the instruction comes. The red color symbolizes that this memory fragment does not contain any meaningful data.* |
 | Source: *Elektronika Praktyczna 11.2019, p. 133*  |
+
+
+
+
+
+
+
+
+
+
 
 
