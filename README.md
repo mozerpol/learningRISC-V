@@ -13,6 +13,8 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 7. [Core structure](#core)
 8. [Operations on registers and data flow](#oper)
 9. [Pipelining](#pipel)
+    1. [Pipelining for jump instructions](#pipeljal)
+    2. [Pipelining for conditional jumps](#pipeljump)
 
 ### Tutorials:
 
@@ -301,7 +303,6 @@ Path *alu_op* select adding for this instruction.
 *JALR* instruction belongs to *I* type format which was fully described above (by the way of the instruction *addi*). The data flow is very similar to *JAL* instruction.
 
 #### Data flow for "U" format
-
 | ![luidataflow](https://user-images.githubusercontent.com/43972902/115145328-45df7680-a051-11eb-80c1-86d4ec8d3c84.png) |
 |:--:|
 | *Data flow for lui instruction* |
@@ -311,6 +312,14 @@ Path *alu_op* select adding for this instruction.
 |:--:|
 | *Data flow for auipc instruction* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
+
+#### Data flow for conditional instructions
+| ![condjmp](https://user-images.githubusercontent.com/43972902/115286418-5544e980-a14f-11eb-974d-6a2f5e09907f.png) |
+|:--:|
+| *Data flow for conditional instructions. Paths which depend on the state are marked with dashed lines: orange for a possible jump and red for impossible jump.* |
+| Source: *Elektronika Praktyczna 11.2019, p. 132*  |
+
+From *reg_file* two instruction arguments *rs1_d* and *rs2_d* are passed to *CMP*. Thanks to *cmp_op* is selected the type of condition. If this condition is fulfilled then path *b* becomes high. In the same time *ALU* sums up the value in PC rgister (delayed by two cycles) with *imm* variable. Based on path state *b* control part (*inst_mgm* part) will consider whether next value for *PC* will be increment by 4 (no jump) or from *ALU* (jump). 
 
 ### Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
@@ -361,7 +370,7 @@ Number meanings:
 7. Seventh line - *x2*.
 8. Eigth line - *x3*.
 
-#### Pipelining for jump instruction (in case of *jal*)
+#### Pipelining for jump instructions (in case of *jal*) <a name="pipeljal"></a> [UP↑](#tof)
 So we run these instructions:
 | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
 |:--:|:--:|:--:|:--:|
@@ -396,17 +405,20 @@ When we run the above code in ModelSim until 13 μs (13 μs is exactly equal two
 As previously: <br/>
 First line is *clk*, clock cycle. <br/>
 Second line is *rst*, reset. When the reset fall down, the processor can start working. Until the first instruction is executed (`addi x5, x0, 0`, machine code: *0x00000293*, time: 4 μs), the value of *x5* register (the last waveform) is undetermined, thanks to this we can see red line. It's very important. In the 4 μs we can see that processor is executing instruction *0x00000293* and after this processor will save to *x5* register value *0*. Not in the same time!! Processor will reset register only **after** execution instruction, in the next clock cycle. We can notice it in the waveforms. <br/>
+In 7 μs we can see that *jal* saved to *x1* register return address (*12* in dec *0x0c* in hex). 
 
-DOKONCZYC
- 
+#### Pipelining for conditional jumps  <a name="pipeljump"></a> [UP↑](#tof)
 
-
-
-
-
-
-
-
+| Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
+|:--:|:--:|:--:|:--:|
+|    |  start:  |    |    |
+| 0x00 | addi x1, x0, 2 | addi x1, x0, 2 | 0x00200093 |
+| 0x04 | addi x2, x0, 0 | addi x2, x0, 0 | 0x00000113 |
+|  | loop: |  |  |
+| 0x08 | add  x2, x2, x1 | add  x2, x2, x1 | 0x00110133 |
+| 0x0c | addi x1, x1, -1 | addi x1, x1, -1 | 0xfff08093 |
+| 0x10 | bne  x0, x1, loop | bne  x0, x1, -8 | 0xfe101ce3 |
+| 0x14 | j start | jal  x0, -20 | 0xfedff06f |
 
 
 
