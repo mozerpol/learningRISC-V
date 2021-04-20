@@ -430,13 +430,14 @@ For the record: *bne* instruction compares the contents of two registers, if the
 7. Seventh line. Compare *x0* and *x1*, if *x1* is not equal *0* then jump to label *loop* (*loop* label are two instructions back, so we must subtract number *8* from the *PC*).
 8. Eighth line. When *x1* will be equal *0* (it will be after two iterations) then we can execute this line. In this line we'll jump to the beginning of the program (because *20* in dec is equal *14* inx hex, this line is equal *0x14* in *PC*, so *0x14* - *0x14* = *0x00* and *0x00* means beginning of the program).
 
-Jump to previous line (because we’re going to loop label) and execute this line, so we jumped to previous line and increment once again x5 register. <br/
-
 | ![bnepip](https://user-images.githubusercontent.com/43972902/115384253-1f4b4800-a1d7-11eb-8780-77b88917ff6c.png) |
 |:--:|
 | *Instruction pipeline during program execution from above table for two jump iterations. The numbers indicate the address from which the instruction comes. The red color symbolizes that this memory fragment does not contain any meaningful data.* |
 | Source: *Elektronika Praktyczna 11.2019, p. 133*  |
 
+As before, the the effect of the work of the first instruction (`addi x1, x0, 2`) will be saved during third rising clock edge. Before this in the exectution part, at the begining we have two instructions *nop*, exactly as before. <br/>
+First jump (bne x0, x1, loop) will be executeed during from seventh to ninth rising clock edge. During seventh clock cycle we're executing jump instruction and thanks to this we must clean pipeline, for this reason we have two *nop* instructions after jump. <br/>
+During the twelfth clock cycle, the second execution of the jump instruction occurs, but in this case, the condition is not satisfied. Well, thanks to this it's not necessary clean the pipeline, so checking the condition took only one clock cycle. <br/>
 
 
 
