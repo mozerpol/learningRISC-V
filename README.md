@@ -396,7 +396,6 @@ In fourth clock cycle is executing next instruction: `addi x5, x5, 1`. This inst
 In fifth clock cycle we have two wrong instructions: *0x0c* and *0x10*. At this stage, the control part (the control part is *inst_mgm*) must work. As in the case of a reset, the control part replaces two wrong instructions with the *nop* instruction. During this action, the processor will clean pipeline from wrong instructions until the last instruction from executable phase (*0x04*) will be perform. It'll take two clock cycles: sixth and seventh. <br/>
 So we can notice on the contrary to the instructions which perform simple saving to the register like *addi* or *add* jump will take three clock cycles.  
 
-
 When we run the above code in ModelSim until 13 μs (13 μs is exactly equal two jump instructions) we get the following waveforms:
 | ![jaalpipel](https://user-images.githubusercontent.com/43972902/115244586-5876b000-a124-11eb-8abf-412fd1ee9d04.png) |
 |:--:|
@@ -409,6 +408,7 @@ In 7 μs we can see that *jal* saved to *x1* register return address (*12* in de
 
 #### Pipelining for conditional jumps  <a name="pipeljump"></a> [UP↑](#tof)
 
+So we run these instructions: <br/>
 | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
 |:--:|:--:|:--:|:--:|
 |    |  start:  |    |    |
@@ -420,9 +420,14 @@ In 7 μs we can see that *jal* saved to *x1* register return address (*12* in de
 | 0x10 | bne  x0, x1, loop | bne  x0, x1, -8 | 0xfe101ce3 |
 | 0x14 | j start | jal  x0, -20 | 0xfedff06f |
 
+For the record: *bne* instruction compares the contents of two registers, if they are different, then jump to the label. So if we run these code from our table:
+1. First line. Reset the x5 register.
+2. Second line. Increment x5 register.
+3. Third line. 
 
-
-
-
+| ![bnepip](https://user-images.githubusercontent.com/43972902/115384253-1f4b4800-a1d7-11eb-8780-77b88917ff6c.png) |
+|:--:|
+| *Instruction pipeline during program execution from above table for two jump iterations. The numbers indicate the address from which the instruction comes. The red color symbolizes that this memory fragment does not contain any meaningful data.* |
+| Source: *Elektronika Praktyczna 11.2019, p. 133*  |
 
 
