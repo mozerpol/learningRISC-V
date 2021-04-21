@@ -12,9 +12,17 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 6. [Terms needing explanation](#terms)
 7. [Core structure](#core)
 8. [Operations on registers and data flow](#oper)
+    1. [Data flow for "I" format](#dfi)
+    2. [Data flow for "R" format](#dfr)
+    3. [Data flow for "UJ" format](#dfu)
+    4. [Data flow for "JALR" instruction](#dfjalr)
+    5. [Data flow for "U" format](#dfuf) 
+    6. [Data flow for conditional instructions](#cond)
+    7. [Data flow of writing to memory](#dfwrtm)
 9. [Pipelining](#pipel)
     1. [Pipelining for jump instructions](#pipeljal)
     2. [Pipelining for conditional jumps](#pipeljump)
+    3. [Pipelining for writing to memory](#pipelwrt)
 
 ### Tutorials:
 
@@ -233,7 +241,7 @@ During third clock first instruction is executing, second instruction is saving 
 So we can say that our pipelinig has three stages, thanks to this we can execute three instructions in 5 clocks instead 9. Generally execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*. But sometimes pipelining, especially in large processors is a problem. For example when we have jump instructions. The address of next instruction we know on the last stage (in our case it'll be third stage - then we know in case jump instruction which instruction will be next). It means that sometimes in pipelining, core must have clean the all instructions from pipeline. In our case cleaning pipeline will take two clocks more for filling pipeline once again. In our processor it's not a big problem, but for large devices with a lot of stages it can be very time-consuming, so sometimes to avoid this (cleaning pipeline) engineers are implementing branch prediction methods.
 
 ### Operations on registers and data flow <a name="oper"></a> [UP↑](#tof)
-#### Data flow for "I" format (OP-IMM family)
+#### Data flow for "I" format (OP-IMM family) <a name="dfi"></a> [UP↑](#tof)
 
 | ![flowDiagram](https://user-images.githubusercontent.com/43972902/114609471-24703a80-9c9f-11eb-8357-ac53b80aba46.png) |
 |:--:|
@@ -256,7 +264,7 @@ Currently, at this moment we have inside *INST* register `addi` instruction.
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
-#### Data flow for "R" format (OP family)
+#### Data flow for "R" format (OP family) <a name="dfr"></a> [UP↑](#tof)
 
 Below is diagram which presents dataflow for "I" format instructions (*OP* family). 
 | ![flowDiagramOP](https://user-images.githubusercontent.com/43972902/114924566-6d0a2e00-9e2e-11eb-8aa6-8cf3cd445599.png) |
@@ -280,7 +288,7 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 11. The result of operations *rd_d* will be directed through *ALU* and multiplexer which is controlled by *rd_sel* path once again to *reg_file*. 
 12. High state on the *wr* will cause, taht result will be save in register. 
 
-#### Data flow for "UJ" format
+#### Data flow for "UJ" format <a name="dfu"></a> [UP↑](#tof)
 
 | ![jaldataflow](https://user-images.githubusercontent.com/43972902/115146035-29453d80-a055-11eb-9c28-62a3e85a302e.png) |
 |:--:|
@@ -294,7 +302,7 @@ The multiplexer which is controlled by *imm_type* select *J* constant type, then
 To the *rd* register (in *reg_file*) will be saved the address of the next instruction, which would have been (pol. *która byłaby*) executed if the instruction had not been jumped. This value which would have been executed is the *PC* value delayed by one clock cycle (it's the address of the next instruction). <br/>
 Path *alu_op* select adding for this instruction.
 
-#### Data flow for "JALR" instruction
+#### Data flow for "JALR" instruction <a name="dfjalr"></a> [UP↑](#tof)
 | ![jalrdataflow](https://user-images.githubusercontent.com/43972902/115148747-539cf800-a061-11eb-86e2-6f2a4a15bf1c.png) |
 |:--:|
 | *Data flow for jalr instruction* |
@@ -302,7 +310,7 @@ Path *alu_op* select adding for this instruction.
 
 *JALR* instruction belongs to *I* type format which was fully described above (by the way of the instruction *addi*). The data flow is very similar to *JAL* instruction.
 
-#### Data flow for "U" format
+#### Data flow for "U" format <a name="dfuf"></a> [UP↑](#tof)
 | ![luidataflow](https://user-images.githubusercontent.com/43972902/115145328-45df7680-a051-11eb-80c1-86d4ec8d3c84.png) |
 |:--:|
 | *Data flow for lui instruction* |
@@ -313,7 +321,7 @@ Path *alu_op* select adding for this instruction.
 | *Data flow for auipc instruction* |
 | Source: *https://gitlab.com/rysy_core/rysy_core* |
 
-#### Data flow for conditional instructions
+#### Data flow for conditional instructions <a name="cond"></a> [UP↑](#tof)
 | ![condjmp](https://user-images.githubusercontent.com/43972902/115286418-5544e980-a14f-11eb-974d-6a2f5e09907f.png) |
 |:--:|
 | *Data flow for conditional instructions. Paths which depend on the state are marked with dashed lines: orange for a possible jump and red for impossible jump.* |
@@ -321,8 +329,7 @@ Path *alu_op* select adding for this instruction.
 
 From *reg_file* two instruction arguments *rs1_d* and *rs2_d* are passed to *CMP*. Thanks to *cmp_op* is selected the type of condition. If this condition is fulfilled then path *b* becomes high. In the same time *ALU* sums up the value in PC rgister (delayed by two cycles) with *imm* variable. Based on path state *b* control part (*inst_mgm* part) will consider whether next value for *PC* will be increment by 4 (no jump) or from *ALU* (jump). 
 
-#### Data flow of writing to memory 
-
+#### Data flow of writing to memory <a name="dfwrtm"></a> [UP↑](#tof)
 To find out how data flow works when writing to memory we need to remind the type of architectures. <br/>
 First is Harvard architecture (picture below) in which the data memory is independent of the program memory (code and data have their own part of memory ). Thanks to this reading and writing data to RAM doesn't affect to the loading instructions from Flash. But unfortunately reading data from memory Flash is more complicated and run program from RAM is impossible. The example of Harvard architecture is *AVR*.  
 
@@ -443,8 +450,7 @@ First line is *clk*, clock cycle. <br/>
 Second line is *rst*, reset. When the reset fall down, the processor can start working. Until the first instruction is executed (`addi x5, x0, 0`, machine code: *0x00000293*, time: 4 μs), the value of *x5* register (the last waveform) is undetermined, thanks to this we can see red line. It's very important. In the 4 μs we can see that processor is executing instruction *0x00000293* and after this processor will save to *x5* register value *0*. Not in the same time!! Processor will reset register only **after** execution instruction, in the next clock cycle. We can notice it in the waveforms. <br/>
 In 7 μs we can see that *jal* saved to *x1* register return address (*12* in dec *0x0c* in hex). 
 
-#### Pipelining for conditional jumps  <a name="pipeljump"></a> [UP↑](#tof)
-
+#### Pipelining for conditional jumps <a name="pipeljump"></a> [UP↑](#tof)
 So we run these instructions: <br/>
 | Line number: | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
 |:--:|:--:|:--:|:--:|:--:|
@@ -484,8 +490,20 @@ When we run the above code in ModelSim we get the following waveforms:
 
 The processor starts working after resetting *reset* signal (it's 2 μs).
 
+#### Pipelining for writing to memory <a name="pipelwrt"></a> [UP↑](#tof)
+
+From part
+
+![pipwrt](https://user-images.githubusercontent.com/43972902/115560564-01541500-a2b5-11eb-91d1-9e5db539eb0e.png)
+![simwrt](https://user-images.githubusercontent.com/43972902/115560662-18930280-a2b5-11eb-9ddf-4211634cbab7.png)
 
 
-
-
+So we run these instructions: <br/>
+| Line number: | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
+|:--:|:--:|:--:|:--:|:--:|
+| 1. | 0x00 | li x1, 10 | addi x1 x0 10 | 0x00a00093 |
+| 2. | 0x04 | sw x1, 0x20, x0 | sw x1 32(x0) | 0x02102023 |
+| 3. | 0x08 | li x1, 1 | addi x1 x0 1 | 0x00100093 |
+| 4. | 0x0c | li x1, 2 | addi x1 x0 2 | 0x00200093 |
+| 5. | 0x10 | li x1, 3 | addi x1 x0 3 | 0x00300093 |
 
