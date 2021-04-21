@@ -352,6 +352,12 @@ Below is picture which presents data flow while writing to memory:
 | *Data flow while writing to memory* |
 | Source: *Elektronika Praktyczna 11.2019, p. 134*  |
 
+The memory address is set to the value from the output of the *ALU*, which is (this output) the sum of *imm_S* and the value from the register (*rs1_d*). The value of the *PC* registry doesn't change, because the next instruction won't be read in the next clock cycle. <br/>
+To the memory (*WDATA* part) will be written second value from register, but before that happens, this value must be prepared by block *select_wr*. <br/>
+*sel_type* is responsible for whether we want write one byte, whole word or half words, but there is problem... memory can only handle saving full words, aligned to four bytes. For this reason is four bit *be* signal (byte enable) which allows to write those bytes from the word, whose bits are set. <br/>
+First task of *select_wr* block is suitable setting of bits for saving, so as to (pol. *tak aby*) target position in memory. <br/>
+The second task of *select_wr* block is preparing *be* singal. If we want to save the whole word to memory then *be* signal has four bits set on *1*, if we want to save the half word to memory then *be* signal is set on: *0011*, if we want to save the half word to memory then *be* signal is set on: *0001*.
+
 ### Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
 | ![pipePhase](https://user-images.githubusercontent.com/43972902/115115423-b5dbf700-9f94-11eb-8fc9-7bd260f1bc31.png) |
