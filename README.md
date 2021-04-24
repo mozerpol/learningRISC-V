@@ -25,7 +25,6 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     3. [Pipelining for writing to memory](#pipelwrt)
 
 ### Tutorials:
-
 1. First link is about very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free: <br/>
     [08.12.2020] https://ep.com.pl/podzespoly/12992-risc-v-budujemy-wlasny-mikrokontroler-1 <br/>
     The second part of the course is available in the issue from: 10.2019, pages 116-123/140 <br/>
@@ -242,7 +241,6 @@ So we can say that our pipelinig has three stages, thanks to this we can execute
 
 ### Operations on registers and data flow <a name="oper"></a> [UP↑](#tof)
 #### Data flow for "I" format (OP-IMM family) <a name="dfi"></a> [UP↑](#tof)
-
 | ![flowDiagram](https://user-images.githubusercontent.com/43972902/114609471-24703a80-9c9f-11eb-8357-ac53b80aba46.png) |
 |:--:|
 | *Data flow for "I" format* |
@@ -265,7 +263,6 @@ Currently, at this moment we have inside *INST* register `addi` instruction.
 12. High state on the *wr* will cause, taht result will be save in register. 
 
 #### Data flow for "R" format (OP family) <a name="dfr"></a> [UP↑](#tof)
-
 Below is diagram which presents dataflow for "I" format instructions (*OP* family). 
 | ![flowDiagramOP](https://user-images.githubusercontent.com/43972902/114924566-6d0a2e00-9e2e-11eb-8aa6-8cf3cd445599.png) |
 |:--:|
@@ -289,7 +286,6 @@ Currently, at this moment we have inside *INST* register `add` instruction.
 12. High state on the *wr* will cause, taht result will be save in register. 
 
 #### Data flow for "UJ" format <a name="dfu"></a> [UP↑](#tof)
-
 | ![jaldataflow](https://user-images.githubusercontent.com/43972902/115146035-29453d80-a055-11eb-9c28-62a3e85a302e.png) |
 |:--:|
 | *Data flow for jal instruction* |
@@ -492,13 +488,7 @@ The processor starts working after resetting *reset* signal (it's 2 μs).
 
 #### Pipelining for writing to memory <a name="pipelwrt"></a> [UP↑](#tof)
 
-From part
-
-![pipwrt](https://user-images.githubusercontent.com/43972902/115560564-01541500-a2b5-11eb-91d1-9e5db539eb0e.png)
-![simwrt](https://user-images.githubusercontent.com/43972902/115560662-18930280-a2b5-11eb-9ddf-4211634cbab7.png)
-
-
-So we run these instructions: <br/>
+From part [data flow of writing to memory](#dfwrtm) we know how the processor prepares data to be written to memory, but there is one more problem that I haven't written about... We have one bus for data and program (our processor is von Neumann architecture), so the value from the address which we would like to save in memory (only save, not execute) is also pulled to the pipeline. Because of this we must detect this value where is it and replace whit *nop* instruction. For a better understanding of the problem, let's analyze the code from the table: <br/>
 | Line number: | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
 |:--:|:--:|:--:|:--:|:--:|
 | 1. | 0x00 | li x1, 10 | addi x1 x0 10 | 0x00a00093 |
@@ -506,4 +496,29 @@ So we run these instructions: <br/>
 | 3. | 0x08 | li x1, 1 | addi x1 x0 1 | 0x00100093 |
 | 4. | 0x0c | li x1, 2 | addi x1 x0 2 | 0x00200093 |
 | 5. | 0x10 | li x1, 3 | addi x1 x0 3 | 0x00300093 |
+
+The first instruction loads the *10* number to the address *0x20*. The next three *li* instructions will write in the register *x1* of sequence numbers 1, 2 and 3. Description of [LI](#https://github.com/mozerpol/learningRISC-V/tree/main/instructions/LI) instruction. Below is instruction pipeline during program execution from above table:
+
+| ![pipwrt](https://user-images.githubusercontent.com/43972902/115560564-01541500-a2b5-11eb-91d1-9e5db539eb0e.png) |
+|:--:|
+| Source: *Elektronika Praktyczna 11.2019, p. 135* |
+
+The orange color is for *sw* instruction. We can see that when the *sw* instruction go to the execution phase its address is set to *0x20*. 
+
+
+![simwrt](https://user-images.githubusercontent.com/43972902/115560662-18930280-a2b5-11eb-9ddf-4211634cbab7.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
