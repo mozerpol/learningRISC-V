@@ -488,7 +488,7 @@ The processor starts working after resetting *reset* signal (it's 2 μs).
 
 #### Pipelining for writing to memory <a name="pipelwrt"></a> [UP↑](#tof)
 
-From part [data flow of writing to memory](#dfwrtm) we know how the processor prepares data to be written to memory, but there is one more problem that I haven't written about... We have one bus for data and program (our processor is von Neumann architecture), so the value from the address which we would like to save in memory (only save, not execute) is also pulled to the pipeline. Because of this we must detect this value where is it and replace whit *nop* instruction. For a better understanding of the problem, let's analyze the code from the table: <br/>
+From part [data flow of writing to memory](#dfwrtm) we know how the processor prepares data to be written to memory, but there is one more problem that I haven't written about... We have one bus for data and program (our processor is von Neumann architecture), so the value from the address which we would like to save in memory (only save, not execute) is also pulled to the pipeline. Because of this we must detect this value where is it and replace with *nop* instruction. For a better understanding of the problem, let's analyze the code from the table: <br/>
 | Line number: | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
 |:--:|:--:|:--:|:--:|:--:|
 | 1. | 0x00 | li x1, 10 | addi x1 x0 10 | 0x00a00093 |
@@ -497,14 +497,20 @@ From part [data flow of writing to memory](#dfwrtm) we know how the processor pr
 | 4. | 0x0c | li x1, 2 | addi x1 x0 2 | 0x00200093 |
 | 5. | 0x10 | li x1, 3 | addi x1 x0 3 | 0x00300093 |
 
-The first instruction loads the *10* number to the address *0x20*. The next three *li* instructions will write in the register *x1* of sequence numbers 1, 2 and 3. Description of [LI](#https://github.com/mozerpol/learningRISC-V/tree/main/instructions/LI) instruction. Below is instruction pipeline during program execution from above table:
+First instruction (`li x1, 10`) loads number *10* to *x1* register. <br/>
+Next instruction (`sw x1, 0x20, x0`) will save to the memory address *0x20* value from *x1* register. In different words instruction `sw x1, 0x20, x0` download value from *x1* reg and save this value on the first bit in *0x20* address in memory. Why first? Because we have *sw x1, 0x20, **x0***. In a situation where we would have *sw x1, 0x20, **x1***, then value from *x1* will be shifted to the next byte in 0x20 address. (every address contain inside them eight bytes for data, eg. 0x20: first_byte, second_byte, third_byte, ...). <br/>
+The next three *LI* instructions will write to the register *x1* of sequence numbers 1, 2 and 3. Description of [LI](#https://github.com/mozerpol/learningRISC-V/tree/main/instructions/LI) instruction. Below is instruction pipeline during program execution from above table:
 
 | ![pipwrt](https://user-images.githubusercontent.com/43972902/115560564-01541500-a2b5-11eb-91d1-9e5db539eb0e.png) |
 |:--:|
 | Source: *Elektronika Praktyczna 11.2019, p. 135* |
 
-The orange color is for *sw* instruction. We can see that when the *sw* instruction go to the execution phase its address is set to *0x20*. 
+The orange color is for *sw* instruction (`sw x1, 0x20, x0`). Execution *sw* instruction in our pipeline is divided into two steps:
+1. First step, marked in orange. During second clock cycle, we can notice address *0x04* is set. Orange color.
+2. Second step, marked in green. During fourth clock cycle, we can see address *0x20* is set, but it's "mistake" We don't want execute instruction from this address. We are using one bus, it's a reason.
 
+It is worth paying attention to the instruction from the *0x08* address. 
+https://pl.wikipedia.org/wiki/Bariera_pami%C4%99ci
 
 ![simwrt](https://user-images.githubusercontent.com/43972902/115560662-18930280-a2b5-11eb-9ddf-4211634cbab7.png)
 
