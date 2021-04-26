@@ -365,8 +365,7 @@ The second task of *select_wr* block is preparing *be* singal. If we want to sav
 
 #### Data flow of reading to memory <a name="dfrd"></a> [UP↑](#tof)
 Reading data from memory is very similar to writing. As we can see below in the image of data flow, the select of address is analogously, but with writing to the memory, we have to wait until the data appears in the *RDATA* register. This happens only in the next edge of the clock, after the instruction is in the execute phase. Then the path *wr* will be set, and writing to the register will take place during third clock cycle. The *select_rd* block does the inverse function of *select_wr*. Based on the two youngest bits of the address and the size of the read data, it cuts the necessary data from the word of the memory being read. After this, they are moved to the beginning of the registry. So that the address "floats" together with the data, it is delayed by one clock tick before being given to the *select_rd* block. If an entire word is read, it's simply entered into the registry. However, for half a word and one byte there is an additional option.
-The *sh* and *sb* instructions treat the value as a signed number, so they complete the unused register with the oldest bit of the variable. However, if we want to represent only positive numbers, we can use the *shu* and *sbu* instructions, which will always complete them with zeros.   
-
+The *sh* and *sb* instructions treat the value as a signed number, so they complete the unused register with the oldest bit of the variable. However, if we want to represent only positive numbers, we can use the *shu* and *sbu* instructions, which will always complete them with zeros. 
 
 | ![wrtdat](https://user-images.githubusercontent.com/43972902/116076806-02aa8680-a695-11eb-8841-0b70f1da57bd.png) |
 |:--:|
@@ -526,13 +525,21 @@ Below we can see the simulation above the code (from the table). The last line d
 
 #### Pipeline to read from memory <a name="pipelrdt"></a> [UP↑](#tof)
 
+ For a better understanding of the problem, let's analyze the code from the table: <br/>
+| Line number: | Address in PC | Instruction | Instruction after assembling | Equivalent machine code | 
+|:--:|:--:|:--:|:--:|:--:|
+| 1. | 0x00 | li x1, 10 | addi x1 x0 10 | 0x00a00093 |
+| 2. | 0x04 | lw x1, 0x14, x0 | lw x1 20(x0) | 0x02102023 |
+| 3. | 0x08 | li x1, 1 | addi x1 x0 1 | 0x00100093 |
+| 4. | 0x0c | li x1, 2 | addi x1 x0 2 | 0x00200093 |
+| 5. | 0x10 | li x1, 3 | addi x1 x0 3 | 0x00300093 |
+
+The above code is very similar to the previous one. The difference is that the *sw* instruction is replaced with *lw* and the number *255* is entered into the memory word at the address *0x14*. <br/>
+The below figure shows the instruction pipeline during execution fo the program. The *lw* instruction is marked in orange. At the moment of *lw* execution, the data address to be loaded is set, which was marked in green. For executing next instructions after reading the data into the register, the *PC* value is restored to the previous position by subtracting by *4*. This memory reading is simpler but takes 3 cycles. The *ctrl* module is responsible for generating the appropriate control signals. 
+
 | ![dfrd](https://user-images.githubusercontent.com/43972902/116079472-23281000-a698-11eb-9210-9f6f6ec94b57.png) |
 |:--:|
 | *Source: Elektronika Praktyczna 11.2019, p. 136* |
-
-
-
-
 
 
 
