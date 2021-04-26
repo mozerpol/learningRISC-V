@@ -509,9 +509,7 @@ The orange color is for *sw* instruction (`sw x1, 0x20, x0`). Execution *sw* ins
 1. First step, marked in orange. During second clock cycle, we can notice address *0x04* is set. Orange color.
 2. Second step, marked in green. During fourth clock cycle, we can see address *0x20* is set, but it's "mistake" We don't want execute instruction from this address. We are using one bus, it's a reason.
 
-It is worth paying attention to the instruction from the *0x08* address. 
-https://pl.wikipedia.org/wiki/Bariera_pami%C4%99ci
-
+Below we can see the simulation above the code (from the table). The last line displays the content of the eighth word in RAM, which contain bytes from 32 to 36. In 6 μs we see that value is written from the register *x1*. In the next clock cycle to *x1* is writing number *1*. An *nop* instruction is injected at the rising clock edge in 8 μs, which (*nop* instruction) replaces the data while writing. Earlier this word wasn't saved in the memory, so is marked with a red line (means as undefined). Inserting the number *2* into *x1* takes place only during the next clock cycle (9 μs). 
 ![simwrt](https://user-images.githubusercontent.com/43972902/115560662-18930280-a2b5-11eb-9ddf-4211634cbab7.png)
 
 
