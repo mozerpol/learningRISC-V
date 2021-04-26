@@ -19,10 +19,12 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     5. [Data flow for "U" format](#dfuf) 
     6. [Data flow for conditional instructions](#cond)
     7. [Data flow of writing to memory](#dfwrtm)
+    8. [Data flow of reading to memory](#dfrd)
 9. [Pipelining](#pipel)
     1. [Pipelining for jump instructions](#pipeljal)
     2. [Pipelining for conditional jumps](#pipeljump)
     3. [Pipelining for writing to memory](#pipelwrt)
+    4. [Pipeline to read from memory](#pipelrdt)
 
 ### Tutorials:
 1. First link is about very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free: <br/>
@@ -361,6 +363,14 @@ To the memory (*WDATA* part) will be written second value from register, but bef
 First task of *select_wr* block is suitable setting of bits for saving, so as to (pol. *tak aby*) target position in memory. <br/>
 The second task of *select_wr* block is preparing *be* singal. If we want to save the whole word to memory then *be* signal has four bits set on *1*, if we want to save the half word to memory then *be* signal is set on: *0011*, if we want to save the half word to memory then *be* signal is set on: *0001*.
 
+#### Data flow of reading to memory <a name="dfrd"></a> [UP↑](#tof)
+Reading data from memory is very similar to writing. As we can see below in the image of data flow, the select of address is analogously, but with writing to the memory, we have to wait until the data appears in the *RDATA* register. This happens only in the next edge of the clock, after the instruction is in the execute phase. 
+
+| ![wrtdat](https://user-images.githubusercontent.com/43972902/116076806-02aa8680-a695-11eb-8841-0b70f1da57bd.png) |
+|:--:|
+| *Data flow while reading from memory* |
+| Source: *Elektronika Praktyczna 11.2019, p. 135*  |
+
 ### Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
 | ![pipePhase](https://user-images.githubusercontent.com/43972902/115115423-b5dbf700-9f94-11eb-8fc9-7bd260f1bc31.png) |
@@ -512,8 +522,11 @@ The orange color is for *sw* instruction (`sw x1, 0x20, x0`). Execution *sw* ins
 Below we can see the simulation above the code (from the table). The last line displays the content of the eighth word in RAM, which contain bytes from 32 to 36. In 6 μs we see that value is written from the register *x1*. In the next clock cycle to *x1* is writing number *1*. An *nop* instruction is injected at the rising clock edge in 8 μs, which (*nop* instruction) replaces the data while writing. Earlier this word wasn't saved in the memory, so is marked with a red line (means as undefined). Inserting the number *2* into *x1* takes place only during the next clock cycle (9 μs). 
 ![simwrt](https://user-images.githubusercontent.com/43972902/115560662-18930280-a2b5-11eb-9ddf-4211634cbab7.png)
 
+#### Pipeline to read from memory <a name="pipelrdt"></a> [UP↑](#tof)
 
-
+| ![dfrd](https://user-images.githubusercontent.com/43972902/116079472-23281000-a698-11eb-9210-9f6f6ec94b57.png) |
+|:--:|
+| *Source: Elektronika Praktyczna 11.2019, p. 136* |
 
 
 
