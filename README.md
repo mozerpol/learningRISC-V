@@ -8,8 +8,17 @@ In this project I'll put everything related to RISC-V. I learn this technology f
 2. [Simulator](#Simulator)
 3. [Documentation](#Documentation)
 4. [A little bit about registers](#registers)
-5. [About the instructions](#instructions)
+5. [About instructions](#instructions)
 6. [Terms needing explanation](#terms)
+    1. [ISA](#ISA)
+    2. [Opcode](#Opcode)
+    3. [Two's complement](#TWC)
+    4. [Program Counter](#PC)
+    5. [Address space](#adrSpac)
+    6. [Virtual memory](#virtMem)
+    7. [C-string](#Cstr)
+    8. [Assembly directives](#asmdir)
+    9. [MMIO](#MMIO)
 7. [Core structure](#core)
 8. [Operations on registers and data flow](#oper)
     1. [Data flow for "I" format](#dfi)
@@ -26,14 +35,14 @@ In this project I'll put everything related to RISC-V. I learn this technology f
     3. [Pipelining for writing to memory](#pipelwrt)
     4. [Pipeline to read from memory](#pipelrdt)
 
-### Tutorials:
+### 1. Tutorials:
 1. First link is about very important tutorial for me. Why? Because it's in my mother language and I had easy access to it :) This tutorial has four parts. The first two describe what a RISC-V is, the basics of assembly language and how instructions work. The third part is discussed how to write own siple soft core using SystemVerilog language. The last part is describe implementation RISC-V on FPGA board (based on MAX10). This tutorial was published in the *Elektronika Praktyczna* magazine. Fortunately, however, the first part is available online for free: <br/>
     [08.12.2020] https://ep.com.pl/podzespoly/12992-risc-v-budujemy-wlasny-mikrokontroler-1 <br/>
     The second part of the course is available in the issue from: 10.2019, pages 116-123/140 <br/>
     The third part of the course is available in the issue from: 11.2019, pages 131-137/140 <br/>
     The last part part (fourth) of the course is available in the issue from: 12.2019, pages 123-124/140 <br/>
 
-### Simulator <a name="Simulator"></a> [UP↑](#tof)
+### 2. Simulator <a name="Simulator"></a> [UP↑](#tof)
 For learning assembly language, I highly recommend using this simulator:
 [08.12.2020] https://www.kvakil.me/venus/
 This simulator has two parts:
@@ -62,7 +71,7 @@ On the left side you can see register numbers (from 0 to 31) with their mnemonic
 
 Very important thing. If you go from the `Simulator` tab to the `Editor` it will be the same as clicking on the `Reset` button, so all registers will return to the factory state.
 
-### Documentation <a name="Documentation"></a> [UP↑](#tof)
+### 3. Documentation <a name="Documentation"></a> [UP↑](#tof)
 The documentation consists of three documents:
 1. User-Level ISA Specification <br/>
 There is the user level ISA specification. The most important thing is that it discusses the basic instructions and core elements. Here are highlighted instructions for RV32I, RV32E, RV64I and RV128I. What does ISA means is in [Terms needing explanation](#terms).
@@ -74,7 +83,7 @@ Link v1.10 [13.12.2020]: https://riscv.org/wp-content/uploads/2017/05/riscv-priv
 Describes a standard, that enables debugging.
 Link 0.13.2 [13.12.2020]: https://riscv.org/wp-content/uploads/2019/03/riscv-debug-release.pdf
 
-### A little bit about registers <a name="registers"></a> [UP↑](#tof)
+### 4. A little bit about registers <a name="registers"></a> [UP↑](#tof)
 In this repository, I will focus on the RV32I version. RV32I means, that we have *32* general purpose registers, which are marked from *x0* up to *x31*. *x0* register is equal always *0*! Each registry has a own purpose and it's good practice to follow this (eng version):
 | ![register_meaning_eng](https://user-images.githubusercontent.com/43972902/101699645-cd9dee80-3a7b-11eb-8cf3-f64590fea00f.png) |
 |:--:|
@@ -87,7 +96,7 @@ Pl version:
 
 For example *x4* register is used as a thread pointer. 
 
-### About the instructions <a name="instructions"></a> [UP↑](#tof)
+### 5. About instructions <a name="instructions"></a> [UP↑](#tof)
 There are 6 instruction formats in RISC-V:
 1. **R** - instructions that use three registers as input, e.g. *add*, *xor* or *mul*.
 2. **I** - instructions with immediate loading, e.g. *lw*, *addi*, *jalr* or *slli*.
@@ -125,8 +134,8 @@ In Polish language:
 
 [Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
 
-### Terms needing explanation <a name="terms"></a> [UP↑](#tof)
-1. ISA <a name="ISA"></a> - *instruction set architecture*
+### 6. Terms needing explanation <a name="terms"></a> [UP↑](#tof)
+1. ISA <a name="ISA"></a> - *instruction set architecture* 
 It is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
 	- data types - kind and range,
@@ -134,9 +143,9 @@ It is an abstract model of a computer. On this model consists of:
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
-2. Opcode <a name="Opcode"></a>
+2. Opcode <a name="Opcode"></a>  [UP↑](#tof) <br/>
 It's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). <br/>
+3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). [UP↑](#tof) <br/>
 It's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 How to convert U2 to dec? It is easy :) <br/>
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
@@ -169,10 +178,10 @@ I put below table with all the possible 4-bit numbers in U2 notation: <br/>
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) <br/>
+4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) [UP↑](#tof) <br/>
 It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns are implemented. 
 
-5. Address space <a name="adrSpac"></a> <br/>
+5. Address space <a name="adrSpac"></a> [UP↑](#tof) <br/>
 It is a memory map, which is available for memory process, which may correspond to a network host, peripheral device or disk sector. The most common things of the address space is: 
 - [Machine code](https://en.wikipedia.org/wiki/Machine_code) - is a low-level programming language used to directly control a computer's central processing unit (CPU). 
 - [Shared memory](https://en.wikipedia.org/wiki/Shared_memory) - is memory that may be simultaneously accessed by multiple programs. 
@@ -201,15 +210,16 @@ The .data segment contains any global or static variables which have a pre-defin
 It's the portion of (pol. *jest częścią*) code that contains statically allocated variables that are declared but have not been assigned a value yet. On some platforms, some or all of the bss section is initialized to zeroes.
 - Text - the code segment, also known as a text segment, contains executable instructions and is generally read-only and fixed size. <br/><br/>
 Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
-6. Virtual memory <a name="virtMem"></a> <br/>
+6. Virtual memory <a name="virtMem"></a> [UP↑](#tof) <br/>
 It's a computer memory management mechanism that gives the process the impression (pol. *wrażenie*) of working in one large, continuous/uniform area of main memory while physically it may be fragmented, discontinuous, and partially stored on storage devices. Using different words. It's a computer concept where the main memory is broken up into a series of individual pages. Those pages can be moved in memory as a unit, or they can even be moved to secondary storage to make room in main memory for new data. In essence, virtual memory allows a computer to use more RAM then it has available.
 7. C-string <a name="Cstr"></a> - a string of characters in the style of the *C language*, that is, a byte array terminated with a zero.  
-8. Assembly directives - also called pseudo-opcodes <br/>
-The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembly directives are commands for assembler that tell to perform operations other than assembler instructions. Directives affect how the assembler operates and may affect the finish code.
-9. .asciiz - assembly directive <br/>
+8. Assembly directives - also called pseudo-opcodes <a name="asmdir"></a> [UP↑](#tof) <br/>
+The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembly directives are commands for assembler that tell to perform operations other than assembler instructions. Directives affect how the assembler operates and may affect the finish code. <br/>
+.asciiz - assembly directive <br/>
 `.asciiz` means that the string is terminated by the `\0` (ASCII code *0*, *NULL* character). They are even called *C-strings*.
+9. MMIO - Memory-Mapped Input/Output <a name="MMIO"></a> [UP↑](#tof)
 
-### Core structure <a name="core"></a> [UP↑](#tof)
+### 7. Core structure <a name="core"></a> [UP↑](#tof)
 The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *datinzynierzya path*. 
 
 | ![dataPath](https://user-images.githubusercontent.com/43972902/114409650-f3aed900-9baa-11eb-99fb-3b099da377fd.png) |
@@ -241,7 +251,7 @@ Next during second clock first step are saving to the *INST* reg and simultaneou
 During third clock first instruction is executing, second instruction is saving to the *INST* reg and we are setting the address of third instruction. <br/>
 So we can say that our pipelinig has three stages, thanks to this we can execute three instructions in 5 clocks instead 9. Generally execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*. But sometimes pipelining, especially in large processors is a problem. For example when we have jump instructions. The address of next instruction we know on the last stage (in our case it'll be third stage - then we know in case jump instruction which instruction will be next). It means that sometimes in pipelining, core must have clean the all instructions from pipeline. In our case cleaning pipeline will take two clocks more for filling pipeline once again. In our processor it's not a big problem, but for large devices with a lot of stages it can be very time-consuming, so sometimes to avoid this (cleaning pipeline) engineers are implementing branch prediction methods.
 
-### Operations on registers and data flow <a name="oper"></a> [UP↑](#tof)
+### 8. Operations on registers and data flow <a name="oper"></a> [UP↑](#tof)
 #### Data flow for "I" format (OP-IMM family) <a name="dfi"></a> [UP↑](#tof)
 | ![flowDiagram](https://user-images.githubusercontent.com/43972902/114609471-24703a80-9c9f-11eb-8357-ac53b80aba46.png) |
 |:--:|
@@ -372,7 +382,7 @@ The *sh* and *sb* instructions treat the value as a signed number, so they compl
 | *Data flow while reading from memory* |
 | Source: *Elektronika Praktyczna 11.2019, p. 135*  |
 
-### Pipelining <a name="pipel"></a> [UP↑](#tof)
+### 9. Pipelining <a name="pipel"></a> [UP↑](#tof)
 We know that execution the three instructions will take five cycle clocks (instead 9), because execution of *n* instructions divided by *p* steps will take *n*+*p*-*1* clocks instead *n* * *p*.
 | ![pipePhase](https://user-images.githubusercontent.com/43972902/115115423-b5dbf700-9f94-11eb-8fc9-7bd260f1bc31.png) |
 |:--:|
