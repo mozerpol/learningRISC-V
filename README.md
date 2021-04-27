@@ -135,7 +135,7 @@ In Polish language:
 [Here](https://github.com/mozerpol/learningRISC-V/tree/main/instructions) I explain the most popular instructions with examples.
 
 ### 6. Terms needing explanation <a name="terms"></a> [UP↑](#tof)
-1. ISA <a name="ISA"></a> - *instruction set architecture* 
+1. **ISA** <a name="ISA"></a> - *instruction set architecture* 
 It is an abstract model of a computer. On this model consists of:
 	- instruction listings - the set of instructions that the processor can execute,
 	- data types - kind and range,
@@ -143,9 +143,9 @@ It is an abstract model of a computer. On this model consists of:
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
 Examples of ISA: ARM, AMD64 or Intel 64.
-2. Opcode <a name="Opcode"></a>  [UP↑](#tof) <br/>
+2. **Opcode** <a name="Opcode"></a>  [UP↑](#tof) <br/>
 It's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. Two's complement <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). [UP↑](#tof) <br/>
+3. **Two's complement** <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). [UP↑](#tof) <br/>
 It's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 How to convert U2 to dec? It is easy :) <br/>
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
@@ -178,10 +178,10 @@ I put below table with all the possible 4-bit numbers in U2 notation: <br/>
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-4. Program Counter (PC) <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) [UP↑](#tof) <br/>
+4. **Program Counter (PC)** <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) [UP↑](#tof) <br/>
 It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns are implemented. 
 
-5. Address space <a name="adrSpac"></a> [UP↑](#tof) <br/>
+5. **Address space** <a name="adrSpac"></a> [UP↑](#tof) <br/>
 It is a memory map, which is available for memory process, which may correspond to a network host, peripheral device or disk sector. The most common things of the address space is: 
 - [Machine code](https://en.wikipedia.org/wiki/Machine_code) - is a low-level programming language used to directly control a computer's central processing unit (CPU). 
 - [Shared memory](https://en.wikipedia.org/wiki/Shared_memory) - is memory that may be simultaneously accessed by multiple programs. 
@@ -210,14 +210,16 @@ The .data segment contains any global or static variables which have a pre-defin
 It's the portion of (pol. *jest częścią*) code that contains statically allocated variables that are declared but have not been assigned a value yet. On some platforms, some or all of the bss section is initialized to zeroes.
 - Text - the code segment, also known as a text segment, contains executable instructions and is generally read-only and fixed size. <br/><br/>
 Not all memory from memory map has to be equivalent in physical memory, it can be implemented by virtual memory mechanism. 
-6. Virtual memory <a name="virtMem"></a> [UP↑](#tof) <br/>
+6. **Virtual memory** <a name="virtMem"></a> [UP↑](#tof) <br/>
 It's a computer memory management mechanism that gives the process the impression (pol. *wrażenie*) of working in one large, continuous/uniform area of main memory while physically it may be fragmented, discontinuous, and partially stored on storage devices. Using different words. It's a computer concept where the main memory is broken up into a series of individual pages. Those pages can be moved in memory as a unit, or they can even be moved to secondary storage to make room in main memory for new data. In essence, virtual memory allows a computer to use more RAM then it has available.
-7. C-string <a name="Cstr"></a> - a string of characters in the style of the *C language*, that is, a byte array terminated with a zero.  
-8. Assembly directives - also called pseudo-opcodes <a name="asmdir"></a> [UP↑](#tof) <br/>
+7. **C-string** <a name="Cstr"></a> - a string of characters in the style of the *C language*, that is, a byte array terminated with a zero.  
+8. **Assembly directives** - also called pseudo-opcodes <a name="asmdir"></a> [UP↑](#tof) <br/>
 The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembly directives are commands for assembler that tell to perform operations other than assembler instructions. Directives affect how the assembler operates and may affect the finish code. <br/>
 .asciiz - assembly directive <br/>
 `.asciiz` means that the string is terminated by the `\0` (ASCII code *0*, *NULL* character). They are even called *C-strings*.
-9. MMIO - Memory-Mapped Input/Output <a name="MMIO"></a> [UP↑](#tof)
+9. **MMIO - Memory-Mapped Input/Output** <a name="MMIO"></a> [UP↑](#tof) <br/>
+*MMIO* - is a technique that assigns addresses for registers of external devices. It facilitates access to perform operations on input/output devices. Thanks to *MMIO* we have easy access to extrernal devices without additional instructions, we can simply use *load* or *store* instructions. In this method, the registers of devices are mapped in the address space under the given address. This means that writings and readings to memory at this address, performed by the processor, causes access to external devices, instead main memory. Thanks to this, communication with the device becomes easier because it is not different than access to the operating memory. <br/>
+The main disadvantage of this solution is the fact that the range of address space used in this way can't be used for communication with main memory. 
 
 ### 7. Core structure <a name="core"></a> [UP↑](#tof)
 The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *datinzynierzya path*. 
