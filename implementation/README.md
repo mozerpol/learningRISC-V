@@ -16,15 +16,14 @@ learningRISC-V
 |     .
 |     . 
 |   |___SW
-|___microcontroller
-|   |___code   <--- you are here
-|       |___alteraProject
-|       |___myOwnMPU_code
-|       |___rysyCore_code
-|           |___code
-|           |___core
-|           |___documentation
-|           |___peripheral
-|           |___scripts
+|___implementation  <--- you are here
+|   |___alteraProject
+|   |___myOwnMPU_code
+|   |___rysyCore_code
+|       |___code
+|       |___core
+|       |___documentation
+|       |___peripheral
+|       |___scripts
 ```
 
