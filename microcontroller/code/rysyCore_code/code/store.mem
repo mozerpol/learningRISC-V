@@ -1,0 +1,9 @@
+00300093 // addi x1 x0 3            li      x1 3
+00000117 // auipc x2 0              la      x2 array
+02010113 // addi x2 x2 32           la      x2 array
+00209193 // slli x3 x1 2            slli    x3 x1 2
+003101b3 // add x3 x2 x3            add     x3 x2 x3
+0011a023 // sw x1 0(x3)             sw      x1 0(x3)
+fff08093 // addi x1 x1 -1           addi    x1 x1 -1
+fe0098e3 // bne x1 x0 -16           bnez    x1 loop
+fe1ff06f // jal x0 -32              j start

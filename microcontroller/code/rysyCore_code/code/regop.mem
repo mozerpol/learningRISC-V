@@ -1,0 +1,8 @@
+123450b7 // lui x1 74565            lui     x1, 0x12345
+67808093 // addi x1 x1 1656         addi    x1, x1, 0x678
+fff0f113 // andi x2 x1 -1           andi    x2, x1, -1
+00f0e193 // ori x3 x1 15            ori     x3, x1, 0xf
+fff02213 // slti x4 x0 -1           slti    x4, x0, -1
+fff03293 // sltiu x5 x0 -1          sltiu   x5, x0, -1
+002001b3 // add x3 x0 x2            add     x3, x0, x2
+0000006f // jal x0 0                j end
