@@ -1,5 +1,14 @@
+# Table of contents <a name="tof"></a>
+1. About this part of the repository
+2. Repository tree
+3. Code semantics
+    1. rysy_pkg.sv
+    2. alu.sv
+
+## 1. About this part of the repository
 In this file I will explain how the code written in SystemVerilog by Rafal Kozik works and I'll try translate it to Verilog language. Core written in SystemVerilog you can find in `learningRISC-V/implementation/rysyCore_code/code/` the author is Rafal Kozik and [here](https://gitlab.com/rysy_core/rysy_core) is the project page on gitlab.
-Repository tree: <br/>
+
+## 2. Repository tree
 ```
 learningRISC-V
 |___instructions
@@ -22,10 +31,7 @@ learningRISC-V
 |       |___scripts
 ```
 
-## Table of contents <a name="tof"></a>
-1. rysy_pkg.sv
-2. alu.sv
-
+## 3. Code semantics
 ### 1. rysy_pkg.sv
 **8 line:** `` `default_nettype none `` <br/>
 It's the directive and means that, declaring variables is not required. The compiler can create a variable the first time you use it. So for example sometimes it can cause a problem if you make a typo (pol. *literówka*), then compiler will create a new variable, instead of pointing to an error. To turn it off (creating new variables without declaring) we must write this instruction. And it's very important! Good practice is on the end of file turning off this option using: `` `default_nettype wire `` (line: 19). <br/>
@@ -33,7 +39,8 @@ It's the directive and means that, declaring variables is not required. The comp
 Packages provide a mechanism for storing and sharing data, methods, property, parameters that can be re-used in other modules. It's something like header with **.c* functions in one file. Packages can be imported into the current scope where items in that package can be used. <br/>
 All packages have to be enclosed within the `package` and `endpackage` keywords. <br/>
 **12 line:** `localparam int REG_LEN = 32;` <br/>
-Localparam prevents the values to be overwritten (directly) from outside the module. Once the variables are declared with *localparam* the values stays constant. 
+*Localparam* prevents the values to be overwritten (directly) from outside the module. Once the variables are declared with *localparam* the values stays constant. <br/>
+*int* - 
 
 ### 2. alu.sv
 **8 line:** `` `default_nettype none `` <br/> 
