@@ -61,6 +61,7 @@ All packages have to be enclosed within the `package` and `endpackage` keywords.
 **13 line:** `typedef enum bit [3:0]` <br/>
 *typedef* - creating a abbreviation for an existing data type, syntax: *typedef data_type type_name [range];*. <br/>
 *enum* - enumerated type defines a set of named values. For example: *enum  {RED, GREEN, BLUE} color; // it's int type, RED = 0, GREEN = 1, BLUE = 2* <br/>
+*bit* - 2-state data type, it can be *0* or *1*. <br/>
 **24 line:** `} alu_op;` <br/>
 It's part of *enum* type, exactly the end of *enum*. Thanks to this we can use *alu_op = 0001* (because our data type is bit [3:0]) to select second option in enum. 
 **27 line:** `module alu` <br/>
@@ -79,8 +80,14 @@ So, in this line we are creating a 32 bit vector net named *alu_in1*. If we want
 But it is important to remember that this network is numbered in that order: 31, 30, 29, ..., 0. If we want to reverse the order (0, 1, 2, 3, ..., 31), we have to declare the net this way: <br/>
 *input wire [0:REG_LEN-1]alu_in1*. <br/>
 **30 line:** `input aluPkg::alu_op alu_op` <br/>
-
-
+Ok, it works as: import from package *aluPkg* type *alu_op* and create a variable of this type named *alu_op*. So, if we'll write *input aluPkg::alu_op alu_asdf*, it means: import from package *aluPkg* type *alu_op* and create a variable of this type named *alu_asdf*. Our new variable *alu_asdf* will be input to our module. <br/>
+**33 line:** `logic signed [REG_LEN-1:0] o;` <br/>
+*logic* - 4-state data type, it can be *0*, *1*, *x*, *z*. <br/>
+*signed* - a signed representation. <br/>
+**34 line:** `assign alu_out = o;` <br/>
+*assign* - it will be easiest to understand with an example, using a metaphor. Imagine breadboard in which you have *+5 V* battery and LED. As long as the battery is connected to the LED, the LED is on. Connection between LED and battery represent *assign*. We're using *assign* to the data types, which requires the continuous assignment of the value. We have also the strength and delay, but it's optional and are mostly used for dataflow modeling than synthesizing into real hardware. Delay values are useful for specifying delays for gates and are used to model timing behavior in real hardware: <br/>
+*assign <net_expression = [drive_strength] [delay] <expression of different signals or constant value>* <br/>
+Very important thing, we're not using *assign* inisde always blocks! So sum up, *assign* statements are also called continuous assignments and are always active. 
 
 
 
