@@ -88,9 +88,19 @@ Ok, it works as: import from package *aluPkg* type *alu_op* and create a variabl
 *assign* - it will be easiest to understand with an example, using a metaphor. Imagine breadboard in which you have *+5 V* battery and LED. As long as the battery is connected to the LED, the LED is on. Connection between LED and battery represent *assign*. We're using *assign* to the data types, which requires the continuous assignment of the value. We have also the strength and delay, but it's optional and are mostly used for dataflow modeling than synthesizing into real hardware. Delay values are useful for specifying delays for gates and are used to model timing behavior in real hardware: <br/>
 *assign <net_expression = [drive_strength] [delay] <expression of different signals or constant value>* <br/>
 Very important thing, we're not using *assign* inisde always blocks! So sum up, *assign* statements are also called continuous assignments and are always active. 
-
-
-
+**41 line:** `always_comb begin` <br/>
+SystemVerilog defines four forms of always procedures: *always*, *always_comb*, *always_ff*, *always_latch*. To understand this, we must know what do *always @** in Verilog (not in SystemVerilog). *always@* blocks are used to describe events that should happen under certain conditions. Below is example of *always@* block: <br/>
+always @( ...  sensitivity  list  ... ) begin <br/>
+    // elements <br/>
+end <br/>
+The contents of the *always@* block, namely *elements* describe elements that should be set when the sensitivity list is "satisfied". So when the sensitivity list is "satisfied", the elements inside th *ealways@* block are set/updated. Elements in an *always@* block are set/updated in sequentially and in parallel, depending on the type of assignment used. There are two types of assignments: *<=* (non-blocking) and *=* (blocking). Example of always block with sensitivity list can be: *always@(posedge Clock)*. <br/>
+Only *=* (blocking) assignments should be used in an *always@** block.
+The definition of *always @** is: infer (pol. *wywnioskować*) my sensitivity list from the contents of the block. <br/>
+So SystemVerilog fixes some of the *always@** limitations in several ways:
+- *always_comb* automatically executes once at time zero, whereas *always@** waits until a change occurs on a signal in the inferred sensitivity list. 
+- *always_comb* is sensitive to changes within the contents of a function, whereas *always@* is only sensitive to changes to the arguments of a function.
+- Statements in an *always_comb* cannot include those that block, have blocking timing or event controls.
+**42 line:** `case (alu_op)` <br/>
 
 
 
