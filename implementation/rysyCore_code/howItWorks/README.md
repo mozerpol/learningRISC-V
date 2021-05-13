@@ -55,13 +55,21 @@ It's the directive and means that, declaring variables is not required. The comp
 **10 line:** `` `import rysyPkg::*; `` <br/>
 Packages provide a mechanism for storing and sharing data, methods, property, parameters that can be re-used in other modules. It's something like header with **.c* functions in one file. Packages can be imported into the current scope where items in that package can be used. <br/>
 All packages have to be enclosed within the `package` and `endpackage` keywords. So if we want import package into other modules just use *import* and scope resolution operator *::*, which specifies what to import. In this line of code we import everything defined in the package as indicated by the star `*` that follows *::* operator to be able to use any of the itmes. If we don't want import everything from package, we can select by using for example: `` `import rysyPkg::the_name_of_a_function; `` <br/>
-
-
-
-
-
-
-
+**12 line:** `package aluPkg;` <br/>
+Packages provide a mechanism for storing and sharing data, methods, property, parameters that can be re-used in other modules. It's something like header with **.c* functions in one file. Packages can be imported into the current scope where items in that package can be used. <br/>
+All packages have to be enclosed within the `package` and `endpackage` keywords. <br/>
+**13 line:** `typedef enum bit [3:0]` <br/>
+*typedef* - creating a abbreviation for an existing data type, syntax: *typedef data_type type_name [range];*. <br/>
+*enum* - enumerated type defines a set of named values. For example: *enum  {RED, GREEN, BLUE} color; // it's int type, RED = 0, GREEN = 1, BLUE = 2* <br/>
+**24 line:** `} alu_op;` <br/>
+It's part of *enum* type, exactly the end of *enum*. Thanks to this we can use *alu_op = 0001* (because our data type is bit [3:0]) to select second option in enum. 
+**27 line:** `module alu` <br/>
+*module* is a block which implements a certain funcionality. Modules can be embedded within other modules and a higher module can communicate with its lower level module using their input and output ports. *module* should be enclosed within *module* and *endmodule* keywords. Name of the module should be given after the *module* keyword and an optional list of *ports* may be declared as well. Example: <br/>
+```
+module <name> ([optional_port_list]);
+    // Content of the module
+endmodule
+```
 
 
 
