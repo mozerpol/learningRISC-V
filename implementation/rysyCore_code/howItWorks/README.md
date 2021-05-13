@@ -70,6 +70,22 @@ module <name> ([optional_port_list]);
     // Content of the module
 endmodule
 ```
+**28 line:** `input wire [REG_LEN-1:0]alu_in1,` <br/>
+*input* - signal, that act as input to a particular module. <br/>
+*wire* - data type, which require the continuous assignment of the value. Ports are by default considered as nets of type *wire*. <br/> 
+*REG_LEN* - constant from *rysy_pkg* file and is equal 32. 
+So, in this line we are creating a 32 bit vector net named *alu_in1*. If we want to access the net, let's use it as a typical array: <br/>
+*alu_in1[3] = number* <br/>
+But it is important to remember that this network is numbered in that order: 31, 30, 29, ..., 0. If we want to reverse the order (0, 1, 2, 3, ..., 31), we have to declare the net this way: <br/>
+*input wire [0:REG_LEN-1]alu_in1*. <br/>
+**30 line:** `input aluPkg::alu_op alu_op` <br/>
+
+
+
+
+
+
+
 
 
 
