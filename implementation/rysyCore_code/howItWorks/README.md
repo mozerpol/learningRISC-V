@@ -195,6 +195,14 @@ The definition of *always @** is: infer (pol. *wywnioskować*) my sensitivity li
 SystemVerilog *always_ff* procedure is used to model sequential flip-flop logic. A *always_ff* procedure adds a restriction that it can contain one and only one event control and no blocking timing controls. Variables written on the left-hand side of assignments within *always_ff*, including variables from contents of a called function, cannot be written by other processes. <br/>
 *begin* - it's like brackets in C. If we have one statement in our function, it's not necessary use *begin* - *end* <br/>
 **30 line:** `old_pc[1] <= pc;` <br/>
+**Blocking** assignment statements are assigned using **=** and are executed one after other in a procedural block. <br/>
+**Non-blocking** assignment allows assignments to be scheduleld without blocking the execution of the following statements and is specified by a **<=** symbol. The same symbol is used as a relational operator in expressions. So we can say that *<=* is non-blocking like in the nature. This means that in an *always* block, every line will be executed in parallel. This leads to the implementation of sequential elements.
+**34 line:** `always_comb` <br/>
+- *always_comb* automatically executes once at time zero, whereas *always@** waits until a change occurs on a signal in the inferred sensitivity list. 
+- *always_comb* is sensitive to changes within the contents of a function, whereas *always@* is only sensitive to changes to the arguments of a function.
+- Statements in an *always_comb* cannot include those that block, have blocking timing or event controls. 
+
+
 
 
 
