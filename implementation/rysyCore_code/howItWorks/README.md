@@ -175,13 +175,33 @@ Packed array of bit types: <br/>
 | ![obraz](https://user-images.githubusercontent.com/43972902/118252980-ad021680-b4a9-11eb-83e2-71a9c01c714f.png) |
 |:--:|
 | source: *https://verificationguide.com/images/systemverilog/array/packed_array_systemverilog.png* [14.05.2021] |
+
 Unpacked array of real types: <br/>
 `bit temp_var [7:0];` <br/>
 | ![obraz](https://user-images.githubusercontent.com/43972902/118253164-df137880-b4a9-11eb-86dc-7ae30af4e5c1.png) |
 |:--:|
 | source *https://verificationguide.com/images/systemverilog/array/unpacked_array_systemverilog.png* [14.05.2021]|
 
-`always_ff @(posedge clk) begin`
+**29 line:** `always_ff @(posedge clk) begin`
+SystemVerilog defines four forms of always procedures: *always*, *always_comb*, *always_ff*, *always_latch*. To understand this, we must know what do *always@** in Verilog (not in SystemVerilog). *always@* blocks are used to describe events that should happen under certain conditions. Below is example of *always@* block: <br/>
+```
+always @( ...  sensitivity  list  ... ) begin
+    // elements
+end
+```
+The contents of the *always@* block, namely *elements* describe elements that should be set when the sensitivity list is "satisfied". So when the sensitivity list is "satisfied", the elements inside th *ealways@* block are set/updated. Elements in an *always@* block are set/updated in sequentially and in parallel, depending on the type of assignment used. There are two types of assignments: *<=* (non-blocking) and *=* (blocking). Example of always block with sensitivity list can be: *always@(posedge Clock)*. <br/>
+Only *=* (blocking) assignments should be used in an *always@** block.
+The definition of *always @** is: infer (pol. *wywnioskować*) my sensitivity list from the contents of the block. <br/>
+SystemVerilog *always_ff* procedure is used to model sequential flip-flop logic. A *always_ff* procedure adds a restriction that it can contain one and only one event control and no blocking timing controls. Variables written on the left-hand side of assignments within *always_ff*, including variables from contents of a called function, cannot be written by other processes. <br/>
+*begin* - it's like brackets in C. If we have one statement in our function, it's not necessary use *begin* - *end* <br/>
+**30 line:** `old_pc[1] <= pc;` <br/>
+
+
+
+
+
+
+
 
 
 
