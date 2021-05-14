@@ -5,6 +5,8 @@
     1. [rysy_pkg.sv](#rysypkg)
     2. [alu.sv](#alu)
     3. [alu1_mux.sv](#alu1mux)
+    4. [alu2_mux.sv](#alu2mux)
+    5.  [alu_tb.sv](#alutb)
 
 ## 1. About this part of the repository
 In this file I will explain how the code written in SystemVerilog by Rafal Kozik works and I'll try translate it to Verilog language. Core written in SystemVerilog you can find in `learningRISC-V/implementation/rysyCore_code/code/` the author is Rafal Kozik and [here](https://gitlab.com/rysy_core/rysy_core) is the project page on gitlab.
@@ -202,7 +204,14 @@ SystemVerilog *always_ff* procedure is used to model sequential flip-flop logic.
 - *always_comb* is sensitive to changes within the contents of a function, whereas *always@* is only sensitive to changes to the arguments of a function.
 - Statements in an *always_comb* cannot include those that block, have blocking timing or event controls. 
 
+________________________________________
+**From now on, I will only describe the differences between the files. Doesn't make sense in rewriting the same things.**
+________________________________________
 
+### 4. alu2_mux.sv <a name="alu2mux"></a> [UP↑](#tof)
+*alu2_mux.sv* file contains almost the same things as *alu1_mux.sv*, so there is no make any sense write once again the same things. *alu2_mux.sv* is no new stuff.
+
+### 5. alu_tb.sv <a name="alutb"></a> [UP↑](#tof)
 
 
 
