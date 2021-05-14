@@ -130,7 +130,7 @@ endcase
 **51 line:** `aluPkg::SLT: o = alu_in1_s < alu_in2_s;` <br/>
 *^* - it's a relational operator, which will perform *less than* operation. <br/>
 **59 line:** `` `default_nettype wire `` <br/>
-It's the directive which relates to `` `default_nettype none ``. Read description of the eight line.  
+It's the directive which relates to `` `default_nettype none ``. Read description of the eight line.
 
 ### 3. alu1_mux.sv <a name="alu1mux"></a> [UP↑](#tof)
 **8 line:** `` `default_nettype none `` <br/>
@@ -162,18 +162,26 @@ So, in this line we are creating a 32 bit vector net named *rs1_d*. If we want t
 *rs1_d[3] = number* <br/>
 But it is important to remember that this network is numbered in that order: 31, 30, 29, ..., 0. If we want to reverse the order (0, 1, 2, 3, ..., 31), we have to declare the net this way: <br/>
 *input wire [0:REG_LEN-1]rs1_d*. <br/>
+**22 line:** *input alu1Pkg::alu1_sel alu1_sel,* <br/>
+Ok, it works as: import from package *alu1Pkg* type *alu1_sel* and create a variable of this type named *alu1_sel*. So, if we'll write *input alu1Pkg::alu1_sel alu_asdf*, it means: import from package *alu1Pkg* type *alu1_sel* and create a variable of this type named *alu_asdf*. Our new variable *alu_asdf* will be input to our module. <br/>
+**24 line:** `output logic [REG_LEN-1:0] alu_in1` <br/>
+*output* - it's output from our module. <br/>
+*logic* - 4-state data type, it can be *0*, *1*, *x*, *z*. <br/>
+**27 line:** `logic [REG_LEN-1:0]old_pc[1:0];` <br/>
+Above code is unpacked array of two 32-bit vectors. <br/>
+Verilog arrays can be *packed* or *unpacked*. *Packed* array refers to dimensions declared after the type and before the data identifier name. *Unpacked* array refers to the dimensions declared after the data identifier name. A one-dimensional packed array is also called a vector. <br/>
+Packed array of bit types: <br/>
+`bit [7:0] temp_var;` <br/>
+| ![obraz](https://user-images.githubusercontent.com/43972902/118252980-ad021680-b4a9-11eb-83e2-71a9c01c714f.png) |
+|:--:|
+| source: *https://verificationguide.com/images/systemverilog/array/packed_array_systemverilog.png* [14.05.2021] |
+Unpacked array of real types: <br/>
+`bit temp_var [7:0];` <br/>
+| ![obraz](https://user-images.githubusercontent.com/43972902/118253164-df137880-b4a9-11eb-86dc-7ae30af4e5c1.png) |
+|:--:|
+| source *https://verificationguide.com/images/systemverilog/array/unpacked_array_systemverilog.png* [14.05.2021]|
 
-
-
-
-
-
-
-
-
-
-
-
+`always_ff @(posedge clk) begin`
 
 
 
