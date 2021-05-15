@@ -212,6 +212,32 @@ ________________________________________
 *alu2_mux.sv* file contains almost the same things as *alu1_mux.sv*, so there is no make any sense write once again the same things. *alu2_mux.sv* is no new stuff.
 
 ### 5. alu_tb.sv <a name="alutb"></a> [UP↑](#tof)
+A test bench or testing workbench is an environment used to verify the correctness or of a design or model. <br/>
+**9 line:** `` `timescale 100ns / 10ns `` <br/>
+The simulation in Verilog needs a time setting. The syntax looks like: `` `timescale <time_uint>/<time_precision>`, where *time_unit* is the measurement of delays and simulation time while the *time_precision* specifies how delay values are rounded before being used in simulation. </br>
+| Character | Unit |
+|:--:|:--:|
+| s | seconds |
+| ms | miliseconds |
+| us | microseconds |
+| ns | nanoseconds |
+| ps | picoseconds |
+| fs | femtoseconds |
+
+The integers in above table can be 1, 10 or 100. <br/>
+**16 line:** `alu dut` <br/>
+**DUT** is abbreviation of *device under test* also known as *equipment under test* (**EUT**) and *unit under test* (**UUT**). Also is *system under test* (**SUT**) refers to a system that is being tested for correct operation. A test bench starts off with a module declaration, in our case is *dut*. It's important to notice the test bench module does not have any inputs or outputs. It is entirely self contained (pol. *samowystarczalny*). <br/>
+**17 line:** `.alu_in1(in1),` <br/>
+Binding vars from test with vars from model. Inside bracket we have variable from test bench. `.var_from_model(var_from_test)` <br/>
+**24 line:** `logic [31:0]in1_a[] = {32'd10, 32'd3, -32'd4, 32'd4, -32'd16};` <br/>
+In this line we have example of *dynamic array*. A *dynamic array* is an unpacked array whose size can be set or changed at run time and hence (pol. *w związku z tym*) is different from a *static array* where the size is pre-determined during declaration of the array. A *dynamic array* dimensions are specified by the empty brackets *[]*. Example of a dynamic array of 8-bit vector: <br/>
+`bit [7:0] array_name [];` <br/>
+So, *logic [31:0]in1_a[]* is a dynamic array of 32-bit vector *logic* type. <br/>
+*32'd10* is 32-bit in size decimal number. <br/>
+**26 line:** `int N = ($size(in1_a) > $size(in2_a)) ? $size(in2_a) : $size(in1_a);`
+*$size* returns the size of the array, shall return the number of elements in the dimension, which is equivalent to *$high* - *$low* + *1*. When used on a dynamic array, associative array or queue, it returns information about the current state of the array. <br/>
+Conditional operator - **? :** - chooses, based on a first expression, between a second and third expression. The first expression is called the condition. If the condition is 1, the operator chooses the second expression. If the condition is 0, the operator chooses the third expression. *? :* is especially useful for describing a multiplexer because, based on the first input, it selects between two others. Syntax: `condition ? if_condition_is_equal_1 : if_condition_is_equal_0` <br/>
+**29 line:** `for (i=0; i<N; i++) begin` <br/>
 
 
 
