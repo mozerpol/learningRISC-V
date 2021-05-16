@@ -238,6 +238,21 @@ So, *logic [31:0]in1_a[]* is a dynamic array of 32-bit vector *logic* type. <br/
 *$size* returns the size of the array, shall return the number of elements in the dimension, which is equivalent to *$high* - *$low* + *1*. When used on a dynamic array, associative array or queue, it returns information about the current state of the array. <br/>
 Conditional operator - **? :** - chooses, based on a first expression, between a second and third expression. The first expression is called the condition. If the condition is 1, the operator chooses the second expression. If the condition is 0, the operator chooses the third expression. *? :* is especially useful for describing a multiplexer because, based on the first input, it selects between two others. Syntax: `condition ? if_condition_is_equal_1 : if_condition_is_equal_0` <br/>
 **29 line:** `for (i=0; i<N; i++) begin` <br/>
+A *for* loop is primarily used to replicate hardware logic. Syntax: <br/>
+```
+for(<initial_condition>; <condition>; <step_assignment>) 
+begin
+    // Statements
+end
+```
+
+**32 line:** `op = op.first;` <br/>
+In line 14 we had `aluPkg::alu_op op;`, it means: import from package *aluPkg* type *alu_op* and create a variable of this type named *op*. So in this line (32) we are selecting the first argument (*AND*) and later inside *for* loop, change to the next argument `op = op.next;`. <br/>
+SystemVerilog provides several methods for working with enumerated types. The synthesizable methods are: *.first*, *.last*, *.next*, *.prev* and *.num*.
+
+
+
+
 
 
 
