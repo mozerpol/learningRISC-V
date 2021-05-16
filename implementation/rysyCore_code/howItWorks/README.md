@@ -9,6 +9,7 @@
     5.  [alu_tb.sv](#alutb)
     6.  [cmp.sv](#cmp)
     7.  [cmp_tb.sv](#cmptb)
+    8.  [ctrl.sv](#ctrl)
 
 ## 1. About this part of the repository
 In this file I will explain how the code written in SystemVerilog by Rafal Kozik works and I'll try translate it to Verilog language. Core written in SystemVerilog you can find in `learningRISC-V/implementation/rysyCore_code/code/` the author is Rafal Kozik and [here](https://gitlab.com/rysy_core/rysy_core) is the project page on gitlab.
@@ -251,8 +252,10 @@ end
 **32 line:** `op = op.first;` <br/>
 In line 14 we had `aluPkg::alu_op op;`, it means: import from package *aluPkg* type *alu_op* and create a variable of this type named *op*. So in this line (32) we are selecting the first argument (*AND*) and later inside *for* loop, change to the next argument `op = op.next;`. <br/>
 SystemVerilog provides several methods for working with enumerated types. The synthesizable methods are: *.first*, *.last*, *.next*, *.prev* and *.num*.
+
 ### 6. cmp.sv <a name="cmp"></a> [UP↑](#tof)
 As I wrote before, doesn't make sense in rewriting the same things, and this file contains exactly the same things previously described.
+
 ### 7. cmp_tb.sv <a name="cmptb"></a> [UP↑](#tof)
 **24 line:** `localparam N = 8;` <br/>
 *Localparam* prevents the values to be overwritten (directly) from outside the module. Once the variables are declared with *localparam* the values stays constant. <br/>
@@ -279,6 +282,9 @@ If the format specification sign is used, a corresponding argument should always
 | %f, %F | Display 'real' in a decimal format |
 | %e, %E | Display 'real' in an exponential format |
 
+### 8. ctrl.sv <a name="ctrl"></a> [UP↑](#tof)
+The *ctrl* file is responsible for generating the appropriate control signals such as *alu2_sel*, *pc_sel* or *alu_op*. We can find control signals of the [diagram of the data path of the implemented microcontroller](#https://github.com/mozerpol/learningRISC-V#core). <br/>
+As for the code, I wrote before, doesn't make sense in rewriting the same things, and this file contains exactly the same things previously described.
 
 
 
