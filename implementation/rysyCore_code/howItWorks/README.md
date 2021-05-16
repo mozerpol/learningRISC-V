@@ -10,6 +10,7 @@
     6.  [cmp.sv](#cmp)
     7.  [cmp_tb.sv](#cmptb)
     8.  [ctrl.sv](#ctrl)
+    9.  [The rest of the files](#rest)
 
 ## 1. About this part of the repository
 In this file I will explain how the code written in SystemVerilog by Rafal Kozik works and I'll try translate it to Verilog language. Core written in SystemVerilog you can find in `learningRISC-V/implementation/rysyCore_code/code/` the author is Rafal Kozik and [here](https://gitlab.com/rysy_core/rysy_core) is the project page on gitlab.
@@ -286,6 +287,21 @@ If the format specification sign is used, a corresponding argument should always
 The *ctrl* file is responsible for generating the appropriate control signals such as *alu2_sel*, *pc_sel* or *alu_op*. We can find control signals of the [diagram of the data path of the implemented microcontroller](#https://github.com/mozerpol/learningRISC-V#core). <br/>
 As for the code, I wrote before, doesn't make sense in rewriting the same things, and this file contains exactly the same things previously described.
 
+### 9. The rest of the files <a name="rest"></a> [UP↑](#rest)
+Mostly there is nothing new in the next files, because of this I'll post only new things, without dividing it on new chapter-files. <br/>
+File **instruction.sv**:
+**12 line:** `typedef struct packed` <br/>
+*typedef* - creating a abbreviation for an existing data type, syntax: *typedef data_type type_name [range];*. <br/>
+*struct* - can contain elements of different data types which can be referenced as a whole or individually by their names. Syntax: <br/>
+```
+struct {
+    [list_of_variables]
+} struct_name;
+```
+
+A **packed** structure is treated as a single vector, and each data type in the structure is represented as a bit field. The entire structure is then packed together in memory without gaps. Because it is defined as a vector, the entire structure can also be used as a whole with arithmetic and logical operators. <br/>
+A structure is **unpacked** by default and can be define using *struct* keyword and a list of member declarations can be provided between the curly brackets (pol. *nawiasy klamrowe*). This type of structure does not define a packing of the data types. It is tool-dependent how the structure is packed in memory. Unpacked struct should be avoided in RTL code. <br/>
+SystemVerilog struct is often defined with the *typedef* keyword to give the structure type a name so it can be more easily reused across multiple files.
 
 
 
