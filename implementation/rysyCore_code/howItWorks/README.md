@@ -254,6 +254,31 @@ SystemVerilog provides several methods for working with enumerated types. The sy
 ### 6. cmp.sv <a name="cmp"></a> [UP↑](#tof)
 As I wrote before, doesn't make sense in rewriting the same things, and this file contains exactly the same things previously described.
 ### 7. cmp_tb.sv <a name="cmptb"></a> [UP↑](#tof)
+**24 line:** `localparam N = 8;` <br/>
+*Localparam* prevents the values to be overwritten (directly) from outside the module. Once the variables are declared with *localparam* the values stays constant. <br/>
+**44 line:** `do begin (...) end while` <br/>
+A *do while* loop executes the statements once, and then checks for the condition to be true. If the condition is true, the set of statements are executed until the condition turns out to be false. If the condition is false, the loop ends right there. Syntax: <br/>
+```
+do begin
+    // Multiple statements
+end while (<condition>);
+```
+**47 line:** `$display("i: %d, op:%s", i, cmp_op.name());`
+*$display* is system tasks, which mainly used to display informational and debug messages to track the simulation flow from log files. *$display* is very similar to print the function in the ANSI C language. Syntax: <br/>
+`$display(<list_of_arguments>);` <br/>
+If the format specification sign is used, a corresponding argument should always be followed (exception is the %m argument). <br/>
+| Argument | Description |
+|:--:|:--:|
+| %h, %H | Display in hexadecimal format |
+| %d, %D | Display in decimal format |
+| %b, %B | Display in binary format |
+| %o or %O | Display octal format |
+| %m, %M | Display hierarchical name |
+| %s, %S | Display as a string |
+| %t, %T | Display in time format |
+| %f, %F | Display 'real' in a decimal format |
+| %e, %E | Display 'real' in an exponential format |
+
 
 
 
