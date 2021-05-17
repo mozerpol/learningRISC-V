@@ -313,6 +313,7 @@ module design (
                 sel,
                 rdata 
             );
+            
     input addr;
     input wdata;
     input write;
@@ -347,6 +348,47 @@ endmodule
 **14 line:** `$clog2` <br/>
 The system function *$clog2* shall return the ceiling of the log base 2 of the argument (the log rounded up to an integer value), so $clog2(N) is the number of address bits needed for a memory of size N.
 
+File **reg_file_tb.sv**: <br/>
+**35 line:** `forever` <br/>
+This keyword creates a block of code that will run continuously. It is similar to other loops in Verilog such as for loops and while loops. The main difference between these and the forever loop is that the forever loop will never stop running. Forever Loops should not be used in synthesizable code.
+
+File **rysy_core.sv**: <br/>
+**68 line:** `mem_addr_sel mem_addr_sel_1 (.*);` <br/>
+How (.\*) works is the easiest to understand with an example. Imagine this testbench: <br/>
+```Verilog
+module test_circuit
+    logic a,b,c;
+    logic y;
+    // .
+    // .
+    // .
+endmodule
+```
+
+Now we want connect our module from testbench (code above) to module from design, to do this, we have a few possibilities: <br/>
+1. Classic way: <br/>
+```Verilog
+circuit UUT (
+    .a (a),
+    .b (b),
+    .c (c),
+    .y (y));
+```
+2. Can use implicit named port connections: <br/>
+```Verilog
+circuit UUT (
+    .a,
+    .b,
+    .c,
+    .y);
+```
+3. Or we can use the quickest way in which is not necessary to type out all ports. Just can simply use wildcard named port connections: <br/>
+```Verilog
+circuit UUT
+    (.*);
+```
+
+But we must keep in mind that this last method may make it hard to debug RTL. 
 
 
 
