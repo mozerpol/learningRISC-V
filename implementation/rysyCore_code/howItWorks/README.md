@@ -301,12 +301,51 @@ struct {
 
 A **packed** structure is treated as a single vector, and each data type in the structure is represented as a bit field. The entire structure is then packed together in memory without gaps. Because it is defined as a vector, the entire structure can also be used as a whole with arithmetic and logical operators. <br/>
 A structure is **unpacked** by default and can be define using *struct* keyword and a list of member declarations can be provided between the curly brackets (pol. *nawiasy klamrowe*). This type of structure does not define a packing of the data types. It is tool-dependent how the structure is packed in memory. Unpacked struct should be avoided in RTL code. <br/>
-SystemVerilog struct is often defined with the *typedef* keyword to give the structure type a name so it can be more easily reused across multiple files.
+SystemVerilog struct is often defined with the *typedef* keyword to give the structure type a name so it can be more easily reused across multiple files. <br/>
+File **mux.sv**: <br/>
+**11 line:** `#(parameter` <br/>
+It's parameterized module. We have a few possibilities on the port declarations with parameters. Example of Verilog 1995 style port declaration: <br/>
+```Verilog
+module design ( 
+                addr,
+                wdata,
+                write,
+                sel,
+                rdata 
+            );
+    input addr;
+    input wdata;
+    input write;
+    input sel;
+    input rdata; 
+    
+    parameter BUS_WIDTH = 32,
+              DATA_WIDTH = 64;
+          
+    // Design code
+          
+endmodule
+```
 
+New ANSI style of Verilog port declaration wqith declare parameters: <br/>
+```Verilog
+module design #( parameter BUS_WIDTH = 32,
+                 parameter  DATA_WIDTH = 64)
+                (
+                    input addr,
+                    input wdata,
+                    input write,
+                    input sel,
+                    input rdata 
+                );
+    
+    // Design code
+          
+endmodule                
+``` 
 
-
-
-
+**14 line:** `$clog2` <br/>
+The system function *$clog2* shall return the ceiling of the log base 2 of the argument (the log rounded up to an integer value), so $clog2(N) is the number of address bits needed for a memory of size N.
 
 
 
