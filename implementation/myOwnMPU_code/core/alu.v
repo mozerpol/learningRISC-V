@@ -1,5 +1,5 @@
 `include "rysy_pkg.vh"
-`timescale 1ns / 1ns
+`timescale 100ns / 10ns
 
 `define ADD 4'b0000
 `define SUB 4'b0001
@@ -19,13 +19,13 @@ module alu(
   output wire [`REG_LEN-1:0] alu_out
 );
 
-  reg [`REG_LEN-1:0] o;
+  reg signed [`REG_LEN-1:0] o;
+  reg signed [`REG_LEN-1:0] alu_in1_s;
+  reg signed [`REG_LEN-1:0] alu_in2_s;
+  
   assign alu_out = o;
-
-//   reg [`REG_LEN-1:0] alu_in1_s;
-//   reg [`REG_LEN-1:0] alu_in2_s;
-//   assign alu_in1_s = alu_in1;
-//   assign alu_in2_s = alu_in2;
+  assign alu_in1_s = alu_in1;
+  assign alu_in2_s = alu_in2;
 
   always@(alu_out, alu_in1, alu_in2) begin
     case(alu_op)
@@ -36,8 +36,8 @@ module alu(
       `AND : o = alu_in1 & alu_in2;
       `SLL : o = alu_in1 << alu_in2[4:0];
       `SRL : o = alu_in1 >> alu_in2[4:0];
-      `SRA : o = alu_in1 >>> alu_in2[4:0];
-      `SLT : o = alu_in1 < alu_in2;
+      `SRA : o = alu_in1_s >>> alu_in2_s[4:0];
+      `SLT : o = alu_in1_s < alu_in2_s;
       `SLTU : o = alu_in1 < alu_in2;
       default: o = 0;
     endcase
