@@ -40,10 +40,11 @@ module alu_tb;
     for(a = 0; a < 10; a++)
       begin
         $display ("Current operation: %b", a);
-        
+
         for(i = 0; i < 5; i++)
           begin
-            #10
+            #10 // necessary delay, without this the results will be strange [?], maybe
+            	// simulator is too slow, donnu.  
             alu_in1_tb = val_for_in1[i];
             alu_in2_tb = val_for_in2[i];
             alu_op_tb = a;
