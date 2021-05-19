@@ -1,5 +1,5 @@
 `include "rysy_pkg.vh"
-`timescale 1ns / 1ns
+`timescale 100ns / 10ns
 
 module alu_tb;
 
@@ -37,18 +37,19 @@ module alu_tb;
     val_for_in2[3] = -32'd4;
     val_for_in2[4] = 32'd2;
 
-
-//     $display ("val_for_in1: %d", val_for_in1[2]);
-//     $display ("val_for_in2: %d", val_for_in2[2]);
-
     for(a = 0; a < 10; a++)
       begin
-        $display ("i: %b", a);
-
+        $display ("Current operation: %b", a);
+        
         for(i = 0; i < 5; i++)
           begin
-            $display ("val_for_in1: %d", val_for_in1[i]);
-            $display ("val_for_in2: %d", val_for_in2[i]);
+            #10
+            alu_in1_tb = val_for_in1[i];
+            alu_in2_tb = val_for_in2[i];
+            alu_op_tb = a;
+            #10
+            $display ("%d | val_for_in1: %d | val_for_in2: %d | result: %d |", 
+                      i, val_for_in1[i], val_for_in2[i], alu_out_tb);
           end
       end
 
@@ -56,4 +57,3 @@ module alu_tb;
   end
 
 endmodule
-
