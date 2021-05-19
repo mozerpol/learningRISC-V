@@ -26,11 +26,13 @@ module alu(
   reg signed [`REG_LEN-1:0] alu_in2_s;
 
   assign alu_out = o; // it's necessary, because we want assign two "input wire" to the one var.
-  assign alu_in1_s = alu_in1;
-  assign alu_in2_s = alu_in2;
 
-  always@(alu_out, alu_in1, alu_in2) 
+  always@(alu_op, alu_in1, alu_in2) 
     begin
+
+      alu_in1_s = alu_in1; // This two lines must be inside always block
+      alu_in2_s = alu_in2;
+
       case(alu_op)
         `ADD : o = alu_in1 + alu_in2;
         `SUB : o = alu_in1 - alu_in2;
