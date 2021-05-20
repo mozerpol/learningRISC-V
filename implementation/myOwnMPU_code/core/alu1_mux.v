@@ -1,3 +1,18 @@
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 2019 Rafal Kozik
+ * All rights reserved.
+ * Mozerpol added comments
+
+ Our multiplexer can take two values:
+ 1. From the PC registry to pass a value to the ALU, which next calculate new address, for example to perform jump.
+    But before passing value from PC to ALU we must wait two clock cycles to empty the pipeline. Two lines of code do this:
+     old_pc[1] <= pc;
+   	 old_pc[0] <= old_pc[1];
+ 2. Operand rs1_d which comes from reg_file. This operand can be simple number for ALU like 12 or 3.   
+ */
+
 `include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
