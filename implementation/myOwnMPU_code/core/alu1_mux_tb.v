@@ -17,12 +17,12 @@ module alu1_mux_tb;
     .pc(pc_tb),
     .clk(clk_tb),
     .alu1_sel(alu1_sel_tb),
-    .alu_in1(alu_in1_tb)
+    .alu_in1(alu_in1_tb) // otput from our module
   );
 
   reg [31:0] val_for_rs1_d [0:4]; // 4 x 32-bit
   reg [31:0] val_for_pc [0:5];
-  integer i;
+  integer i; // var for loop purposes
 
   initial begin
     $dumpfile("tb.vcd"); 
@@ -57,4 +57,3 @@ module alu1_mux_tb;
   always #5 clk_tb = ~clk_tb;
 
 endmodule
-
