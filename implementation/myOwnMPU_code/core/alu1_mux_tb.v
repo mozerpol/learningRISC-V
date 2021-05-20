@@ -6,11 +6,11 @@
 
 module alu1_mux_tb;
 
-  reg [REG_LEN:0] rs1_d_tb;
-  reg [REG_LEN:0] pc_tb;
+  reg [`REG_LEN-1:0] rs1_d_tb;
+  reg [`REG_LEN-1:0] pc_tb;
   reg alu1_sel_tb;
   reg clk_tb;
-  reg [REG_LEN:0] alu_in1_tb;
+  wire [`REG_LEN-1:0] alu_in1_tb;
 
   alu1_mux uut(
     .rs1_d(rs1_d_tb),
@@ -57,3 +57,4 @@ module alu1_mux_tb;
   always #5 clk_tb = ~clk_tb;
 
 endmodule
+
