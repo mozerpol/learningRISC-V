@@ -28,7 +28,7 @@ module cmp(
 
   reg signed [`REG_LEN-1:0] rs1_d_s;
   reg signed [`REG_LEN-1:0] rs2_d_s;
-  reg signed [`REG_LEN-1:0] o; // if we want connect "output wire" from module to the result from
+  reg signed o; // if we want connect "output wire" from module to the result from
   // our instructions, it's necessary. 
 
   assign b = o; // it's necessary, because we want assign two "input wire" to the one var.
@@ -51,3 +51,4 @@ module cmp(
     end
 
 endmodule
+
