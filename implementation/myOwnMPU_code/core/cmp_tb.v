@@ -19,7 +19,7 @@ module cmp_tb;
 
   reg [31:0] val_for_rs1_d [0:4];
   reg [31:0] val_for_rs2_d [0:4];
-  reg [15:0] equation [0:5];
+  reg [15:0] equation [0:5]; // 16 bits, because one character need 8 bits, we have two
   integer i, j, k; // var for loop purposes
 
   initial begin
