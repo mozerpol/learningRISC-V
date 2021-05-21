@@ -8,7 +8,7 @@ module cmp_tb;
   reg[31:0] rs1_d_tb;
   reg[31:0] rs2_d_tb;
   reg [2:0] cmp_op_tb;
-  reg b_tb;
+  reg b_tb; // result, output cmp module
 
   cmp uut(
     .rs1_d(rs1_d_tb),
@@ -17,9 +17,10 @@ module cmp_tb;
     .b(b_tb)
   );
 
-  reg [31:0] val_for_rs1_d;
-  reg [31:0] val_for_rs2_d;
-  integer i; // var for loop purposes
+  reg [31:0] val_for_rs1_d [0:4];
+  reg [31:0] val_for_rs2_d [0:4];
+  reg [15:0] equation [0:5];
+  integer i, j, k; // var for loop purposes
 
   initial begin
     $dumpfile("tb.vcd"); 
@@ -36,9 +37,41 @@ module cmp_tb;
     val_for_rs2_d[2] = -32'd4;
     val_for_rs2_d[3] = 32'd4;
     val_for_rs2_d[4] = -32'd16;
-    
-    
-    
+
+    operator[0] = "==";
+    operator[1] = "!=";
+    operator[2] = "<";
+    operator[3] = ">=";
+    operator[4] = "<";
+    operator[5] = ">=";
+
+    $display("Hint how operators work in Verilog:");
+    $display("\n\n 1==1: %d | 1==2: %d \
+    | 1!=1: %d | 1!=2: %d \
+    | 1<1: %d | 1<2: %d | 2<1: %d \
+    | 1>=1: %d | 1>=2: %d | 2>=1: %d", 
+             (1==1), (1==2), 
+             (1!=1), (1!=2), 
+             (1<1), (1<2), (2<1), 
+             (1>=1), (1>=2), (2>=1));
+
+    for(i = 0; i < 6; i=i+1) // loop for selecting operator type
+      begin
+        #5 cmp_op_tb = i; // these dalays are for simulation purposes, without delay,
+        // simulation works weird.
+        for(j = 0; j < 5; j=j+1) // loop for assigning values to val_for_rs1_d
+          begin
+            for(k = 0; k < 5; k=k+1) // loop for assigning values to val_for_rs2_d
+              begin
+                #5 rs1_d_tb = val_for_rs1_d[j];
+                #5 rs2_d_tb = val_for_rs2_d[k];
+                #5 $display (" %d         %s %d      result: %b", 
+                             rs1_d_tb, equation[i], rs2_d_tb, b_tb);
+              end
+          end
+      end
+    $display("\n");
+
     #25 $finish;
   end
 
