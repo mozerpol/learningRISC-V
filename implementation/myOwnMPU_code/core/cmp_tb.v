@@ -38,12 +38,12 @@ module cmp_tb;
     val_for_rs2_d[3] = 32'd4;
     val_for_rs2_d[4] = -32'd16;
 
-    operator[0] = "==";
-    operator[1] = "!=";
-    operator[2] = "<";
-    operator[3] = ">=";
-    operator[4] = "<";
-    operator[5] = ">=";
+    equation[0] = "==";
+    equation[1] = "!=";
+    equation[2] = "<";
+    equation[3] = ">=";
+    equation[4] = "<";
+    equation[5] = ">=";
 
     $display("Hint how operators work in Verilog:");
     $display("\n\n 1==1: %d | 1==2: %d \
