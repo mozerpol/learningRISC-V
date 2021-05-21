@@ -8,7 +8,7 @@ module cmp_tb;
   reg[31:0] rs1_d_tb;
   reg[31:0] rs2_d_tb;
   reg [2:0] cmp_op_tb;
-  reg b_tb; // result, output cmp module
+  wire b_tb; // result, output cmp module
 
   cmp uut(
     .rs1_d(rs1_d_tb),
@@ -46,14 +46,8 @@ module cmp_tb;
     equation[5] = ">=";
 
     $display("Hint how operators work in Verilog:");
-    $display("\n\n 1==1: %d | 1==2: %d \
-    | 1!=1: %d | 1!=2: %d \
-    | 1<1: %d | 1<2: %d | 2<1: %d \
-    | 1>=1: %d | 1>=2: %d | 2>=1: %d", 
-             (1==1), (1==2), 
-             (1!=1), (1!=2), 
-             (1<1), (1<2), (2<1), 
-             (1>=1), (1>=2), (2>=1));
+    $display("\n\n 1==1: %d | 1==2: %d | 1!=1: %d | 1!=2: %d | 1<1: %d | 1<2: %d | 2<1: %d | 1>=1: %d | 1>=2: %d | 2>=1: %d", 
+             (1==1), (1==2), (1!=1), (1!=2), (1<1), (1<2), (2<1), (1>=1), (1>=2), (2>=1));
 
     for(i = 0; i < 6; i=i+1) // loop for selecting operator type
       begin
