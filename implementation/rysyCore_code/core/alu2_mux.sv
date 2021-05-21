@@ -3,8 +3,19 @@
  *
  * Copyright (c) 2019 Rafal Kozik
  * All rights reserved.
+ * Mozerpol added comments
+
+ Our multiplexer can take two values:
+ 1. Value IMM from decode part. For example in addi instruction we're adding number to the register. 
+ This action is performed by ALU, ALU has two operands, first comes from alu1_sel multiplexer, second
+ from alu2_sel multiplexer. IF first mux will give rs1_d number, then second mux can pass to ALU IMM
+ value, and after this ALU can add rs1_d and IMM. So IMM value is not value from any register (x0-x31),
+ but this value comes instruction argument.
+ 
+ 2. Operand rs2_d which comes from reg_file. This operand can be simple number for ALU like 12 or 3.   
  */
 
+`include "rysy_pkg.sv"
 `default_nettype none
 
 import rysyPkg::*;
