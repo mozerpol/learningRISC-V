@@ -1,84 +1,89 @@
-`timescale 100ns / 10ns
+//''''''''''''//
+//   opcode   //
+//,,,,,,,,,,,,//
+`define	LOAD =		5'b00000
+`define	LOAD_FP =	5'b00001
+`define	CUSTOM_0 =	5'b00010
+`define	MISC_MEM =	5'b00011
+`define OP_IMM =	5'b00100
+`define AUIPC =		5'b00101
+`define OP_IMM_32 =	5'b00110
+`define LEN_48_0 =	5'b00111
+`define STORE =		5'b01000
+`define STORE_FP = 	5'b01001
+`define CUSTOM_1 =	5'b01010
+`define AMO = 		5'b01011
+`define OP =		5'b01100
+`define LUI =		5'b01101
+`define OP_32 =		5'b01110
+`define LEN_64 =	5'b01111
+`define MADD =		5'b10000
+`define MSUB =		5'b10001
+`define NMSUB =		5'b10010
+`define NMADD =		5'b10011
+`define OP_FP =		5'b10100
+`define RESERVED_0 = 5'b10101
+`define CUSTOM_2 =	5'b10110
+`define LEN_48_1 =	5'b10111
+`define BRANCH =	5'b11000
+`define JALR =		5'b11001
+`define RESERVED_1 = 5'b11010
+`define JAL =		5'b11011
+`define SYSTEM =	5'b11100
+`define RESERVED_2 = 5'b11101
+`define CUSTOM_3 =	5'b11110
+`define LEN_80 =	5'b11111
 
-module opcode(
-  input wire [4:0] opcode_in,
-  output wire [4:0] opcode_out
-);
+//''''''''''''''''''//
+//   FUNC3_BRANCH   //
+//,,,,,,,,,,,,,,,,,,//
+`define FUNC3_BRANCH_BEQ =	3'b000
+`define FUNC3_BRANCH_BNE =	3'b001
+`define FUNC3_BRANCH_BLT =	3'b100
+`define FUNC3_BRANCH_BGE =	3'b101
+`define FUNC3_BRANCH_BLTU =	3'b110
+`define FUNC3_BRANCH_BGEU =	3'b111
 
-  localparam LOAD =		5'b00000;
-  localparam LOAD_FP =	5'b00001;
-  localparam CUSTOM_0 =	5'b00010;
-  localparam MISC_MEM =	5'b00011;
-  localparam OP_IMM =	5'b00100;
-  localparam AUIPC =	5'b00101;
-  localparam OP_IMM_32 = 5'b00110;
-  localparam LEN_48_0 =	5'b00111;
-  localparam STORE =	5'b01000;
-  localparam STORE_FP =	5'b01001;
-  localparam CUSTOM_1 =	5'b01010;
-  localparam AMO = 		5'b01011;
-  localparam OP =		5'b01100;
-  localparam LUI =		5'b01101;
-  localparam OP_32 =	5'b01110;
-  localparam LEN_64 = 	5'b01111;
-  localparam MADD =		5'b10000;
-  localparam MSUB =		5'b10001;
-  localparam NMSUB =	5'b10010;
-  localparam NMADD =	5'b10011;
-  localparam OP_FP =	5'b10100;
-  localparam RESERVED_0 = 5'b10101;
-  localparam CUSTOM_2 =	5'b10110;
-  localparam LEN_48_1 =	5'b10111;
-  localparam BRANCH =	5'b11000;
-  localparam JALR =		5'b11001;
-  localparam RESERVED_1 = 5'b11010;
-  localparam JAL =		5'b11011;
-  localparam SYSTEM =	5'b11100;
-  localparam RESERVED_2 = 5'b11101;
-  localparam CUSTOM_3 =	5'b11110;
-  localparam LEN_80 =	5'b11111;
+//''''''''''''''''''''''//
+//   FUNC3_LOAD_STORE   //
+//,,,,,,,,,,,,,,,,,,,,,,//
+`define FUNC3_SB =	3'b000
+`define FUNC3_SH =	3'b001
+`define FUNC3_SW =	3'b010
+`define FUNC3_SBU =	3'b100
+`define FUNC3_SHU =	3'b101
 
-  reg [4:0] o;
-  assign opcode_out = o;
+//''''''''''''''''''//
+//   FUNC3_OP_IMM   //
+//,,,,,,,,,,,,,,,,,,//
+`define FUNC3_ADD_SUB =	3'b000
+`define FUNC3_SLT =		3'b010
+`define FUNC3_SLTU =	3'b011
+`define FUNC3_XOR =		3'b100
+`define FUNC3_OR =		3'b110
+`define FUNC3_AND =		3'b111
+`define FUNC3_SLL =		3'b001
+`define FUNC3_SR =		3'b101
 
-  always@(opcode_in)
-    begin
-      case(opcode_in)
-        5'b00000 : o = LOAD;
-        5'b00001 : o = LOAD_FP;
-        5'b00010 : o = CUSTOM_0;
-        5'b00011 : o = MISC_MEM;
-        5'b00100 : o = OP_IMM;
-        5'b00101 : o = AUIPC;
-        5'b00110 : o = OP_IMM_32;
-        5'b00111 : o = LEN_48_0;
-        5'b01000 : o = STORE;
-        5'b01001 : o = STORE_FP;
-        5'b01010 : o = CUSTOM_1;
-        5'b01011 : o = AMO;
-        5'b01100 : o = OP;
-        5'b01101 : o = LUI;
-        5'b01110 : o = OP_32;
-        5'b01111 : o = LEN_64;
-        5'b10000 : o = MADD;
-        5'b10001 : o = MSUB;
-        5'b10010 : o = NMSUB;
-        5'b10011 : o = NMADD;
-        5'b10100 : o = OP_FP;
-        5'b10101 : o = RESERVED_0;
-        5'b10110 : o = CUSTOM_2;
-        5'b10111 : o = LEN_48_1;
-        5'b11000 : o = BRANCH;
-        5'b11001 : o = JALR;
-        5'b11010 : o = RESERVED_1;
-        5'b11011 : o = JAL;
-        5'b11100 : o = SYSTEM;
-        5'b11101 : o = RESERVED_2;
-        5'b11110 : o = CUSTOM_3;
-        5'b11111 : o = LEN_80;
-      endcase
-    end
+//''''''''''''''//
+//   FUNC7_SR   //
+//,,,,,,,,,,,,,,//
+`define FUNC7_SR_SRL =	7'b0000000
+`define FUNC7_SR_SRA =	7'b0100000
 
-endmodule
+//''''''''''''''''''''''//
+//   FUNC7_OP_ADD_SUB   //
+//,,,,,,,,,,,,,,,,,,,,,,//
+`define FUNC7_ADD_SUB_ADD = 7'b0000000
+`define FUNC7_ADD_SUB_SUB =	7'b0100000 
 
+//''''''''''''''''''''//
+//   FUNC3_MISC_MEM   //
+//,,,,,,,,,,,,,,,,,,,,//
+`define FUNC3_MISC_MEM_FENCE = 3'b000
 
+//'''''''''''''''''''//
+//   FUNC25_SYSTEM   //
+//,,,,,,,,,,,,,,,,,,,//
+`define FUNC_SYSTEM_ECALL =	25'b0
+`define FUNC_SYSTEM_EBREAK = 25'h2000
