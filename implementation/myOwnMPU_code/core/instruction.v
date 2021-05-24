@@ -7,20 +7,32 @@ module R_type(
   output wire [4:0]rs1,
   output wire [2:0]func3,
   output wire [4:0]rd,
-  output opcode,
-  output wire [1:0]low_op
+  //output opcode,
+  output wire [6:0]low_op
 );
 
-  assign func7 = instruction[31:24];
-  
+  assign func7 = instruction[31:25];
+  assign rs2 = instruction[24:20];
+  assign rs1 = instruction[19:15];
+  assign func3 = instruction[14:12];
+  assign rd = instruction[11:7];
+  assign low_op = instruction[6:0];
 endmodule 
 
+module I_type(
+  input wire [31:0] instruction,
+  output wire [11:0]imm,
+  output wire [4:0]rs1,
+  output wire [2:0]func3,
+  output wire [4:0]rd,
+ // output wire opcode,
+  output wire [6:0]low_op
+);
 
+  assign imm = instruction[31:20];
+  assign rs1 = instruction[19:15];
+  assign func3 = instruction[14:12];
+  assign rd = instruction[11:7];
+  assign low_op = instruction[6:0];
+endmodule 
 
-
-/*
-zrobic tak, ze mam jeden input i outputy w zaleznosci od tego z czego sklada sie ten typ.
-Wewnatrz modulu zrobic tak, ze np. dla R-type bity 0:6 to bedzie opcode i pozniej tego opcode wyrzucic na
-output.
-Ej kurwa to jest madre. Jak spojrzymy na format instrukcji, to wiekszosc pol dla instrukcji ma dokladnie ta sama pozycje. Czyli musimy znalezc roznice, a bedzie to imm_I, imm_S, imm_B, imm_U, imm_J.
-*/
