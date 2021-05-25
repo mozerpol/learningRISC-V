@@ -38,7 +38,19 @@ module decode_tb();
         15 - 19:  00001         - rs1     =  1  in hex
         20 - 31:  0000001010100 - imm     =  54 in hex
       */
-      #5 $finish;
+
+      #1 inst_tb <= 32'h000230B7; 
+      // Test for U-type, LUI instruction:
+      /* 
+      	LUI x1 0x23 is equal 000230B7 in machine code
+        000230B7 in hex = 00000000000000100011 00001 0110111 in bin, where:
+        0 -   6:  0110111              - opcode  =  37 in hex
+        7 -  11:  00001                - rd      =  1  in hex
+        12 - 31:  00000000000000100011 - imm     =  23 in hex
+      */
+
+
+      #1 $finish;
 
     end
 
