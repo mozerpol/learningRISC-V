@@ -1,7 +1,7 @@
 `timescale 100ns / 10ns
 
 module R_type(
-  input wire [31:0] instruction,
+  input wire [31:0]instruction,
   output wire [6:0]func7,
   output wire [4:0]rs2,
   output wire [4:0]rs1,
@@ -99,7 +99,7 @@ module J_type(
   output wire [7:0]imm_19_12,
   output wire [4:0]rd,
   // output wire opcode,
-  output wire [1:0] low_op
+  output wire [6:0] low_op
 );
 
   assign imm_20 = instruction[31:31];
@@ -107,5 +107,5 @@ module J_type(
   assign imm_11 = instruction[20:20];
   assign imm_19_12 = instruction[19:12];
   assign rd = instruction[11:7];
-  assign imm_11 = instruction[6:0];
+  assign low_op = instruction[6:0];
 endmodule
