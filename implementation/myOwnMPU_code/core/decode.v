@@ -15,9 +15,30 @@ module decode(
   output wire [2:0]func3,
   output wire [6:0]func7
 );
-	
+
   R_type R_type_module(
     .instruction(inst)
   );
+
+  I_type I_type_module(
+    .instruction(inst)
+  );
+
+  S_type S_type_module(
+    .instruction(inst)
+  );
+
+  B_type B_type_module(
+    .instruction(inst)
+  );
+
+  U_type U_type_module(
+    .instruction(inst)
+  );
+
+  J_type J_type_module(
+    .instruction(inst)
+  );
+
 
 endmodule
