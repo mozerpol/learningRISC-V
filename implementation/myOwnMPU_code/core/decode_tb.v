@@ -52,7 +52,7 @@ module decode_tb();
       #1 inst_tb <= 32'hfe111ce3;
       // Test for B-type, BNE instruction:
       /*
-      	BNE x2, x1, loop is equal in fe111ce3 machine code
+      	BNE x2, x1, loop is equal fe111ce3 in machine code
         fe111ce3 in hex = 1 111111 00001 00010 001 1100 1 1100011 in bin, where:
         0  -  6:  1100011  - opcode    =  63 in hex
         7  -  7:  1        - imm[11]   =  1  in hex
@@ -62,9 +62,21 @@ module decode_tb();
         20 - 24:  00001    - rs2       =  1  in hex
         25 - 30:  111111   - imm[10:5] =  3F in hex
         31 - 31:  1        - imm[12]   =  1 in hex
+      */      
+
+      #1 inst_tb <= 32'hff9ff26f;
+      // Test for J-type, Jal instruction:
+      /*
+      	JAL x4, loop is equal ff9ff26f in machine code 
+        ff9ff26f in hex = 1 1111111100 1 11111111 00100 1101111 in bin, where:
+        0  -  6:  1101111     - opcode     =  6F  in hex
+        7  - 11:  00100       - rd         =  4   in hex
+        12 - 19:  11111111    - imm[19:12] =  FF  in hex
+        20 - 20:  1           - imm[11]    =  1   in hex
+        21 - 30:  1111111100  - imm[10:1]  =  3FC in hex
+        31 - 31:  1           - imm[20]    =  1   in hex
       */
       
-
       #1 $finish;
 
     end
