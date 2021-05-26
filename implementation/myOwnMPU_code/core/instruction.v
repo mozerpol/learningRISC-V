@@ -7,8 +7,8 @@ module R_type(
   output wire [4:0]rs1,
   output wire [2:0]func3,
   output wire [4:0]rd,
-  //output opcode,
-  output wire [6:0]low_op
+  output wire [4:0]opcode,
+  output wire [1:0]low_op
 );
 
   assign func7 = instruction[31:25];
@@ -16,7 +16,8 @@ module R_type(
   assign rs1 = instruction[19:15];
   assign func3 = instruction[14:12];
   assign rd = instruction[11:7];
-  assign low_op = instruction[6:0];
+  assign opcode = instruction[6:2];
+  assign low_op = instruction[1:0];
 endmodule 
 
 module I_type(
@@ -24,16 +25,13 @@ module I_type(
   output wire [11:0]imm,
   output wire [4:0]rs1,
   output wire [2:0]func3,
-  output wire [4:0]rd,
-  // output wire opcode,
-  output wire [6:0]low_op
+  output wire [4:0]rd
 );
 
   assign imm = instruction[31:20];
   assign rs1 = instruction[19:15];
   assign func3 = instruction[14:12];
   assign rd = instruction[11:7];
-  assign low_op = instruction[6:0];
 endmodule 
 
 module S_type(
@@ -42,9 +40,7 @@ module S_type(
   output wire [4:0]rs2,
   output wire [4:0]rs1,
   output wire [2:0]func3,
-  output wire [4:0]imm_4_0,
-  // output wire opcode,
-  output wire [6:0]low_op
+  output wire [4:0]imm_4_0
 );
 
   assign imm_11_5 = instruction[31:25];
@@ -52,7 +48,6 @@ module S_type(
   assign rs1 = instruction[19:15];
   assign func3 = instruction[14:12];
   assign imm_4_0 = instruction[11:7];
-  assign low_op = instruction[6:0];
 endmodule 
 
 module B_type(
@@ -63,9 +58,7 @@ module B_type(
   output wire [4:0]rs1,
   output wire [2:0]func3,
   output wire [3:0]imm_4_1,
-  output wire imm_11,
-  // output wire opcode,
-  output wire [6:0] low_op
+  output wire imm_11
 );
 
   assign imm_12 = instruction[31:31];
@@ -75,20 +68,16 @@ module B_type(
   assign func3 = instruction[14:12];
   assign imm_4_1 = instruction[11:8];
   assign imm_11 = instruction[7:7];
-  assign low_op = instruction[6:0];
 endmodule 
 
 module U_type(
   input wire [31:0] instruction,
   output wire [19:0]imm,
-  output wire [4:0]rd,
-  // output wire opcode,
-  output wire [6:0]low_op
+  output wire [4:0]rd
 );
 
   assign imm = instruction[31:12];
   assign rd = instruction[11:7];
-  assign low_op = instruction[6:0];
 endmodule 
 
 module J_type(
@@ -97,9 +86,7 @@ module J_type(
   output wire [9:0]imm_10_1,
   output wire imm_11,
   output wire [7:0]imm_19_12,
-  output wire [4:0]rd,
-  // output wire opcode,
-  output wire [6:0] low_op
+  output wire [4:0]rd
 );
 
   assign imm_20 = instruction[31:31];
@@ -107,5 +94,4 @@ module J_type(
   assign imm_11 = instruction[20:20];
   assign imm_19_12 = instruction[19:12];
   assign rd = instruction[11:7];
-  assign low_op = instruction[6:0];
 endmodule

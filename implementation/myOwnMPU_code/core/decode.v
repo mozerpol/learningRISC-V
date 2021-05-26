@@ -11,7 +11,7 @@ module decode(
   output wire [31:0]imm_B,
   output wire [31:0]imm_U,
   output wire [31:0]imm_J,
-  output wire opcode,
+  output wire [4:0]opcode,
   output wire [2:0]func3,
   output wire [6:0]func7
 );
@@ -32,7 +32,7 @@ module decode(
 
   R_type R_type_module(
     .instruction(inst),    
-    .low_op(opcode),
+    .opcode(opcode),
     .func3(func3),
     .func7(func7),
     .rd(rd),
@@ -86,5 +86,3 @@ module decode(
   assign imm_J[31:21] = (sign) ? 11'h7ff : 11'h0;
 
 endmodule
-
-
