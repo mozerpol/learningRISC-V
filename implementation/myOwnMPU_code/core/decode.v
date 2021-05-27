@@ -1,3 +1,15 @@
+/*
+	Made by Mozerpol
+    This file contains code which is responsible for decode part. We have one input, this input
+    comes from INST part, which gives us instruction (32 bits). We have six outputs which for
+    every instruction are the same and five outputs which depends from instruction. Ok, so...
+    Outputs: rd, rs1, rs2, opcode, func3, func7 are placed in each instruction at the same bits.
+    If you don't understand, just take look at base instruction format. In the picture we can
+    notice that some parts like rs1 or opcode of instruction are always at the same place. 
+    Thanks to this it's not necessary take from each instruction opcode. We know that opcode
+    is on the first six bits, so we can just take from one instruction these six bits.    
+*/
+
 `include "instructions.v"
 `timescale 100ns / 10ns
 
@@ -16,8 +28,8 @@ module decode(
   output wire [6:0]func7
 );
 
-  wire sign;
-  assign sign = inst[31];
+  wire sign; // We're checking the sign for J-type instruction
+  assign sign = inst[31]; // The sign is in the 31st position in the instruction format
   wire [31:0]imm_I_aux;
   wire [6:0]imm_11_5_S;
   wire [4:0]imm_4_0_S;
@@ -30,7 +42,12 @@ module decode(
   wire imm_11_J;
   wire [9:0]imm_10_1_J;
 
-  R_type R_type_module(
+  /*
+  	As I wrote up, opcode, func3, func7, rd, rs1 and rs2 are in the same position in mostly
+    instructions, so we can just only once assign these parts of instruction. It's not
+    necessary for each instruction.
+  */
+  R_type R_type_module( 
     .instruction(inst),    
     .opcode(opcode),
     .func3(func3),
@@ -40,13 +57,18 @@ module decode(
     .rs2(rs2)
   );
 
+  /*
+  	Just take a look at instruction format. Only one difference in I-type and the rest of 
+    the instructions. This difference is imm value which is placed among 20 and 31 bit.
+  */
   I_type I_type_module(
     .instruction(inst),
     .imm(imm_I_aux)
   );
 
   assign imm_I[10:0] = imm_I_aux[10:0];
-  assign imm_I[31:11] = (sign) ? 21'h1fffff : 21'h0;
+  assign imm_I[31:11] = (sign) ? 21'h1fffff : 21'h0; // 21'h1fffff is equal
+  // 111111111111111111111 in bin (21 bits). 
 
   S_type S_type_module(
     .instruction(inst),
