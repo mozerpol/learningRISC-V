@@ -21,7 +21,7 @@ module imm_mux(
   reg [`REG_LEN-1:0] o;
   assign imm = o;
 
-  always@(imm_type)
+  always@(*)
     begin
       case(imm_type)
         `IMM_J : o = imm_J;
@@ -29,10 +29,13 @@ module imm_mux(
         `IMM_B : o = imm_B;
         `IMM_S : o = imm_S;
         `IMM_I : o = imm_I;
-       // default: imm = 0;
+        default: o = 0;
       endcase
     end
 
 endmodule
 
-
+/*
+	The operation of this module is very simple, just select appropriate imm_type (like J, U, ...)
+    and give a signal from input to output.
+*/
