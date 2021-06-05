@@ -24,8 +24,8 @@ module rd_mux_tb;
     .rd_d(rd_d_tb) // output from module
   );
 
-  integer i, j;
-  reg [31:0] machineWord [0:4];
+  integer i, j; // for loop purposes
+  reg [31:0] machineWord [0:4]; // input data to our module
 
   initial
     begin
@@ -47,7 +47,8 @@ module rd_mux_tb;
               #5;
               case(i)
                 0 : imm_tb = machineWord[j]; 
-                1 : begin pc_tb = machineWord[j]; #5; end
+                1 : begin pc_tb = machineWord[j]; #5; end // In our module design
+                // we have one clock delay, so we need #5 delay after this step.
                 2 : alu_out_tb = machineWord[j];
                 3 : rd_mem_tb = machineWord[j];
               endcase
