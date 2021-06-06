@@ -1,3 +1,5 @@
+`timescale 100ns / 10ns
+
 `include "rysy_pkg.vh"
 
 module reg_file
@@ -12,8 +14,7 @@ module reg_file
     output wire [`REG_LEN-1:0]rs2_d
   );
 
-  wire [`REG_LEN-1:0] x[`REG_NUM-1:0];
-  reg [`REG_LEN-1:0] o;
+  reg [`REG_LEN-1:0] x[`REG_NUM-1:0];
 
   assign rs1_d = (rs1 == 0) ? 32'd0 : x[rs1];
   assign rs2_d = (rs2 == 0) ? 32'd0 : x[rs2];
