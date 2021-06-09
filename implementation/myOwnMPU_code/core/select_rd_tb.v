@@ -103,8 +103,9 @@ module select_rd_tb;
         sel_type = sel_type_a[i];
         sel_addr = sel_addr_a[i];
         #5;
-        //         if ((out_a[i] != out))
-        //           $display("In: %x, sel_type:%s addr %d, out: %x != %x", in, sel_type.name(), sel_addr, out, out_a[i]);
+        if ((out_a[i] != out))
+          $display("\n In: %x | sel_type: %b | addr %d | out: %x != %x | \n", 
+                   in, sel_type, sel_addr, out, out_a[i]);
       end
   end
 endmodule
