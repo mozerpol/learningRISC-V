@@ -1,3 +1,11 @@
+/*
+	How it works...
+    Block select_wr is responsible for preparing data for WDATA part. "select_wr" is
+    setting bits for saving data and preparing "be" singal. If we want to save the whole
+    word to memory then be signal has four bits set on 1, if we want to save the half
+    word to memory then be signal is set on: 0011, if we want to save the half word to
+    memory then be signal is set on: 0001.
+*/
 `timescale 100ns/10ns
 `include "rysy_pkg.vh"
 
@@ -5,14 +13,13 @@
 `define SB  3'b000
 `define SH  3'b001
 `define SW  3'b010
-`define SBU 3'b011
-`define SHU 3'b100
 
 module select_wr(
-  input wire [`REG_LEN-1:0] rs2_d,
-  input wire [2:0] sel_type,
-  input wire [1:0] sel_addr,
-  output wire [3:0] be,
+  input wire [`REG_LEN-1:0] rs2_d, // Machine word from reg_file
+  input wire [2:0] sel_type, // Which storage instruction select, SB, SH or SHU...?
+  input wire [1:0] sel_addr, // Select write whole word, half word, ...
+  output wire [3:0] be, // be - byte enable, allows to write those bytes from the word, 
+  // whose bits are set. 
   output wire [`REG_LEN-1:0] wdata
 );
 
