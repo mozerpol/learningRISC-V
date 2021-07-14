@@ -1,7 +1,20 @@
+`define OP		5'b01100 // from opcodes.sv
+`define STORE	5'b01000
+`define JALR	5'b11001
+`define FUNC3_ADD_SUB	3'b000
+`define FUNC3_SLT		3'b010
+`define FUNC3_XOR		3'b100
+`define FUNC3_SLL		3'b001
+`define FUNC3_SR		3'b101
+`define FUNC7_SR_SRL		7'b0100000
+`define FUNC7_SR_SRA		7'b0000000
+`define FUNC7_ADD_SUB_SUB	7'b0100000
+`define FUNC7_ADD_SUB_ADD	7'b0000000
+
 module ctrl_tb;
   reg clk_tb = 1'b1;
   reg rst_tb;
-  reg opcode_tb;
+  reg [4:0] opcode_tb;
   reg [2:0] func3_tb;
   reg [6:0] func7_tb;
   reg b_tb;
@@ -42,6 +55,61 @@ module ctrl_tb;
   initial begin
     $dumpfile("dump.vcd"); 
     $dumpvars;
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //				Test for first always_comb
+    //  
+    //	always_comb hierarchy:
+    //	
+    //	opcode:
+    //		1. OP_IMM or OP
+    //			1.1. func3
+    //				1.1.1. ADD or SUB - func3 is the same
+	//					1.1.1.1. func7 == 0100000 -> SUB
+    //					1.1.1.2  else -> ADD
+    //				1.1.2. SLT
+    //					.
+    //					.		Only one difference: func3
+    //					.
+    //				1.1.6. SLL 
+    //				1.1.7. SR func3
+    //					1.1.7.1 func7 = 0100000 -> SRL
+    //					1.1.7.2 func7 = 0000000 -> SRA
+    //		2. opcode = LOAD -> alu_op = ADD
+    //		3. opcode = STORE -> alu_op = ADD
+    //					.
+    //					.
+    //					.
+    //		5. opcode = JALR -> alu_op = ADD
+    //
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    // 1. OP
+    opcode_tb = `OP; #5; // but can be also OP_IMM
+      // 1.1 func3
+        // 1.1.1 func3 for ADD or SUB
+        func3_tb = `FUNC3_ADD_SUB;
+          // 1.1.1.1 func7 == 0100000 -> SUB
+          func7_tb = `FUNC7_ADD_SUB_SUB; #5;
+          // 1.1.1.2 func7 == 0000000 -> ADD
+          func7_tb = `FUNC7_ADD_SUB_ADD; #5;
+    	// 1.1.2. SLT
+    	func3_tb = `FUNC3_SLT; #5;
+       	// 1.1.3. XOR
+    	func3_tb = `FUNC3_XOR; #5;
+        // 1.1.4. SLL
+    	func3_tb = `FUNC3_SLL; #5;
+        // 1.1.7. SR
+		func3_tb = `FUNC3_SR; #5;
+        	// 1.1.7.2 func7 = 0000000 -> SRL
+    		func7_tb = `FUNC7_SR_SRL; #5;
+    		// 1.1.7.1 func7 = 0100000 -> SRA
+    		func7_tb = `FUNC7_SR_SRA; #5;
+    // 2. opcode = STORE -> alu_op = ADD (4'b0000)
+    opcode_tb = `STORE; #5;
+    // 3. opcode = JALR -> alu_op = ADD	(4'b0000)
+    opcode_tb = `JALR; #5;
+    
     #100 $finish;
   end
 
