@@ -1,6 +1,8 @@
 `define OP		5'b01100 // from opcodes.sv
 `define STORE	5'b01000
 `define JALR	5'b11001
+`define	OP_IMM	5'b00100
+`define LUI		5'b01101
 `define FUNC3_ADD_SUB	3'b000
 `define FUNC3_SLT		3'b010
 `define FUNC3_XOR		3'b100
@@ -57,7 +59,7 @@ module ctrl_tb;
     $dumpvars;
 
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //				Test for first always_comb
+    //		Test for first always_comb, which control ALU
     //  
     //	always_comb hierarchy:
     //	
@@ -109,10 +111,19 @@ module ctrl_tb;
     opcode_tb = `STORE; #5; // alu_op should return 0
     // 3. opcode = JALR -> alu_op = ADD	(4'b0000)
     opcode_tb = `JALR; #5; // alu_op should return 0
+    #20;
     
-    #20 $finish;
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for second always_comb, which control imm_mux	
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+       
+    opcode_tb = `LUI;		#5;		// imm_type should return IMM_U 3'b001
+    opcode_tb = `OP_IMM; 	#5;		// imm_type should return IMM_I 3'b100
+    opcode_tb = `STORE; 	#5;		// imm_type should return IMM_S 3'b011
+    #20 $finish; 
+  
   end
-
+  
   always #5 clk_tb = ~clk_tb;
 
 endmodule
