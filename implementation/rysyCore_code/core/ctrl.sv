@@ -44,7 +44,7 @@ module ctrl(
   logic next_nop;
   logic load_phase;
   /*
-   ....:::::always I:::::....
+   ....:::::Controlling ALU:::::....
    
    How part below works:
    1. switch(opcode): - in this module we are considering only two types of instrucions: 
@@ -94,10 +94,13 @@ module ctrl(
 		endcase // end case(func3)
       
       opcodePkg::LOAD, opcodePkg::STORE, opcodePkg::BRANCH,
-      opcodePkg::JAL, opcodePkg::JALR : alu_op = aluPkg::ADD;
+      opcodePkg::JAL, opcodePkg::JALR : 
+        alu_op = aluPkg::ADD;
       default : alu_op = aluPkg::ADD;
+    
     endcase // end case(opcode)
 
+  // ....:::::Controlling imm_mux:::::....
   always_comb
     case (opcode)
       opcodePkg::OP_IMM: imm_type = immPkg::IMM_I;
@@ -110,32 +113,37 @@ module ctrl(
       default: imm_type = immPkg::IMM_DEFAULT;
     endcase
 
+  // ....:::::Controlling alu1_nux:::::....  
   always_comb
     case (opcode)
-      opcodePkg::BRANCH,
-        opcodePkg::JAL: alu1_sel = alu1Pkg::ALU1_PC;
+      opcodePkg::BRANCH, opcodePkg::JAL: 
+        alu1_sel = alu1Pkg::ALU1_PC;
       default: alu1_sel = alu1Pkg::ALU1_RS;
     endcase
-
+  
+  // ....:::::Controlling alu2_nux:::::.... 
   always_comb
     case (opcode)
       opcodePkg::LOAD,
-        opcodePkg::STORE,
-        opcodePkg::BRANCH,
-        opcodePkg::JALR,
-        opcodePkg::JAL,
-        opcodePkg::OP_IMM: alu2_sel = alu2Pkg::ALU2_IMM;
+      opcodePkg::STORE,
+      opcodePkg::BRANCH,
+      opcodePkg::JALR,
+      opcodePkg::JAL, 
+      opcodePkg::OP_IMM : 
+        alu2_sel = alu2Pkg::ALU2_IMM;
       opcodePkg::OP: alu2_sel = alu2Pkg::ALU2_RS;
       default: alu2_sel = alu2Pkg::ALU2_IMM;
     endcase
 
+  // ....:::::Controlling reg_wr from reg_file module:::::....   
   always_comb
     case (opcode)
       opcodePkg::JALR,
-        opcodePkg::JAL,
-        opcodePkg::OP_IMM,
-        opcodePkg::LUI,
-        opcodePkg::OP: reg_wr = 1'b1;
+      opcodePkg::JAL,
+      opcodePkg::OP_IMM,
+      opcodePkg::LUI,
+      opcodePkg::OP : 
+        reg_wr = 1'b1;
       opcodePkg::LOAD: reg_wr = load_phase;
       default: reg_wr = 1'b0;
     endcase
