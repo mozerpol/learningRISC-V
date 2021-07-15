@@ -126,9 +126,19 @@ module ctrl_tb;
     //		Test for third always_comb, which control alu1_nux	
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   	
-    opcode_tb = `JAL; #5; //alu1_sel should return 1
-    opcode_tb = 5'b00000; #5; //alu1_sel should return 0
+    opcode_tb = `JAL; 		#5;		//alu1_sel should return 1
+    opcode_tb = 5'b00000; 	#5; 	//alu1_sel should return 0
     
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for fourth always_comb, which control alu2_nux
+    //		We have only one case when alu2_sel return 0, it's
+    //		for opcode_tb = `OP
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    opcode_tb = `OP;		#5;		//alu2_sel should return 0
+    opcode_tb = 5'b10101;	#5;		//alu2_sel should return 1
+    opcode_tb = `OP_IMM;	#5;		//alu2_sel should return 1
+    opcode_tb = `OP;		#5;		//alu2_sel should return 0
     
     #20 $finish;   
   end
