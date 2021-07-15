@@ -3,6 +3,7 @@
 `define JALR	5'b11001
 `define	OP_IMM	5'b00100
 `define LUI		5'b01101
+`define JAL		5'b11011
 `define FUNC3_ADD_SUB	3'b000
 `define FUNC3_SLT		3'b010
 `define FUNC3_XOR		3'b100
@@ -120,8 +121,16 @@ module ctrl_tb;
     opcode_tb = `LUI;		#5;		// imm_type should return IMM_U 3'b001
     opcode_tb = `OP_IMM; 	#5;		// imm_type should return IMM_I 3'b100
     opcode_tb = `STORE; 	#5;		// imm_type should return IMM_S 3'b011
-    #20 $finish; 
-  
+        
+	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for third always_comb, which control alu1_nux	
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+  	
+    opcode_tb = `JAL; #5; //alu1_sel should return 1
+    opcode_tb = 5'b00000; #5; //alu1_sel should return 0
+    
+    
+    #20 $finish;   
   end
   
   always #5 clk_tb = ~clk_tb;
