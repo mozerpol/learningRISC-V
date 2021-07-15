@@ -4,6 +4,7 @@
 `define	OP_IMM	5'b00100
 `define LUI		5'b01101
 `define JAL		5'b11011
+`define LOAD 5'b00000
 `define FUNC3_ADD_SUB	3'b000
 `define FUNC3_SLT		3'b010
 `define FUNC3_XOR		3'b100
@@ -88,14 +89,14 @@ module ctrl_tb;
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
     // 1. OP
-    opcode_tb = `OP; #5; // but can be also OP_IMM
+    opcode_tb = `OP;	#5;	// but can be also OP_IMM
       // 1.1 func3
         // 1.1.1 func3 for ADD or SUB
         func3_tb = `FUNC3_ADD_SUB;
           // 1.1.1.1 func7 == 0100000 -> SUB
-          func7_tb = `FUNC7_ADD_SUB_SUB; #5; // alu_op should return 1
+          func7_tb = `FUNC7_ADD_SUB_SUB;	#5;	// alu_op should return 1
           // 1.1.1.2 func7 == 0000000 -> ADD
-          func7_tb = `FUNC7_ADD_SUB_ADD; #5; // alu_op should return 0
+          func7_tb = `FUNC7_ADD_SUB_ADD;	#5; // alu_op should return 0
     	// 1.1.2. SLT
     	func3_tb = `FUNC3_SLT; #5; // alu_op should return 1000
        	// 1.1.3. XOR
@@ -105,29 +106,29 @@ module ctrl_tb;
         // 1.1.7. SR
 		func3_tb = `FUNC3_SR;
         	// 1.1.7.2 func7 = 0000000 -> SRL
-    		func7_tb = `FUNC7_SR_SRL; #5; // alu_op should return 0110
+    		func7_tb = `FUNC7_SR_SRL; 		#5; // alu_op should return 0110
     		// 1.1.7.1 func7 = 0100000 -> SRA
-    		func7_tb = `FUNC7_SR_SRA; #5; // alu_op should return 0111
+    		func7_tb = `FUNC7_SR_SRA; 		#5; // alu_op should return 0111
     // 2. opcode = STORE -> alu_op = ADD (4'b0000)
-    opcode_tb = `STORE; #5; // alu_op should return 0
+    opcode_tb = `STORE;	#5;	// alu_op should return 0
     // 3. opcode = JALR -> alu_op = ADD	(4'b0000)
-    opcode_tb = `JALR; #5; // alu_op should return 0
+    opcode_tb = `JALR; 	#5;	// alu_op should return 0
     #20;
     
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for second always_comb, which control imm_mux	
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
        
-    opcode_tb = `LUI;		#5;		// imm_type should return IMM_U 3'b001
-    opcode_tb = `OP_IMM; 	#5;		// imm_type should return IMM_I 3'b100
-    opcode_tb = `STORE; 	#5;		// imm_type should return IMM_S 3'b011
+    opcode_tb = `LUI;		#5;	// imm_type should return IMM_U 3'b001
+    opcode_tb = `OP_IMM; 	#5;	// imm_type should return IMM_I 3'b100
+    opcode_tb = `STORE; 	#5;	// imm_type should return IMM_S 3'b011
         
 	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for third always_comb, which control alu1_nux	
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   	
-    opcode_tb = `JAL; 		#5;		//alu1_sel should return 1
-    opcode_tb = 5'b00000; 	#5; 	//alu1_sel should return 0
+    opcode_tb = `JAL; 		#5;	// alu1_sel should return 1
+    opcode_tb = `LOAD;	 	#5; // alu1_sel should return 0
     
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for fourth always_comb, which control alu2_nux
@@ -135,10 +136,24 @@ module ctrl_tb;
     //		for opcode_tb = `OP
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
-    opcode_tb = `OP;		#5;		//alu2_sel should return 0
-    opcode_tb = 5'b10101;	#5;		//alu2_sel should return 1
-    opcode_tb = `OP_IMM;	#5;		//alu2_sel should return 1
-    opcode_tb = `OP;		#5;		//alu2_sel should return 0
+    opcode_tb = `OP;		#5;	// alu2_sel should return 0
+    opcode_tb = 5'b10101;	#5;	// default value, alu2_sel should return 1
+    opcode_tb = `OP_IMM;	#5;	// alu2_sel should return 1
+    opcode_tb = `OP;		#5;	// alu2_sel should return 0
+    
+	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for fifth always_comb, which control reg_wr from reg_file
+    //		module.
+    //		Also this module consists "load_phase", which control
+    //		order of execution of instructions (by modify value of program 
+    //		counter and inst_mgm module).
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,    
+    
+    opcode_tb = `STORE;		#5	// reg_wr should return 0
+    opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
+    opcode_tb = `STORE;		#5	// reg_wr should return 0
+    opcode_tb = `LOAD;		#5	// reg_wr return an unknown logic value (load_phase)
+    opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
     
     #20 $finish;   
   end
