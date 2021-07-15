@@ -4,7 +4,7 @@
    * Copyright (c) 2019 Rafal Kozik
    * All rights reserved.
    * Mozerpol add comments
-   */
+*/
 
 `include "rysy_pkg.sv"
 `include "opcodes.sv"
@@ -46,14 +46,16 @@ module ctrl(
   /*
    ....:::::always I:::::....
    
-   How module below works:
-   1. switch(opcode): - in this module we are considering only two types of instrucions: I-type and
-      R-type. This types has the same ammount of instructions and they have ADD, ADDI, AND, ANDI, ...
-      So we can divide this module on two modules, one for I-type, second for R-type, but this 
+   How part below works:
+   1. switch(opcode): - in this module we are considering only two types of instrucions: 
+   	  I-type (OP-IMM family) and R-type (OP family). This types has the same ammount of 
+      instructions and they have ADD, ADDI, AND, ANDI, ...
+      So we can divide this part on two modules, one for I-type, second for R-type, but this 
       approach will be longer. The difference between this types is opcode and in some cases
       func7 part, some instructions just have it and some don't. So the differences between 
       instructions are: opcode, func3 and func7. Thanks to this we can just recognize this
-      differences and assign output from this module (alu_op) to the input of ALU. This output
+      differences and assign output from this module (alu_op - it decides which istruction 
+      ALU will perform) to the input of ALU. This output
       selects the instruction to use.
     case(OP_IMM & OP) - I-type instruction family (OM-IMM) such as: ADDI, ANDI, SLLI, ...
                         R-type instruction family (OP) such as ADD, AND, SLL, ...
@@ -65,9 +67,8 @@ module ctrl(
 	
     case(opcode) // Argument has five bits
       opcodePkg::OP_IMM, opcodePkg::OP: // 5'b00100 for OP_IMM or 5'b01100 for OP
-        
         case(func3)
-          opcodePkg::FUNC3_ADD_SUB: // 3'b000, func3 for ADD and SUB is the same
+          opcodePkg::FUNC3_ADD_SUB: // 3'b000, func3 for ADD and SUB is the same, func7 is the difference
             if((opcode == opcodePkg::OP) && (func7 == opcodePkg::FUNC7_ADD_SUB_SUB)) // 7'b0100000
               alu_op = aluPkg::SUB; // 4'b0001
           	else alu_op = aluPkg::ADD; // 4'b0000
@@ -79,7 +80,11 @@ module ctrl(
           opcodePkg::FUNC3_SLL : alu_op = aluPkg::SLL; // 3'b001, 4'b0101
           opcodePkg::FUNC3_SR  : // 3'b101
             
-            case(func7)
+            case(func7) // each instruction from R-format has a func7 field, but in previous
+              // cases we eliminated some instructions and left only SRL and SRA. The only one
+              // difference between this two instructions is func7 field. 
+              // SRA = 0100000 <seven bits>
+              // SRL = 0000000 
               opcodePkg::FUNC7_SR_SRL : alu_op = aluPkg::SRL;
               opcodePkg::FUNC7_SR_SRA : alu_op = aluPkg::SRA;
               default : alu_op = aluPkg::ADD;
