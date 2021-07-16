@@ -152,8 +152,17 @@ module ctrl_tb;
     opcode_tb = `STORE;		#5	// reg_wr should return 0
     opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
     opcode_tb = `STORE;		#5	// reg_wr should return 0
-    opcode_tb = `LOAD;		#5	// reg_wr return an unknown logic value (load_phase)
+    opcode_tb = `LOAD;		#5	// reg_wr should return an
+    // unknown logic value (load_phase)
     opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
+    
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for sixth always_comb, which control rd_mux	
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    opcode_tb = `OP_IMM;	#5	// rd_sel should return 2'b10
+    opcode_tb = `JAL;		#5	// rd_sel should return 2'b01
+    opcode_tb = `LOAD;		#5	// rd_sel should return 2'b11
     
     #20 $finish;   
   end
