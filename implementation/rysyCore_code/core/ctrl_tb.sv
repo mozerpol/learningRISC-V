@@ -4,6 +4,7 @@
 `define	OP_IMM	5'b00100
 `define LUI		5'b01101
 `define JAL		5'b11011
+`define BRANCH	5'b11000
 `define LOAD 5'b00000
 `define FUNC3_ADD_SUB	3'b000
 `define FUNC3_SLT		3'b010
@@ -116,7 +117,7 @@ module ctrl_tb;
     #20;
     
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //		Test for second always_comb, which control imm_mux	
+    //		Test for second always_comb, which control imm_mux
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
        
     opcode_tb = `LUI;		#5;	// imm_type should return IMM_U 3'b001
@@ -124,7 +125,7 @@ module ctrl_tb;
     opcode_tb = `STORE; 	#5;	// imm_type should return IMM_S 3'b011
         
 	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //		Test for third always_comb, which control alu1_nux	
+    //		Test for third always_comb, which control alu1_nux
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   	
     opcode_tb = `JAL; 		#5;	// alu1_sel should return 1
@@ -145,9 +146,9 @@ module ctrl_tb;
     //		Test for fifth always_comb, which control reg_wr from reg_file
     //		module.
     //		Also this module consists "load_phase", which control
-    //		order of execution of instructions (by modify value of program 
+    //		order of execution of instructions (by modify value of program
     //		counter and inst_mgm module).
-    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,    
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
     opcode_tb = `STORE;		#5	// reg_wr should return 0
     opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
@@ -157,14 +158,31 @@ module ctrl_tb;
     opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
     
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //		Test for sixth always_comb, which control rd_mux	
+    //		Test for sixth always_comb, which control rd_mux
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
     opcode_tb = `OP_IMM;	#5	// rd_sel should return 2'b10
     opcode_tb = `JAL;		#5	// rd_sel should return 2'b01
     opcode_tb = `LOAD;		#5	// rd_sel should return 2'b11
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for seventh always_comb, which control mem_addr_sel
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+        
+    opcode_tb = `JALR;		#5	// pc_sel should return 0
+    opcode_tb = `BRANCH;
+    b_tb	  =	0;			#5  // pc_sel should return 01
+    b_tb	  =	1;			#5  // pc_sel should return 0
+    opcode_tb = `LOAD;
     
-    #20 $finish;   
+    rst_tb 	  = 1'b1;		#10 // load_phase = 0, pc_sel should return 10,
+    // delay set at 10, because load_phase needs two clock cycles to change
+    // their state
+    rst_tb 	  = 1'b0;		#10 // load_phase = 1, pc_sel should return 01
+
+    
+    
+    $finish;   
   end
   
   always #5 clk_tb = ~clk_tb;
