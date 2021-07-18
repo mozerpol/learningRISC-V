@@ -1,3 +1,7 @@
+/*
+	By Mozerpol
+*/
+
 `define OP		5'b01100 // from opcodes.sv
 `define STORE	5'b01000
 `define JALR	5'b11001

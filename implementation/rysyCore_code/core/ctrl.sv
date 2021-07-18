@@ -217,7 +217,7 @@ module ctrl(
       default: cmp_op = cmpPkg::EQ;
     endcase
 
-  // ....:::::Controlling :::::....  
+  // ....:::::Controlling mem_addr_sel mem_sel part:::::....  
   always_comb
     case (opcode)
       opcodePkg::STORE: mem_sel = pcPkg::MEM_ALU;
@@ -235,6 +235,7 @@ module ctrl(
       default: we = 1'b0;
     endcase
 
+  // ....:::::Controlling select_pkg:::::....    
   always_comb
     case (func3)
       opcodePkg::FUNC3_SB: sel_type = selectPkg::SB;
