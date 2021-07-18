@@ -14,6 +14,9 @@
 `define FUNC3_BRANCH_BEQ	3'b000
 `define FUNC3_BRANCH_BGE 	3'b101
 `define FUNC3_BRANCH_BLTU	3'b110
+`define FUNC3_SH		3'b001
+`define FUNC3_SBU		3'b100
+`define FUNC3_SHU		3'b101
 `define FUNC7_SR_SRL		7'b0000000
 `define FUNC7_SR_SRA		7'b0100000
 `define FUNC7_ADD_SUB_SUB	7'b0100000
@@ -218,6 +221,14 @@ module ctrl_tb;
     opcode_tb = `LOAD;		#10;// mem_sel should return 01, load_phase = 0
     opcode_tb = 5'b11011;	#5;	// mem_sel should return default value, it means
     // mem_sel should return 0, load_phase = 0
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for eleventh always_comb, which control select_pkg
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    func3_tb = `FUNC3_SHU;	#5;	// sel_type should return 100
+    func3_tb = `FUNC3_SBU;	#5;	// sel_type should return 011
+    func3_tb = `FUNC3_SH;	#5	// sel_type should return 01
     
     $finish;   
   end
