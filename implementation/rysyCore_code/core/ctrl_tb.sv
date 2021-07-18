@@ -179,7 +179,22 @@ module ctrl_tb;
     // delay set at 10, because load_phase needs two clock cycles to change
     // their state
     rst_tb 	  = 1'b0;		#10 // load_phase = 1, pc_sel should return 01
-
+    
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for eigth always_comb, which control inst_mgm
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    opcode_tb = `STORE; 	#10 // inst_sel should return 01, next_nop = 1
+    rst_tb 	  = 1'b0;
+    opcode_tb = `BRANCH;
+    b_tb 	  = 0;			#10 // inst_sel should return 10, next_nop = 0
+    opcode_tb = `LOAD;		
+    rst_tb 	  = 1'b0;		#50	// inst_sel at the beginning should return 
+    // 0 and in the next rising clk edge should change their state on 1. The
+    // same situation is with inst_sel. At the beginning it should return 0,
+    // but in the next rising clk edge should return 1. The guity for this 
+    // situation is "load_phase = ~load_phase;" line.
+    rst_tb 	  = 1'b1;		#20	// inst_sel should return 01, next_nop = 1
     
     
     $finish;   
