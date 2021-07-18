@@ -169,7 +169,7 @@ module ctrl_tb;
     opcode_tb = `LOAD;		#5;	// rd_sel should return 2'b11
 
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //		Test for seventh always_comb, which control mem_addr_sel
+    //		Test for seventh always_comb, which control mem_addr_sel pc_sel part
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
         
     opcode_tb = `JALR;		#5;	// pc_sel should return 0
@@ -206,6 +206,12 @@ module ctrl_tb;
     func3_tb = `FUNC3_BRANCH_BLTU; 	#5;		// cmp_op should return 3'b100
     func3_tb = `FUNC3_BRANCH_BGE; 	#5;		// cmp_op should return 3'b011
     func3_tb = `FUNC3_BRANCH_BEQ; 	#5;		// cmp_op should return 3'b000
+    
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for tenth always_comb, which control 
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    
     
     $finish;   
   end

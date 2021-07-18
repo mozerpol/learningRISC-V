@@ -59,7 +59,7 @@ module ctrl(
       selects the instruction to use.
     case(OP_IMM & OP) - I-type instruction family (OM-IMM) such as: ADDI, ANDI, SLLI, ...
                         R-type instruction family (OP) such as ADD, AND, SLL, ...
-    case (LOAD & STORE & BRANCH & JAL & JALR & ADD) - 
+    case (LOAD & STORE & BRANCH & JAL & JALR & ADD) -
    	1_1. switch(func3):
    	1_2. switch(func7):
   */
@@ -84,7 +84,7 @@ module ctrl(
               // cases we eliminated some instructions and left only SRL and SRA. The only one
               // difference between this two instructions is func7 field. 
               // SRA = 0100000 <seven bits>
-              // SRL = 0000000 
+              // SRL = 0000000
               opcodePkg::FUNC7_SR_SRL : alu_op = aluPkg::SRL;
               opcodePkg::FUNC7_SR_SRA : alu_op = aluPkg::SRA;
               default : alu_op = aluPkg::ADD;
@@ -113,7 +113,7 @@ module ctrl(
       default: imm_type = immPkg::IMM_DEFAULT;
     endcase
 
-  // ....:::::Controlling alu1_nux:::::....  
+  // ....:::::Controlling alu1_nux:::::....
   always_comb
     case (opcode)
       opcodePkg::BRANCH, opcodePkg::JAL: 
@@ -121,7 +121,7 @@ module ctrl(
       default: alu1_sel = alu1Pkg::ALU1_RS;
     endcase
   
-  // ....:::::Controlling alu2_nux:::::.... 
+  // ....:::::Controlling alu2_nux:::::....
   always_comb
     case (opcode)
       opcodePkg::LOAD,
@@ -135,7 +135,7 @@ module ctrl(
       default: alu2_sel = alu2Pkg::ALU2_IMM;
     endcase
 
-  // ....:::::Controlling reg_wr from reg_file module:::::....   
+  // ....:::::Controlling reg_wr from reg_file module:::::....
   always_comb
     case (opcode)
       opcodePkg::JALR,
@@ -147,25 +147,27 @@ module ctrl(
       opcodePkg::LOAD: reg_wr = load_phase;
       default: reg_wr = 1'b0;
     endcase
-
+  
+  // ....:::::Controlling rd_mux:::::....
   always_comb
     case (opcode)
-      opcodePkg::OP_IMM,
-        opcodePkg::OP: rd_sel = rdPkg::RD_ALU;
+      opcodePkg::OP_IMM, opcodePkg::OP : 
+        rd_sel = rdPkg::RD_ALU;
       opcodePkg::LUI: rd_sel = rdPkg::RD_IMM;
-      opcodePkg::JALR,
-        opcodePkg::JAL: rd_sel = rdPkg::RD_PCP4;
+      opcodePkg::JALR, opcodePkg::JAL : 
+        rd_sel = rdPkg::RD_PCP4;
       opcodePkg::LOAD: rd_sel = rdPkg::RD_MEM;
       default: rd_sel = rdPkg::RD_ALU;
     endcase
-
+  
+  // ....:::::Controlling mem_addr_sel pc_sel part:::::....
   always_comb
     case (opcode)
-      opcodePkg::JALR,
-        opcodePkg::JAL: pc_sel = pcPkg::PC_ALU;
-      opcodePkg::BRANCH: pc_sel = b ? pcPkg::PC_ALU : pcPkg::PC_P4;
-      opcodePkg::STORE: pc_sel = pcPkg::PC_OLD;
-      opcodePkg::LOAD:
+      opcodePkg::JALR, opcodePkg::JAL : 
+        pc_sel = pcPkg::PC_ALU;
+      opcodePkg::BRANCH : pc_sel = b ? pcPkg::PC_ALU : pcPkg::PC_P4;
+      opcodePkg::STORE : pc_sel = pcPkg::PC_OLD;
+      opcodePkg::LOAD :
         case (load_phase)
           1'd0: pc_sel = pcPkg::PC_M4;
           1'd1: pc_sel = pcPkg::PC_P4;
@@ -185,23 +187,25 @@ module ctrl(
       next_nop = 1'b0;
   end
 
+  // ....:::::Controlling inst_mgm:::::....
   always_comb
-    if (next_nop)
+    if(next_nop)
       inst_sel = instMgmtPkg::INST_NOP;
   else
     case (opcode)
-      opcodePkg::JALR,
-        opcodePkg::JAL: inst_sel = instMgmtPkg::INST_NOP;
-      opcodePkg::BRANCH: inst_sel =
-        b ? instMgmtPkg::INST_NOP : instMgmtPkg::INST_MEM;
+      opcodePkg::JALR, opcodePkg::JAL : 
+        inst_sel = instMgmtPkg::INST_NOP;
+      opcodePkg::BRANCH : 
+        inst_sel = b ? instMgmtPkg::INST_NOP : instMgmtPkg::INST_MEM;
       opcodePkg::LOAD:
         case (load_phase)
           1'd1: inst_sel = instMgmtPkg::INST_NOP;
           default: inst_sel = instMgmtPkg::INST_OLD;
         endcase
       default: inst_sel = instMgmtPkg::INST_MEM;
-    endcase
+    endcase  
 
+  // ....:::::Controlling cmp:::::....
   always_comb
     case(func3)
       opcodePkg::FUNC3_BRANCH_BEQ: cmp_op = cmpPkg::EQ;
@@ -213,6 +217,7 @@ module ctrl(
       default: cmp_op = cmpPkg::EQ;
     endcase
 
+  // ....:::::Controlling :::::....  
   always_comb
     case (opcode)
       opcodePkg::STORE: mem_sel = pcPkg::MEM_ALU;
