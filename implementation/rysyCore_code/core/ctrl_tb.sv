@@ -11,6 +11,9 @@
 `define FUNC3_XOR		3'b100
 `define FUNC3_SLL		3'b001
 `define FUNC3_SR		3'b101
+`define FUNC3_BRANCH_BEQ	3'b000
+`define FUNC3_BRANCH_BGE 	3'b101
+`define FUNC3_BRANCH_BLTU	3'b110
 `define FUNC7_SR_SRL		7'b0000000
 `define FUNC7_SR_SRA		7'b0100000
 `define FUNC7_ADD_SUB_SUB	7'b0100000
@@ -150,52 +153,59 @@ module ctrl_tb;
     //		counter and inst_mgm module).
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
-    opcode_tb = `STORE;		#5	// reg_wr should return 0
-    opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
-    opcode_tb = `STORE;		#5	// reg_wr should return 0
-    opcode_tb = `LOAD;		#5	// reg_wr should return an
+    opcode_tb = `STORE;		#5;	// reg_wr should return 0
+    opcode_tb = `OP_IMM;	#5;	// reg_wr should return 1
+    opcode_tb = `STORE;		#5;	// reg_wr should return 0
+    opcode_tb = `LOAD;		#5;	// reg_wr should return an
     // unknown logic value (load_phase)
-    opcode_tb = `OP_IMM;	#5	// reg_wr should return 1
+    opcode_tb = `OP_IMM;	#5;	// reg_wr should return 1
     
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for sixth always_comb, which control rd_mux
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
-    opcode_tb = `OP_IMM;	#5	// rd_sel should return 2'b10
-    opcode_tb = `JAL;		#5	// rd_sel should return 2'b01
-    opcode_tb = `LOAD;		#5	// rd_sel should return 2'b11
+    opcode_tb = `OP_IMM;	#5;	// rd_sel should return 2'b10
+    opcode_tb = `JAL;		#5;	// rd_sel should return 2'b01
+    opcode_tb = `LOAD;		#5;	// rd_sel should return 2'b11
 
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for seventh always_comb, which control mem_addr_sel
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
         
-    opcode_tb = `JALR;		#5	// pc_sel should return 0
+    opcode_tb = `JALR;		#5;	// pc_sel should return 0
     opcode_tb = `BRANCH;
-    b_tb	  =	0;			#5  // pc_sel should return 01
-    b_tb	  =	1;			#5  // pc_sel should return 0
+    b_tb	  =	0;			#5; // pc_sel should return 01
+    b_tb	  =	1;			#5; // pc_sel should return 0
     opcode_tb = `LOAD;
     
-    rst_tb 	  = 1'b1;		#10 // load_phase = 0, pc_sel should return 10,
+    rst_tb 	  = 1'b1;		#10;// load_phase = 0, pc_sel should return 10,
     // delay set at 10, because load_phase needs two clock cycles to change
     // their state
-    rst_tb 	  = 1'b0;		#10 // load_phase = 1, pc_sel should return 01
+    rst_tb 	  = 1'b0;		#10;// load_phase = 1, pc_sel should return 01
     
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for eigth always_comb, which control inst_mgm
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     
-    opcode_tb = `STORE; 	#10 // inst_sel should return 01, next_nop = 1
+    opcode_tb = `STORE; 	#10;// inst_sel should return 01, next_nop = 1
     rst_tb 	  = 1'b0;
     opcode_tb = `BRANCH;
-    b_tb 	  = 0;			#10 // inst_sel should return 10, next_nop = 0
+    b_tb 	  = 0;			#10;// inst_sel should return 10, next_nop = 0
     opcode_tb = `LOAD;		
-    rst_tb 	  = 1'b0;		#50	// inst_sel at the beginning should return 
+    rst_tb 	  = 1'b0;		#50;// inst_sel at the beginning should return 
     // 0 and in the next rising clk edge should change their state on 1. The
     // same situation is with inst_sel. At the beginning it should return 0,
     // but in the next rising clk edge should return 1. The guity for this 
     // situation is "load_phase = ~load_phase;" line.
-    rst_tb 	  = 1'b1;		#20	// inst_sel should return 01, next_nop = 1
+    rst_tb 	  = 1'b1;		#20;// inst_sel should return 01, next_nop = 1
     
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for ninth always_comb, which control cmp
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    func3_tb = `FUNC3_BRANCH_BLTU; 	#5;		// cmp_op should return 3'b100
+    func3_tb = `FUNC3_BRANCH_BGE; 	#5;		// cmp_op should return 3'b011
+    func3_tb = `FUNC3_BRANCH_BEQ; 	#5;		// cmp_op should return 3'b000
     
     $finish;   
   end
