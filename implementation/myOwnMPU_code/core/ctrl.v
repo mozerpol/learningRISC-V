@@ -80,4 +80,21 @@ module ctrl(
       default: alu2_sel = `ALU2_IMM;
     endcase
 
+  // ....:::::Controlling rd_mux:::::....
+  reg [1:0] rd_sel;
+  rd_mux rd_mux_ctrl(
+    .rd_sel(rd_sel)
+  ); 
+
+  always@(opcode)
+    case (opcode)
+      `OP_IMM, `OP : 
+        rd_sel = `RD_ALU;
+      `LUI: rd_sel = `RD_IMM;
+      `JALR, `JAL : 
+        rd_sel = `RD_PCP4;
+      `LOAD: rd_sel = `RD_MEM;
+      default: rd_sel = `RD_ALU;
+    endcase
+
 endmodule

@@ -75,6 +75,14 @@ module ctrl_tb;
     opcode_tb = `OP_IMM;	#5;	// alu2_sel should return 1
     opcode_tb = `OP;		#5;	// alu2_sel should return 0
 
+	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for rd_mux
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    opcode_tb = `OP_IMM;	#5;	// rd_sel should return 2'b10
+    opcode_tb = `JAL;		#5;	// rd_sel should return 2'b01
+    opcode_tb = `LOAD;		#5;	// rd_sel should return 2'b11
+    
     $finish;
   end
 
