@@ -83,6 +83,20 @@ module ctrl_tb;
     opcode_tb = `JAL;		#5;	// rd_sel should return 2'b01
     opcode_tb = `LOAD;		#5;	// rd_sel should return 2'b11
     
+	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for reg_wr from reg_file module
+    //		Also this module consists "load_phase", which control
+    //		order of execution of instructions (by modify value of program
+    //		counter and inst_mgm module).
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    
+    opcode_tb = `STORE;		#5;	// reg_wr should return 0
+    opcode_tb = `OP_IMM;	#5;	// reg_wr should return 1
+    opcode_tb = `STORE;		#5;	// reg_wr should return 0
+    opcode_tb = `LOAD;		#5;	// reg_wr should return an
+    // unknown logic value (load_phase)
+    opcode_tb = `OP_IMM;	#5;	// reg_wr should return 1
+    
     $finish;
   end
 
