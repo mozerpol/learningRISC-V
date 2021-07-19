@@ -52,5 +52,18 @@ module ctrl(
       `STORE: 	imm_type = `IMM_S;
       default: imm_type = `IMM_DEFAULT;
     endcase
+
+  // ....:::::Controlling alu1_nux:::::....
+  reg alu1_sel;
+  alu1_mux alu1_mux_ctrl(
+    .alu1_sel(alu1_sel)
+  );  
+  
+  always@(opcode)
+    case (opcode)
+      `BRANCH, `JAL: 
+        alu1_sel = `ALU1_PC;
+      default: alu1_sel = `ALU1_RS;
+    endcase
   
 endmodule
