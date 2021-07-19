@@ -57,6 +57,13 @@ module ctrl_tb;
     opcode_tb = `OP_IMM; 	#5;	// imm_type should return IMM_I 3'b100
     opcode_tb = `STORE; 	#5;	// imm_type should return IMM_S 3'b011
     
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for alu1_nux
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+  	
+    opcode_tb = `JAL; 		#5;	// alu1_sel should return 1
+    opcode_tb = `LOAD;	 	#5; // alu1_sel should return 0
+    
     $finish;
   end
   
