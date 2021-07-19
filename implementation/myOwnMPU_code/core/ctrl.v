@@ -40,7 +40,7 @@ module ctrl(
   imm_mux imm_mux_ctrl(
     .imm_type(imm_type)
   );
-    
+
   always@(opcode)
     case (opcode)
       `OP_IMM:	imm_type = `IMM_I;
@@ -58,12 +58,26 @@ module ctrl(
   alu1_mux alu1_mux_ctrl(
     .alu1_sel(alu1_sel)
   );  
-  
+
   always@(opcode)
     case (opcode)
       `BRANCH, `JAL: 
         alu1_sel = `ALU1_PC;
       default: alu1_sel = `ALU1_RS;
     endcase
-  
+
+  // ....:::::Controlling alu2_nux:::::....
+  reg alu2_sel;
+  alu2_mux alu2_mux_ctrl(
+    .alu2_sel(alu2_sel)
+  ); 
+
+  always@(opcode)
+    case (opcode)
+      `LOAD, `STORE, `BRANCH, `JALR, `JAL, `OP_IMM: 
+        alu2_sel = `ALU2_IMM;
+      `OP: alu2_sel = `ALU2_RS;
+      default: alu2_sel = `ALU2_IMM;
+    endcase
+
 endmodule
