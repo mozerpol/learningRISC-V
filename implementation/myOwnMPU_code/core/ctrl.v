@@ -22,7 +22,8 @@ module ctrl(
   input wire [4:0] opcode,
   input wire [2:0] func3,
   input wire [6:0] func7,
-  input wire b
+  input wire b,
+  output wire reg_wr
   //   output instMgmtPkg::inst_sel inst_sel,
   //   output logic reg_wr,
   //   output aluPkg::alu_op alu_op,
@@ -37,6 +38,8 @@ module ctrl(
 
   wire next_nop;
   reg load_phase;
+  reg reg_wr_o;
+  assign reg_wr = reg_wr_o;
 
   always @(posedge clk)
     begin
@@ -108,13 +111,13 @@ module ctrl(
       default: rd_sel = `RD_ALU;
     endcase
 
-  //   // ....:::::Controlling reg_wr from reg_file module:::::....
-  //   always_comb
-  //     case (opcode)
-  //       `JALR, `JAL, `OP_IMM, `LUI, `OP : 
-  //         reg_wr = 1'b1;
-  //       `LOAD: reg_wr = load_phase;
-  //       default: reg_wr = 1'b0;
-  //     endcase
+  // ....:::::Controlling reg_wr from reg_file module:::::.... 
+  always@(opcode)
+    case (opcode)
+      `JALR, `JAL, `OP_IMM, `LUI, `OP : 
+        reg_wr_o = 1'b1;
+      `LOAD: reg_wr_o = load_phase;
+      default: reg_wr_o = 1'b0;
+    endcase
 
 endmodule
