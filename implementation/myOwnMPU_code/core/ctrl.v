@@ -35,6 +35,17 @@ module ctrl(
   //   output logic we
 );
 
+  wire next_nop;
+  reg load_phase;
+
+  always @(posedge clk)
+    begin
+      if (opcode == `LOAD)
+        load_phase = ~load_phase;
+      if (rst)
+        load_phase <= 1'b0;
+    end
+
   // ....:::::Controlling imm_mux:::::....
   reg [2:0] imm_type;
   imm_mux imm_mux_ctrl(
@@ -96,5 +107,14 @@ module ctrl(
       `LOAD: rd_sel = `RD_MEM;
       default: rd_sel = `RD_ALU;
     endcase
+
+  //   // ....:::::Controlling reg_wr from reg_file module:::::....
+  //   always_comb
+  //     case (opcode)
+  //       `JALR, `JAL, `OP_IMM, `LUI, `OP : 
+  //         reg_wr = 1'b1;
+  //       `LOAD: reg_wr = load_phase;
+  //       default: reg_wr = 1'b0;
+  //     endcase
 
 endmodule
