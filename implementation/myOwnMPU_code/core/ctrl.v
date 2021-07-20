@@ -199,7 +199,7 @@ module ctrl(
     endcase  
   /*
    ....:::::Controlling ALU:::::....
-   
+
    How part below works:
    1. switch(opcode): - in this module we are considering only two types of instrucions: 
    	  I-type (OP-IMM family) and R-type (OP family). This types has the same ammount of 
@@ -221,15 +221,15 @@ module ctrl(
   alu alu_ctrl(
     .alu_op(alu_op)
   );
-  
-  always@(*)	
+
+  always@(opcode, func3, func7)	
     case(opcode) // Argument has five bits
       `OP_IMM, `OP: // 5'b00100 for OP_IMM or 5'b01100 for OP
         case(func3)
           `FUNC3_ADD_SUB: // 3'b000, func3 for ADD and SUB is the same, func7 is the difference
             if((opcode == `OP) && (func7 == `FUNC7_ADD_SUB_SUB)) // 7'b0100000
               alu_op = `SUB; // 4'b0001
-          	else alu_op = `ADD; // 4'b0000
+          else alu_op = `ADD; // 4'b0000
           `FUNC3_SLT : alu_op = `SLT; // 3'b010, 4'b1000
           `FUNC3_SLTU: alu_op = `SLTU;// 3'b011, 4'b1001
           `FUNC3_XOR : alu_op = `XOR; // 3'b100, 4'b0010
@@ -247,12 +247,12 @@ module ctrl(
               default: alu_op = `ADD;
             endcase
           default: alu_op = `ADD;
-		endcase // end case(func3)
+        endcase // end case(func3)
       `LOAD, `STORE, `BRANCH,
       `JAL, `JALR : alu_op = `ADD;
       default: alu_op = `ADD;
     endcase // end case(opcode)
-  
+
   // ....::::::::::....
   always@(posedge clk) 
     begin
