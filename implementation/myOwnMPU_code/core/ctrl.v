@@ -197,7 +197,63 @@ module ctrl(
         endcase
       default: inst_sel = `INST_MEM;
     endcase  
-
+  /*
+   ....:::::Controlling ALU:::::....
+   
+   How part below works:
+   1. switch(opcode): - in this module we are considering only two types of instrucions: 
+   	  I-type (OP-IMM family) and R-type (OP family). This types has the same ammount of 
+      instructions and they have ADD, ADDI, AND, ANDI, ...
+      So we can divide this part on two modules, one for I-type, second for R-type, but this 
+      approach will be longer. The difference between this types is opcode and in some cases
+      func7 part, some instructions just have it and some don't. So the differences between 
+      instructions are: opcode, func3 and func7. Thanks to this we can just recognize this
+      differences and assign output from this module (alu_op - it decides which istruction 
+      ALU will perform) to the input of ALU. This output
+      selects the instruction to use.
+    case(OP_IMM & OP) - I-type instruction family (OM-IMM) such as: ADDI, ANDI, SLLI, ...
+                        R-type instruction family (OP) such as ADD, AND, SLL, ...
+    case (LOAD & STORE & BRANCH & JAL & JALR & ADD) -
+   	1_1. switch(func3):
+   	1_2. switch(func7):
+  */
+  reg [3:0] alu_op;
+  alu alu_ctrl(
+    .alu_op(alu_op)
+  );
+  
+  always@(*)	
+    case(opcode) // Argument has five bits
+      `OP_IMM, `OP: // 5'b00100 for OP_IMM or 5'b01100 for OP
+        case(func3)
+          `FUNC3_ADD_SUB: // 3'b000, func3 for ADD and SUB is the same, func7 is the difference
+            if((opcode == `OP) && (func7 == `FUNC7_ADD_SUB_SUB)) // 7'b0100000
+              alu_op = `SUB; // 4'b0001
+          	else alu_op = `ADD; // 4'b0000
+          `FUNC3_SLT : alu_op = `SLT; // 3'b010, 4'b1000
+          `FUNC3_SLTU: alu_op = `SLTU;// 3'b011, 4'b1001
+          `FUNC3_XOR : alu_op = `XOR; // 3'b100, 4'b0010
+          `FUNC3_OR  : alu_op = `OR;  // 3'b110, 4'b0011
+          `FUNC3_AND : alu_op = `AND; // 3'b111, 4'b0100
+          `FUNC3_SLL : alu_op = `SLL; // 3'b001, 4'b0101
+          `FUNC3_SR  : // 3'b101
+            case(func7) // each instruction from R-format has a func7 field, but in previous
+              // cases we eliminated some instructions and left only SRL and SRA. The only one
+              // difference between this two instructions is func7 field. 
+              // SRA = 0100000 <seven bits>
+              // SRL = 0000000
+              `FUNC7_SR_SRL : alu_op = `SRL;
+              `FUNC7_SR_SRA : alu_op = `SRA;
+              default: alu_op = `ADD;
+            endcase
+          default: alu_op = `ADD;
+		endcase // end case(func3)
+      `LOAD, `STORE, `BRANCH,
+      `JAL, `JALR : alu_op = `ADD;
+      default: alu_op = `ADD;
+    endcase // end case(opcode)
+  
+  // ....::::::::::....
   always@(posedge clk) 
     begin
       if(rst)
@@ -209,6 +265,7 @@ module ctrl(
         next_nop = 1'b0;
     end
 
+  // ....::::::::::....
   always @(posedge clk)
     begin
       if (opcode == `LOAD)
