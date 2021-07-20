@@ -164,6 +164,19 @@ module ctrl(
       default: cmp_op = `EQ;
     endcase
 
+  // ....:::::Controlling select_pkg:::::....
+  reg [2:0] sel_type;
+
+  always@(func3, opcode)
+    case(func3)
+      `FUNC3_SB:	sel_type = `SB;
+      `FUNC3_SH: 	sel_type = `SH;
+      `FUNC3_SW: 	sel_type = `SW;
+      `FUNC3_SBU: 	sel_type = `SBU;
+      `FUNC3_SHU: 	sel_type = `SHU;
+      default: sel_type = `SW;
+    endcase
+
   always@(posedge clk) 
     begin
       if(rst)
