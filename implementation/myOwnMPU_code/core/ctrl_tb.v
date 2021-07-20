@@ -113,12 +113,24 @@ module ctrl_tb;
     rst_tb 	  = 1'b0;		#10;// load_phase = 1, pc_sel should return 01
 
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //		Test for ninth always_comb, which control cmp
+    //		Test for cmp
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
     func3_tb = `FUNC3_BRANCH_BLTU; 	#5;		// cmp_op should return 3'b100
     func3_tb = `FUNC3_BRANCH_BGE; 	#5;		// cmp_op should return 3'b011
     func3_tb = `FUNC3_BRANCH_BEQ; 	#5;		// cmp_op should return 3'b000
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for mem_addr_sel mem_sel part
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+    opcode_tb = `STORE;		#5;	// mem_sel should return 01
+    rst_tb 	  = 1'b0;
+    opcode_tb = `LOAD;		#10;// mem_sel should return 0, load_phase = 1
+    rst_tb 	  = 1'b1;
+    opcode_tb = `LOAD;		#10;// mem_sel should return 01, load_phase = 0
+    opcode_tb = 5'b11011;	#5;	// mem_sel should return default value, it means
+    // mem_sel should return 0, load_phase = 0
 
     $finish;
   end
