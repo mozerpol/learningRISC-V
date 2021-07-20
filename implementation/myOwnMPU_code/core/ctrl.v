@@ -131,6 +131,23 @@ module ctrl(
       default: pc_sel = `PC_P4;
     endcase
 
+  // ....:::::Controlling cmp:::::....
+  reg [2:0] cmp_op;
+  cmp cmp_ctrl(
+    .cmp_op(cmp_op)
+  ); 
+
+  always@(*)
+    case(func3)
+      `FUNC3_BRANCH_BEQ: 	cmp_op = `EQ;
+      `FUNC3_BRANCH_BNE: 	cmp_op = `NE;
+      `FUNC3_BRANCH_BLT: 	cmp_op = `LT;
+      `FUNC3_BRANCH_BGE:	cmp_op = `GE;
+      `FUNC3_BRANCH_BLTU: 	cmp_op = `LTU;
+      `FUNC3_BRANCH_BGEU:	cmp_op = `GEU;
+      default: cmp_op = `EQ;
+    endcase
+  
   always@(posedge clk) 
     begin
       if(rst)
