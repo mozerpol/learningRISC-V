@@ -156,6 +156,61 @@ module ctrl_tb;
     // situation is "load_phase = ~load_phase;" line.
     rst_tb 	  = 1'b1;		#20;// inst_sel should return 01, next_nop = 1
 
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test control ALU
+    //  
+    //	always_comb hierarchy:
+    //	
+    //	opcode:
+    //		1. OP_IMM or OP
+    //			1.1. func3
+    //				1.1.1. ADD or SUB - func3 is the same
+    //					1.1.1.1. func7 == 0100000 -> SUB
+    //					1.1.1.2  else -> ADD
+    //				1.1.2. SLT
+    //					.
+    //					.		Only one difference: func3
+    //					.
+    //				1.1.6. SLL 
+    //				1.1.7. SR func3
+    //					1.1.7.1 func7 = 0100000 -> SRL
+    //					1.1.7.2 func7 = 0000000 -> SRA
+    //		2. opcode = LOAD -> alu_op = ADD
+    //		3. opcode = STORE -> alu_op = ADD
+    //					.
+    //					.
+    //					.
+    //		5. opcode = JALR -> alu_op = ADD
+    //
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+    // 1. OP
+    opcode_tb = `OP;	#5;	// but can be also OP_IMM
+    // 1.1 func3
+    // 1.1.1 func3 for ADD or SUB
+    func3_tb = `FUNC3_ADD_SUB;
+    // 1.1.1.1 func7 == 0100000 -> SUB
+    func7_tb = `FUNC7_ADD_SUB_SUB;	#5;	// alu_op should return 1
+    // 1.1.1.2 func7 == 0000000 -> ADD
+    func7_tb = `FUNC7_ADD_SUB_ADD;	#5; // alu_op should return 0
+    // 1.1.2. SLT
+    func3_tb = `FUNC3_SLT; #5; // alu_op should return 1000
+    // 1.1.3. XOR
+    func3_tb = `FUNC3_XOR; #5; // alu_op should return 0010
+    // 1.1.4. SLL
+    func3_tb = `FUNC3_SLL; #5; // alu_op should return 0101
+    // 1.1.7. SR
+    func3_tb = `FUNC3_SR;
+    // 1.1.7.2 func7 = 0000000 -> SRL
+    func7_tb = `FUNC7_SR_SRL; 		#5; // alu_op should return 0110
+    // 1.1.7.1 func7 = 0100000 -> SRA
+    func7_tb = `FUNC7_SR_SRA; 		#5; // alu_op should return 0111
+    // 2. opcode = STORE -> alu_op = ADD (4'b0000)
+    opcode_tb = `STORE;	#5;	// alu_op should return 0
+    // 3. opcode = JALR -> alu_op = ADD	(4'b0000)
+    opcode_tb = `JALR; 	#5;	// alu_op should return 0
+    #20;
+
     $finish;
   end
 
