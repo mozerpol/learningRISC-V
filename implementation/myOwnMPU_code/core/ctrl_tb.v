@@ -75,28 +75,43 @@ module ctrl_tb;
     opcode_tb = `OP_IMM;	#5;	// alu2_sel should return 1
     opcode_tb = `OP;		#5;	// alu2_sel should return 0
 
-	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for rd_mux
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-    
+
     opcode_tb = `OP_IMM;	#5;	// rd_sel should return 2'b10
     opcode_tb = `JAL;		#5;	// rd_sel should return 2'b01
     opcode_tb = `LOAD;		#5;	// rd_sel should return 2'b11
-    
-	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //		Test for reg_wr from reg_file module
     //		Also this module consists "load_phase", which control
     //		order of execution of instructions (by modify value of program
     //		counter and inst_mgm module).
     //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-    
+
     opcode_tb = `STORE;		#5;	// reg_wr should return 0
     opcode_tb = `OP_IMM;	#5;	// reg_wr should return 1
     opcode_tb = `STORE;		#5;	// reg_wr should return 0
     opcode_tb = `LOAD;		#5;	// reg_wr should return an
     // unknown logic value (load_phase)
     opcode_tb = `OP_IMM;	#5;	// reg_wr should return 1
-    
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for mem_addr_sel pc_sel part
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+    opcode_tb = `JALR;		#5;	// pc_sel should return 0, JALR opcode = 5'b11001
+    opcode_tb = `BRANCH;		// BRANCH opcode = 5'b11000
+    b_tb	  =	0;			#5; // pc_sel should return 01
+    b_tb	  =	1;			#5; // pc_sel should return 0
+    opcode_tb = `LOAD;
+
+    rst_tb 	  = 1'b1;		#10;// load_phase = 0, pc_sel should return 10,
+    // delay set at 10, because load_phase needs two clock cycles to change
+    // their state
+    rst_tb 	  = 1'b0;		#10;// load_phase = 1, pc_sel should return 01    
+
     $finish;
   end
 
