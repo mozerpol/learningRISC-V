@@ -132,6 +132,14 @@ module ctrl_tb;
     opcode_tb = 5'b11011;	#5;	// mem_sel should return default value, it means
     // mem_sel should return 0, load_phase = 0
 
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for eleventh always_comb, which control select_pkg
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+    func3_tb = `FUNC3_SHU;	#5;	// sel_type should return 100
+    func3_tb = `FUNC3_SBU;	#5;	// sel_type should return 011
+    func3_tb = `FUNC3_SH;	#5	// sel_type should return 01
+
     $finish;
   end
 
