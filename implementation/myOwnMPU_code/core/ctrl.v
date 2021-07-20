@@ -87,7 +87,7 @@ module ctrl(
     endcase
 
   // ....:::::Controlling reg_wr from reg_file module:::::.... 
-  always@(opcode)
+  always@(opcode, load_phase)
     case (opcode)
       `JALR, `JAL, `OP_IMM, `LUI, `OP : 
         reg_wr_o = 1'b1;
