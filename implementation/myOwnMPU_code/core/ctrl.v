@@ -113,8 +113,10 @@ module ctrl(
     endcase
   // ....:::::Controlling mem_addr_sel pc_sel part:::::....
   reg [1:0] pc_sel;
+  reg mem_sel;
   mem_addr_sel mem_addr_sel_ctrl(
-    .pc_sel(pc_sel)
+    .pc_sel(pc_sel),
+    .mem_sel(mem_sel)
   );
 
   always@(opcode, b, load_phase)
@@ -129,6 +131,20 @@ module ctrl(
           default: pc_sel = `PC_OLD;
         endcase
       default: pc_sel = `PC_P4;
+    endcase
+
+
+  // ....:::::Controlling mem_addr_sel mem_sel part:::::....
+  // Binding of mem_sel var above
+  always@(opcode, load_phase)
+    case (opcode)
+      `STORE: mem_sel = `MEM_ALU;
+      `LOAD:
+        case(load_phase)
+          1'd0: mem_sel = `MEM_ALU;
+          default: mem_sel = `MEM_PC;
+        endcase
+      default: mem_sel = `MEM_PC;
     endcase
 
   // ....:::::Controlling cmp:::::....
@@ -147,7 +163,7 @@ module ctrl(
       `FUNC3_BRANCH_BGEU:	cmp_op = `GEU;
       default: cmp_op = `EQ;
     endcase
-  
+
   always@(posedge clk) 
     begin
       if(rst)
