@@ -41,14 +41,6 @@ module ctrl(
   reg reg_wr_o;
   assign reg_wr = reg_wr_o;
 
-  always @(posedge clk)
-    begin
-      if (opcode == `LOAD)
-        load_phase = ~load_phase;
-      if (rst)
-        load_phase <= 1'b0;
-    end
-
   // ....:::::Controlling imm_mux:::::....
   reg [2:0] imm_type;
   imm_mux imm_mux_ctrl(
@@ -94,6 +86,15 @@ module ctrl(
       default: alu2_sel = `ALU2_IMM;
     endcase
 
+  // ....:::::Controlling reg_wr from reg_file module:::::.... 
+  always@(opcode)
+    case (opcode)
+      `JALR, `JAL, `OP_IMM, `LUI, `OP : 
+        reg_wr_o = 1'b1;
+      `LOAD: reg_wr_o = load_phase;
+      default: reg_wr_o = 1'b0;
+    endcase
+
   // ....:::::Controlling rd_mux:::::....
   reg [1:0] rd_sel;
   rd_mux rd_mux_ctrl(
@@ -110,14 +111,32 @@ module ctrl(
       `LOAD: rd_sel = `RD_MEM;
       default: rd_sel = `RD_ALU;
     endcase
+  // ....:::::Controlling mem_addr_sel pc_sel part:::::....
+  reg [1:0] pc_sel;
+  mem_addr_sel mem_addr_sel_ctrl(
+    .pc_sel(pc_sel)
+  );
 
-  // ....:::::Controlling reg_wr from reg_file module:::::.... 
-  always@(opcode)
+  always@(opcode, b, load_phase)
     case (opcode)
-      `JALR, `JAL, `OP_IMM, `LUI, `OP : 
-        reg_wr_o = 1'b1;
-      `LOAD: reg_wr_o = load_phase;
-      default: reg_wr_o = 1'b0;
+      `JALR, `JAL: pc_sel = `PC_ALU;
+      `BRANCH: pc_sel = b ? `PC_ALU : `PC_P4;
+      `STORE: pc_sel = `PC_OLD;
+      `LOAD:
+        case (load_phase)
+          1'd0: pc_sel = `PC_M4;
+          1'd1: pc_sel = `PC_P4;
+          default: pc_sel = `PC_OLD;
+        endcase
+      default: pc_sel = `PC_P4;
     endcase
+
+  always @(posedge clk)
+    begin
+      if (opcode == `LOAD)
+        load_phase = ~load_phase;
+      if (rst)
+        load_phase <= 1'b0;
+    end
 
 endmodule
