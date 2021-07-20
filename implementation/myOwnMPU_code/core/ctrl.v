@@ -23,23 +23,16 @@ module ctrl(
   input wire [2:0] func3,
   input wire [6:0] func7,
   input wire b,
-  output wire reg_wr
-  //   output instMgmtPkg::inst_sel inst_sel,
-  //   output logic reg_wr,
-  //   output aluPkg::alu_op alu_op,
-  //   output cmpPkg::cmp_op cmp_op,
-  //   output pcPkg::pc_sel pc_sel,
-  //   output pcPkg::mem_sel mem_sel,
-  //   output rdPkg::rd_sel rd_sel,
-  //   output alu2Pkg::alu2_sel alu2_sel,
-  //   output selectPkg::sel_type sel_type,
-  //   output logic we
+  output wire reg_wr,
+  output wire we
 );
 
   reg next_nop;  
   reg load_phase;
   reg reg_wr_o;
   assign reg_wr = reg_wr_o;
+  reg we_o;
+  assign we = we_o;
 
   // ....:::::Controlling imm_mux:::::....
   reg [2:0] imm_type;
@@ -273,5 +266,12 @@ module ctrl(
       if (rst)
         load_phase <= 1'b0;
     end
+
+  // ....::::::::::....
+  always@(opcode)
+    case (opcode)
+      `STORE: we_o = 1'b1;
+      default: we_o = 1'b0;
+    endcase
 
 endmodule
