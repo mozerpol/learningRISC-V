@@ -36,7 +36,7 @@ module ctrl(
   //   output logic we
 );
 
-  wire next_nop;
+  reg next_nop;  
   reg load_phase;
   reg reg_wr_o;
   assign reg_wr = reg_wr_o;
@@ -130,6 +130,17 @@ module ctrl(
         endcase
       default: pc_sel = `PC_P4;
     endcase
+
+  always@(posedge clk) 
+    begin
+      if(rst)
+        next_nop = 1'b1; // Prevent first inst of being processed twice.
+      else if ((opcode == `JAL) || (opcode == `JALR) ||
+               ((opcode == `BRANCH) && b) || (opcode == `STORE))
+        next_nop = 1'b1;
+      else
+        next_nop = 1'b0;
+    end
 
   always @(posedge clk)
     begin
