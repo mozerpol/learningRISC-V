@@ -110,7 +110,15 @@ module ctrl_tb;
     rst_tb 	  = 1'b1;		#10;// load_phase = 0, pc_sel should return 10,
     // delay set at 10, because load_phase needs two clock cycles to change
     // their state
-    rst_tb 	  = 1'b0;		#10;// load_phase = 1, pc_sel should return 01    
+    rst_tb 	  = 1'b0;		#10;// load_phase = 1, pc_sel should return 01
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    //		Test for ninth always_comb, which control cmp
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+    func3_tb = `FUNC3_BRANCH_BLTU; 	#5;		// cmp_op should return 3'b100
+    func3_tb = `FUNC3_BRANCH_BGE; 	#5;		// cmp_op should return 3'b011
+    func3_tb = `FUNC3_BRANCH_BEQ; 	#5;		// cmp_op should return 3'b000
 
     $finish;
   end
