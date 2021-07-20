@@ -177,6 +177,27 @@ module ctrl(
       default: sel_type = `SW;
     endcase
 
+  // ....:::::Controlling inst_mgm:::::....
+  reg [1:0] inst_sel;
+  inst_mgmt inst_mgmt_ctrl(
+    .inst_sel(inst_sel)
+  );
+
+  always@(next_nop, opcode, b, load_phase)
+    if(next_nop)
+      inst_sel = `INST_NOP;
+  else
+    case(opcode)
+      `JALR, `JAL: inst_sel = `INST_NOP;
+      `BRANCH: inst_sel = b ? `INST_NOP : `INST_MEM;
+      `LOAD:
+        case (load_phase)
+          1'd1: inst_sel = `INST_NOP;
+          default: inst_sel = `INST_OLD;
+        endcase
+      default: inst_sel = `INST_MEM;
+    endcase  
+
   always@(posedge clk) 
     begin
       if(rst)
