@@ -5,6 +5,24 @@
  * All rights reserved.
  */
 
+`include "opcodes.sv"
+`include "instruction.sv"
+`include "rysy_pkg.sv"
+`include "inst_mgmt.sv"
+`include "imm_mux.sv"
+`include "alu.sv"
+`include "cmp.sv"
+`include "mem_addr_sel.sv"
+`include "rd_mux.sv"
+`include "alu1_mux.sv"
+`include "alu2_mux.sv"
+`include "select_pkg.sv"
+`include "decode.sv"
+`include "select_rd.sv"
+`include "reg_file.sv"
+`include "select_wr.sv"
+`include "ctrl.sv"
+
 `default_nettype none
 
 import rysyPkg::*;
