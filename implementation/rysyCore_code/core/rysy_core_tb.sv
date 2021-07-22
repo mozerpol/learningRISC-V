@@ -25,7 +25,25 @@ module rysy_core_tb;
     $dumpfile("dump.vcd"); 
     $dumpvars;
 
-    #10; $finish;   
+    #5;
+    rst_tb = 1;
+    #10
+    /*
+    	....:::::rst_tb = 0;:::::....
+    	pc_reg	in 	mem_addr_sel 	= 	0
+        inst  	in	inst_mgmt		=	32'h00000013 (32'b10011)
+    */
+    rst_tb = 0;
+    /*
+    						Test for OP-IMM family
+    
+    	....:::::rdata_tb = 32'b000000000011_00001_000_00010_0010011;:::::....
+        After two cycles inst in inst_mgmt will have rdata_tb value
+    */
+    rdata_tb = 32'b000000000011_00001_000_00010_0010011;
+
+
+    #30; $finish;   
   end
 
   always #5 clk_tb = ~clk_tb;
