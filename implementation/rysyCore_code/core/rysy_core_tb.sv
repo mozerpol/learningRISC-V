@@ -25,25 +25,46 @@ module rysy_core_tb;
     $dumpfile("dump.vcd"); 
     $dumpvars;
 
-    #5;
+    #10;
+    /*
+    	....:::::rst_tb = 1;:::::....
+        next_nop	in	ctrl		=	1
+        load_phase	in	ctrl		=	0
+        inst_sel	in	ctrl		= 	01
+        inst		in	inst_mgmt	=	32'b10011
+        pc_reg		in	mem_addr_sel=	0
+    */
     rst_tb = 1;
-    #10
+    #20
     /*
     	....:::::rst_tb = 0;:::::....
-    	pc_reg	in 	mem_addr_sel 	= 	0
-        inst  	in	inst_mgmt		=	32'h00000013 (32'b10011)
+        next_nop	in	ctrl		=	0
+        load_phase	in	ctrl		=	0
+        inst_sel	in	ctrl		= 	10
+        inst		in	inst_mgmt	=	32'b10011
+        pc_reg		in	mem_addr_sel=	100 (4 in dec, next clk will is 8...)
     */
     rst_tb = 0;
+    #20
     /*
-    						Test for OP-IMM family
-    
-    	....:::::rdata_tb = 32'b000000000011_00001_000_00010_0010011;:::::....
-        After two cycles inst in inst_mgmt will have rdata_tb value
+    	....:::::rdata_tb = 32'b000000000101_00001_000_00010_0010011;:::::....
+        This instruction means: addi x2, x1, 0x5
+		inst 		in	inst_mgmt		=	rdata
+        inst_sel	in	inst_mgmt		=	10 (INST_MEM)
+        inst_sel	in	ctrl			=	10 (INST_MEM)
+        opcode		in	decode			=	00100 (4 in dec) (OP_IMM in opcodes)
+        func3		in	decode			=	000
+        rd			in	decode			=	00010
+        rs1			in	decode			=	1
+        imm			in	decode			=	101 (5 in dec)
+        imm_type	in	ctrl/imm_mux	=	00100 (4 in dec)
+        imm			in	imm_mux			=	101
+		
+		
     */
-    rdata_tb = 32'b000000000011_00001_000_00010_0010011;
+    rdata_tb = 32'b000000000101_00001_000_00010_0010011;
 
-
-    #30; $finish;   
+    #50; $finish;   
   end
 
   always #5 clk_tb = ~clk_tb;
