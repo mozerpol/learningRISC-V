@@ -56,11 +56,11 @@ module rysy_core_tb;
         func3		in	decode			=	000
         rd			in	decode			=	00010
         rs1			in	decode			=	1
+        rs2			in 	decode			=	101
         imm			in	decode			=	101 (5 in dec)
         imm_type	in	ctrl/imm_mux	=	00100 (4 in dec)
         imm			in	imm_mux			=	101
-		
-		
+        reg_wr		in	ctrl/reg_file	=	1			
     */
     rdata_tb = 32'b000000000101_00001_000_00010_0010011;
 
