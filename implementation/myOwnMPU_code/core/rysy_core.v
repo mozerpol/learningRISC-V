@@ -56,6 +56,14 @@ module rysy_core (
   wire [1:0] sel_addr;
   reg [1:0] sel_addr_old;
   wire [`REG_LEN-1:0]rd_mem;
+  wire [4:0] opcode;
+  wire [2:0]imm_type;
+  wire [1:0] inst_sel;
+  wire [2:0] cmp_op;
+  wire [2:0] sel_type;
+  wire [3:0] alu_op;
+  wire alu1_sel;
+  wire alu2_sel;
 
   wire [1:0] pc_sel;
   wire mem_sel;
