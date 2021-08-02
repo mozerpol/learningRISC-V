@@ -57,6 +57,8 @@ module rysy_core (
   reg [1:0] sel_addr_old;
   wire [`REG_LEN-1:0]rd_mem;
 
+  wire [1:0] pc_sel;
+  wire mem_sel;
   mem_addr_sel mem_addr_sel_core(
     .pc_sel(pc_sel),
     .mem_sel(mem_sel),
@@ -67,14 +69,7 @@ module rysy_core (
     .addr(addr)
   );
 
-  inst_mgmt inst_mgmt_core(
-    .inst(inst),
-    .inst_sel(inst_sel),
-    .clk(clk),
-    .rst(rst),
-    .rdata(rdata)
-  );
-
+  wire [1:0] rd_sel;
   rd_mux rd_mux_core(
     .pc(pc),
     .rd_sel(rd_sel),
@@ -85,87 +80,10 @@ module rysy_core (
     .clk(clk)
   );
 
-  alu alu_core(
-    .alu_in1(alu_in1),
-    .alu_in2(alu_in2),
-    .alu_out(alu_out),
-    .alu_op(alu_op)
-  );
 
-  alu1_mux alu1_mux_core(
-    .pc(pc),
-    .rs1_d(rs1_d),
-    .alu1_sel(alu1_sel),
-    .alu_in1(alu_in1),
-    .clk(clk)
-  );
 
-  alu2_mux alu2_mux_core(
-    .rs2_d(rs2_d),
-    .alu2_sel(alu2_sel),
-    .alu_in2(alu_in2),
-    .imm(imm)
-  );
 
-  wire [4:0]opcode;
-  decode decode_core(
-    .inst(inst),
-    .rs1(rs1),
-    .rs2(rs2),
-    .rd(rd),
-    .imm_I(imm_I),
-    .imm_S(imm_S),
-    .imm_B(imm_B),
-    .imm_U(imm_U),
-    .imm_J(imm_J),
-    .func3(func3),
-    .func7(func7),
-    .opcode(opcode)
-  );
 
-  reg_file reg_file_core(
-    .rs1(rs1),
-    .rs2(rs2),
-    .rd(rd),
-    .rs1_d(rs1_d),
-    .rs2_d(rs2_d),
-    .reg_wr(reg_wr),
-    .rd_d(rd_d),
-    .clk(clk)
-  );
-
-  cmp cmp_core(
-    .rs1_d(rs1_d),
-    .rs2_d(rs2_d),
-    .cmp_op(cmp_op),
-    .b(b)
-  );
-
-  wire [2:0] sel_type;
-  select_wr select_wr_core(
-    .rs2_d(rs2_d),
-    .sel_addr(sel_addr),
-    .sel_type(sel_type),
-    .be(be),
-    .wdata(wdata)
-  );
-
-  imm_mux imm_mux_core(
-    .imm_type(imm_type),
-    .imm_I(imm_I),
-    .imm_S(imm_S),
-    .imm_B(imm_B),
-    .imm_U(imm_U),
-    .imm_J(imm_J),
-    .imm(imm)
-  );
-
-  select_rd select_rd_core(
-    .sel_addr_old(sel_addr_old),
-    .rd_mem(rd_mem),
-    .rdata(rdata),
-    .sel_type(sel_type)
-  );
 
   ctrl ctrl_core(
     .clk(clk),
