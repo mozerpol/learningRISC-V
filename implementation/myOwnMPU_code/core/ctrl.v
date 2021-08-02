@@ -6,15 +6,6 @@
 
 `include "rysy_pkg.vh"
 `include "opcodes.vh"
-`include "inst_mgmt.v"
-`include "imm_mux.v"
-`include "alu.v"
-`include "cmp.v"
-`include "mem_addr_sel.v"
-`include "rd_mux.v"
-`include "alu1_mux.v"
-`include "alu2_mux.v"
-`include "select_pkg.v"
 
 module ctrl(
   input wire clk,
@@ -25,15 +16,15 @@ module ctrl(
   input wire b,
   output wire reg_wr,
   output wire we,
+  output  wire [1:0] pc_sel,
+  output wire mem_sel,
   output wire [2:0] imm_type,
+  output wire [1:0] inst_sel,
   output wire alu1_sel,
   output wire alu2_sel,
   output wire [1:0] rd_sel,
-  output wire [1:0] pc_sel,
-  output wire mem_sel,
   output wire [2:0] cmp_op,
   output wire [2:0] sel_type,
-  output wire [1:0] inst_sel,
   output wire [3:0] alu_op
 );
 
@@ -43,6 +34,39 @@ module ctrl(
   assign reg_wr = reg_wr_o;
   reg we_o;
   assign we = we_o;
+
+  // ....:::::Controlling mem_addr_sel pc_sel part:::::....
+  reg [1:0] pc_sel_reg;
+  reg mem_sel_reg;
+  assign pc_sel = pc_sel_reg;
+  assign mem_sel = mem_sel_reg;
+
+  always@(opcode, b, load_phase)
+    case (opcode)
+      `JALR, `JAL: pc_sel_reg = `PC_ALU;
+      `BRANCH: pc_sel_reg = b ? `PC_ALU : `PC_P4;
+      `STORE: pc_sel_reg = `PC_OLD;
+      `LOAD:
+        case (load_phase)
+          1'd0: pc_sel_reg = `PC_M4;
+          1'd1: pc_sel_reg = `PC_P4;
+          default: pc_sel_reg = `PC_OLD;
+        endcase
+      default: pc_sel_reg = `PC_P4;
+    endcase
+
+  // ....:::::Controlling mem_addr_sel mem_sel part:::::....
+  // Binding of mem_sel var above
+  always@(opcode, load_phase)
+    case (opcode)	
+      `STORE: mem_sel_reg = `MEM_ALU;
+      `LOAD:
+        case(load_phase)
+          1'd0: mem_sel_reg = `MEM_ALU;
+          default: mem_sel_reg = `MEM_PC;
+        endcase
+      default: mem_sel_reg = `MEM_PC; // return 0 
+    endcase
 
   // ....:::::Controlling imm_mux:::::....
   reg [2:0] imm_type_reg;
@@ -60,6 +84,25 @@ module ctrl(
       default: imm_type_reg = `IMM_DEFAULT;
     endcase
 
+  // ....:::::Controlling inst_mgm:::::....
+  reg [1:0] inst_sel_reg;
+  assign inst_sel = inst_sel_reg; 
+
+  always@(next_nop, opcode, b, load_phase)
+    if(next_nop)
+      inst_sel_reg = `INST_NOP;
+  else
+    case(opcode)
+      `JALR, `JAL: inst_sel_reg = `INST_NOP;
+      `BRANCH: inst_sel_reg = b ? `INST_NOP : `INST_MEM;
+      `LOAD:
+        case (load_phase)
+          1'd1: inst_sel_reg = `INST_NOP;
+          default: inst_sel_reg = `INST_OLD;
+        endcase
+      default: inst_sel_reg = `INST_MEM;
+    endcase 
+
   // ....:::::Controlling alu1_nux:::::....
   reg alu1_sel_reg;
   assign alu1_sel = alu1_sel_reg;
@@ -67,14 +110,13 @@ module ctrl(
   always@(opcode)
     case (opcode)
       `BRANCH, `JAL: 
-        alu1_sel_reg = `ALU1_PC;
+        alu1_sel_reg = `ALU1_PC; // return 1
       default: alu1_sel_reg = `ALU1_RS;
     endcase
 
   // ....:::::Controlling alu2_nux:::::....
   reg alu2_sel_reg;
   assign alu2_sel = alu2_sel_reg;
-
 
   always@(opcode)
     case (opcode)
@@ -99,46 +141,11 @@ module ctrl(
 
   always@(opcode)
     case (opcode)
-      `OP_IMM, `OP : 
-        rd_sel_reg = `RD_ALU;
+      `OP_IMM, `OP : rd_sel_reg = `RD_ALU;
       `LUI: rd_sel_reg = `RD_IMM;
-      `JALR, `JAL : 
-        rd_sel_reg = `RD_PCP4;
+      `JALR, `JAL : rd_sel_reg = `RD_PCP4;
       `LOAD: rd_sel_reg = `RD_MEM;
       default: rd_sel_reg = `RD_ALU;
-    endcase
-  // ....:::::Controlling mem_addr_sel pc_sel part:::::....
-  reg [1:0] pc_sel_reg;
-  assign pc_sel = pc_sel_reg;
-  reg mem_sel_reg;
-  assign mem_sel = mem_sel_reg;
-
-  always@(opcode, b, load_phase)
-    case (opcode)
-      `JALR, `JAL: pc_sel_reg = `PC_ALU;
-      `BRANCH: pc_sel_reg = b ? `PC_ALU : `PC_P4;
-      `STORE: pc_sel_reg = `PC_OLD;
-      `LOAD:
-        case (load_phase)
-          1'd0: pc_sel_reg = `PC_M4;
-          1'd1: pc_sel_reg = `PC_P4;
-          default: pc_sel_reg = `PC_OLD;
-        endcase
-      default: pc_sel_reg = `PC_P4;
-    endcase
-
-
-  // ....:::::Controlling mem_addr_sel mem_sel part:::::....
-  // Binding of mem_sel var above
-  always@(opcode, load_phase)
-    case (opcode)
-      `STORE: mem_sel_reg = `MEM_ALU;
-      `LOAD:
-        case(load_phase)
-          1'd0: mem_sel_reg = `MEM_ALU;
-          default: mem_sel_reg = `MEM_PC;
-        endcase
-      default: mem_sel_reg = `MEM_PC;
     endcase
 
   // ....:::::Controlling cmp:::::....
@@ -170,24 +177,6 @@ module ctrl(
       default: sel_type_reg = `SW;
     endcase
 
-  // ....:::::Controlling inst_mgm:::::....
-  reg [1:0] inst_sel_reg;
-  assign inst_sel = inst_sel_reg;
-
-  always@(next_nop, opcode, b, load_phase)
-    if(next_nop)
-      inst_sel_reg = `INST_NOP;
-  else
-    case(opcode)
-      `JALR, `JAL: inst_sel_reg = `INST_NOP;
-      `BRANCH: inst_sel_reg = b ? `INST_NOP : `INST_MEM;
-      `LOAD:
-        case (load_phase)
-          1'd1: inst_sel_reg = `INST_NOP;
-          default: inst_sel_reg = `INST_OLD;
-        endcase
-      default: inst_sel_reg = `INST_MEM;
-    endcase  
   /*
    ....:::::Controlling ALU:::::....
 

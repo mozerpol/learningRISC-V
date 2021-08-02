@@ -1,6 +1,6 @@
 /*
-	By Mozerpol
-*/
+      By Mozerpol
+  */
 
 `timescale 100ns / 10ns
 
@@ -62,7 +62,6 @@ module rysy_core (
     .mem_sel(mem_sel),
     .pc(pc),
     .alu_out(alu_out),
-
     .clk(clk),
     .rst(rst),
     .addr(addr)
@@ -83,7 +82,6 @@ module rysy_core (
     .alu_out(alu_out),
     .imm(imm),
     .rd_mem(rd_mem),
-
     .clk(clk)
   );
 
@@ -99,7 +97,6 @@ module rysy_core (
     .rs1_d(rs1_d),
     .alu1_sel(alu1_sel),
     .alu_in1(alu_in1),
-
     .clk(clk)
   );
 
@@ -123,7 +120,6 @@ module rysy_core (
     .imm_J(imm_J),
     .func3(func3),
     .func7(func7),
-
     .opcode(opcode)
   );
 
@@ -135,7 +131,6 @@ module rysy_core (
     .rs2_d(rs2_d),
     .reg_wr(reg_wr),
     .rd_d(rd_d),
-
     .clk(clk)
   );
 
@@ -150,22 +145,9 @@ module rysy_core (
   select_wr select_wr_core(
     .rs2_d(rs2_d),
     .sel_addr(sel_addr),
-
     .sel_type(sel_type),
     .be(be),
     .wdata(wdata)
-  );
-
-  ctrl ctrl_core(
-    .reg_wr(reg_wr),
-    .b(b),
-    .func3(func3),
-    .func7(func7),
-
-    .clk(clk),
-    .rst(rst),
-    .opcode(opcode),
-    .we(we)
   );
 
   imm_mux imm_mux_core(
@@ -178,16 +160,32 @@ module rysy_core (
     .imm(imm)
   );
 
-  select_rd select_rd_control(
+  select_rd select_rd_core(
     .sel_addr_old(sel_addr_old),
     .rd_mem(rd_mem),
-
     .rdata(rdata),
     .sel_type(sel_type)
   );
 
-//   assign sel_addr = addr[1:0];
-//   always@(posedge clk)
-//     sel_addr_old <= sel_addr;
+  ctrl ctrl_core(
+    .clk(clk),
+    .rst(rst),
+    .opcode(opcode),
+    .func3(func3),
+    .func7(func7),
+    .b(b),
+    .reg_wr(reg_wr),
+    .we(we),
+    .pc_sel(pc_sel),
+    .mem_sel(mem_sel),
+    .imm_type(imm_type),
+    .inst_sel(inst_sel),
+    .alu1_sel(alu1_sel),
+    .alu2_sel(alu2_sel),
+    .rd_sel(rd_sel),
+    .cmp_op(cmp_op),   
+    .sel_type(sel_type), 
+    .alu_op(alu_op)
+  );
 
 endmodule
