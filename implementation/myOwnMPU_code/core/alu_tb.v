@@ -40,21 +40,22 @@ module alu_tb;
     for(a = 0; a < 10; a=a+1)
       begin
         $display ("Current operation: %b", a);
-
-        for(i = 0; i < 5; i=i+1)
-          begin
+            alu_op_tb = a;
             #10 // necessary delay, without this the results will be strange [?], maybe
             // simulator is too slow, donnu.  
+        for(i = 0; i < 5; i=i+1)
+          begin
+
             alu_in1_tb = val_for_in1[i];
             alu_in2_tb = val_for_in2[i];
-            alu_op_tb = a;
+            
             #10
             $display ("%d | val_for_in1: %d | val_for_in2: %d | result: %d |", 
                       i, val_for_in1[i], val_for_in2[i], alu_out_tb);
           end
       end
 
-    #50 $finish;
+    //#50 $finish;
   end
 
 endmodule
