@@ -10,7 +10,6 @@
     is on the first six bits, so we can just take from one instruction these six bits.    
 */
 
-`include "instructions.v"
 `timescale 100ns / 10ns
 
 module decode(
@@ -30,13 +29,13 @@ module decode(
 
   wire sign; // We're checking the sign for J-type instruction
   assign sign = inst[31]; // The sign is in the 31st position in the instruction format
-  wire [31:0]imm_I_aux;
+  wire [11:0]imm_I_aux;
   wire [6:0]imm_11_5_S;
   wire [4:0]imm_4_0_S;
   wire imm_11_B;
   wire [5:0]imm_10_5_B;
   wire [3:0]imm_4_1_B;
-  wire [31:0]imm_U_aux;
+  wire [19:0]imm_U_aux;
   wire imm_20_J;
   wire [7:0]imm_19_12_J;
   wire imm_11_J;
@@ -47,14 +46,15 @@ module decode(
     instructions, so we can just only once assign these parts of instruction. It's not
     necessary for each instruction.
   */
-  R_type R_type_module( 
+  R_type R_type_module(
     .instruction(inst),    
     .opcode(opcode),
     .func3(func3),
     .func7(func7),
     .rd(rd),
     .rs1(rs1),
-    .rs2(rs2)
+    .rs2(rs2),
+    .low_op()
   );
 
   /*
@@ -63,7 +63,10 @@ module decode(
   */
   I_type I_type_module(
     .instruction(inst),
-    .imm(imm_I_aux)
+    .imm(imm_I_aux),
+    .rs1(),
+    .func3(), 
+    .rd()
   );
 
   assign imm_I[10:0] = imm_I_aux[10:0];
@@ -73,7 +76,10 @@ module decode(
   S_type S_type_module(
     .instruction(inst),
     .imm_11_5(imm_11_5_S),
-    .imm_4_0(imm_4_0_S)
+    .imm_4_0(imm_4_0_S),
+    .rs2(), 
+    .rs1(), 
+    .func3()
   );
 
   assign imm_S[10:0] = {imm_11_5_S[5:0], imm_4_0_S};
@@ -83,7 +89,11 @@ module decode(
     .instruction(inst),
     .imm_11(imm_11_B),
     .imm_10_5(imm_10_5_B),
-    .imm_4_1(imm_4_1_B)
+    .imm_4_1(imm_4_1_B),
+    .imm_12(), 
+    .rs2(), 
+    .rs1(),
+    .func3()
   );
 
   assign imm_B[11:0] = {imm_11_B, imm_10_5_B, imm_4_1_B, 1'b0};
@@ -91,7 +101,8 @@ module decode(
 
   U_type U_type_module(
     .instruction(inst),
-    .imm(imm_U_aux)
+    .imm(imm_U_aux),
+    .rd()
   );
 
   assign imm_U = {imm_U_aux, 12'h0};
@@ -101,7 +112,8 @@ module decode(
     .imm_20(imm_20_J),
     .imm_19_12(imm_19_12_J),
     .imm_11(imm_11_J),
-    .imm_10_1(imm_10_1_J)
+    .imm_10_1(imm_10_1_J),
+    .rd()
   );
 
   assign imm_J[20:0] = {imm_20_J, imm_19_12_J, imm_11_J, imm_10_1_J, 1'b0};
