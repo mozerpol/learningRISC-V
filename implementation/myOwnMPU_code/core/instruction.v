@@ -16,8 +16,23 @@ module R_type(
   assign rs1 = instruction[19:15];
   assign func3 = instruction[14:12];
   assign rd = instruction[11:7];
-  assign opcode = instruction[6:2];
+  // assign opcode = instruction[6:2];
   assign low_op = instruction[1:0];
+
+  reg [4:0]opcode_reg;
+  assign opcode = opcode_reg;
+
+  // This part is necessary, because we mnust set up appropriate opcode
+  // in case of hi-z state for [31:0]instruction. I mean, if our inoput is
+  // "strange" like HiZ od undefined state then assign to opcode 0.
+  always@(instruction[6:2])
+    begin
+      if((instruction[4] == 0) || (instruction[4] == 1))
+        opcode_reg = instruction[6:2];
+      else
+        opcode_reg = {5{1'b0}};
+    end
+
 endmodule 
 
 module I_type(
