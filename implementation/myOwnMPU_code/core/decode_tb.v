@@ -21,6 +21,8 @@ module decode_tb();
       $dumpfile("tb.vcd"); 
       $dumpvars;
 
+      inst_tb = 32'bz; // instruction for checking behaviour for hi-z state 
+      #1
       inst_tb = 32'b0;
       #1 inst_tb <= 32'h002081b3;
       // Test for R-type, ADD instruction:
@@ -46,6 +48,8 @@ module decode_tb();
         15 - 19:  00001         - rs1     =  1  in hex
         20 - 31:  0000001010100 - imm     =  54 in hex
       */
+
+      #1 inst_tb = {32{1'bz}};
 
       #1 inst_tb <= 32'h000230B7; 
       // Test for U-type, LUI instruction:
@@ -119,8 +123,10 @@ module decode_tb();
         25 - 31:  0000000 - funct7  =  0  in hex
       */
 
+      #1 inst_tb = 32'bz;
+
       #1 inst_tb <= 32'h40110233; // SUB x4 x2 x1
-      
+
       #1 $finish;
     end
 

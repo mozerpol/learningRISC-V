@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019 Rafal Kozik
  * All rights reserved.
- * Mozerpol added a few test instructions and comments.
+ * Mozerpol added first a few test instructions and comments
  */
 
 `default_nettype none
@@ -23,6 +23,8 @@ module decode_tb;
       //''''''''''''''''''//
       //   Added by me:   //
       //,,,,,,,,,,,,,,,,,,//
+      i = 32'bz; // instruction for checking behaviour for hi-z state 
+      #1
       i = 32'b0;
       #1 i <= 32'h002081b3;
       // Test for R-type, ADD instruction:
@@ -48,6 +50,8 @@ module decode_tb;
         15 - 19:  00001         - rs1     =  1  in hex
         20 - 31:  0000001010100 - imm     =  54 in hex
       */
+
+      #1 i = {32{1'bz}};
 
       #1 i <= 32'h000230B7; 
       // Test for U-type, LUI instruction:
@@ -123,7 +127,9 @@ module decode_tb;
         20 - 24:  00001   - rs2     =  2  in hex
         25 - 31:  0000000 - funct7  =  0  in hex
       */
-      
+
+      #1 i = 32'bx;
+
       #1 i <= 32'h40110233; // SUB x4 x2 x1
       #1 $finish;
     end
