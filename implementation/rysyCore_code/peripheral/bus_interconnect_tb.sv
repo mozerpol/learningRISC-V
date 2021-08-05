@@ -33,6 +33,8 @@ module bus_interconnect_tb;
     #10
     rdata_gpio_tb = 32'd12;
     #10
+    addr_tb = {32{1'bx}};
+    #10
     rdata_ram_tb = 32'd8;
     #10
     we_tb = 1;
@@ -41,9 +43,13 @@ module bus_interconnect_tb;
     #10
     rdata_ram_tb = 32'd8;
     #10
+    rdata_ram_tb = 32'd1024;
+    #10
     we_tb = 0;
     #10
     rdata_gpio_tb = 32'd12;
+    #10
+    addr_tb = {32{1'bx}};
     #10
     rdata_ram_tb = 32'd8;
     #10
