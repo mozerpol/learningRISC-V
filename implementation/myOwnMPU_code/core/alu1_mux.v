@@ -38,7 +38,7 @@ module alu1_mux (
       old_pc[0] <= old_pc[1];
     end
 
-  always@(posedge clk, rs1_d, old_pc[0])
+  always@(*)
     case (alu1_sel)
       `ALU1_RS : o = rs1_d;
       `ALU1_PC : o = old_pc[0];
