@@ -1,6 +1,6 @@
 /*
       By Mozerpol
-  */
+*/
 
 `timescale 100ns / 10ns
 
@@ -64,9 +64,9 @@ module rysy_core (
   wire [3:0] alu_op;
   wire alu1_sel;
   wire alu2_sel;
-
   wire [1:0] pc_sel;
   wire mem_sel;
+
   mem_addr_sel mem_addr_sel_core(
     .pc_sel(pc_sel),
     .mem_sel(mem_sel),
@@ -75,6 +75,57 @@ module rysy_core (
     .clk(clk),
     .rst(rst),
     .addr(addr)
+  );
+
+  inst_mgmt inst_mgmt_core(
+    .clk(clk),
+    .rst(rst),
+    .inst_sel(inst_sel),
+    .rdata(rdata),
+    .inst(inst)
+  );
+
+  decode decode_core(
+    .inst(inst),
+    .rd(rd),
+    .rs1(rs1),
+    .rs2(rs2),
+    .imm_I(imm_I),
+    .imm_S(imm_S),
+    .imm_B(imm_B),
+    .imm_U(imm_U),
+    .imm_J(imm_J),
+    .opcode(opcode),
+    .func3(func3),
+    .func7(func7)
+  );
+
+  imm_mux imm_mux_core(
+    .imm_type(imm_type),
+    .imm_I(imm_I),
+    .imm_S(imm_S),
+    .imm_B(imm_B),
+    .imm_U(imm_U),
+    .imm_J(imm_J),
+    .imm(imm)
+  );
+
+  select_rd select_rd_core(
+    .sel_addr_old(sel_addr_old),
+    .rd_mem(rd_mem),
+    .rdata(rdata),
+    .sel_type(sel_type)
+  );
+
+  reg_file reg_file_core(
+    .rs1_d(rs1_d),
+    .rs2_d(rs2_d),
+    .reg_wr(reg_wr),
+    .rs1(rs1),
+    .rs2(rs2),
+    .rd(rd),
+    .rd_d(rd_d),
+    .clk(clk)
   );
 
   wire [1:0] rd_sel;
@@ -88,10 +139,42 @@ module rysy_core (
     .clk(clk)
   );
 
+  alu1_mux alu1_mux_core(
+    .rs1_d(rs1_d),
+    .pc(pc),
+    .alu1_sel(alu1_sel),
+    .clk(clk),
+    .alu_in1(alu_in1)
+  );
 
+  alu2_mux alu2_mux_core(
+    .rs2_d(rs2_d),
+    .imm(imm),
+    .alu2_sel(alu2_sel),
+    .alu_in2(alu_in2)
+  );
 
+  alu alu_core(
+    .alu_op(alu_op),
+    .alu_in1(alu_in1),
+    .alu_in2(alu_in2),
+    .alu_out(alu_out)
+  );
 
+  cmp cmp_core(
+    .rs1_d(rs1_d),
+    .rs2_d(rs2_d),
+    .cmp_op(cmp_op),
+    .b(b)
+  );
 
+  select_wr select_wr_core(
+    .rs2_d(rs2_d),
+    .sel_type(sel_type),
+    .sel_addr(sel_addr),
+    .be(be), 
+    .wdata(wdata)
+  );  
 
   ctrl ctrl_core(
     .clk(clk),
@@ -113,5 +196,9 @@ module rysy_core (
     .sel_type(sel_type), 
     .alu_op(alu_op)
   );
+
+  assign sel_addr = addr[1:0];
+  always@(posedge clk)
+    sel_addr_old <= sel_addr;
 
 endmodule
