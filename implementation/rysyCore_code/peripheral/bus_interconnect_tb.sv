@@ -28,6 +28,44 @@ module bus_interconnect_tb;
     $dumpfile("dump.vcd"); 
     $dumpvars;
 
+    #10
+    addr_tb = 32'd10;
+    #10
+    rdata_gpio_tb = 32'd12;
+    #10
+    rdata_ram_tb = 32'd8;
+    #10
+    we_tb = 1;
+    #10
+    rdata_gpio_tb = 32'd12;
+    #10
+    rdata_ram_tb = 32'd8;
+    #10
+    we_tb = 0;
+    #10
+    rdata_gpio_tb = 32'd12;
+    #10
+    rdata_ram_tb = 32'd8;
+    #10
+    addr_tb = 32'd3;
+    #10
+    rdata_gpio_tb = 32'd5;
+    #10
+    rdata_ram_tb = 32'd2;
+    #10
+    rdata_gpio_tb = 32'd4;
+    #10
+    rdata_ram_tb = 32'd0;
+    #10
+    rdata_gpio_tb = 32'd3;
+    we_tb = 1;
+    #10
+    we_tb = 0;
+    #10
+    addr_tb = {32{1'bx}};
+    #10
+    rdata_gpio_tb = 32'd12;
+
     #50 $finish;
   end
 
