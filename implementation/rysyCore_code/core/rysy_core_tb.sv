@@ -24,6 +24,7 @@ module rysy_core_tb;
   initial begin
     $dumpfile("dump.vcd"); 
     $dumpvars;
+    $monitor("time: %d | addr: %d | rdata: %d | rdata_bin: %b | \n", $time, addr_tb, rdata_tb, rdata_tb); 
 
     #10;
     /*
@@ -45,8 +46,8 @@ module rysy_core_tb;
         pc_reg		in	mem_addr_sel=	100 (4 in dec, next clk will is 8...)
     */
     rst_tb = 0;
-    #20
-    /*
+    #20 // 
+    /* 
     	....:::::rdata_tb = 32'b000000000101_00001_000_00010_0010011;:::::....
         This instruction means: addi x2, x1, 0x5
 		inst 		in	inst_mgmt		=	rdata
@@ -80,7 +81,7 @@ module rysy_core_tb;
     rst_tb = 1;
     #20
     rst_tb = 0;
-	#20 
+    #20 
     rdata_tb = 32'b0000000_00010_00001_000_00011_0110011; // ADD x3, x1, x2
     #20 
     rdata_tb = 32'b11111111111111111111_00101_0010111; // auipc x5, 0xfffff
@@ -104,7 +105,23 @@ module rysy_core_tb;
     rdata_tb = 32'b100000000000_00001_011_00010_0010011; // sltiu x2, x1, -2048
     #20
     rdata_tb = 32'b000000000101_00001_000_00010_0010011; // addi x2, x1, 0x5
-    
+    #20
+    rdata_tb = 32'b010101010101_00000_111_00001_0010011; // andi x1, x0, 0b010101010101
+    #20
+    rdata_tb = 32'b000000000101_00001_000_00010_0010011; // addi x2, x1, 0x5
+    #20
+    rdata_tb = 32'b010101010101_00000_111_00001_0010011; // andi x1, x0, 0b010101010101
+    #20
+    rdata_tb = 32'b000000000101_00001_000_00010_0010011; // addi x2, x1, 0x5
+    #20
+    rdata_tb = 32'b010101010101_00000_111_00001_0010011; // andi x1, x0, 0b010101010101
+    #20
+    rdata_tb = 32'b000000000101_00001_000_00010_0010011; // addi x2, x1, 0x5
+    #20 
+    rdata_tb = 32'b11111111111111111111_00101_0010111; // auipc x5, 0xfffff
+    #20
+    rdata_tb = 32'b1111111_00001_00010_001_11001_1100011; // bne x2, x1, loop - loop is label
+
     #50; $finish;   
   end
 
