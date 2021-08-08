@@ -142,10 +142,11 @@ It is an abstract model of a computer. On this model consists of:
 	- addressing mode - way to transfer data from registers to memory and vice versa,
 	- set of registers available for the developer,
 	- rules for handling threads and interrupts.
+	
 Examples of ISA: ARM, AMD64 or Intel 64.
 2. **Opcode** <a name="Opcode"></a>  [UP↑](#tof) <br/>
 It's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
-3. **Two's complement** <a name="TWC"></a> - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). [UP↑](#tof) <br/>
+3. **Two's complement** <a name="TWC"></a> [UP↑](#tof) - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). <br/>
 It's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 How to convert U2 to dec? It is easy :) <br/>
 For example take number in U2: *0b101*. *101* - it has three numbers, first: *1*, second: *0*, third: *1*. Take first from left (it is *1*) and multiple it by <img src="https://render.githubusercontent.com/render/math?math=2^{2}">. Why *2*? Because we have three numbers, but **in computer science we count from zero** (usually ;p) :). And very important thing, the **first number and only first number** we must multiple by *-1*, because first number says whether the number is positive or negative. Next multiple *0* (because second number is 0) by <img src="https://render.githubusercontent.com/render/math?math=2^{1}">. Afterwards multiple *1* by <img src="https://render.githubusercontent.com/render/math?math=2^{0}">. So finally, we have: <img src="https://render.githubusercontent.com/render/math?math=101 = -1*2^{2} %2B 0*2^{1} %2B 1*2^{0} = -4 %2B 0 %2B 1 = -3">. <br/>
@@ -178,7 +179,7 @@ I put below table with all the possible 4-bit numbers in U2 notation: <br/>
 | 1110 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}"> | -2 |
 | 1111 | <img src="https://render.githubusercontent.com/render/math?math=-2^{3}%2B2^{2}%2B2^{1}%2B2^{0}"> | -1 | 
 
-4. **Program Counter (PC)** <a name="PC"></a> - or sometimes called *Instruction Pointer* (IP) [UP↑](#tof) <br/>
+4. **Program Counter (PC)** <a name="PC"></a> [UP↑](#tof) - or sometimes called *Instruction Pointer* (IP) <br/>
 It's program counter/pointer, register of the processor in which the address of the current or the next instruction is stored. In other words, PC is a processor register that indicates where a computer is in its program sequence. Usually, the PC is incremented after fetching an instruction, and holds the memory address of ("points to") the next instruction that would be executed. By modifying this register jumps, subroutine calls and returns are implemented. 
 
 5. **Address space** <a name="adrSpac"></a> [UP↑](#tof) <br/>
@@ -199,7 +200,7 @@ It is a memory map, which is available for memory process, which may correspond 
 | *Example of a binary max-heap with node keys being integers between 1 and 100* |
 
 - Initialized data - so called *.data* <br/>
-The .data segment contains any global or static variables which have a pre-defined value and can be modified. That is any variables that are not defined within a function (and thus can be accessed from anywhere) or are defined in a function but are defined as static so they retain their address across subsequent calls.
+The .data segment contains any global or static variables which have a pre-defined value and can be modified. That is any variables that are not defined within a function (and thus can be accessed from anywhere) or are defined in a function but are defined as static so they retain (pol. *zachować*) their address across subsequent calls.
 
 | ![bsslay](https://user-images.githubusercontent.com/43972902/114317995-1c7f9180-9b0b-11eb-96ee-3a91ae016376.png) |
 |:--:|
@@ -222,7 +223,7 @@ The names of pseudo-ops often start with a dot like *.data* or *.asiiz*. Assembl
 The main disadvantage of this solution is the fact that the range of address space used in this way can't be used for communication with main memory. 
 
 ### 7. Core structure <a name="core"></a> [UP↑](#tof)
-The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *datinzynierzya path*. 
+The core can be divided into: *data path* and *control path*. *Data path* consists of processing elements (like ALU), *control path* generate signals which control the *data path*. 
 
 | ![dataPath](https://user-images.githubusercontent.com/43972902/114409650-f3aed900-9baa-11eb-99fb-3b099da377fd.png) |
 |:--:|
@@ -230,7 +231,7 @@ The core can be divided into: *data path* and *control path*. *Data path* consis
 | Source: *Elektronika Praktyczna 10.2019, p. 117*  |
 
 Above diagram shows the *data path* without *clock* and reset *paths* (for clarity). Dark blue mark registers and light blue is for combinational logic (mux, alu, etc.). Paths terminated with arrows are connected to *control path*. Memory address to which the microcontroller wants to access is set in the *ADDR*. The read value will appear in the *RDATA* register in the next clock cycle. <br/>
-Part on this diagram *mux_mem_addr* is responsible for value in *PC* register, on the next rising edge. Usually it'll be an address of the next instruction (*PC+4*), however, in the case of jumps will select value from *ALU* (this *ALU* in the upper right corner). Sometimes it may be a good idea to go back to the last instruction, for it responsible is *PC-4*. THe decision is made by *pc_sel* it's part of *control path*. <br/>
+Part on this diagram *mux_mem_addr* is responsible for value in *PC* register, on the next rising edge. Usually it'll be an address of the next instruction (*PC+4*), however, in the case of jumps will select value from *ALU* (this *ALU* in the upper right corner). Sometimes it may be a good idea to go back to the last instruction, for it responsible is *PC-4*. The decision is made by *pc_sel* it's part of *control path*. <br/>
 Next multiplexer (between *PC* and *ADDR*) is controlled by *mem_sel*, it's responsible for whether memory is to be addressed from *PC* register or output of *ALU*. First option allow load next instruction, second allow fetch or save data. So a little bit I don't understand... So from one hand I have two possibilities: 1. load to memory next instruction from *PC*, 2. save or download data from somewhere. Sounds very slow, because I want in the same time save data and load next instruction, but maybe I don't understand something. Ok, but... <br/>
 In the next clock cycle the value from the given address will be taken to *RDATA* and simultaneously go to input two parts: *inst_mgm* and *select_rd*. *select_rd* is responsible for downloading data from memory. <br/>
 Thanks to path *init_sel* we can select wheter next instruction will be *nop* or the same as previous instruction. <br/>
