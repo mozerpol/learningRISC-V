@@ -11,12 +11,21 @@ module gpio_tb;
   wire [31:0]q;
   wire [3:0]gpio;
 
-  gpio uut( .*);
+  gpio uut(
+    .addr(addr),
+    .be(be),
+    .wdata(wdata),
+    .we(we),
+    .clk(clk),
+    .rst(rst),
+    .q(q),
+    .gpio(gpio)
+  );
 
   initial begin
     $dumpfile("dump.vcd"); 
     $dumpvars;
-    
+
     #10
     rst = 1;
     #10
@@ -30,7 +39,7 @@ module gpio_tb;
     we = 1;
     addr = 8'b11111111;
     wdata = 32'b010101010101_00000_111_00001_0010011; // andi x1, x0, 0b010101010101
-	#10
+    #10
     addr = 8'b00000000;
     #10
     rst = 1;
@@ -38,7 +47,7 @@ module gpio_tb;
     #10
     rst = 0;
     we = 1;
-    wdata = 32'b0000000000100_00001_010_00010_0010011; // slti x2, x1, 4
+    wdata = 32'b000000000100_00001_010_00010_0010011; // slti x2, x1, 4
     #10
     addr = 8'b00000000;
     wdata = 32'b0000000_00010_00001_000_00011_0110011; // ADD x3, x1, x2
@@ -46,7 +55,7 @@ module gpio_tb;
     wdata = 32'b11111111111111111111_00101_0010111; // auipc x5, 0xfffff
     #10 
     wdata = 32'b100000000000_00001_011_00010_0010011; // sltiu x2, x1, -2048    
-    
+
     #10 $finish;
   end
 
