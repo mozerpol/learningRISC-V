@@ -1,0 +1,6 @@
+00200093 // addi x1 x0 2            addi    x1, x0, 2
+00000113 // addi x2 x0 0            addi    x2, x0, 0
+00110133 // add x2 x2 x1            add     x2, x2, x1
+fff08093 // addi x1 x1 -1           addi    x1, x1, -1
+fe101ce3 // bne x0 x1 -8            bne     x0, x1, loop
+fedff06f // jal x0 -20              j    	start

@@ -1,0 +1,10 @@
+00000097 // auipc x1 0              la x1, array
+01808093 // addi x1 x1 24           la x1, array
+0000c103 // lbu x2 0(x1)            lbu x2, 0(x1)
+00108093 // addi x1 x1 1            addi x1, x1, 1
+fe011ce3 // bne x2 x0 -8            BNEZ x2, loop
+fedff06f // jal x0 -20              j start
+20616c41 // "Ala "
+6b20616d // "ma k"
+2161746f // "ota!"
+00000000 // "\0"

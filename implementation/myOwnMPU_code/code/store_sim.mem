@@ -1,0 +1,5 @@
+00a00093 // addi x1 x0 10           li x1, 10
+02102023 // sw x1 32(x0)            sw x1, 0x20, x0
+00100093 // addi x1 x0 1            li x1, 1
+00200093 // addi x1 x0 2            li x1, 2
+00300093 // addi x1 x0 3            li x1, 3

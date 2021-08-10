@@ -1,0 +1,10 @@
+200000b7 // lui x1 131072           li   x1, 0x20000000
+00008093 // addi x1 x1 0            li   x1, 0x20000000
+00000113 // addi x2 x0 0            li   x2, 0
+000f41b7 // lui x3 244              li   x3, 1000000
+24018193 // addi x3 x3 576          li   x3, 1000000
+fff18193 // addi x3 x3 -1           addi x3, x3, -1
+fe019ee3 // bne x3 x0 -4            bnez x3, loop
+00110113 // addi x2 x2 1            addi x2, x2, 1
+0020a023 // sw x2 0(x1)             sw   x2, 0, x1
+fe9ff06f // jal x0 -24              j    start
