@@ -1,9 +1,7 @@
-`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
-`define	INST_OLD 2'b00
-`define INST_NOP 2'b01
-`define INST_MEM 2'b10
+`include "rysy_pkg.vh"
+`include "inst_mgmt.vh"
 
 module inst_mgmt(
   input wire clk,
