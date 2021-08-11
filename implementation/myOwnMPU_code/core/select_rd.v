@@ -11,14 +11,9 @@
     to execution. So, ADDR holds the address 0x0004, RDATA holds the instruction 0x1234.
 */
 `timescale 100ns/10ns
-`include "rysy_pkg.vh"
 
-// SB, SH, ... are S-type instructions, storage instructions.
-`define SB  3'b000
-`define SH  3'b001
-`define SW  3'b010
-`define SBU 3'b011
-`define SHU 3'b100
+`include "rysy_pkg.vh"
+`include "select_rd.vh"
 
 module select_rd(
   input wire [`REG_LEN-1:0] rdata, // Instruction to execution from RDATA reg, rd_d on the picture
