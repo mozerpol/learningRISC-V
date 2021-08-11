@@ -4,23 +4,19 @@
 
 `timescale 100ns / 10ns
 
-`include "opcodes.vh"
-`include "instruction.v"
 `include "rysy_pkg.vh"
-`include "inst_mgmt.v"
-`include "imm_mux.v"
-`include "alu.v"
-`include "cmp.v"
-`include "mem_addr_sel.v"
-`include "rd_mux.v"
-`include "alu1_mux.v"
-`include "alu2_mux.v"
-`include "select_pkg.v"
-`include "decode.v"
-`include "select_rd.v"
-`include "reg_file.v"
-`include "select_wr.v"
-`include "ctrl.v"
+`include "opcodes.vh"
+`include "imm_mux.vh"
+`include "alu.vh"
+`include "alu1_mux.vh"
+`include "alu2_mux.vh"
+`include "cmp.vh"
+`include "inst_mgmt.vh"
+`include "mem_addr_sel.vh"
+`include "rd_mux.vh"
+`include "select_wr.vh"
+`include "select_rd.vh"
+`include "select_pkg.vh"
 
 module rysy_core (
   input wire clk, // alu1_mux, ctrl, inst_mgmt, mem_addr_sel, rd_mux, reg_file, 
