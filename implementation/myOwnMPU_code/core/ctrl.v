@@ -6,15 +6,16 @@
 
 `include "rysy_pkg.vh"
 `include "opcodes.vh"
-`include "inst_mgmt.v"
-`include "imm_mux.v"
-`include "alu.v"
-`include "cmp.v"
-`include "mem_addr_sel.v"
-`include "rd_mux.v"
-`include "alu1_mux.v"
-`include "alu2_mux.v"
-`include "select_pkg.v"
+`include "imm_mux.vh"
+`include "alu.vh"
+`include "alu1_mux.vh"
+`include "alu2_mux.vh"
+`include "cmp.vh"
+`include "inst_mgmt.vh"
+`include "mem_addr_sel.vh"
+`include "rd_mux.vh"
+`include "select_wr.vh"
+`include "select_rd.vh"
 
 module ctrl(
   input wire clk,
@@ -50,8 +51,8 @@ module ctrl(
 
   always@(opcode)
     case (opcode)
-      `OP_IMM:	imm_type_reg = `IMM_I;
-      `LUI: 	imm_type_reg = `IMM_U;
+      `OP_IMM :	imm_type_reg = `IMM_I;
+      `LUI : 	imm_type_reg = `IMM_U;
       `JAL: 	imm_type_reg = `IMM_J;
       `JALR: 	imm_type_reg = `IMM_I;
       `BRANCH: 	imm_type_reg = `IMM_B;
@@ -78,10 +79,9 @@ module ctrl(
 
   always@(opcode)
     case (opcode)
-      `LOAD, `STORE, `BRANCH, `JALR, `JAL, `OP_IMM: 
-        alu2_sel_reg = `ALU2_IMM;
+      `LOAD, `STORE, `BRANCH, `JALR, `JAL, `OP_IMM: alu2_sel_reg = `ALU2_IMM;
       `OP: alu2_sel_reg = `ALU2_RS;
-      default: alu2_sel_reg = `ALU2_IMM;
+      default alu2_sel_reg = `ALU2_IMM;
     endcase
 
   // ....:::::Controlling reg_wr from reg_file module:::::.... 
