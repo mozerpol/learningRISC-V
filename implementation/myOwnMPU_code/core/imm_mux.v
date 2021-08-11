@@ -1,12 +1,7 @@
-`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
-`define	IMM_J 3'b000
-`define IMM_U 3'b001
-`define IMM_B 3'b010
-`define IMM_S 3'b011
-`define IMM_I 3'b100
-`define IMM_DEFAULT 3'b101
+`include "rysy_pkg.vh"
+`include "imm_mux.vh"
 
 module imm_mux(
   input wire [2:0]imm_type,
