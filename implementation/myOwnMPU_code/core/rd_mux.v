@@ -9,7 +9,7 @@
     4. rd from select_rd module
     So "rd_d" can be e.g. the result of operations from ALU.
 */
-`include "rysy_pkg.v"
+`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
 `define RD_IMM 	2'b00
