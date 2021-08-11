@@ -10,7 +10,6 @@
     is on the first six bits, so we can just take from one instruction these six bits.    
 */
 
-`include "instructions.v"
 `timescale 100ns / 10ns
 
 module decode(
