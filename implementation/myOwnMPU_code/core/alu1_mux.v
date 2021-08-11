@@ -13,11 +13,10 @@
  2. Operand rs1_d which comes from reg_file. This operand can be simple number for ALU like 12 or 3.   
  */
 
-`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
-`define ALU1_RS 1'b0
-`define ALU1_PC 1'b1
+`include "rysy_pkg.vh"
+`include "alu1_mux.vh"
 
 module alu1_mux (
   input wire [`REG_LEN-1:0] rs1_d,
