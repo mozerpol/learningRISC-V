@@ -11,11 +11,10 @@
  2. Operand rs2_d which comes from reg_file. This operand can be simple number for ALU like 12 or 3.   
  */
 
-`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
-`define ALU2_RS 0
-`define ALU2_IMM 1
+`include "alu2_mux.vh"
+`include "rysy_pkg.vh"
 
 module alu2_mux (
   input wire [`REG_LEN-1:0] rs2_d,
@@ -36,3 +35,4 @@ module alu2_mux (
     end
   
 endmodule
+
