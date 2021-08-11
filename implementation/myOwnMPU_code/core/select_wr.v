@@ -8,11 +8,7 @@
 */
 `timescale 100ns/10ns
 `include "rysy_pkg.vh"
-
-// SB, SH, ... are S-type instructions, storage instructions.
-`define SB  3'b000
-`define SH  3'b001
-`define SW  3'b010
+`include "select_wr.vh"
 
 module select_wr(
   input wire [`REG_LEN-1:0] rs2_d, // Machine word from reg_file
