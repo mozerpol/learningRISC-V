@@ -8,15 +8,9 @@
  We have also third input, uses to select the type of operation.
  */
 
-`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
-
-`define EQ 3'b000
-`define NE 3'b001
-`define LT 3'b010
-`define GE 3'b011 
-`define LTU 3'b100
-`define GEU 3'b101
+`include "rysy_pkg.vh"
+`include "cmp.vh"
 
 module cmp(
   input wire [`REG_LEN-1:0] rs1_d,
@@ -51,4 +45,3 @@ module cmp(
     end
 
 endmodule
-
