@@ -9,13 +9,10 @@
     4. rd from select_rd module
     So "rd_d" can be e.g. the result of operations from ALU.
 */
-`include "rysy_pkg.vh"
 `timescale 100ns / 10ns
 
-`define RD_IMM 	2'b00
-`define RD_PCP4 2'b01
-`define RD_ALU 	2'b10
-`define RD_MEM 	2'b11
+`include "rd_mux.vh"
+`include "rysy_pkg.vh"
 
 module rd_mux(
   input wire [`REG_LEN-1:0] imm, // From decode, can be imm_I, imm_J, ...
