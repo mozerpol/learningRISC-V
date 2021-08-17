@@ -18,7 +18,7 @@
 `include "select_rd.vh"
 `include "select_wr.vh"
 
-module rysy #(parameter CODE="blink_slow.mem") (
+module rysy #(parameter CODE="regop.mem") (
   input wire clk,
   input wire rst,
   output wire [3:0] gpio
@@ -60,14 +60,10 @@ module rysy #(parameter CODE="blink_slow.mem") (
   
   );
 
-  byte_enabled_simple_dual_port_ram #(
+  simple_dual_port_ram_single_clock #(
     .CODE(CODE)
   ) ram(
-    .waddr(addr[9:2]),
     .raddr(addr[9:2]),
-    .be(be),
-    .wdata(wdata),
-    .we(we_ram),
     .clk(clk),
     .q(rdata_ram)
   );

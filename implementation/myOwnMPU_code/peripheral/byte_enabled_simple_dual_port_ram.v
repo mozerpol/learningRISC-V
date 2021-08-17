@@ -29,5 +29,4 @@ module simple_dual_port_ram_single_clock
     // logic around the RAM.
     q <= ram[raddr]; // q <= ram[raddr];
 
-
 endmodule
