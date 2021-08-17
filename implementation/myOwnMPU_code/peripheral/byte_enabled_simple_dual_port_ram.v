@@ -1,51 +1,33 @@
-// Quartus Prime SystemVerilog Template
-//
-// Simple Dual-Port RAM with different read/write addresses and single read/write clock
-// and with a control for writing single bytes into the memory word; byte enable
+// Quartus Prime Verilog Template
+// Simple Dual Port RAM with separate read/write addresses and
+// single read/write clock
 
 `timescale 100ns / 10ns
 
-module byte_enabled_simple_dual_port_ram
-  #(parameter
-    CODE = "regop.mem",
-    ADDR_WIDTH = 8,
-    BYTE_WIDTH = 8,
-    BYTES = 4,
-    WIDTH = BYTES * BYTE_WIDTH
-   )
-  ( 
-    input [ADDR_WIDTH-1:0] waddr,
-    input [ADDR_WIDTH-1:0] raddr,
-    input [BYTES-1:0] be,
-    input  wire [WIDTH-1:0] wdata,
-    input we, clk,
-    output reg [WIDTH-1:0] q
+module simple_dual_port_ram_single_clock
+  #(parameter ADDR_WIDTH=8,
+    parameter CODE = "regop.mem"
+   ) (
+    input [(ADDR_WIDTH-1):0] raddr,
+    input clk,
+    output reg [31:0] q
   );
 
-  localparam WORDS = 1 << ADDR_WIDTH;
-
-  // use a multi-dimensional packed array to model individual bytes within the word
-
-  reg [WIDTH-1:0] ram[0:WORDS-1];
+  // Declare the RAM variable
+  reg [31:0] ram[99:0];
 
   initial
     begin
-      $readmemh(CODE, ram);
+      $readmemh(CODE, ram); /* $readmem[hb]("File", ArrayName, StartAddr, EndAddr), it's for reading hex
+      values from test files. Read from CODE and save in ram. */
     end
 
   always@(posedge clk)
-    begin
-      if(we) begin
-        // edit this code if using other than four bytes per word
-        if(be[0]) ram[waddr][0] <= wdata[WIDTH-1:WIDTH-9];
-        if(be[1]) ram[waddr][1] <= wdata[23:16];
-        if(be[2]) ram[waddr][2] <= wdata[15:8];
-        if(be[3]) ram[waddr][3] <= wdata[7:0];
-      end
-      q <= ram[raddr];
-    end
+    // Read (if read_addr == write_addr, return OLD data).	To return
+    // NEW data, use = (blocking write) rather than <= (non-blocking write)
+    // in the write assignment.	 NOTE: NEW data may require extra bypass
+    // logic around the RAM.
+    q <= ram[raddr]; // q <= ram[raddr];
+
 
 endmodule
-/*
-	Nice link about arrays in verilog: http://www.pepedocs.com/img/fpga-0.png
-*/
