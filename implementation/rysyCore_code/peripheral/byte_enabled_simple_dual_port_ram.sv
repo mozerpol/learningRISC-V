@@ -13,10 +13,10 @@
 module byte_enabled_simple_dual_port_ram
   #(parameter
     CODE = "regop.mem",
-    int ADDR_WIDTH = 8,
-    int BYTE_WIDTH = 8,
+    int ADDR_WIDTH = 8, // because one machine word has 8 bytes
+    int BYTE_WIDTH = 8, // because it's in hex. 1 sign in hex = 1 byte
     int BYTES = 4,
-    int WIDTH = BYTES * BYTE_WIDTH
+    int WIDTH = BYTES * BYTE_WIDTH // 32 bits
    )
   ( 
     input [ADDR_WIDTH-1:0] waddr, // 8 width one vector: [7, 6, 5, 4, 3, 2, 1, 0]
@@ -29,7 +29,7 @@ module byte_enabled_simple_dual_port_ram
     input we, clk,
     output reg [WIDTH-1:0] q
   );
-  localparam int WORDS = 1 << ADDR_WIDTH;
+  localparam int WORDS = 1 << ADDR_WIDTH; // 8'd100, memory length, 100 rows
 
   // use a multi-dimensional packed array to model individual bytes within the word
   logic [BYTES-1:0][BYTE_WIDTH-1:0] ram[0:WORDS-1]; // eight 4x8 vectors:
@@ -42,14 +42,15 @@ module byte_enabled_simple_dual_port_ram
     .
     .
 
-    7:
+    99:
     	[7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
 
 	*/
 
   initial
     begin
-      $readmemh(CODE, ram);
+      $readmemh(CODE, ram); /* $readmem[hb]("File", ArrayName, StartAddr, EndAddr), it's for reading hex
+      values from test files. Read from CODE and save in ram. */
     end
 
   always_ff@(posedge clk)
