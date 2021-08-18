@@ -1,16 +1,22 @@
 // Quartus Prime Verilog Template
 // Simple Dual Port RAM with separate read/write addresses and
 // single read/write clock
+// Slighty changed by Mozerpol
 
 `timescale 100ns / 10ns
 
 module simple_dual_port_ram_single_clock
-  #(parameter ADDR_WIDTH=8,
-    parameter CODE = "regop.mem"
+  #(parameter ADDR_WIDTH = 8, // because one machine word has 8 bytes
+    parameter CODE = "regop.mem",
+    parameter BYTES = 4
    ) (
     input [(ADDR_WIDTH-1):0] raddr,
     input clk,
     output reg [31:0] q
+    input [ADDR_WIDTH-1:0] waddr,
+    input [BYTES-1:0] be,
+    input [(ADDR_WIDTH*BYTES)-1:0] wdata, // 4x8 vector
+    input we
   );
 
   // Declare the RAM variable
@@ -29,4 +35,6 @@ module simple_dual_port_ram_single_clock
     // logic around the RAM.
     q <= ram[raddr]; // q <= ram[raddr];
 
+
 endmodule
+
