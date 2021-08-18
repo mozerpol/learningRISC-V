@@ -10,6 +10,7 @@ module simple_dual_port_ram_single_clock
     parameter CODE = "regop.mem",
     parameter BYTES = 4
    ) (
+    // [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
     input [(ADDR_WIDTH-1):0] raddr,
     input clk,
     output reg [31:0] q
@@ -20,7 +21,7 @@ module simple_dual_port_ram_single_clock
   );
 
   // Declare the RAM variable
-  reg [31:0] ram[99:0];
+  reg [(ADDR_WIDTH*BYTES)-1:0] ram[0:255]; // One hundred 1x32 vectors:
 
   initial
     begin
