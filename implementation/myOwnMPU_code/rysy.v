@@ -61,12 +61,16 @@ module rysy #(parameter CODE="regop.mem") (
   );
 
   simple_dual_port_ram_single_clock #(
-    .CODE(CODE)
-  ) ram(
-    .raddr(addr[9:2]),
-    .clk(clk),
-    .q(rdata_ram)
-  );
+		.CODE(CODE)
+	) ram(
+		.waddr(addr[9:2]),
+		.raddr(addr[9:2]),
+		.be(be),
+		.wdata(wdata),
+		.we(we_ram),
+		.clk(clk),
+		.q(rdata_ram)
+	);
 
   gpio gpio1(
     .addr(addr[9:2]),
