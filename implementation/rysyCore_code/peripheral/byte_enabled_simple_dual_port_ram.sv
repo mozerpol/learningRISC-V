@@ -3,7 +3,9 @@
    *
    * Copyright (c) 2019 Rafal Kozik
    * All rights reserved.
-   */
+   *
+   * Mozerpol add comments
+*/
 
 // Quartus Prime SystemVerilog Template
 //
@@ -19,20 +21,19 @@ module byte_enabled_simple_dual_port_ram
     int WIDTH = BYTES * BYTE_WIDTH // 32 bits
    )
   ( 
-    input [ADDR_WIDTH-1:0] waddr, // 8 width one vector: [7, 6, 5, 4, 3, 2, 1, 0]
+    // [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
     input [ADDR_WIDTH-1:0] raddr,
+    input clk,
+    output reg [WIDTH-1:0] q,
+    input [ADDR_WIDTH-1:0] waddr,
     input [BYTES-1:0] be,
-    input [BYTES-1:0][BYTE_WIDTH-1:0] wdata, // 4x8 vector:
-    /*
-          [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
-      */
-    input we, clk,
-    output reg [WIDTH-1:0] q
+    input [BYTES-1:0][BYTE_WIDTH-1:0] wdata, // 4x8 vector
+    input we
   );
-  localparam int WORDS = 1 << ADDR_WIDTH; // 8'd100, memory length, 100 rows
+  localparam int WORDS = 1 << ADDR_WIDTH; // 8'd255, memory length, 256 rows
 
   // use a multi-dimensional packed array to model individual bytes within the word
-  logic [BYTES-1:0][BYTE_WIDTH-1:0] ram[0:WORDS-1]; // eight 4x8 vectors:
+  logic [BYTES-1:0][BYTE_WIDTH-1:0] ram[0:WORDS-1]; // One hundred 4x8 vectors:
   /*
     0:
 		[7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
@@ -42,8 +43,11 @@ module byte_enabled_simple_dual_port_ram
     .
     .
 
-    99:
+    255:
     	[7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
+
+    So we have in one row 4x8 bits, so it's four bytes. So... one row has four bytes and we have 256 rows,
+    when we'll multiply 256 rows x 4 bytes = 256x4 = 1024 bytes = 1 kB. So our memory has 1 kB.
 
 	*/
 
