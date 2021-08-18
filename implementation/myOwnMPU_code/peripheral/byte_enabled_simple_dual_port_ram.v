@@ -13,7 +13,7 @@ module simple_dual_port_ram_single_clock
     // [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0] [7, 6, 5, 4, 3, 2, 1, 0]
     input [(ADDR_WIDTH-1):0] raddr,
     input clk,
-    output reg [31:0] q
+    output reg [31:0] q,
     input [ADDR_WIDTH-1:0] waddr,
     input [BYTES-1:0] be,
     input [(ADDR_WIDTH*BYTES)-1:0] wdata, // 4x8 vector
@@ -30,10 +30,10 @@ module simple_dual_port_ram_single_clock
 	.
     .
     .
-    
+
   	255:
     	[31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, ..., 7, 6, 5, 4, 3, 2, 1, 0]
-        
+
 	So in one row we have 32 bits, 32 bits are equal 4 bytes. Also we have a 256 rows,
     256 rows x 4 bytes = 256x4 = 1024 bytes = 1 kB.  So our memory has 1 kB.
   */
@@ -45,12 +45,16 @@ module simple_dual_port_ram_single_clock
     end
 
   always@(posedge clk)
-    // Read (if read_addr == write_addr, return OLD data).	To return
-    // NEW data, use = (blocking write) rather than <= (non-blocking write)
-    // in the write assignment.	 NOTE: NEW data may require extra bypass
-    // logic around the RAM.
-    q <= ram[raddr]; // q <= ram[raddr];
-
+    begin
+      if(we) begin
+        // edit this code if using other than four bytes per word
+        if(be[0]) ram[waddr][0] <= wdata[0];
+        if(be[1]) ram[waddr][1] <= wdata[1];
+        if(be[2]) ram[waddr][2] <= wdata[2];
+        if(be[3]) ram[waddr][3] <= wdata[3];
+      end
+      q <= ram[raddr]; // q <= ram[raddr];
+    end
 
 endmodule
-
+// Nice link about arrays: http://www.pepedocs.com/notes?tid=fpga&nid=fpga
