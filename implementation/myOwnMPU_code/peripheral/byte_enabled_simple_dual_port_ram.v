@@ -22,6 +22,21 @@ module simple_dual_port_ram_single_clock
 
   // Declare the RAM variable
   reg [(ADDR_WIDTH*BYTES)-1:0] ram[0:255]; // One hundred 1x32 vectors:
+  /*
+  	0:
+    	[31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, ..., 7, 6, 5, 4, 3, 2, 1, 0]
+  	1:
+    	[31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, ..., 7, 6, 5, 4, 3, 2, 1, 0]
+	.
+    .
+    .
+    
+  	255:
+    	[31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, ..., 7, 6, 5, 4, 3, 2, 1, 0]
+        
+	So in one row we have 32 bits, 32 bits are equal 4 bytes. Also we have a 256 rows,
+    256 rows x 4 bytes = 256x4 = 1024 bytes = 1 kB.  So our memory has 1 kB.
+  */
 
   initial
     begin
