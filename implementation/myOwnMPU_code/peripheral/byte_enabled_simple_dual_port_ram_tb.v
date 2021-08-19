@@ -2,17 +2,17 @@
 
 `define WIDTH 32
 
-module byte_enabled_simple_dual_port_ram_tb;
+module simple_dual_port_ram_single_clock_ut;
 
   reg clk_tb;
   reg we_tb;
-  reg [3:0][7:0] wdata_tb;
+  reg [31:0] wdata_tb;
   reg [3:0] be_tb;
   reg [7:0] waddr_tb;
   reg [7:0] raddr_tb;
   wire [31:0] q_tb;
 
-  byte_enabled_simple_dual_port_ram uut(
+  simple_dual_port_ram_single_clock uut(
     .clk(clk_tb),
     .we(we_tb),
     .wdata(wdata_tb),
@@ -28,27 +28,52 @@ module byte_enabled_simple_dual_port_ram_tb;
     $dumpfile("dump.vcd"); 
     $dumpvars;
 
-    #5 we_tb = 0;
+    we_tb = 0; 
+    #5;
 
-    for(i = 0; i < 3; i=i+1)
-      #20 raddr_tb = i;
+    for(i = 0; i < 5; i=i+1)
+      begin
+        raddr_tb = i;
+        #10;
+      end
 
-    #10 we_tb = 1;
-    be_tb = 4'b0001;
-    wdata_tb = 32'b11111111111111111111111111111111;
-    
-    waddr_tb = 0;
-    #10
-    waddr_tb = 1;//8'b00000001;
-    raddr_tb = 0;
-    #10
-    waddr_tb = 2;//8'b00000010;
-    raddr_tb = 1;
-    #10
-    raddr_tb = 2;
-    #10
+    we_tb = 1;
+    be_tb = 4'b0001; // We'll modify last two octets
+    wdata_tb = 32'b11111111_11111111_11111111_11111111;
+    #20
 
-    #30 $finish;
+    for(i = 0; i < 5; i=i+1)
+      begin
+        waddr_tb = i; // Select address to save data
+        #10;
+        raddr_tb = i; // Select address to write data
+        #10;
+      end
+
+    be_tb = 4'b0100;
+    #20
+
+    for(i = 0; i < 5; i=i+1)
+      begin
+        waddr_tb = i;
+        #10;
+        raddr_tb = i;
+        #10;
+      end
+
+    be_tb = 4'b0101;
+    wdata_tb = 32'b11111111_00000000_11111111_00000000;
+    #20
+
+    for(i = 0; i < 5; i=i+1)
+      begin
+        waddr_tb = i;
+        #10;
+        raddr_tb = i;
+        #10;
+      end
+
+    #20 $finish;
   end
 
   initial begin
