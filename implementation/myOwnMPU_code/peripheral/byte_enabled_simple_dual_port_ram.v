@@ -22,6 +22,7 @@ module simple_dual_port_ram_single_clock
 
   // Declare the RAM variable
   reg [(ADDR_WIDTH*BYTES)-1:0] ram[0:255]; // One hundred 1x32 vectors:
+  // reg [31:0] ram[99:0];
   /*
   	0:
     	[31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, ..., 7, 6, 5, 4, 3, 2, 1, 0]
@@ -48,10 +49,10 @@ module simple_dual_port_ram_single_clock
     begin
       if(we) begin
         // edit this code if using other than four bytes per word
-        if(be[0]) ram[waddr][0] <= wdata[0];
-        if(be[1]) ram[waddr][1] <= wdata[1];
-        if(be[2]) ram[waddr][2] <= wdata[2];
-        if(be[3]) ram[waddr][3] <= wdata[3];
+        if(be[0]) ram[waddr][7:0] 	<= wdata[7:0];
+        if(be[1]) ram[waddr][15:8] 	<= wdata[15:8];
+        if(be[2]) ram[waddr][23:16] <= wdata[23:16];
+        if(be[3]) ram[waddr][31:24] <= wdata[31:24];
       end
       q <= ram[raddr]; // q <= ram[raddr];
     end
