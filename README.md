@@ -144,8 +144,10 @@ It is an abstract model of a computer. On this model consists of:
 	- rules for handling threads and interrupts.
 	
 Examples of ISA: ARM, AMD64 or Intel 64.
+
 2. **Opcode** <a name="Opcode"></a>  [UP↑](#tof) <br/>
 It's a number, that is a **fragment** of an instruction passed to the processor. It informs the processor what operation must be performed. Each assembly language command has a number and this command is converted to number during compilation.
+
 3. **Two's complement** <a name="TWC"></a> [UP↑](#tof) - (abbreviated as U2, ZU2 or 2C, pl. *kod uzupełnień do dwóch*). <br/>
 It's a system of representation of integer numbers in a binary system. MSB number tells us, whether the number is negative. For example `0b1000` will be negative, because MSB (first number from left) is 1, `0b0111` will be positive, because MSB (first number from left) is 0. Two's complement is currently one of the most popular way to write integers in digital systems. The reason is fact that addition and subtraction operations are performed the same as for unsigned binary numbers, due this can be able saved on processor instruction cycles. <br/>
 How to convert U2 to dec? It is easy :) <br/>
