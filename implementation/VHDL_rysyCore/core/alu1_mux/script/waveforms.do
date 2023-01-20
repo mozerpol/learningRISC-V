@@ -6,12 +6,6 @@
 
 
 ##### Add waves: #####
-add wave -expand -group TB -radix binary /simplegate_tb/a
-add wave -expand -group TB -radix binary /simplegate_tb/b
-
-add wave -expand -group DESIGN -radix binary /simplegate_tb/dut/i_a
-add wave -expand -group DESIGN -radix binary /simplegate_tb/dut/o_b
-add wave -expand -group DESIGN -radix binary /simplegate_tb/dut/c
 
 
 ##### Waveform window settings: #####
