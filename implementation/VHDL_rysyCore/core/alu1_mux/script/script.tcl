@@ -12,6 +12,9 @@ set module        "alu1_mux"
 #                         .
 # vcom -2008 -quiet -work   $library_name $hdl_dir/file.vhd
 
+set hdl_dir                "../../"
+set library_name           "rysy_pkg"
+vcom -2008 -quiet -work    $library_name $hdl_dir/rysy_pkg.vhd
 
 ##################################
 #         PROJECT TREE:
