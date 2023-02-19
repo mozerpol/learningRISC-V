@@ -1,3 +1,13 @@
+-- Multiplexer can take two values:
+-- 1. From the PC register to pass a value to the ALU, which next calculate a
+--    new address, for example to perform jump. But before passing value from PC
+--    to ALU must wait two clock cycles to empty pipeline. Two lines of code do
+--    this:
+--    old_pc(1) <= pc;
+--    old_pc(0) <= old_pc(1);
+-- 2. Operand rs1_d which comes from reg_file. This operand can be simple number
+--    for ALU like 12 or 3.
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
