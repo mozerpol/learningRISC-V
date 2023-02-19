@@ -1,5 +1,10 @@
 implementation/VHDL_rysyCore/core/*/script/alu1_mux_lib/
 implementation/VHDL_rysyCore/core/*/script/modelsim.ini
 implementation/VHDL_rysyCore/core/*/work/
-implementation/verilog_rysyCore/core/work/
+implementation/VHDL_rysyCore/core/*/script/rysy_pkg/
+implementation/VHDL_rysyCore/core/*/script/vsim.wlf
+implementation/VHDL_rysyCore/core/*/transcript
 
+implementation/systemVerilog_rysyCore/core/work/
+
+implementation/verilog_rysyCore/core/work/
