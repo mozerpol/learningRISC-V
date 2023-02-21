@@ -3,11 +3,11 @@ library ieee;
   use IEEE.std_logic_unsigned.all;
   use IEEE.math_real.all;
   
- package alu is
+ package alu_pkg is
     -- constant C_NAME : std_logic_vector(N downto M) := "X";
 
  end;
  
- package body alu is
+ package body alu_pkg is
  
  end package body;

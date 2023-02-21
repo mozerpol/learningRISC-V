@@ -9,11 +9,28 @@ library alu_lib;
 
 entity alu is
    port (
+      signal alu_in1    : in std_logic_vector(REG_LEN-1 downto 0);
+      signal alu_in2    : in std_logic_vector(REG_LEN-1 downto 0);
+      signal alu_op     : in std_logic_vector(3 downto 0);
+      signal alu_out    : out std_logic_vector(REG_LEN-1 downto 0)
    );
 end entity alu;
 
 architecture rtl of alu is
 
+   signal o          : std_logic_vector(REG_LEN-1 downto 0);
+   signal alu_in1_s  : std_logic_vector(REG_LEN-1 downto 0);
+   signal alu_in2_s  : std_logic_vector(REG_LEN-1 downto 0);
+
 begin
+
+   --alu_out     <= o;
+   alu_in1_s   <= alu_in1;
+   alu_in2_s   <= alu_in2;
+
+   p_alu : process(all)
+   begin
+      alu_out <= (others => '1');
+   end process p_alu;
 
 end architecture rtl;
