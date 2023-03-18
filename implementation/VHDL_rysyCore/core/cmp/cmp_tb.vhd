@@ -21,10 +21,14 @@ architecture tb of cmp_tb is
    );
    end component cmp;
 
-   signal rs1_d_tb   : std_logic_vector(REG_LEN-1 downto 0);
-   signal rs2_d_tb   : std_logic_vector(REG_LEN-1 downto 0); 
-   signal cmp_op_tb  : std_logic_vector(2 downto 0);
-   signal b_tb       : std_logic;
+   signal rs1_d_tb         : std_logic_vector(REG_LEN-1 downto 0);
+   signal rs2_d_tb         : std_logic_vector(REG_LEN-1 downto 0); 
+   signal cmp_op_tb        : std_logic_vector(2 downto 0);
+   signal b_tb             : std_logic;
+   type t_val_for_rs1_d is array(0 to 4) of std_logic_vector(31 downto 0);
+   signal val_for_rs1_d    : t_val_for_rs1_d;
+   type t_val_for_rs2_d is array(0 to 4) of std_logic_vector(31 downto 0);
+   signal val_for_rs2_d    : t_val_for_rs2_d;
  
 begin
 
@@ -38,7 +42,31 @@ begin
 
    cmp_tb : process
    begin
-       
+      val_for_rs1_d(0)   <= 32x"10"; 
+      val_for_rs1_d(1)   <= 32x"3"; 
+      val_for_rs1_d(2)   <= 32sx"FFFC"; -- -4 
+      val_for_rs1_d(3)   <= 32x"4"; 
+      val_for_rs1_d(4)   <= 32x"FFF0"; -- -16 
+
+      val_for_rs2_d(0)   <= 32x"10"; 
+      val_for_rs2_d(1)   <= 32x"3"; 
+      val_for_rs2_d(2)   <= 32sx"FFFC"; -- -4 
+      val_for_rs2_d(3)   <= 32x"4"; 
+      val_for_rs2_d(4)   <= 32x"FFF0"; -- -16 
+
+      for i in 0 to 5 loop
+         wait for 5 ns;
+         cmp_op_tb   <= std_logic_vector(to_unsigned(i, 3));
+         for j in 0 to 4 loop
+            for k in 0 to 4 loop
+               wait for 5 ns;
+               rs1_d_tb <= val_for_rs1_d(j);
+               wait for 5 ns;
+               rs2_d_tb <= val_for_rs2_d(k);
+            end loop;
+         end loop;
+      end loop;
+
       wait for 25 ns;
       stop(2); 
    end process cmp_tb;
