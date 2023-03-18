@@ -19,20 +19,23 @@ end entity cmp;
 
 architecture rtl of cmp is
 
-   signal rs1_d_s    : std_logic_vector(REG_LEN-1 downto 0);
-   signal rs2_d_s    : std_logic_vector(REG_LEN-1 downto 0);
    signal o          : std_logic;
 
 begin
 
    b        <= o;
-   rs1_d_s  <= rs1_d;
-   rs2_d_s  <= rs2_d;
 
    p_cmp : process(all)
    begin
-      -- case (cmp_op) is
-         --when EQ => o <= (rs1_d == rs2_d);
+      case (cmp_op) is
+         when EQ => o <= '1' when rs1_d = rs2_d else '0';
+         when NE => o <= '1' when rs1_d /= rs2_d else '0';
+         when LT => o <= '1' when rs1_d < rs2_d else '0';
+         when GE => o <= '1' when rs1_d >= rs2_d else '0';
+         when LTU => o <= '1' when rs1_d < rs2_d else '0';
+         when GEU => o <= '1' when rs1_d >= rs2_d else '0';
+         when others => o <= '0';
+      end case;
 
    end process p_cmp;
 
