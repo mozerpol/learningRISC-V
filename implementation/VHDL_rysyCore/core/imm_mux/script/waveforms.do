@@ -6,6 +6,21 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm_type
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm_J
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm_U
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm_B
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm_S
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm_I
+add wave -expand -group DESIGN -radix dec /imm_mux_tb/inst_imm_mux/imm
+
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_type_tb
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_J_tb
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_U_tb
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_B_tb
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_S_tb
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_I_tb
+add wave -expand -group TB -radix dec /imm_mux_tb/imm_tb
 
 
 ##### Waveform window settings: #####
