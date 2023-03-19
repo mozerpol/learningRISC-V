@@ -63,7 +63,33 @@ begin
    decode_tb : process
    begin
 
-      wait for 25 ns;
+      inst_tb <= (others => 'Z');
+      wait for 10 ns;
+      inst_tb <= (others => '0');
+      wait for 10 ns;
+      inst_tb <= 32x"002081b3";
+      wait for 10 ns;
+      inst_tb <= 32x"05408113";
+      wait for 10 ns;
+      inst_tb <= (others => 'Z');
+      wait for 10 ns;
+      inst_tb <= 32x"000230B7";
+      wait for 10 ns;
+      inst_tb <= 32x"fe111ce3";
+      wait for 10 ns;
+      inst_tb <= 32x"ff9ff26f";
+      wait for 10 ns;
+      inst_tb <= 32x"000230B7";
+      wait for 10 ns;
+      inst_tb <= 32x"05408113";
+      wait for 10 ns;
+      inst_tb <= 32x"001101B3";
+      wait for 10 ns;
+      inst_tb <= (others => 'Z');
+      wait for 10 ns;
+      inst_tb <= 32x"40110233";
+      wait for 10 ns;
+
       stop(2); 
    end process decode_tb;
 
