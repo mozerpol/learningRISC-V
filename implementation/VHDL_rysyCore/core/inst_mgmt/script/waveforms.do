@@ -6,7 +6,17 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN -radix dec /inst_mgmt_tb/inst_inst_mgmt/clk
+add wave -expand -group DESIGN -radix dec /inst_mgmt_tb/inst_inst_mgmt/rst
+add wave -expand -group DESIGN -radix dec /inst_mgmt_tb/inst_inst_mgmt/inst_sel
+add wave -expand -group DESIGN -radix dec /inst_mgmt_tb/inst_inst_mgmt/rdata
+add wave -expand -group DESIGN -radix dec /inst_mgmt_tb/inst_inst_mgmt/inst
 
+add wave -expand -group TB -radix dec /inst_mgmt_tb/clk_tb
+add wave -expand -group TB -radix dec /inst_mgmt_tb/rst_tb
+add wave -expand -group TB -radix dec /inst_mgmt_tb/inst_sel_tb
+add wave -expand -group TB -radix dec /inst_mgmt_tb/rdata_tb
+add wave -expand -group TB -radix dec /inst_mgmt_tb/inst_tb
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
