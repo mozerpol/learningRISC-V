@@ -6,6 +6,21 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/clk
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/rst
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/pc
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/mem_sel
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/alu_out
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/pc
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/addr
+
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/clk_tb
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/rst_tb
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/pc_sel_tb
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/mem_sel_tb
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/alu_out_tb
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/pc_tb
+add wave -expand -group TB -radix dec /mem_addr_sel_tb/addr_tb
 
 
 ##### Waveform window settings: #####
