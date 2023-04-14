@@ -55,9 +55,34 @@ begin
 
    p_tb : process
    begin
-
+      rs1_tb      <= (others => '0');
+      rs2_tb      <= (others => '0');
+      rd_tb       <= (others => '0');
+      rd_d_tb     <= (others => '0');
+      reg_wr_tb   <= '0';
+      wait for 30 ns;
+      rd_d_tb     <= 32x"1";
+      rs1_tb      <= (others => '0');
+      reg_wr_tb   <= '1';
+      wait for 30 ns;
+      rs1_tb      <= 5x"3";
+      rd_tb       <= 5x"2";
+      reg_wr_tb   <= '0';
+      wait for 30 ns;
+      reg_wr_tb   <= '1';
+      wait for 30 ns;
+      reg_wr_tb   <= '0';
+      rs1_tb      <= 5x"4";
       wait for 25 ns;
       stop(2); 
    end process p_tb;
+
+   p_clk : process
+   begin
+      clk_tb <= '0';
+      wait for 1 ns;
+      clk_tb <= '1';
+      wait for 1 ns;
+   end process p_clk;
 
 end architecture tb;
