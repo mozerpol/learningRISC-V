@@ -4,8 +4,15 @@
 # -group GROUP_NAME -- group the signals by GROUP_NAME
 # -radix system_name -- show signal in specific format, eg. bitary, octal, etc.
 
-
 ##### Add waves: #####
+add wave -expand -group TB -radix dec /reg_file_tb/clk_tb
+add wave -expand -group TB -radix dec /reg_file_tb/rs1_tb
+add wave -expand -group TB -radix dec /reg_file_tb/rs2_tb 
+add wave -expand -group TB -radix dec /reg_file_tb/rd_tb
+add wave -expand -group TB -radix dec /reg_file_tb/rd_d_tb
+add wave -expand -group TB -radix dec /reg_file_tb/reg_wr_tb
+add wave -expand -group TB -radix dec /reg_file_tb/rs1_d_tb 
+add wave -expand -group TB -radix dec /reg_file_tb/rs2_d_tb
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
