@@ -4,11 +4,12 @@ library ieee;
   use IEEE.math_real.all;
   
  package select_rd_pkg is
-    -- constant C_NAME : std_logic_vector(N downto M) := "X";
-    constant RD_IMM  : std_logic_vector(1 downto 0) := "00";
-    constant RD_PCP4 : std_logic_vector(1 downto 0) := "01";
-    constant RD_ALU  : std_logic_vector(1 downto 0) := "10";
-    constant RD_MEM  : std_logic_vector(1 downto 0) := "11";
+   -- SB, SH, ... are S-type instructions, storage instructions.
+   constant SB     : std_logic_vector(2 downto 0) := "000";
+   constant SH     : std_logic_vector(2 downto 0) := "001";
+   constant SW     : std_logic_vector(2 downto 0) := "010";
+   constant SBU    : std_logic_vector(2 downto 0) := "011";
+   constant SHU    : std_logic_vector(2 downto 0) := "100";
  end;
  
  package body select_rd_pkg is
