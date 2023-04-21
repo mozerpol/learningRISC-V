@@ -5,6 +5,10 @@
 # -radix system_name -- show signal in specific format, eg. bitary, octal, etc.
 
 ##### Add waves: #####
+add wave -expand -group TB -radix dec  /select_rd_tb/rdata_tb
+add wave -expand -group TB -radix dec  /select_rd_tb/sel_type_tb
+add wave -expand -group TB -radix dec  /select_rd_tb/sel_addr_old_tb
+add wave -expand -group TB -radix dec  /select_rd_tb/rd_mem_tb
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
