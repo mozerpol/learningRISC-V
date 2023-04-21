@@ -7,6 +7,11 @@ library rysy_pkg;
 
 
 entity select_rd_design is
+   port (
+      signal rdata         : in std_logic_vector(REG_LEN-1 downto 0);
+      signal sel_type      : in std_logic_vector(2 downto 0);
+      signal sel_addr_old  : in std_logic_vector(1 downto 0);
+      signal rd_mem        : out std_logic_vector(REG_LEN-1 downto 0)
    );
 end entity select_rd_design;
 
