@@ -27,19 +27,56 @@ begin
       case (sel_type) is
          when SB => 
             case (sel_addr_old) is
-               when "00" => rd_mem(REG_LEN-1 downto 0) <= (rdata(7 downto 0) & 
-                  (24x"ffffff" when rdata(7) = '1' else
-                   24x"000000"));
-               when "01" => NULL;
-               when "10" => NULL;
-               when "11" => NULL;
-               when others => NULL;
+               when "00" =>
+                  rd_mem <= 24x"ffffff" & rdata(7 downto 0) 
+                            when (rdata(7) = '1') else
+                            24x"000000" & rdata(7 downto 0); 
+               when "01" => 
+                  rd_mem <= 24x"ffffff" & rdata(15 downto 8)
+                            when (rdata(15) = '1') else
+                            24x"000000" & rdata(15 downto 8);
+               when "10" => 
+                  rd_mem <= 24x"ffffff" & rdata(23 downto 16)
+                            when (rdata(23) = '1') else
+                            24x"000000" & rdata(23 downto 16); 
+               when "11" =>
+                  rd_mem <= 24x"ffffff" & rdata(31 downto 24)
+                            when (rdata(31) = '1') else
+                            24x"000000" & rdata(31 downto 24); 
+               when others => rd_mem <= (others => '0');
             end case;
          when SH => NULL;
-         when SW => NULL;
-         when SBU => NULL;
-         when SHU => NULL;
-         when others => NULL;
+            case (sel_addr_old) is
+               when "00" => 
+                  rd_mem <= 16x"ffff" & rdata(15 downto 0) 
+                            when (rdata(15) = '1') else
+                            16x"0000" & rdata(15 downto 0); 
+               when "01" => 
+                  rd_mem <= 16x"ffff" & rdata(31 downto 16) 
+                            when (rdata(31) = '1') else
+                            16x"0000" & rdata(31 downto 16); 
+               when others => rd_mem <= (others => '0');
+            end case;
+         when SW => rd_mem <= rdata;
+         when SBU => 
+            case (sel_addr_old) is
+               when "00" => 
+                  rd_mem <= 24x"000000" & rdata(7 downto 0);
+               when "01" =>
+                  rd_mem <= 24x"000000" & rdata(15 downto 8); 
+               when "10" =>
+                  rd_mem <= 24x"000000" & rdata(23 downto 16);
+               when "11" =>
+                  rd_mem <= 24x"000000" & rdata(31 downto 24);
+               when others => rd_mem <= (others => '0');
+            end case;
+         when SHU =>
+            case (sel_addr_old) is
+               when "00" => rd_mem <= 16x"0000" & rdata(15 downto 0);
+               when "01" => rd_mem <= 16x"0000" & rdata(31 downto 16);
+               when others => rd_mem <= (others => '0');
+            end case;
+         when others => rd_mem <= (others => '0');
       end case;
    end process p_select_rd;
 
