@@ -7,6 +7,17 @@ implementation/VHDL_rysyCore/core/*/transcript
 implementation/VHDL_rysyCore/core/*/work/
 implementation/VHDL_rysyCore/core/rysy_pkg/
 
+implementation/VHDL_rysyCore/core/*/script/alu_lib/
+implementation/VHDL_rysyCore/core/*/script/cmp_lib/
+implementation/VHDL_rysyCore/core/*/script/decode_lib/
+implementation/VHDL_rysyCore/core/*/script/imm_mux_lib/
+implementation/VHDL_rysyCore/core/*/script/inst_mgmt_lib/
+implementation/VHDL_rysyCore/core/*/script/mem_addr_sel_lib/
+implementation/VHDL_rysyCore/core/*/script/rd_mux_lib/
+implementation/VHDL_rysyCore/core/*/script/reg_file_lib/
+implementation/VHDL_rysyCore/core/*/script/select_rd_lib/
+implementation/VHDL_rysyCore/core/*/script/select_wr_lib/
+
 implementation/systemVerilog_rysyCore/core/work/
 
 implementation/verilog_rysyCore/core/work/
