@@ -16,6 +16,16 @@ set hdl_dir                "../../"
 set library_name           "rysy_pkg"
 vcom -2008 -quiet -work    $library_name $hdl_dir/rysy_pkg.vhd
 
+set hdl_dir                "../../"
+set library_name           "opcodes"
+vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
+
+set hdl_dir                "../../imm_mux/"
+set library_name           "imm_mux_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/imm_mux_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/imm_mux_design.vhd
+
+
 ##################################
 #         PROJECT TREE:
 #
