@@ -92,7 +92,7 @@ package opcodesPkg is
    --   FUNC25_SYSTEM   --
    --,,,,,,,,,,,,,,,,,,,--
    constant FUNC_SYSTEM_ECALL	   : std_logic_vector(24 downto 0) := (others => '0');
-   constant FUNC_SYSTEM_EBREAK 	: std_logic_vector(24 downto 0) := 24x"002000";
+   constant FUNC_SYSTEM_EBREAK 	: std_logic_vector(24 downto 0) := 25x"002000";
 end;
 
 package body opcodesPkg is
