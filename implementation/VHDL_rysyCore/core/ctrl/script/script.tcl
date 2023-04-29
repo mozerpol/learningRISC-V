@@ -25,6 +25,51 @@ set library_name           "imm_mux_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/imm_mux_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/imm_mux_design.vhd
 
+set hdl_dir                "../../alu/"
+set library_name           "alu_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_design.vhd
+
+set hdl_dir                "../../alu1_mux/"
+set library_name           "alu1_mux_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu1_mux_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu1_mux_design.vhd
+
+set hdl_dir                "../../alu2_mux/"
+set library_name           "alu2_mux_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu2_mux_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu2_mux_design.vhd
+
+set hdl_dir                "../../cmp/"
+set library_name           "cmp_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/cmp_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/cmp_design.vhd
+
+set hdl_dir                "../../inst_mgmt/"
+set library_name           "inst_mgmt_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/inst_mgmt_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/inst_mgmt_design.vhd
+
+set hdl_dir                "../../mem_addr_sel/"
+set library_name           "mem_addr_sel_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/mem_addr_sel_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/mem_addr_sel_design.vhd
+
+set hdl_dir                "../../rd_mux/"
+set library_name           "rd_mux_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/rd_mux_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/rd_mux_design.vhd
+
+set hdl_dir                "../../select_wr/"
+set library_name           "select_wr_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/select_wr_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/select_wr_design.vhd
+
+set hdl_dir                "../../select_rd/"
+set library_name           "select_rd_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/select_rd_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/select_rd_design.vhd
+
 
 ##################################
 #         PROJECT TREE:
