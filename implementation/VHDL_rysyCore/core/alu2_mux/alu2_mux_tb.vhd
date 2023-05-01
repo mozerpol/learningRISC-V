@@ -17,14 +17,14 @@ architecture tb of alu2_mux_tb is
       signal rs2_d    : in std_logic_vector(REG_LEN-1 downto 0);
       signal imm      : in std_logic_vector(REG_LEN-1 downto 0); 
       signal alu2_sel : in std_logic;
-      signal alu2_in2  : out std_logic_vector(REG_LEN-1 downto 0)
+      signal alu_in2  : out std_logic_vector(REG_LEN-1 downto 0)
    );
    end component alu2_mux_design;
 
    signal rs2_d_tb      : std_logic_vector(REG_LEN-1 downto 0);   
    signal imm_tb        : std_logic_vector(REG_LEN-1 downto 0); 
    signal alu2_sel_tb   : std_logic;
-   signal alu2_in2_tb   : std_logic_vector(REG_LEN-1 downto 0); 
+   signal alu_in2_tb   : std_logic_vector(REG_LEN-1 downto 0); 
    type t_val_for_rs2_d is array(0 to 4) of std_logic_vector(31 downto 0);
    signal val_for_rs2_d : t_val_for_rs2_d;
    type t_val_for_imm   is array(0 to 5) of std_logic_vector(31 downto 0);
@@ -36,7 +36,7 @@ begin
       rs2_d       => rs2_d_tb,
       imm         => imm_tb,
       alu2_sel    => alu2_sel_tb,
-      alu2_in2    => alu2_in2_tb
+      alu_in2    => alu_in2_tb
    );
 
    p_tb : process

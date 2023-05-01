@@ -12,7 +12,7 @@ entity alu2_mux_design is
       signal rs2_d    : in std_logic_vector(REG_LEN-1 downto 0);
       signal imm      : in std_logic_vector(REG_LEN-1 downto 0);
       signal alu2_sel : in std_logic;
-      signal alu2_in2 : out std_logic_vector(REG_LEN-1 downto 0)
+      signal alu_in2  : out std_logic_vector(REG_LEN-1 downto 0)
    );
 end entity alu2_mux_design;
 
@@ -22,7 +22,7 @@ architecture rtl of alu2_mux_design is
 
 begin
 
-   alu2_in2 <= o;
+   alu_in2 <= o;
 
    p_alu2_sel : process(all)
    begin

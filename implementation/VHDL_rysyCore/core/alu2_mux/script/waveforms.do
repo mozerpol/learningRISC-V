@@ -9,14 +9,14 @@
 add wave -expand -group TB -radix dec /alu2_mux_tb/rs2_d_tb
 add wave -expand -group TB -radix dec /alu2_mux_tb/imm_tb
 add wave -expand -group TB -radix bin /alu2_mux_tb/alu2_sel_tb
-add wave -expand -group TB -radix dec /alu2_mux_tb/alu2_in2_tb
+add wave -expand -group TB -radix dec /alu2_mux_tb/alu_in2_tb
 add wave -expand -group TB -radix dec /alu2_mux_tb/val_for_rs2_d
 add wave -expand -group TB -radix dec /alu2_mux_tb/val_for_imm
 
 add wave -expand -group DESIGN -radix dec /alu2_mux_tb/inst_alu2_mux/rs2_d
 add wave -expand -group DESIGN -radix dec /alu2_mux_tb/inst_alu2_mux/imm
 add wave -expand -group DESIGN -radix bin /alu2_mux_tb/inst_alu2_mux/alu2_sel
-add wave -expand -group DESIGN -radix dec /alu2_mux_tb/inst_alu2_mux/alu2_in2
+add wave -expand -group DESIGN -radix dec /alu2_mux_tb/inst_alu2_mux/alu_in2
 add wave -expand -group DESIGN -radix dec /alu2_mux_tb/inst_alu2_mux/o
 
 ##### Waveform window settings: #####
