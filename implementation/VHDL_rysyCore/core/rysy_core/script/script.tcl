@@ -70,6 +70,11 @@ set library_name           "select_rd_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/select_rd_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/select_rd_design.vhd
 
+set hdl_dir                "../../ctrl/"
+set library_name           "ctrl_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/ctrl_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/ctrl_design.vhd
+
 ##################################
 #         PROJECT TREE:
 #
