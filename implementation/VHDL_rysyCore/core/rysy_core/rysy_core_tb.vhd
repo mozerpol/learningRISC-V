@@ -46,7 +46,11 @@ begin
 
    p_tb : process
    begin
-
+   
+      -- Default values
+      rdata_tb  <= (others => '0');
+      rst_tb    <= '0';
+      
       wait for 10 ns;
       -- ....:::::rst_tb = 1;:::::....
       -- next_nop	   in	ctrl		   =	1
