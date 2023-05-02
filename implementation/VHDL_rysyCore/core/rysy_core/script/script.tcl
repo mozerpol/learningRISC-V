@@ -50,6 +50,16 @@ set library_name           "inst_mgmt_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/inst_mgmt_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/inst_mgmt_design.vhd
 
+set hdl_dir                "../../decode/"
+set library_name           "decode_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/decode_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/decode_design.vhd
+
+set hdl_dir                "../../reg_file/"
+set library_name           "reg_file_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
+
 set hdl_dir                "../../mem_addr_sel/"
 set library_name           "mem_addr_sel_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/mem_addr_sel_pkg.vhd
