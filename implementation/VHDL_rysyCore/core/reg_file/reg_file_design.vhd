@@ -30,13 +30,13 @@ architecture rtl of reg_file_design is
 begin
 
 
-   rs1_d <= 32x"0" when rs1 = 5b"0" else x(to_integer(unsigned(rs1)));
-   rs2_d <= 32x"0" when rs2 = 5b"0" else x(to_integer(unsigned(rs2)));
+   rs1_d <= 32x"00000000" when rs1 = 5b"00000" else x(to_integer(unsigned(rs1)));
+   rs2_d <= 32x"00000000" when rs2 = 5b"00000" else x(to_integer(unsigned(rs2)));
 
    p_reg : process(clk)
    begin
       if (clk'event and clk = '1') then
-         if(reg_wr) then
+         if(reg_wr = '1') then
             x(to_integer(signed(rd))) <= rd_d;
          end if;
       end if;
