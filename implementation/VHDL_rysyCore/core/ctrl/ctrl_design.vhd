@@ -136,8 +136,8 @@ begin
          when STORE        => pc_sel <= PC_OLD;
          when LOAD         =>
             case (load_phase) is
-               when '1'       => pc_sel <= PC_M4;
-               when '0'       => pc_sel <= PC_P4;
+               when '0'       => pc_sel <= PC_M4;
+               when '1'       => pc_sel <= PC_P4;
                when others    => pc_sel <= PC_OLD;
             end case;
          when others       => pc_sel <= PC_P4;
