@@ -237,7 +237,7 @@ begin
    end process p_alu;
 
    ------  ------
-   p_next_nop : process (clk)
+   p_next_nop : process (clk, rst)
    begin
       if (rst = '1') then
          next_nop <= '1';
@@ -252,18 +252,6 @@ begin
    end process p_next_nop;
 
    ------  ------
-   p_load_phase : process (clk)
-   begin
-      if (rst) then
-         load_phase <= '0';
-      elsif (clk'event and clk = '1') then
-         if (opcode = LOAD) then
-            load_phase <= not(load_phase);
-         end if;
-      end if;
-   end process p_load_phase;
-
-   ------  ------
    p_opcode : process(opcode)
    begin
       case (opcode) is
@@ -271,6 +259,22 @@ begin
          when others => we <= '0';
       end case;
    end process p_opcode;
+
+   ------  ------
+   p_load_phase : process (clk, rst)
+   begin
+      if (rst) then
+         load_phase <= '0';
+      elsif (clk'event and clk = '1') then
+         if (opcode = LOAD) then
+            if (load_phase = '0') then
+                load_phase <= '1';
+            else
+                load_phase <= '0';
+            end if;
+         end if;
+      end if;
+   end process p_load_phase;
 
 
 end architecture rtl;
