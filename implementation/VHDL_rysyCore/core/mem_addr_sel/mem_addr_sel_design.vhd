@@ -23,11 +23,8 @@ end entity mem_addr_sel;
 architecture rtl of mem_addr_sel is
 
 begin
-
-   addr <= pc      when mem_sel = MEM_PC else
-           alu_out when mem_sel = MEM_ALU;
    
-   p_mem_addr_sel : process(clk, rst)
+   p_pc_sel : process(clk, rst)
    begin
       if (rst = '1') then
          pc    <= (others => '0');
@@ -40,6 +37,15 @@ begin
             when others => pc <= pc;
          end case;
       end if;
-   end process p_mem_addr_sel;
+   end process p_pc_sel;
+
+   p_mem_sel : process (all)
+   begin
+      case (mem_sel) is
+         when MEM_PC    => addr <= pc;
+         when MEM_ALU   => addr <= alu_out;
+         when others    =>
+      end case;
+   end process p_mem_sel;
 
 end architecture rtl;
