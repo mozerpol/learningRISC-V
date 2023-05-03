@@ -128,7 +128,7 @@ begin
    end process p_rd_mux;
  
    ------ Controlling mem_addr_sel pc_sel part ------
-   p_mem_addr_sel : process(opcode, b, load_phase)
+   p_mem_addr_sel : process(all)
    begin
       case (opcode) is
          when JALR | JAL   => pc_sel <= PC_ALU;
