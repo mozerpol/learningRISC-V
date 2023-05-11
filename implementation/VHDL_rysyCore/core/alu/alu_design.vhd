@@ -30,13 +30,15 @@ begin
          when "0011" => alu_out <= alu_in1 or alu_in2;  -- OR
          when "0100" => alu_out <= alu_in1 and alu_in2; -- AND
          when "0101" => alu_out <= std_logic_vector(unsigned(alu_in1) sll 
-            to_integer(unsigned(alu_in2)));             -- SLL
+                        to_integer(unsigned(alu_in2(4 downto 0)))); -- SLL
          when "0110" => alu_out <= std_logic_vector(unsigned(alu_in1) srl 
-            to_integer(unsigned(alu_in2)));             -- SRL
-         when "0111" => alu_out <= std_logic_vector(unsigned(alu_in1) sra
-            to_integer(unsigned(alu_in2)));             -- SRA
-         when SLT    => alu_out <= alu_in1 when alu_in1 > alu_in2 else alu_in2;
-         when SLTU   => alu_out <= alu_in1 when alu_in1 > alu_in2 else alu_in2; 
+                        to_integer(unsigned(alu_in2(4 downto 0)))); -- SRL
+         when "0111" => alu_out <= std_logic_vector(signed(alu_in1) sra 
+                        to_integer(unsigned(alu_in2(4 downto 0)))); -- SRA
+         when SLT    => alu_out <= (0 => '1', others => '0') when 
+                        signed(alu_in1) < signed(alu_in2) else (others => '0');
+         when SLTU   => alu_out <= (0 => '1', others => '0') when 
+                        unsigned(alu_in1) < unsigned(alu_in2) else (others => '0'); 
          when others => alu_out <= (others => '0');
       end case;
    end process p_alu;
