@@ -8,7 +8,7 @@
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/clk
 add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/rst
-add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/pc
+add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/pc_sel
 add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/mem_sel
 add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/alu_out
 add wave -expand -group DESIGN -radix dec /mem_addr_sel_tb/inst_mem_addr_sel/pc
