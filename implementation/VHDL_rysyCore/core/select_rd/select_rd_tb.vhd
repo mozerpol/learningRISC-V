@@ -111,6 +111,8 @@ begin
     out_a(13) <= 32x"00000056";
     out_a(14) <= 32x"00000078";
 
+    wait for 5 ns;
+    
     for i in 0 to 14 loop
        rdata_tb         <= in_a(i);
        sel_type_tb      <= sel_type_a(i);
