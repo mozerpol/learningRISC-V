@@ -55,6 +55,10 @@ begin
 
    mem_addr_sel_tb : process
    begin
+   
+      mem_sel_tb  <= '0';
+      pc_sel_tb   <= "00";
+      alu_out_tb  <= 32d"0";
       rst_tb      <= '1';
       wait for 10 ns;
       rst_tb      <= '0';
