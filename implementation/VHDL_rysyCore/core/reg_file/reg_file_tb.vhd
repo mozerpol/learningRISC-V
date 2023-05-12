@@ -29,13 +29,13 @@ architecture tb of reg_file_tb is
    end component reg_file_design;
 
    signal clk_tb     : std_logic;
-   signal reg_wr_tb  : std_logic;
-   signal rs1_tb     : std_logic_vector(ADDR_LEN-1 downto 0);
-   signal rs2_tb     : std_logic_vector(ADDR_LEN-1 downto 0);
-   signal rd_tb      : std_logic_vector(ADDR_LEN-1 downto 0);
-   signal rd_d_tb    : std_logic_vector(REG_LEN-1 downto 0);
-   signal rs1_d_tb   : std_logic_vector(REG_LEN-1 downto 0);
-   signal rs2_d_tb   : std_logic_vector(REG_LEN-1 downto 0);
+   signal wr         : std_logic;
+   signal rs1_addr   : std_logic_vector(ADDR_LEN-1 downto 0);
+   signal rs2_addr   : std_logic_vector(ADDR_LEN-1 downto 0);
+   signal rd_addr    : std_logic_vector(ADDR_LEN-1 downto 0);
+   signal rd_data    : std_logic_vector(REG_LEN-1 downto 0);
+   signal rs1_data   : std_logic_vector(REG_LEN-1 downto 0);
+   signal rs2_data   : std_logic_vector(REG_LEN-1 downto 0);
    
 begin
    inst_reg_file : component reg_file_design 
@@ -44,35 +44,41 @@ begin
    )
    port map (
       clk      => clk_tb,
-      reg_wr   => reg_wr_tb,
-      rs1      => rs1_tb,
-      rs2      => rs2_tb,
-      rd       => rd_tb,
-      rd_d     => rd_d_tb,
-      rs1_d    => rs1_d_tb,
-      rs2_d    => rs2_d_tb
+      reg_wr   => wr,
+      rs1      => rs1_addr,
+      rs2      => rs2_addr,
+      rd       => rd_addr,
+      rd_d     => rd_data,
+      rs1_d    => rs1_data,
+      rs2_d    => rs2_data
    );
-
+   
    p_tb : process
    begin
-      rs1_tb      <= (others => '0');
-      rs2_tb      <= (others => '0');
-      rd_tb       <= (others => '0');
-      rd_d_tb     <= (others => '0');
-      reg_wr_tb   <= '0';
+      rs1_addr  <= (others => '0');
+      rs2_addr  <= (others => '0');
+      rd_addr   <= (others => '0');
+      rd_data   <= (others => '0');
+      wr        <= '0';
       wait for 30 ns;
-      rd_d_tb     <= 32x"1";
-      rs1_tb      <= (others => '0');
-      reg_wr_tb   <= '1';
+      rd_data   <= 32x"00000001";
+      rd_addr   <= 5x"01";
+      wr        <= '1';
       wait for 30 ns;
-      rs1_tb      <= 5x"3";
-      rd_tb       <= 5x"2";
-      reg_wr_tb   <= '0';
-      wait for 30 ns;
-      reg_wr_tb   <= '1';
-      wait for 30 ns;
-      reg_wr_tb   <= '0';
-      rs1_tb      <= 5x"4";
+      wr        <= '0';
+      rd_data   <= 32x"00000002";
+      rd_addr  <= 5x"03";
+      wait for 5 ns;
+      wr        <= '1';
+      wait for 5 ns;
+      wr        <= '0';
+      rs1_addr  <= 5x"01";
+      wait for 10 ns;
+      rs2_addr  <= 5x"03";
+      wait for 10 ns;
+      rd_addr   <= 5x"00";
+      wr        <= '1';
+      rs2_addr  <= 5x"00";
       wait for 25 ns;
       stop(2); 
    end process p_tb;
