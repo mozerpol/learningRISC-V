@@ -49,7 +49,7 @@ begin
 
    -- B type
    imm_B(11 downto 0)   <= inst(7) & inst(30 downto 25) & inst(11 downto 8) & '0';
-   imm_B(31 downto 12)  <= 20x"fffff" when inst(4) = '1' else 20x"00000";
+   imm_B(31 downto 12)  <= 20x"fffff" when inst(31) = '1' else 20x"00000";
 
    -- U type
    imm_U <= inst(31 downto 12) & 12x"0";
