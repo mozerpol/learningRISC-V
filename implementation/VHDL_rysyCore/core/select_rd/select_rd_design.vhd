@@ -51,7 +51,7 @@ begin
                   rd_mem <= 16x"ffff" & rdata(15 downto 0) 
                             when (rdata(15) = '1') else
                             16x"0000" & rdata(15 downto 0); 
-               when "01" => 
+               when "10" => 
                   rd_mem <= 16x"ffff" & rdata(31 downto 16) 
                             when (rdata(31) = '1') else
                             16x"0000" & rdata(31 downto 16); 
@@ -73,7 +73,7 @@ begin
          when SHU =>
             case (sel_addr_old) is
                when "00" => rd_mem <= 16x"0000" & rdata(15 downto 0);
-               when "01" => rd_mem <= 16x"0000" & rdata(31 downto 16);
+               when "10" => rd_mem <= 16x"0000" & rdata(31 downto 16);
                when others => rd_mem <= (others => '0');
             end case;
          when others => rd_mem <= (others => '0');
