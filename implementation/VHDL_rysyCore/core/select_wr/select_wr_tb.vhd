@@ -93,6 +93,8 @@ begin
       be_a(5)  <= 4b"0010";
       be_a(6)  <= 4b"0001";
 
+      wait for 5 ns;
+      
       for i in 0 to 6 loop
          rs2_d_tb    <= in_a(i);
          sel_type_tb <= sel_type_a(i);
