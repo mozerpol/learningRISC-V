@@ -10,14 +10,13 @@ add wave -expand -group DESIGN -radix dec /cmp_tb/inst_cmp/rs1_d
 add wave -expand -group DESIGN -radix dec /cmp_tb/inst_cmp/rs2_d
 add wave -expand -group DESIGN -radix dec /cmp_tb/inst_cmp/cmp_op
 add wave -expand -group DESIGN -radix dec /cmp_tb/inst_cmp/b
-add wave -expand -group DESIGN -radix dec /cmp_tb/inst_cmp/o
 
-add wave -expand -group TB -radix dec  /cmp_tb/rs1_d_tb
-add wave -expand -group TB -radix dec  /cmp_tb/rs2_d_tb
-add wave -expand -group TB -radix dec  /cmp_tb/cmp_op_tb
-add wave -expand -group TB -radix dec  /cmp_tb/b_tb
-add wave -expand -group TB -radix dec  /cmp_tb/val_for_rs1_d
-add wave -expand -group TB -radix dec  /cmp_tb/val_for_rs2_d
+add wave -group TB -radix dec  /cmp_tb/rs1_d_tb
+add wave -group TB -radix dec  /cmp_tb/rs2_d_tb
+add wave -group TB -radix dec  /cmp_tb/cmp_op_tb
+add wave -group TB -radix dec  /cmp_tb/b_tb
+add wave -group TB -radix dec  /cmp_tb/val_for_rs1_d
+add wave -group TB -radix dec  /cmp_tb/val_for_rs2_d
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
