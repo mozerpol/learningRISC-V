@@ -19,22 +19,18 @@ end entity cmp;
 
 architecture rtl of cmp is
 
-   signal o          : std_logic;
-
 begin
-
-   b        <= o;
 
    p_cmp : process(all)
    begin
       case (cmp_op) is
-         when EQ => o <= '1' when rs1_d = rs2_d else '0';
-         when NE => o <= '1' when rs1_d /= rs2_d else '0';
-         when LT => o <= '1' when rs1_d < rs2_d else '0';
-         when GE => o <= '1' when rs1_d >= rs2_d else '0';
-         when LTU => o <= '1' when rs1_d < rs2_d else '0';
-         when GEU => o <= '1' when rs1_d >= rs2_d else '0';
-         when others => o <= '0';
+         when EQ => b <= '1' when rs1_d = rs2_d else '0';
+         when NE => b <= '1' when rs1_d /= rs2_d else '0';
+         when LT => b <= '1' when signed(rs1_d) < signed(rs2_d) else '0';
+         when GE => b <= '1' when signed(rs1_d) >= signed(rs2_d) else '0';
+         when LTU => b <= '1' when unsigned(rs1_d) < unsigned(rs2_d) else '0';
+         when GEU => b <= '1' when unsigned(rs1_d) >= unsigned(rs2_d) else '0';
+         when others => b <= '0';
       end case;
 
    end process p_cmp;
