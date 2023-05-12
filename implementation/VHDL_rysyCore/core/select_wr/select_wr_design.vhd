@@ -37,7 +37,7 @@ begin
          when SH =>
             case (sel_addr) is
                when "00" => wdata <= 16x"0000" & rs2_d(15 downto 0);
-               when "01" => wdata <= rs2_d(15 downto 0) & 16x"0000";
+               when "10" => wdata <= rs2_d(15 downto 0) & 16x"0000";
                when others => wdata <= 16x"0000" & rs2_d(15 downto 0);
             end case;
          when SW => wdata <= rs2_d;
