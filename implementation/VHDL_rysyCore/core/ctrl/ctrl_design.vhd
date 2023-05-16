@@ -69,7 +69,7 @@ architecture rtl of ctrl is
 begin
 
    ------ Controlling imm_mux ------  
-   p_imm_mux : process(opcode)
+   p_imm_mux : process(all)
    begin
       case (opcode) is
          when OP_IMM => imm_type <= C_IMM_I;
@@ -84,7 +84,7 @@ begin
    end process p_imm_mux;
 
    ------ Controlling alu1_mux ------
-   p_alu1_mux : process(opcode)
+   p_alu1_mux : process(all)
    begin
       case (opcode) is
          when BRANCH => alu1_sel <= ALU1_PC;
@@ -94,7 +94,7 @@ begin
    end process p_alu1_mux;
    
    ------ Controlling alu2_mux ------
-   p_alu2_mux : process (opcode)
+   p_alu2_mux : process (all)
    begin
       case (opcode) is
          when LOAD | STORE | BRANCH | JALR | JAL | OP_IMM => 
@@ -105,7 +105,7 @@ begin
    end process p_alu2_mux;
 
    ------ Controlling reg_wr from reg_file module ------
-   p_reg_wr : process (opcode, load_phase)
+   p_reg_wr : process (all)
    begin
       case (opcode) is
          when JALR | JAL | OP_IMM | LUI | OP =>
@@ -116,7 +116,7 @@ begin
    end process p_reg_wr;
 
    ------ Controlling rd_mux ------
-   p_rd_mux : process (opcode)
+   p_rd_mux : process (all)
    begin
       case (opcode) is
          when OP_IMM | OP     => rd_sel <= RD_ALU;
@@ -145,7 +145,7 @@ begin
    end process p_mem_addr_sel;
 
    ------ Controlling mem_addr_sel mem_sel part ------
-   p_mem_addr_sel2 : process (opcode, load_phase)
+   p_mem_addr_sel2 : process (all)
    begin
       case (opcode) is
          when STORE  => mem_sel <= MEM_ALU;
@@ -173,7 +173,7 @@ begin
    end process p_cmp;
 
    ------ Controlling select_pkg ------
-   p_select_pkg : process (func3, opcode)
+   p_select_pkg : process (all)
    begin
       case (func3) is
          when FUNC3_SB  => sel_type <= SB;
@@ -186,7 +186,7 @@ begin
    end process p_select_pkg;
 
    ------ Controlling inst_mgmt ------
-   p_inst_mgmt : process (next_nop, opcode, b, load_phase)
+   p_inst_mgmt : process (all)
    begin
       if (next_nop) then
          inst_sel <= INST_NOP;
@@ -205,7 +205,7 @@ begin
    end process p_inst_mgmt;
 
    ------ Controlling alu ------
-   p_alu : process (opcode, func3, func7)
+   p_alu : process (all)
    begin
       case (opcode) is
          when OP_IMM | OP =>
@@ -252,7 +252,7 @@ begin
    end process p_next_nop;
 
    ------  ------
-   p_opcode : process(opcode)
+   p_opcode : process(all)
    begin
       case (opcode) is
          when STORE  => we <= '1';
