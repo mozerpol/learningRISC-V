@@ -299,9 +299,9 @@ begin
    p_clk_tb : process
    begin
       clk_tb <= '1';
-      wait for 2500 ps;
+      wait for 5 ns;
       clk_tb <= '0';
-      wait for 2500 ps;
+      wait for 5 ns;
    end process p_clk_tb;
 
 end architecture tb;
