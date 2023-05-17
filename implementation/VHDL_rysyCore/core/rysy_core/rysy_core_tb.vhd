@@ -81,44 +81,57 @@ begin
       -- imm_type	in	ctrl/imm_mux	=	00100 (4 in dec)
       -- imm		in	imm_mux			=	101
       -- reg_wr	in	ctrl/reg_file	=	1
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"000000000101_00001_000_00010_0010011";
       wait for 20 ns;
       rst_tb <= '1';
       wait for 20 ns;
       rst_tb <= '0';
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"10101010101_00000_111_00001_0010011"; -- andi x1, x0, 0b010101010101
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"000000000101_00001_000_00010_0010011"; -- addi x2, x1, 0x5
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"0000000_00010_00001_000_00011_0110011"; -- ADD x3, x1, x2
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"0000000000100_00001_010_00010_0010011"; -- slti x2, x1, 4
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"100000000000_00001_011_00010_0010011"; -- sltiu x2, x1, -2048
       wait for 20 ns;
       rst_tb <= '1';
       wait for 20 ns;
       rst_tb <= '0';
       wait for 20 ns; 
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"0000000_00010_00001_000_00011_0110011"; -- ADD x3, x1, x2
       wait for 20 ns; 
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"11111111111111111111_00101_0010111"; -- auipc x5, 0xfffff
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"1111111_00001_00010_001_11001_1100011"; -- bne x2, x1, loop - loop is label
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"11111111100111111111_00100_1101111"; -- jal x4, loop
       wait for 20 ns;
       rst_tb <= '1';
       wait for 20 ns;
       rst_tb <= '0';
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"11111111111111111111_00001_0110111"; -- lui x1, 0xFFFFF
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"010101010101_00000_110_00001_0010011"; -- ori x1, x0, 0b10101010101
       wait for 20 ns;
       rdata_tb <= 32b"0000000_00010_00001_000_00011_0110011"; -- ADD x3, x1, x2
       wait for 20 ns;
+      wait until (clk_tb'event and clk_tb = '1');
       rdata_tb <= 32b"0000000000100_00001_010_00010_0010011"; -- slti x2, x1, 4
       wait for 20 ns;
       rdata_tb <= 32b"100000000000_00001_011_00010_0010011"; -- sltiu x2, x1, -2048
@@ -148,9 +161,9 @@ begin
    p_clk : process
    begin
       clk_tb <= '0';
-      wait for 1 ns;
+      wait for 5 ns;
       clk_tb <= '1';
-      wait for 1 ns;
+      wait for 5 ns;
    end process p_clk;
 
 end architecture tb;
