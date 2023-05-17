@@ -6,6 +6,14 @@
 
 ##### Add waves: #####
 
+add wave -group PORTS -radix binary /rysy_core_tb/we_tb
+add wave -group PORTS -radix binary /rysy_core_tb/wdata_tb
+add wave -group PORTS -radix binary /rysy_core_tb/rst_tb
+add wave -group PORTS -radix binary /rysy_core_tb/rdata_tb
+add wave -group PORTS -radix binary /rysy_core_tb/clk_tb
+add wave -group PORTS -radix binary /rysy_core_tb/be_tb
+add wave -group PORTS -radix binary /rysy_core_tb/addr_tb
+
 add wave -group MEM_ADDR_SEL -radix binary /rysy_core_tb/inst_rysy_core/inst_mem_addr_sel/clk 
 add wave -group MEM_ADDR_SEL -radix binary /rysy_core_tb/inst_rysy_core/inst_mem_addr_sel/rst 
 add wave -group MEM_ADDR_SEL -radix binary /rysy_core_tb/inst_rysy_core/inst_mem_addr_sel/pc_sel 
@@ -70,27 +78,23 @@ add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mu
 add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/pc 
 add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/alu1_sel 
 add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/clk 
-add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/alu_in1 
-add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/o 
+add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/alu_in1
 add wave -group ALU1_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu1_mux/old_pc 
 
 add wave -group ALU2_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu2_mux/rs2_d 
 add wave -group ALU2_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu2_mux/imm 
 add wave -group ALU2_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu2_mux/alu2_sel 
-add wave -group ALU2_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu2_mux/alu_in2 
-add wave -group ALU2_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu2_mux/o 
+add wave -group ALU2_MUX -radix binary /rysy_core_tb/inst_rysy_core/inst_alu2_mux/alu_in2
 
 add wave -group ALU -radix binary /rysy_core_tb/inst_rysy_core/inst_alu/alu_in1 
 add wave -group ALU -radix binary /rysy_core_tb/inst_rysy_core/inst_alu/alu_in2 
 add wave -group ALU -radix binary /rysy_core_tb/inst_rysy_core/inst_alu/alu_op 
 add wave -group ALU -radix binary /rysy_core_tb/inst_rysy_core/inst_alu/alu_out 
-add wave -group ALU -radix binary /rysy_core_tb/inst_rysy_core/inst_alu/o 
 
 add wave -group CMP -radix binary /rysy_core_tb/inst_rysy_core/inst_cmp/rs1_d 
 add wave -group CMP -radix binary /rysy_core_tb/inst_rysy_core/inst_cmp/rs2_d 
 add wave -group CMP -radix binary /rysy_core_tb/inst_rysy_core/inst_cmp/cmp_op 
 add wave -group CMP -radix binary /rysy_core_tb/inst_rysy_core/inst_cmp/b 
-add wave -group CMP -radix binary /rysy_core_tb/inst_rysy_core/inst_cmp/o 
 
 add wave -group SELECT_WR -radix binary /rysy_core_tb/inst_rysy_core/inst_select_wr/wdata 
 add wave -group SELECT_WR -radix binary /rysy_core_tb/inst_rysy_core/inst_select_wr/sel_type 
