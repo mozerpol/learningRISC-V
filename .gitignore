@@ -17,6 +17,9 @@ implementation/VHDL_rysyCore/core/*/script/rd_mux_lib/
 implementation/VHDL_rysyCore/core/*/script/reg_file_lib/
 implementation/VHDL_rysyCore/core/*/script/select_rd_lib/
 implementation/VHDL_rysyCore/core/*/script/select_wr_lib/
+implementation/VHDL_rysyCore/core/*/script/rysy_core_lib/
+implementation/VHDL_rysyCore/core/*/script/ctrl_lib/
+implementation/VHDL_rysyCore/core/*/script/opcodes/
 
 implementation/systemVerilog_rysyCore/core/work/
 
