@@ -3,12 +3,12 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 
 
-entity bus_interconnect_design is
+entity bus_interconnect is
    port (
    );
-end entity bus_interconnect_design;
+end entity bus_interconnect;
 
-architecture rtl of bus_interconnect_design is
+architecture rtl of bus_interconnect is
 
 begin
 

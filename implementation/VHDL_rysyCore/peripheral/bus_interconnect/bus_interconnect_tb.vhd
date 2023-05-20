@@ -10,13 +10,13 @@ end bus_interconnect_tb;
 
 architecture tb of bus_interconnect_tb is
 
-   component bus_interconnect_design is
+   component bus_interconnect is
    port (
    );
-   end component bus_interconnect_design;
+   end component bus_interconnect;
 
 begin
-   inst_bus_interconnect : component bus_interconnect_design 
+   inst_bus_interconnect : component bus_interconnect 
    port map (
    );
 
