@@ -71,6 +71,31 @@ module bus_interconnect_tb;
     addr_tb = {32{1'bx}};
     #10
     rdata_gpio_tb = 32'd12;
+    #100
+    ///////////
+    addr_tb = 32'd0;
+    we_tb = 1;   
+    #20
+    we_tb = 0;
+    #20
+    ///////////
+    addr_tb = 32'd2;
+    we_tb = 1;   
+    #20
+    we_tb = 0;
+    #20
+    ///////////
+    addr_tb = 32'b00100000000000000000000000000000;
+    we_tb = 1;   
+    #20
+    we_tb = 0;
+    #20
+    ///////////
+    addr_tb = 32'd0;
+    we_tb = 1;   
+    #20
+    we_tb = 0;
+    #20   
 
     #50 $finish;
   end
