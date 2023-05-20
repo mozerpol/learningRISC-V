@@ -4,20 +4,61 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 library std;
   use std.env.all;
+library byte_enabled_simple_dual_port_ram_lib;
+   use byte_enabled_simple_dual_port_ram_lib.all;
+   use byte_enabled_simple_dual_port_ram_lib.byte_enabled_simple_dual_port_ram_pkg.all;
 
-entity byte_enabled_simple_dual_port_ramtb is
-end byte_enabled_simple_dual_port_ramtb;
+entity byte_enabled_simple_dual_port_ram_tb is
+end byte_enabled_simple_dual_port_ram_tb;
 
-architecture tb of byte_enabled_simple_dual_port_ramtb is
+architecture tb of byte_enabled_simple_dual_port_ram_tb is
 
    component byte_enabled_simple_dual_port_ram is
+   generic (
+      ADDR_WIDTH  : integer := 8;
+      BYTE_WIDTH  : integer := 8;
+      BYTES       : integer := 4;
+      WIDTH       : integer := BYTES*BYTE_WIDTH
+   );
    port (
+      clk   : in std_logic;
+      raddr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+      waddr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+      be    : in std_logic_vector(BYTES-1 downto 0);
+      wdata : in t_array(BYTES-1 downto 0)(BYTE_WIDTH-1 downto 0);
+      we    : in std_logic;
+      q     : out std_logic_vector(WIDTH-1 downto 0)
    );
    end component byte_enabled_simple_dual_port_ram;
 
+   constant ADDR_WIDTH  : integer := 8;
+   constant BYTE_WIDTH  : integer := 8;
+   constant BYTES       : integer := 4;
+   constant WIDTH       : integer := BYTES*BYTE_WIDTH;
+   signal clk_tb        : std_logic;
+   signal raddr_tb      : std_logic_vector(ADDR_WIDTH-1 downto 0);
+   signal waddr_tb      : std_logic_vector(ADDR_WIDTH-1 downto 0);
+   signal be_tb         : std_logic_vector(BYTES-1 downto 0);
+   signal wdata_tb      : t_array(BYTES-1 downto 0)(BYTE_WIDTH-1 downto 0);
+   signal we_tb         : std_logic;
+   signal q_tb          : std_logic_vector(WIDTH-1 downto 0);
+
 begin
-   inst_bus_interconnect : component byte_enabled_simple_dual_port_ram 
+   inst_byte_enabled_simple_dual_port_ram : component byte_enabled_simple_dual_port_ram 
+   generic map(
+      ADDR_WIDTH  => 8,
+      BYTE_WIDTH  => 8,
+      BYTES       => 4,
+      WIDTH       => BYTES*BYTE_WIDTH
+   )
    port map (
+      clk      => clk_tb,
+      raddr    => raddr_tb,
+      waddr    => waddr_tb,
+      be       => be_tb,
+      wdata    => wdata_tb,
+      we       => we_tb,
+      q        => q_tb
    );
 
    p_tb : process
