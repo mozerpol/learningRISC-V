@@ -6,6 +6,12 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN   /byte_enabled_simple_dual_port_ram_tb/inst_byte_enabled_simple_dual_port_ram/we 
+add wave -expand -group DESIGN   /byte_enabled_simple_dual_port_ram_tb/inst_byte_enabled_simple_dual_port_ram/wdata
+add wave -expand -group DESIGN   /byte_enabled_simple_dual_port_ram_tb/inst_byte_enabled_simple_dual_port_ram/waddr
+add wave -expand -group DESIGN   /byte_enabled_simple_dual_port_ram_tb/inst_byte_enabled_simple_dual_port_ram/raddr
+add wave -expand -group DESIGN   /byte_enabled_simple_dual_port_ram_tb/inst_byte_enabled_simple_dual_port_ram/q
+add wave -expand -group DESIGN   /byte_enabled_simple_dual_port_ram_tb/inst_byte_enabled_simple_dual_port_ram/clk 
 
 
 ##### Waveform window settings: #####
