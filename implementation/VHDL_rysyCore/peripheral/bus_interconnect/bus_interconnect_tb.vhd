@@ -7,7 +7,7 @@ library std;
 library bus_interconnect_lib;
    use bus_interconnect_lib.all;
    use bus_interconnect_lib.bus_interconnect_pkg.all;
-   
+
 entity bus_interconnect_tb is
 end bus_interconnect_tb;
 
@@ -40,7 +40,7 @@ architecture tb of bus_interconnect_tb is
    signal we_gpio_tb       : std_logic;
 
 begin
-   inst_bus_interconnect : component bus_interconnect 
+   inst_bus_interconnect : component bus_interconnect
    generic map(
       WIDTH       => 32
    )
@@ -57,8 +57,73 @@ begin
 
    p_tb : process
    begin
+      wait for 10 ns;
+      addr_tb        <= 32d"10";
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"12";
+      wait for 10 ns;
+      addr_tb        <= (others => '0');
+      wait for 10 ns;
+      rdata_ram_tb   <= 32d"8";
+      wait for 10 ns;
+      we_tb          <= '1';
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"12";
+      wait for 10 ns;
+      rdata_ram_tb   <= 32d"8";
+      wait for 10 ns;
+      rdata_ram_tb   <= 32d"1024";
+      wait for 10 ns;
+      we_tb          <= '0';
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"12";
+      wait for 10 ns;
+      addr_tb        <= (others => '0');
+      wait for 10 ns;
+      rdata_ram_tb   <= 32d"8";
+      wait for 10 ns;
+      addr_tb        <= 32d"3";
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"5";
+      wait for 10 ns;
+      rdata_ram_tb   <= 32d"2";
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"4";
+      wait for 10 ns;
+      rdata_ram_tb   <= (others => '0');
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"3";
+      we_tb          <= '1';
+      wait for 10 ns;
+      we_tb          <= '0';
+      wait for 10 ns;
+      addr_tb        <= (others => '0');
+      wait for 10 ns;
+      rdata_gpio_tb  <= 32d"12";
+      wait for 10 ns;
+      addr_tb        <= (others => '0');
+      we_tb          <= '1';
+      wait for 20 ns;
+      we_tb          <= '0';
+      wait for 20 ns;
+      addr_tb        <= 32d"2";
+      we_tb          <= '1';
+      wait for 20 ns;
+      we_tb          <= '0';
+      wait for 20 ns;
+      addr_tb        <= 32b"00100000000000000000000000000000";
+      we_tb          <= '1';
+      wait for 20 ns;
+      we_tb          <= '0';
+      wait for 20 ns;
+      addr_tb        <= (others => '0');
+      we_tb          <= '1';
+      wait for 20 ns;
+      we_tb          <= '0';
+      wait for 20 ns;
+
       wait for 25 ns;
-      stop(2); 
+      stop(2);
    end process p_tb;
 
    p_clock_gen : process
