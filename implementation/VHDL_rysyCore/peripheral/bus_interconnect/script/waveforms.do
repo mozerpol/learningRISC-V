@@ -6,6 +6,14 @@
 
 
 ##### Add waves: #####
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/we_ram
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/we_gpio
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/we
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/rdata_ram
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/rdata_gpio
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/rdata
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/clk
+add wave -expand -group TB -radix binary /bus_interconnect_tb/inst_bus_interconnect/addr
 
 
 ##### Waveform window settings: #####
