@@ -24,8 +24,26 @@ end entity bus_interconnect;
 
 architecture rtl of bus_interconnect is
 
-begin
+   signal next_select : std_logic_vector(3 downto 0);
 
-    rdata <= (others => '0');
+begin
+   
+   p_addr : process (clk)
+   begin
+      if (clk'event and clk = '1') then
+         next_select <= addr(31 downto 28);
+      end if;
+   end process p_addr;
+
+   p_rdata : process (all)
+   begin
+      case (next_select) is
+         when 4b"0010"  => rdata <= rdata_gpio;  
+         when others    => rdata <= rdata_ram;
+      end case;
+   end process p_rdata;
+
+   we_ram   <= we when addr(31 downto 28) /= "0010";
+   we_gpio  <= we when addr(31 downto 28) = "0010";
 
 end architecture rtl;
