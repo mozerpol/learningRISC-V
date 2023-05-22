@@ -2,6 +2,7 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
+   use ieee.std_logic_textio.all;
    use std.textio.all;
 library byte_enabled_simple_dual_port_ram_lib;
    use byte_enabled_simple_dual_port_ram_lib.all;
@@ -14,7 +15,7 @@ entity byte_enabled_simple_dual_port_ram is
       ADDR_WIDTH  : integer := 8;
       BYTE_WIDTH  : integer := 8;
       BYTES       : integer := 4;
-      WIDTH       : integer := BYTES*BYTE_WIDTH
+      WIDTH       : integer := 32 -- BYTES*BYTE_WIDTH
    );
    port (
       clk   : in std_logic;
@@ -29,37 +30,46 @@ end entity byte_enabled_simple_dual_port_ram;
 
 architecture rtl of byte_enabled_simple_dual_port_ram is
 
-   constant WORDS : integer := 256; -- Number of rows
+   
    type t_ram is array (WORDS-1 downto 0) of 
       std_logic_vector((ADDR_WIDTH*BYTES)-1 downto 0);
-
+   signal ram : t_ram; -- := init_ram_hex;
+   
    impure function init_ram_hex return t_ram is
       file text_file       : text open read_mode is CODE;
       variable text_line   : line;
+      variable temp_bv     : bit_vector(WIDTH-1 downto 0);
       variable ram_content : t_ram;
    begin
-      for i in 0 to 7 loop  ---------------------- UP TO NUMBER OF LINES !!!!!
+   -------- CHANGE TO TOTAL NUMBER OF LINES IN FOR LOOP !!!!! --------
+      for i in 0 to 7 loop
          readline(text_file, text_line);
-         hread(text_line, ram_content(i));
+         hread(text_line, temp_bv);
+         ram_content(i) := to_stdlogicvector(temp_bv);
       end loop;
       return ram_content;
    end function;
-
-   signal ram : t_ram := init_ram_hex;
+   
 
 begin
 
    p_main : process (clk)
+    variable v_init_ram : std_logic := '1';
    begin
-      if (clk'event and clk = '1') then
-         if (we = '1') then
-            ram(to_integer(unsigned(waddr)))(7 downto 0)    <= wdata(0);
-            ram(to_integer(unsigned(waddr)))(15 downto 8)   <= wdata(1);
-            ram(to_integer(unsigned(waddr)))(23 downto 16)  <= wdata(2);
-            ram(to_integer(unsigned(waddr)))(31 downto 24)  <= wdata(3);
+      if (v_init_ram = '1') then
+         v_init_ram  := '0';
+         ram         <= init_ram_hex;
+      else
+         if (clk'event and clk = '1') then
+             if (we = '1') then
+                 ram(to_integer(unsigned(waddr)))(7 downto 0)    <= wdata(0);
+                 ram(to_integer(unsigned(waddr)))(15 downto 8)   <= wdata(1);
+                 ram(to_integer(unsigned(waddr)))(23 downto 16)  <= wdata(2);
+                 ram(to_integer(unsigned(waddr)))(31 downto 24)  <= wdata(3);
+             end if;
+             q <= ram(to_integer(unsigned(raddr)));
          end if;
-         q <= ram(to_integer(unsigned(raddr)));
-      end if;
+     end if;
    end process p_main;
 
 end architecture rtl;
