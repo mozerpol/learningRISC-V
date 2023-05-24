@@ -6,6 +6,14 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/clk
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/we
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/wdata
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/rst
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/q
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/gpio
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/be
+add wave -expand -group DESIGN   /gpio_tb/inst_gpio/addr
 
 
 ##### Waveform window settings: #####
