@@ -6,7 +6,9 @@
 
 
 ##### Add waves: #####
-add wave -expand -group DESIGN -radix binary /rysy_tb/inst_rysy/clk 
+add wave -expand -group DESIGN -radix binary    /rysy_tb/inst_rysy/clk 
+add wave -expand -group DESIGN -radix binary    /rysy_tb/inst_rysy/rst 
+add wave -expand -group DESIGN -radix binary    /rysy_tb/inst_rysy/gpio 
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
