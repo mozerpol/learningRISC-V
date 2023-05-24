@@ -12,16 +12,22 @@ architecture tb of rysy_tb is
 
    component rysy is
    port (
-      clk      : in std_logic
+      clk   : in std_logic;
+      rst   : in std_logic;
+      gpio  : out std_logic_vector(3 downto 0)
    );
    end component rysy;
 
-   signal clk_tb        :   std_logic;
+   signal clk_tb  :   std_logic;
+   signal rst_tb  :   std_logic;
+   signal gpio_tb :   std_logic_vector(3 downto 0);
 
 begin
    inst_rysy : component rysy
    port map (
-      clk      => clk_tb
+      clk   => clk_tb,
+      rst   => rst_tb,
+      gpio  => gpio_tb
    );
 
    p_tb : process
