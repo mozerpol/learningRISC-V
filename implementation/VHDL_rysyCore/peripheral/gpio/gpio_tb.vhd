@@ -12,12 +12,37 @@ architecture tb of gpio_tb is
 
    component gpio is
    port (
+      addr  : in std_logic_vector(7 downto 0);
+      be    : in std_logic_vector(3 downto 0);
+      wdata : in std_logic_vector(31 downto 0);
+      we    : in std_logic;
+      clk   : in std_logic;
+      rst   : in std_logic;
+      q     : out std_logic_vector(31 downto 0);
+      gpio  : out std_logic_vector(3 downto 0)
    );
    end component gpio;
+
+   signal addr_tb  : std_logic_vector(7 downto 0);
+   signal be_tb    : std_logic_vector(3 downto 0);
+   signal wdata_tb : std_logic_vector(31 downto 0);
+   signal we_tb    : std_logic;
+   signal clk_tb   : std_logic;
+   signal rst_tb   : std_logic;
+   signal q_tb     : std_logic_vector(31 downto 0);
+   signal gpio_tb  : std_logic_vector(3 downto 0);
 
 begin
    inst_gpio : component gpio 
    port map (
+      addr  => addr_tb,
+      be    => be_tb,
+      wdata => wdata_tb,
+      we    => we_tb,
+      clk   => clk_tb,
+      rst   => rst_tb,
+      q     => q_tb,
+      gpio  => gpio_tb
    );
 
    p_tb : process
