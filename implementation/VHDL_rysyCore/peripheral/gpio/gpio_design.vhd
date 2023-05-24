@@ -20,8 +20,25 @@ entity gpio is
    );
 end entity gpio;
 
+
 architecture rtl of gpio is
+
+   signal gpio_state : std_logic_vector(31 downto 0);
+
 begin
 
+   p_main : process (clk)
+   begin
+      if (rst = '1') then
+         gpio_state <= (others => '0');
+      elsif (clk'event and clk = '1') then
+         if (we = '0' and addr = "00000000") then
+            gpio_state <= wdata;
+         end if;
+      end if;
+   end process p_main;
+
+   gpio  <= not(gpio_state(3 downto 0));
+   q     <= gpio_state;
 
 end architecture rtl;
