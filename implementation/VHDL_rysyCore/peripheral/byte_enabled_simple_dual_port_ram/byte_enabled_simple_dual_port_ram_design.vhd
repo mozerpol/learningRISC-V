@@ -22,7 +22,7 @@ entity byte_enabled_simple_dual_port_ram is
       raddr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
       waddr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
       be    : in std_logic_vector(BYTES-1 downto 0);
-      wdata : in t_array(BYTES-1 downto 0)(BYTE_WIDTH-1 downto 0);
+      wdata : in std_logic_vector(WIDTH-1 downto 0);
       we    : in std_logic;
       q     : out std_logic_vector(WIDTH-1 downto 0)
    );
@@ -62,10 +62,14 @@ begin
       else
          if (clk'event and clk = '1') then
              if (we = '1') then
-                 ram(to_integer(unsigned(waddr)))(7 downto 0)    <= wdata(0);
-                 ram(to_integer(unsigned(waddr)))(15 downto 8)   <= wdata(1);
-                 ram(to_integer(unsigned(waddr)))(23 downto 16)  <= wdata(2);
-                 ram(to_integer(unsigned(waddr)))(31 downto 24)  <= wdata(3);
+                 ram(to_integer(unsigned(waddr)))(7 downto 0)    <= 
+                                                            wdata(7 downto 0);
+                 ram(to_integer(unsigned(waddr)))(15 downto 8)   <= 
+                                                            wdata(15 downto 8);
+                 ram(to_integer(unsigned(waddr)))(23 downto 16)  <= 
+                                                            wdata(23 downto 16);
+                 ram(to_integer(unsigned(waddr)))(31 downto 24)  <=
+                                                            wdata(31 downto 24);
              end if;
              q <= ram(to_integer(unsigned(raddr)));
          end if;

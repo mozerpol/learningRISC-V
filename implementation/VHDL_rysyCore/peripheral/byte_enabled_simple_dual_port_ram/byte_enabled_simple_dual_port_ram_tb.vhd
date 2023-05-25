@@ -26,7 +26,7 @@ architecture tb of byte_enabled_simple_dual_port_ram_tb is
       raddr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
       waddr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
       be    : in std_logic_vector(BYTES-1 downto 0);
-      wdata : in t_array(BYTES-1 downto 0)(BYTE_WIDTH-1 downto 0);
+      wdata : in std_logic_vector(WIDTH-1 downto 0);
       we    : in std_logic;
       q     : out std_logic_vector(WIDTH-1 downto 0)
    );
@@ -41,7 +41,7 @@ architecture tb of byte_enabled_simple_dual_port_ram_tb is
    signal raddr_tb      : std_logic_vector(ADDR_WIDTH-1 downto 0);
    signal waddr_tb      : std_logic_vector(ADDR_WIDTH-1 downto 0);
    signal be_tb         : std_logic_vector(BYTES-1 downto 0);
-   signal wdata_tb      : t_array(BYTES-1 downto 0)(BYTE_WIDTH-1 downto 0);
+   signal wdata_tb      : std_logic_vector(WIDTH-1 downto 0);
    signal we_tb         : std_logic;
    signal q_tb          : std_logic_vector(WIDTH-1 downto 0);
 
@@ -78,10 +78,7 @@ begin
       we_tb <= '1';
       
       be_tb <= "0001"; -- We'll modify last two octets
-      wdata_tb(0) <= (others => '1');
-      wdata_tb(1) <= (others => '1');
-      wdata_tb(2) <= (others => '1');
-      wdata_tb(3) <= (others => '1');
+      wdata_tb    <= (others => '1');
       wait for 20 ns;
 
       for i in 0 to 5 loop
@@ -100,10 +97,10 @@ begin
       end loop;
 
       be_tb <= "0101"; -- We'll modify last two octets
-      wdata_tb(0) <= (others => '1');
-      wdata_tb(1) <= (others => '0');
-      wdata_tb(2) <= (others => '1');
-      wdata_tb(3) <= (others => '0');
+      wdata_tb(7 downto 0)    <= (others => '1');
+      wdata_tb(15 downto 8)   <= (others => '0');
+      wdata_tb(23 downto 16)  <= (others => '1');
+      wdata_tb(31 downto 24)  <= (others => '0');
       wait for 20 ns;
 
       for i in 0 to 5 loop
