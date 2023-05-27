@@ -6,9 +6,33 @@
 
 
 ##### Add waves: #####
-add wave -expand -group DESIGN -radix binary    /rysy_tb/inst_rysy/clk 
-add wave -expand -group DESIGN -radix binary    /rysy_tb/inst_rysy/rst 
-add wave -expand -group DESIGN -radix binary    /rysy_tb/inst_rysy/gpio 
+add wave -expand -group DESIGN_PORTS        -radix binary      /rysy_tb/inst_rysy/i_clk 
+add wave         -group DESIGN_PORTS        -radix binary      /rysy_tb/inst_rysy/i_rst
+add wave         -group DESIGN_PORTS        -radix binary      /rysy_tb/inst_rysy/o_gpio
+
+add wave         -group DESIGN_SIGNALS      -radix hex         /rysy_tb/inst_rysy/CODE 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/i_clk 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/i_rst 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/o_gpio 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/addr 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/rdata 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/rdata_ram 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/rdata_gpio 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/wdata 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/be 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/we 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/we_ram 
+add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/we_gpio 
+
+add wave         -group BUS_INTERCONNECT    -radix binary      /rysy_tb/inst_rysy/inst_bus_interconnect/*
+
+add wave         -group DUAL_PORT_RAM       -radix binary      /rysy_tb/inst_rysy/inst_byte_enabled_simple_dual_port_ram/*
+
+add wave         -group GPIO                -radix binary      /rysy_tb/inst_rysy/inst_gpio/*
+
+add wave         -group SELECT_WR           -radix binary      /rysy_tb/inst_rysy/inst_core/inst_select_wr/*
+
+add wave         -group REG_FILE            -radix binary      /rysy_tb/inst_rysy/inst_core/inst_reg_file/*
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
