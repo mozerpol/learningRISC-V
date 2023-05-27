@@ -43,7 +43,7 @@ begin
       end case;
    end process p_rdata;
 
-   we_ram   <= we when addr(31 downto 28) /= "0010";
-   we_gpio  <= we when addr(31 downto 28) = "0010";
+   we_ram   <= '1' when (we = '1' and addr(31 downto 28) /= "0010") else '0';
+   we_gpio  <= '1' when (we = '1' and addr(31 downto 28) = "0010") else '0';
 
 end architecture rtl;
