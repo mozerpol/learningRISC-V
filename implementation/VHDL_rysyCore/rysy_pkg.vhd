@@ -5,6 +5,7 @@ library ieee;
    
 package rysy_pkg is
    -- constant C_NAME : std_logic_vector(N downto M) := "X";
+   constant WIDTH : integer := 32;
 end;
  
 package body rysy_pkg is
