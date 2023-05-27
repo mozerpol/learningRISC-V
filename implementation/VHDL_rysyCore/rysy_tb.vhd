@@ -11,10 +11,13 @@ end rysy_tb;
 architecture tb of rysy_tb is
 
    component rysy is
+   generic (
+      CODE    : string  := "ram_content_hex.txt"
+   );
    port (
-      clk   : in std_logic;
-      rst   : in std_logic;
-      gpio  : out std_logic_vector(3 downto 0)
+      i_clk   : in std_logic;
+      i_rst   : in std_logic;
+      o_gpio  : out std_logic_vector(3 downto 0)
    );
    end component rysy;
 
@@ -24,16 +27,23 @@ architecture tb of rysy_tb is
 
 begin
    inst_rysy : component rysy
+   generic map(
+      CODE => "ram_content_hex.txt"
+   )
    port map (
-      clk   => clk_tb,
-      rst   => rst_tb,
-      gpio  => gpio_tb
+      i_clk   => clk_tb,
+      i_rst   => rst_tb,
+      o_gpio  => gpio_tb
    );
 
    p_tb : process
    begin
-
+      
+      rst_tb <= '0';
       wait for 25 ns;
+      rst_tb <= '1';
+
+      wait for 100 ns;
       stop(2); 
    end process p_tb;
 
