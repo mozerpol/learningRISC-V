@@ -1,257 +1,211 @@
 /*-
-   * SPDX-License-Identifier: BSD-3-Clause
-   *
-   * Copyright (c) 2019 Rafal Kozik
-   * All rights reserved.
-   * Mozerpol add comments
-*/
-
-`include "rysy_pkg.sv"
-`include "opcodes.sv"
-`include "inst_mgmt.sv"
-`include "imm_mux.sv"
-`include "alu.sv"
-`include "cmp.sv"
-`include "mem_addr_sel.sv"
-`include "rd_mux.sv"
-`include "alu1_mux.sv"
-`include "alu2_mux.sv"
-`include "select_pkg.sv"
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 2019 Rafal Kozik
+ * All rights reserved.
+ */
 
 `default_nettype none
 
 module ctrl(
-  input wire clk,
-  input wire rst,
-  input opcodePkg::opcode opcode,
-  input wire [2:0]func3,
-  input wire [6:0]func7,
-  input wire b,
-  output immPkg::imm_type imm_type,
-  output instMgmtPkg::inst_sel inst_sel,
-  output logic reg_wr,
-  output aluPkg::alu_op alu_op,
-  output cmpPkg::cmp_op cmp_op,
-  output pcPkg::pc_sel pc_sel,
-  output pcPkg::mem_sel mem_sel,
-  output rdPkg::rd_sel rd_sel,
-  output alu1Pkg::alu1_sel alu1_sel,
-  output alu2Pkg::alu2_sel alu2_sel,
-  output selectPkg::sel_type sel_type,
-  output logic we
+	input wire clk,
+	input wire rst,
+	input opcodePkg::opcode opcode,
+	input wire [2:0]func3,
+	input wire [6:0]func7,
+	input wire b,
+	output instMgmtPkg::inst_sel inst_sel,
+	output immPkg::imm_type imm_type,
+	output logic reg_wr,
+	output aluPkg::alu_op alu_op,
+	output cmpPkg::cmp_op cmp_op,
+	output pcPkg::pc_sel pc_sel,
+	output pcPkg::mem_sel mem_sel,
+	output rdPkg::rd_sel rd_sel,
+	output alu1Pkg::alu1_sel alu1_sel,
+	output alu2Pkg::alu2_sel alu2_sel,
+	output selectPkg::sel_type sel_type,
+	output logic we
 );
 
-  logic next_nop;
-  logic load_phase;
-  /*
-   ....:::::Controlling ALU:::::....
-   
-   How part below works:
-   1. switch(opcode): - in this module we are considering only two types of instrucions: 
-   	  I-type (OP-IMM family) and R-type (OP family). This types has the same ammount of 
-      instructions and they have ADD, ADDI, AND, ANDI, ...
-      So we can divide this part on two modules, one for I-type, second for R-type, but this 
-      approach will be longer. The difference between this types is opcode and in some cases
-      func7 part, some instructions just have it and some don't. So the differences between 
-      instructions are: opcode, func3 and func7. Thanks to this we can just recognize this
-      differences and assign output from this module (alu_op - it decides which istruction 
-      ALU will perform) to the input of ALU. This output
-      selects the instruction to use.
-    case(OP_IMM & OP) - I-type instruction family (OM-IMM) such as: ADDI, ANDI, SLLI, ...
-                        R-type instruction family (OP) such as ADD, AND, SLL, ...
-    case (LOAD & STORE & BRANCH & JAL & JALR & ADD) -
-   	1_1. switch(func3):
-   	1_2. switch(func7):
-  */
-  always_comb
-	
-    case(opcode) // Argument has five bits
-      opcodePkg::OP_IMM, opcodePkg::OP: // 5'b00100 for OP_IMM or 5'b01100 for OP
-        case(func3)
-          opcodePkg::FUNC3_ADD_SUB: // 3'b000, func3 for ADD and SUB is the same, func7 is the difference
-            if((opcode == opcodePkg::OP) && (func7 == opcodePkg::FUNC7_ADD_SUB_SUB)) // 7'b0100000
-              alu_op = aluPkg::SUB; // 4'b0001
-          	else alu_op = aluPkg::ADD; // 4'b0000
-          opcodePkg::FUNC3_SLT : alu_op = aluPkg::SLT; // 3'b010, 4'b1000
-          opcodePkg::FUNC3_SLTU: alu_op = aluPkg::SLTU;// 3'b011, 4'b1001
-          opcodePkg::FUNC3_XOR : alu_op = aluPkg::XOR; // 3'b100, 4'b0010
-          opcodePkg::FUNC3_OR  : alu_op = aluPkg::OR;  // 3'b110, 4'b0011
-          opcodePkg::FUNC3_AND : alu_op = aluPkg::AND; // 3'b111, 4'b0100
-          opcodePkg::FUNC3_SLL : alu_op = aluPkg::SLL; // 3'b001, 4'b0101
-          opcodePkg::FUNC3_SR  : // 3'b101
-            
-            case(func7) // each instruction from R-format has a func7 field, but in previous
-              // cases we eliminated some instructions and left only SRL and SRA. The only one
-              // difference between this two instructions is func7 field. 
-              // SRA = 0100000 <seven bits>
-              // SRL = 0000000
-              opcodePkg::FUNC7_SR_SRL : alu_op = aluPkg::SRL;
-              opcodePkg::FUNC7_SR_SRA : alu_op = aluPkg::SRA;
-              default : alu_op = aluPkg::ADD;
-            endcase
-          
-          default: alu_op = aluPkg::ADD;
-		endcase // end case(func3)
-      
-      opcodePkg::LOAD, opcodePkg::STORE, opcodePkg::BRANCH,
-      opcodePkg::JAL, opcodePkg::JALR : 
-        alu_op = aluPkg::ADD;
-      default : alu_op = aluPkg::ADD;
-    
-    endcase // end case(opcode)
+logic next_nop;
+logic load_phase;
 
-  // ....:::::Controlling imm_mux:::::....
-  always_comb
-    case (opcode)
-      opcodePkg::OP_IMM: imm_type = immPkg::IMM_I;
-      opcodePkg::LUI: imm_type = immPkg::IMM_U;
-      opcodePkg::JAL: imm_type = immPkg::IMM_J;
-      opcodePkg::JALR: imm_type = immPkg::IMM_I;
-      opcodePkg::BRANCH: imm_type = immPkg::IMM_B;
-      opcodePkg::LOAD: imm_type = immPkg::IMM_I;
-      opcodePkg::STORE: imm_type = immPkg::IMM_S;
-      default: imm_type = immPkg::IMM_DEFAULT;
-    endcase
+always_comb
+	case (opcode)
+		opcodePkg::OP_IMM, opcodePkg::OP:
+			case(func3)
+				opcodePkg::FUNC3_ADD_SUB:
+					if ((opcode == opcodePkg::OP) &&
+					    (func7 == opcodePkg::FUNC7_ADD_SUB_SUB))
+						alu_op = aluPkg::SUB;
+					else
+						alu_op = aluPkg::ADD;
+				opcodePkg::FUNC3_SLT: alu_op = aluPkg::SLT;
+				opcodePkg::FUNC3_SLTU: alu_op = aluPkg::SLTU;
+				opcodePkg::FUNC3_XOR: alu_op = aluPkg::XOR;
+				opcodePkg::FUNC3_OR: alu_op = aluPkg::OR;
+				opcodePkg::FUNC3_AND: alu_op = aluPkg::AND;
+				opcodePkg::FUNC3_SLL: alu_op = aluPkg::SLL;
+				opcodePkg::FUNC3_SR:
+					case(func7)
+						opcodePkg::FUNC7_SR_SRL:
+							alu_op = aluPkg::SRL;
+						opcodePkg::FUNC7_SR_SRA:
+							alu_op = aluPkg::SRA;
+						default:
+							alu_op = aluPkg::ADD;
+					endcase
+				default: alu_op = aluPkg::ADD;
+			endcase
+		opcodePkg::LOAD,
+		opcodePkg::STORE,
+		opcodePkg::BRANCH,
+		opcodePkg::JAL,
+		opcodePkg::JALR: alu_op = aluPkg::ADD;
+		default: alu_op = aluPkg::ADD;
+	endcase
 
-  // ....:::::Controlling alu1_nux:::::....
-  always_comb
-    case (opcode)
-      opcodePkg::BRANCH, opcodePkg::JAL: 
-        alu1_sel = alu1Pkg::ALU1_PC;
-      default: alu1_sel = alu1Pkg::ALU1_RS;
-    endcase
-  
-  // ....:::::Controlling alu2_nux:::::....
-  always_comb
-    case (opcode)
-      opcodePkg::LOAD,
-      opcodePkg::STORE,
-      opcodePkg::BRANCH,
-      opcodePkg::JALR,
-      opcodePkg::JAL, 
-      opcodePkg::OP_IMM : 
-        alu2_sel = alu2Pkg::ALU2_IMM;
-      opcodePkg::OP: alu2_sel = alu2Pkg::ALU2_RS;
-      default: alu2_sel = alu2Pkg::ALU2_IMM;
-    endcase
+always_comb
+	case (opcode)
+		opcodePkg::OP_IMM: imm_type = immPkg::IMM_I;
+		opcodePkg::LUI: imm_type = immPkg::IMM_U;
+		opcodePkg::JAL: imm_type = immPkg::IMM_J;
+		opcodePkg::JALR: imm_type = immPkg::IMM_I;
+		opcodePkg::BRANCH: imm_type = immPkg::IMM_B;
+		opcodePkg::LOAD: imm_type = immPkg::IMM_I;
+		opcodePkg::STORE: imm_type = immPkg::IMM_S;
+		default: imm_type = immPkg::IMM_DEFAULT;
+	endcase
 
-  // ....:::::Controlling reg_wr from reg_file module:::::....
-  always_comb
-    case (opcode)
-      opcodePkg::JALR,
-      opcodePkg::JAL,
-      opcodePkg::OP_IMM,
-      opcodePkg::LUI,
-      opcodePkg::OP : 
-        reg_wr = 1'b1;
-      opcodePkg::LOAD: reg_wr = load_phase;
-      default: reg_wr = 1'b0;
-    endcase
-  
-  // ....:::::Controlling rd_mux:::::....
-  always_comb
-    case (opcode)
-      opcodePkg::OP_IMM, opcodePkg::OP : 
-        rd_sel = rdPkg::RD_ALU;
-      opcodePkg::LUI: rd_sel = rdPkg::RD_IMM;
-      opcodePkg::JALR, opcodePkg::JAL : 
-        rd_sel = rdPkg::RD_PCP4;
-      opcodePkg::LOAD: rd_sel = rdPkg::RD_MEM;
-      default: rd_sel = rdPkg::RD_ALU;
-    endcase
-  
-  // ....:::::Controlling mem_addr_sel pc_sel part:::::....
-  always_comb
-    case (opcode)
-      opcodePkg::JALR, opcodePkg::JAL : 
-        pc_sel = pcPkg::PC_ALU;
-      opcodePkg::BRANCH : pc_sel = b ? pcPkg::PC_ALU : pcPkg::PC_P4;
-      opcodePkg::STORE : pc_sel = pcPkg::PC_OLD;
-      opcodePkg::LOAD :
-        case (load_phase)
-          1'd0: pc_sel = pcPkg::PC_M4;
-          1'd1: pc_sel = pcPkg::PC_P4;
-          default: pc_sel = pcPkg::PC_OLD;
-        endcase
-      default: pc_sel = pcPkg::PC_P4;
-    endcase
+always_comb
+	case (opcode)
+		opcodePkg::BRANCH,
+		opcodePkg::JAL: alu1_sel = alu1Pkg::ALU1_PC;
+		default: alu1_sel = alu1Pkg::ALU1_RS;
+	endcase
 
-  always_ff @(posedge clk) begin
-    if (rst)
-      next_nop = 1'b1; // Prevent first inst of being processed twice.
-    else if ((opcode == opcodePkg::JAL) || (opcode == opcodePkg::JALR) ||
-             ((opcode == opcodePkg::BRANCH) && b) ||
-             (opcode == opcodePkg::STORE))
-      next_nop = 1'b1;
-    else
-      next_nop = 1'b0;
-  end
+always_comb
+	case (opcode)
+		opcodePkg::LOAD,
+		opcodePkg::STORE,
+		opcodePkg::BRANCH,
+		opcodePkg::JALR,
+		opcodePkg::JAL,
+		opcodePkg::OP_IMM: alu2_sel = alu2Pkg::ALU2_IMM;
+		opcodePkg::OP: alu2_sel = alu2Pkg::ALU2_RS;
+		default: alu2_sel = alu2Pkg::ALU2_IMM;
+	endcase
 
-  // ....:::::Controlling inst_mgm:::::....
-  always_comb
-    if(next_nop)
-      inst_sel = instMgmtPkg::INST_NOP;
-  else
-    case (opcode)
-      opcodePkg::JALR, opcodePkg::JAL : 
-        inst_sel = instMgmtPkg::INST_NOP;
-      opcodePkg::BRANCH : 
-        inst_sel = b ? instMgmtPkg::INST_NOP : instMgmtPkg::INST_MEM;
-      opcodePkg::LOAD:
-        case (load_phase)
-          1'd1: inst_sel = instMgmtPkg::INST_NOP;
-          default: inst_sel = instMgmtPkg::INST_OLD;
-        endcase
-      default: inst_sel = instMgmtPkg::INST_MEM;
-    endcase  
+always_comb
+	case (opcode)
+		opcodePkg::JALR,
+		opcodePkg::JAL,
+		opcodePkg::OP_IMM,
+		opcodePkg::LUI,
+		opcodePkg::OP: reg_wr = 1'b1;
+		opcodePkg::LOAD: reg_wr = load_phase;
+		default: reg_wr = 1'b0;
+	endcase
 
-  // ....:::::Controlling cmp:::::....
-  always_comb
-    case(func3)
-      opcodePkg::FUNC3_BRANCH_BEQ: cmp_op = cmpPkg::EQ;
-      opcodePkg::FUNC3_BRANCH_BNE: cmp_op = cmpPkg::NE;
-      opcodePkg::FUNC3_BRANCH_BLT: cmp_op = cmpPkg::LT;
-      opcodePkg::FUNC3_BRANCH_BGE: cmp_op = cmpPkg::GE;
-      opcodePkg::FUNC3_BRANCH_BLTU: cmp_op = cmpPkg::LTU;
-      opcodePkg::FUNC3_BRANCH_BGEU: cmp_op = cmpPkg::GEU;
-      default: cmp_op = cmpPkg::EQ;
-    endcase
+always_comb
+	case (opcode)
+		opcodePkg::OP_IMM,
+		opcodePkg::OP: rd_sel = rdPkg::RD_ALU;
+		opcodePkg::LUI: rd_sel = rdPkg::RD_IMM;
+		opcodePkg::JALR,
+		opcodePkg::JAL: rd_sel = rdPkg::RD_PCP4;
+		opcodePkg::LOAD: rd_sel = rdPkg::RD_MEM;
+		default: rd_sel = rdPkg::RD_ALU;
+	endcase
 
-  // ....:::::Controlling mem_addr_sel mem_sel part:::::....  
-  always_comb
-    case (opcode)
-      opcodePkg::STORE: mem_sel = pcPkg::MEM_ALU;
-      opcodePkg::LOAD:
-        case (load_phase)
-          1'd0: mem_sel = pcPkg::MEM_ALU;
-          default: mem_sel = pcPkg::MEM_PC;
-        endcase
-      default: mem_sel = pcPkg::MEM_PC;
-    endcase
+always_comb
+	case (opcode)
+		opcodePkg::JALR,
+		opcodePkg::JAL: pc_sel = pcPkg::PC_ALU;
+		opcodePkg::BRANCH: pc_sel = b ? pcPkg::PC_ALU : pcPkg::PC_P4;
+		opcodePkg::STORE: pc_sel = pcPkg::PC_OLD;
+		opcodePkg::LOAD:
+			case (load_phase)
+				1'd0: pc_sel = pcPkg::PC_M4;
+				1'd1: pc_sel = pcPkg::PC_P4;
+				default: pc_sel = pcPkg::PC_OLD;
+			endcase
+		default: pc_sel = pcPkg::PC_P4;
+	endcase
 
-  always_comb
-    case (opcode)
-      opcodePkg::STORE: we = 1'b1;
-      default: we = 1'b0;
-    endcase
+always_ff @(posedge clk) begin
+	if (rst)
+		next_nop = 1'b1; // Prevent first inst of being processed twice.
+	else if ((opcode == opcodePkg::JAL) || (opcode == opcodePkg::JALR) ||
+		 ((opcode == opcodePkg::BRANCH) && b) ||
+	 	 (opcode == opcodePkg::STORE))
+		next_nop = 1'b1;
+	else
+		next_nop = 1'b0;
+end
 
-  // ....:::::Controlling select_pkg:::::....    
-  always_comb
-    case (func3)
-      opcodePkg::FUNC3_SB: sel_type = selectPkg::SB;
-      opcodePkg::FUNC3_SH: sel_type = selectPkg::SH;
-      opcodePkg::FUNC3_SW: sel_type = selectPkg::SW;
-      opcodePkg::FUNC3_SBU: sel_type = selectPkg::SBU;
-      opcodePkg::FUNC3_SHU: sel_type = selectPkg::SHU;
-      default: sel_type = selectPkg::SW;
-    endcase
+always_comb
+	if (next_nop)
+		inst_sel = instMgmtPkg::INST_NOP;
+	else
+		case (opcode)
+			opcodePkg::JALR,
+			opcodePkg::JAL: inst_sel = instMgmtPkg::INST_NOP;
+			opcodePkg::BRANCH: inst_sel =
+			    b ? instMgmtPkg::INST_NOP : instMgmtPkg::INST_MEM;
+			opcodePkg::LOAD:
+				case (load_phase)
+					1'd1: inst_sel = instMgmtPkg::INST_NOP;
+					default: inst_sel = instMgmtPkg::INST_OLD;
+				endcase
+			default: inst_sel = instMgmtPkg::INST_MEM;
+		endcase
 
-  always_ff @(posedge clk) begin
-    if (opcode == opcodePkg::LOAD)
-      load_phase = ~load_phase;
-    if (rst)
-      load_phase <= '0;
-  end
+always_comb
+	case(func3)
+		opcodePkg::FUNC3_BRANCH_BEQ: cmp_op = cmpPkg::EQ;
+		opcodePkg::FUNC3_BRANCH_BNE: cmp_op = cmpPkg::NE;
+		opcodePkg::FUNC3_BRANCH_BLT: cmp_op = cmpPkg::LT;
+		opcodePkg::FUNC3_BRANCH_BGE: cmp_op = cmpPkg::GE;
+		opcodePkg::FUNC3_BRANCH_BLTU: cmp_op = cmpPkg::LTU;
+		opcodePkg::FUNC3_BRANCH_BGEU: cmp_op = cmpPkg::GEU;
+		default: cmp_op = cmpPkg::EQ;
+	endcase
+
+always_comb
+	case (opcode)
+		opcodePkg::STORE: mem_sel = pcPkg::MEM_ALU;
+		opcodePkg::LOAD:
+			case (load_phase)
+				1'd0: mem_sel = pcPkg::MEM_ALU;
+				default: mem_sel = pcPkg::MEM_PC;
+			endcase
+		default: mem_sel = pcPkg::MEM_PC;
+	endcase
+
+always_comb
+	case (opcode)
+		opcodePkg::STORE: we = 1'b1;
+		default: we = 1'b0;
+	endcase
+
+always_comb
+	case (func3)
+		opcodePkg::FUNC3_SB: sel_type = selectPkg::SB;
+		opcodePkg::FUNC3_SH: sel_type = selectPkg::SH;
+		opcodePkg::FUNC3_SW: sel_type = selectPkg::SW;
+		opcodePkg::FUNC3_SBU: sel_type = selectPkg::SBU;
+		opcodePkg::FUNC3_SHU: sel_type = selectPkg::SHU;
+		default: sel_type = selectPkg::SW;
+	endcase
+
+always_ff @(posedge clk) begin
+	if (opcode == opcodePkg::LOAD)
+		load_phase = ~load_phase;
+	if (rst)
+		load_phase <= '0;
+end
 
 endmodule
 

@@ -3,30 +3,24 @@
  *
  * Copyright (c) 2019 Rafal Kozik
  * All rights reserved.
- * Mozerpol added comments
  */
 
-`include "rysy_pkg.sv"
-
 `default_nettype none
-
 
 import rysyPkg::*;
 
 package aluPkg;
 	typedef enum bit [3:0] {
-		ADD, // ADD = 0000
-		SUB, // SUB = 0001
-		XOR, // XOR = 0010
+		ADD,
+		SUB,
+		XOR,
 		OR,
 		AND,
 		SLL,
 		SRL,
 		SRA,
 		SLT,
-		SLTU // SLTU = 1001
-      	// We can put here maximum 16 instructions, because our bus has width
-     	 // 2^4 = 16.  We have 
+		SLTU
 	} alu_op;
 endpackage : aluPkg
 
@@ -36,15 +30,9 @@ module alu(
 	input aluPkg::alu_op alu_op,
 	output wire [REG_LEN-1:0]alu_out
 );
-  	// Auxiliary variables for output purposes, we can't connect "output wire [REG_LEN-1:0]alu_out"
-  	// directly to the equation "alu_in1 + alu_in2;", if we do it we'll get:
-  	// "alu_out is not a valid left-hand side of a procedural assignment."
- 	logic signed [REG_LEN-1:0] o;
-  	assign alu_out = o;
+	logic signed [REG_LEN-1:0] o;
+	assign alu_out = o;
 
-  	// Auxiliary variables for input purposes, we can't connect
-  	// "aluPkg::SRA: o = alu_in1_s >>> alu_in2[4:0];". There will be no error 
-  	// but an incorrect result of the operation.
 	logic signed [REG_LEN-1:0]alu_in1_s;
 	logic signed [REG_LEN-1:0]alu_in2_s;
 	assign alu_in1_s = alu_in1;
