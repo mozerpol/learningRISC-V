@@ -42,7 +42,7 @@ architecture rtl of byte_enabled_simple_dual_port_ram is
       variable ram_content : t_ram;
    begin
    -------- CHANGE TO TOTAL NUMBER OF LINES IN FOR LOOP !!!!! --------
-      for i in 0 to 7 loop
+      for i in 0 to 0 loop
          readline(text_file, text_line);
          hread(text_line, temp_bv);
          ram_content(i) := to_stdlogicvector(temp_bv);
