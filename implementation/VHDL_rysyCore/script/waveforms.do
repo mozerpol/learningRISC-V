@@ -25,14 +25,22 @@ add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rys
 add wave         -group DESIGN_SIGNALS      -radix binary      /rysy_tb/inst_rysy/we_gpio 
 
 add wave         -group BUS_INTERCONNECT    -radix binary      /rysy_tb/inst_rysy/inst_bus_interconnect/*
-
-add wave         -group DUAL_PORT_RAM       -radix binary      /rysy_tb/inst_rysy/inst_byte_enabled_simple_dual_port_ram/*
-
+add wave         -group BYTE_ENABLE_RAM     -radix binary      /rysy_tb/inst_rysy/inst_byte_enabled_simple_dual_port_ram/*
 add wave         -group GPIO                -radix binary      /rysy_tb/inst_rysy/inst_gpio/*
 
-add wave         -group SELECT_WR           -radix binary      /rysy_tb/inst_rysy/inst_core/inst_select_wr/*
-
+add wave         -group CTRL                -radix binary      /rysy_tb/inst_rysy/inst_core/inst_ctrl/*
+add wave         -group INST_MGMT           -radix binary      /rysy_tb/inst_rysy/inst_core/inst_inst_mgtm/*
+add wave         -group MEM_ADDR_SEL        -radix binary      /rysy_tb/inst_rysy/inst_core/inst_mem_addr_sel/*
+add wave         -group DECODE              -radix binary      /rysy_tb/inst_rysy/inst_core/inst_decode/*
+add wave         -group SELECT_RD           -radix binary      /rysy_tb/inst_rysy/inst_core/inst_select_rd/*
 add wave         -group REG_FILE            -radix binary      /rysy_tb/inst_rysy/inst_core/inst_reg_file/*
+add wave         -group IMM_MUX             -radix binary      /rysy_tb/inst_rysy/inst_core/inst_imm_mux/*
+add wave         -group RD_MUX              -radix binary      /rysy_tb/inst_rysy/inst_core/inst_rd_mux/*
+add wave         -group ALU1_MUX            -radix binary      /rysy_tb/inst_rysy/inst_core/inst_alu1_mux/*
+add wave         -group ALU2_MUX            -radix binary      /rysy_tb/inst_rysy/inst_core/inst_alu2_mux/*
+add wave         -group CMP                 -radix binary      /rysy_tb/inst_rysy/inst_core/inst_cmp/*
+add wave         -group ALU                 -radix binary      /rysy_tb/inst_rysy/inst_core/inst_alu/*
+add wave         -group SELECT_WR           -radix binary      /rysy_tb/inst_rysy/inst_core/inst_select_wr/*
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
