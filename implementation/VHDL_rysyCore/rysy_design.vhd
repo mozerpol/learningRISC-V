@@ -108,7 +108,7 @@ begin
    inst_core : component rysy_core_design
    port map(
       clk   => i_clk,
-      rst   => not(i_rst),
+      rst   => i_rst,
       rdata => rdata,
       wdata => wdata,
       addr  => addr,
@@ -156,7 +156,7 @@ begin
       wdata => wdata,
       we    => we_gpio,
       clk   => i_clk,
-      rst   => not(i_rst),
+      rst   => i_rst,
       q     => rdata_gpio,
       gpio  => o_gpio
    );
