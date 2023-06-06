@@ -44,7 +44,7 @@ begin
       case (mem_sel) is
          when MEM_PC    => addr <= pc;
          when MEM_ALU   => addr <= alu_out;
-         when others    =>
+         when others    => addr <= (others => '0');
       end case;
    end process p_mem_sel;
 
