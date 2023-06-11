@@ -4,7 +4,8 @@ library ieee;
   use IEEE.math_real.all;
   
  package alu_pkg is
-    -- constant C_NAME : std_logic_vector(N downto M) := "X";
+   
+    constant C_ADD : std_logic_vector(4 downto 0) := "00000";
 
  end;
  
