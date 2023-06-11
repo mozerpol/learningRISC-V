@@ -6,6 +6,12 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN -radix bin   /alu_mux_1_tb/inst_alu_mux_1/i_rst 
+add wave -expand -group DESIGN -radix bin   /alu_mux_1_tb/inst_alu_mux_1/i_alu_mux_1_ctrl 
+add wave -expand -group DESIGN -radix dec   /alu_mux_1_tb/inst_alu_mux_1/i_rs1_data 
+add wave -expand -group DESIGN -radix dec   /alu_mux_1_tb/inst_alu_mux_1/i_pc_addr 
+add wave -expand -group DESIGN -radix dec   /alu_mux_1_tb/inst_alu_mux_1/o_alu_operand_1 
+
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
