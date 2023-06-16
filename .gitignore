@@ -1,14 +1,9 @@
-# VHDL
-implementation/VHDL_rysyCore/*/*/script/*.ini
-implementation/VHDL_rysyCore/*/*/script/*.wlf
-implementation/VHDL_rysyCore/*/*/script/*_lib/
-implementation/VHDL_rysyCore/*/*/script/*_pkg/
-implementation/VHDL_rysyCore/*/*/script/opcodes/
-implementation/VHDL_rysyCore/*/*/work/
-implementation/VHDL_rysyCore/*/*/transcript
-implementation/VHDL_rysyCore/*/*_pkg/
-implementation/VHDL_rysyCore/*/*_lib/
-implementation/VHDL_rysyCore/*/modelsim.ini
-implementation/VHDL_rysyCore/*/opcodes/
-implementation/VHDL_rysyCore/*/vsim.wlf
-implementation/VHDL_rysyCore/*/*/script/transcript
+*.wlf
+*_pkg/
+*_lib/
+*.vhd.bak
+*decoder_lib/
+*modelsim.ini
+*transcript
+*vsim.wlf
+*work/
