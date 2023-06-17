@@ -6,6 +6,15 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/i_rst 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/i_instruction 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_rd_data 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_rs1_data 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_rs2_data 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_imm 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_opcode 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_func3 
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_func7
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
