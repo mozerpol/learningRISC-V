@@ -15,7 +15,7 @@ architecture tb of alu_tb is
       i_rst             : in std_logic;
       i_alu_operand_1   : in std_logic_vector(31 downto 0);
       i_alu_operand_2   : in std_logic_vector(31 downto 0);
-      i_control         : in std_logic_vector(4 downto 0);
+      i_control         : in std_logic_vector(5 downto 0);
       o_alu_out         : out std_logic_vector(31 downto 0)
    );
    end component alu;
@@ -23,7 +23,7 @@ architecture tb of alu_tb is
    signal rst_tb           : std_logic;
    signal alu_operand_1_tb : std_logic_vector(31 downto 0);
    signal alu_operand_2_tb : std_logic_vector(31 downto 0);
-   signal control_tb       : std_logic_vector(4 downto 0);
+   signal control_tb       : std_logic_vector(5 downto 0);
    signal alu_out_tb       : std_logic_vector(31 downto 0);
 
 begin
@@ -47,7 +47,7 @@ begin
       wait for 20 ns;
       rst_tb            <= '0';
       -- ADD instruction
-      control_tb        <= "00000";
+      control_tb        <= "000000";
       alu_operand_1_tb  <= 32d"2";
       alu_operand_2_tb  <= 32d"11";
       wait for 20 ns;
