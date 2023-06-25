@@ -26,8 +26,24 @@ begin
          o_alu_out   <= (others => '0');
       else
          case i_control is
+            ---- R-type -----
             when C_ADD  => o_alu_out <= i_alu_operand_1 + i_alu_operand_2; 
-
+            when C_SUB  => o_alu_out <= i_alu_operand_1 - i_alu_operand_2; 
+            when C_XOR  => o_alu_out <= i_alu_operand_1 xor i_alu_operand_2; 
+            when C_OR   => o_alu_out <= i_alu_operand_1 or i_alu_operand_2; 
+            when C_AND  => o_alu_out <= i_alu_operand_1 and i_alu_operand_2; 
+            when C_SLL  => o_alu_out <= std_logic_vector(unsigned(i_alu_operand_1) sll 
+                        to_integer(unsigned(i_alu_operand_2(4 downto 0))));
+            when C_SRL  => o_alu_out <= std_logic_vector(unsigned(i_alu_operand_1) srl 
+                        to_integer(unsigned(i_alu_operand_2(4 downto 0)))); 
+            when C_SRA  => o_alu_out <= std_logic_vector(signed(i_alu_operand_1) sra 
+                        to_integer(unsigned(i_alu_operand_2(4 downto 0))));
+            when C_SLT  => o_alu_out <= (0 => '1', others => '0') when 
+                        signed(i_alu_operand_1) < signed(i_alu_operand_2) else 
+                        (others => '0');
+            when C_SLTU => o_alu_out <= (0 => '1', others => '0') when 
+                        unsigned(i_alu_operand_1) < unsigned(i_alu_operand_2) else
+                        (others => '0'); 
             when others => o_alu_out <= (others => '0');
          end case;
       end if;
