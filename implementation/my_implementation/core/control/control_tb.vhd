@@ -53,6 +53,9 @@ begin
 
    p_tb : process
    begin
+      rst_tb <= '1';
+      wait for 5 ps;
+      rst_tb <= '0';
 
       wait for 25 ns;
       stop(2);

@@ -28,6 +28,12 @@ begin
    p_control : process(all)
    begin
       if (i_rst = '1') then
+         o_rd_data         <= (others => '0');
+         o_rs1_data        <= (others => '0');
+         o_rs2_data        <= (others => '0');
+         o_imm             <= (others => '0');
+         o_alu_mux_1_ctrl  <= '0';
+         o_alu_mux_2_ctrl  <= '0';
       else
       end if;
    end process p_control;
