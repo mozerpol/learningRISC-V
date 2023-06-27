@@ -6,6 +6,17 @@
 
 
 ##### Add waves: #####
+add wave -expand -group TB -radix bin /control_tb/rst_tb 
+add wave -expand -group TB -radix bin /control_tb/opcode_tb 
+add wave -expand -group TB -radix bin /control_tb/func3_tb 
+add wave -expand -group TB -radix bin /control_tb/func7_tb 
+add wave -expand -group TB -radix bin /control_tb/rd_data_tb 
+add wave -expand -group TB -radix bin /control_tb/rs1_data_tb 
+add wave -expand -group TB -radix bin /control_tb/rs2_data_tb 
+add wave -expand -group TB -radix bin /control_tb/imm_tb 
+add wave -expand -group TB -radix bin /control_tb/alu_mux_1_ctrl_tb 
+add wave -expand -group TB -radix bin /control_tb/alu_mux_2_ctrl_tb 
+
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
