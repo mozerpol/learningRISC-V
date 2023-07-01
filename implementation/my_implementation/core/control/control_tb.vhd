@@ -13,9 +13,9 @@ architecture tb of control_tb is
    component control is
    port (
       i_rst             : in std_logic;
-      i_opcode          : out std_logic_vector(6 downto 0);
-      i_func3           : out std_logic_vector(2 downto 0);
-      i_func7           : out std_logic_vector(6 downto 0);
+      i_opcode          : in std_logic_vector(6 downto 0);
+      i_func3           : in std_logic_vector(2 downto 0);
+      i_func7           : in std_logic_vector(6 downto 0);
       o_alu_mux_1_ctrl  : out std_logic;
       o_alu_mux_2_ctrl  : out std_logic;
       o_control_alu     : out std_logic_vector(5 downto 0)
@@ -45,9 +45,14 @@ begin
 
    p_tb : process
    begin
-      rst_tb <= '1';
-      wait for 5 ps;
-      rst_tb <= '0';
+
+      rst_tb      <= '1';
+      opcode_tb   <= (others => '0');
+      func3_tb    <= (others => '0');
+      func7_tb    <= (others => '0');
+      wait for 5 ns;
+      rst_tb      <= '0';
+
 
       wait for 25 ns;
       stop(2);
