@@ -12,6 +12,13 @@ set module        "control"
 #                         .
 # vcom -2008 -quiet -work   $library_name $hdl_dir/file.vhd
 
+set hdl_dir                "../../"
+set library_name           "opcodes"
+vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
+
+set hdl_dir                "../../alu/"
+set library_name           "alu_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_pkg.vhd
 
 ##################################
 #         PROJECT TREE:
