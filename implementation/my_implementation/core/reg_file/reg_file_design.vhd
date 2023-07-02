@@ -8,6 +8,14 @@ library reg_file_lib;
 
 entity reg_file is
    port (
+      i_rst          : in std_logic;
+      i_rs1_addr     : in std_logic_vector(5 downto 0); -- address of rs1
+      i_rs2_addr     : in std_logic_vector(5 downto 0); -- address of rs2
+      i_rd_addr      : in std_logic_vector(4 downto 0);
+      i_reg_wr_ctrl  : in std_logic;
+      i_alu_out      : in std_logic_vector(31 downto 0);
+      o_rs1_data     : out std_logic_vector(31 downto 0);
+      o_rs2_data     : out std_logic_vector(31 downto 0)
    );
 end entity reg_file;
 
