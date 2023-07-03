@@ -21,10 +21,24 @@ end entity reg_file;
 
 architecture rtl of reg_file is
 
+   type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
+   signal gpr : t_gpr; -- general puprose register
+
 begin
+
+   o_rs1_data <= (others => '0') when i_rs1_addr = 5b"00000" else
+                 gpr(to_integer(unsigned(i_rs1_addr)));
+   o_rs2_data <= (others => '0') when i_rs2_addr = 5b"00000" else 
+                 gpr(to_integer(unsigned(i_rs2_addr)));
 
    p_reg_file : process(all)
    begin
+      if (i_rst = '1') then
+         o_rs1_data <= (others => '0');
+         o_rs2_data <= (others => '0');
+      else
+
+      end if;
    end process p_reg_file;
 
 end architecture rtl;
