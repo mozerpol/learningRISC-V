@@ -14,6 +14,7 @@ add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_wr_ct
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_alu_out
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs1_data
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs2_data
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/gpr
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
