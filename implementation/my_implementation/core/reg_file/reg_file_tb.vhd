@@ -49,6 +49,15 @@ begin
    p_tb : process
    begin
 
+      rst_tb         <= '1';
+      rs1_addr_tb    <= (others => '0');
+      rs2_addr_tb    <= (others => '0');
+      rd_addr_tb     <= (others => '0');
+      reg_wr_ctrl_tb <= '0';
+      alu_out_tb     <= (others => '0');
+      wait for 5 ns;
+      rst_tb         <= '0';
+
       wait for 25 ns;
       stop(2);
    end process p_tb;
