@@ -9,6 +9,7 @@ library reg_file_lib;
 entity reg_file is
    port (
       i_rst          : in std_logic;
+      i_clk          : in std_logic;
       i_rs1_addr     : in std_logic_vector(5 downto 0); -- address of rs1
       i_rs2_addr     : in std_logic_vector(5 downto 0); -- address of rs2
       i_rd_addr      : in std_logic_vector(4 downto 0);
@@ -36,7 +37,7 @@ begin
       if (i_rst = '1') then
          o_rs1_data <= (others => '0');
          o_rs2_data <= (others => '0');
-      else
+      elsif (i_clk'event and i_clk = '1') then
 
       end if;
    end process p_reg_file;

@@ -13,6 +13,7 @@ architecture tb of reg_file_tb is
    component reg_file is
    port (
       i_rst          : in std_logic;
+      i_clk          : in std_logic;
       i_rs1_addr     : in std_logic_vector(5 downto 0); -- address of rs1
       i_rs2_addr     : in std_logic_vector(5 downto 0); -- address of rs2
       i_rd_addr      : in std_logic_vector(4 downto 0);
@@ -24,6 +25,7 @@ architecture tb of reg_file_tb is
    end component reg_file;
 
    signal rst_tb           : std_logic;
+   signal clk_tb           : std_logic;
    signal rs1_addr_tb      : std_logic_vector(5 downto 0);
    signal rs2_addr_tb      : std_logic_vector(5 downto 0);
    signal rd_addr_tb       : std_logic_vector(4 downto 0);
@@ -37,6 +39,7 @@ begin
    inst_reg_file : component reg_file
    port map (
       i_rst          => rst_tb,
+      i_clk          => clk_tb,
       i_rs1_addr     => rs1_addr_tb,
       i_rs2_addr     => rs2_addr_tb,
       i_rd_addr      => rd_addr_tb,
@@ -45,6 +48,14 @@ begin
       o_rs1_data     => rs1_data_tb,
       o_rs2_data     => rs2_data_tb
    );
+
+   p_clk : process
+   begin
+      clk_tb <= '1';
+      wait for 1 ns;
+      clk_tb <= '0';
+      wait for 1 ns;
+   end process p_clk;
 
    p_tb : process
    begin
