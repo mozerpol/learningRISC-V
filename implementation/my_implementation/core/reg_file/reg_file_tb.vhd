@@ -14,8 +14,8 @@ architecture tb of reg_file_tb is
    port (
       i_rst          : in std_logic;
       i_clk          : in std_logic;
-      i_rs1_addr     : in std_logic_vector(5 downto 0); -- address of rs1
-      i_rs2_addr     : in std_logic_vector(5 downto 0); -- address of rs2
+      i_rs1_addr     : in std_logic_vector(4 downto 0); -- address of rs1
+      i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
       i_rd_addr      : in std_logic_vector(4 downto 0);
       i_reg_wr_ctrl  : in std_logic;
       i_alu_out      : in std_logic_vector(31 downto 0);
@@ -26,8 +26,8 @@ architecture tb of reg_file_tb is
 
    signal rst_tb           : std_logic;
    signal clk_tb           : std_logic;
-   signal rs1_addr_tb      : std_logic_vector(5 downto 0);
-   signal rs2_addr_tb      : std_logic_vector(5 downto 0);
+   signal rs1_addr_tb      : std_logic_vector(4 downto 0);
+   signal rs2_addr_tb      : std_logic_vector(4 downto 0);
    signal rd_addr_tb       : std_logic_vector(4 downto 0);
    signal reg_wr_ctrl_tb   : std_logic;
    signal alu_out_tb       : std_logic_vector(31 downto 0);
