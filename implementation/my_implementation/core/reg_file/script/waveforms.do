@@ -7,6 +7,7 @@
 
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rst
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_clk 
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rs1_addr
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rs2_addr
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rd_addr
