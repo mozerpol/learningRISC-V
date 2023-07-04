@@ -17,15 +17,15 @@ architecture tb of decoder_tb is
 
 begin
 
-   inst_decoder : component decoder 
+   inst_decoder : component decoder
    port map (
    );
 
    p_tb : process
    begin
-       
+
       wait for 25 ns;
-      stop(2); 
+      stop(2);
    end process p_tb;
 
 end architecture tb;
