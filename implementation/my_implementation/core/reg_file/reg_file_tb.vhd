@@ -68,6 +68,39 @@ begin
       alu_out_tb     <= (others => '0');
       wait for 5 ns;
       rst_tb         <= '0';
+      -- Save data to GPR
+      reg_wr_ctrl_tb <= '1';
+      rd_addr_tb     <= 5b"00000";
+      alu_out_tb     <= 32x"00000002";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 5b"00001";
+      alu_out_tb     <= 32x"00000004";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 5b"000010";
+      alu_out_tb     <= 32x"00000022";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 5b"00011";
+      alu_out_tb     <= 32x"00000012";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 5b"00100";
+      alu_out_tb     <= 32x"10110002";
+      wait for 5 ns;
+      -- Read data from GPR
+      reg_wr_ctrl_tb <= '0';
+      rs1_addr_tb    <= 5b"00000";
+      rs2_addr_tb    <= 5b"00001";
+      wait for 5 ns;
+
+      rs1_addr_tb    <= 5b"00010";
+      rs2_addr_tb    <= 5b"00011";
+      wait for 5 ns;
+
+      rs1_addr_tb    <= 5b"00100";
+      rs2_addr_tb    <= 5b"00101";
 
       wait for 25 ns;
       stop(2);
