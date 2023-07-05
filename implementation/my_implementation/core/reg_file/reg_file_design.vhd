@@ -29,14 +29,13 @@ begin
 
    o_rs1_data <= (others => '0') when i_rs1_addr = 5b"00000" else
                  gpr(to_integer(unsigned(i_rs1_addr)));
-   o_rs2_data <= (others => '0') when i_rs2_addr = 5b"00000" else 
+   o_rs2_data <= (others => '0') when i_rs2_addr = 5b"00000" else
                  gpr(to_integer(unsigned(i_rs2_addr)));
 
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         o_rs1_data <= (others => '0');
-         o_rs2_data <= (others => '0');
+         -- Nothing
       elsif (i_clk'event and i_clk = '1') then
          if (i_reg_wr_ctrl = '1') then
             gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_out;
