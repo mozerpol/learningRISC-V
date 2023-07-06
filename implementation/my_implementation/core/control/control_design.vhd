@@ -19,7 +19,8 @@ entity control is
       i_func7           : in std_logic_vector(6 downto 0);
       o_alu_mux_1_ctrl  : out std_logic;
       o_alu_mux_2_ctrl  : out std_logic;
-      o_control_alu     : out std_logic_vector(5 downto 0)
+      o_control_alu     : out std_logic_vector(5 downto 0);
+      o_reg_wr_ctrl     : out std_logic
    );
 end entity control;
 
@@ -33,6 +34,7 @@ begin
          o_alu_mux_1_ctrl  <= '0';
          o_alu_mux_2_ctrl  <= '0';
          o_control_alu     <= (others => '0');
+         o_reg_wr_ctrl     <= '0';
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_OP =>

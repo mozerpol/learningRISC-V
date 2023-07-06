@@ -13,8 +13,7 @@ add wave -expand -group TB -radix bin /control_tb/func7_tb
 add wave -expand -group TB -radix bin /control_tb/alu_mux_1_ctrl_tb 
 add wave -expand -group TB -radix bin /control_tb/alu_mux_2_ctrl_tb 
 add wave -expand -group TB -radix bin /control_tb/control_alu_tb 
-
-
+add wave -expand -group TB -radix bin /control_tb/reg_wr_ctrl_tb
 
 
 ##### Waveform window settings: #####
