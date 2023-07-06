@@ -75,6 +75,10 @@ begin
       -- ALU return 100011 = OR
       func3_tb    <= C_FUNC3_OR;
       wait for 5 ns;
+      -- ALU return 100010 = SRA
+      func3_tb    <= C_FUNC3_SRL_SRA;
+      func7_tb    <= C_FUNC7_SRA;
+      wait for 5 ns;
       ---- ALU MUX ----
       ---- REG WR ----
 
