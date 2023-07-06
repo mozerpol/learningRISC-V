@@ -32,7 +32,6 @@ begin
    begin
       if (i_rst = '1') then
          o_control_alu     <= (others => '0');
-         o_reg_wr_ctrl     <= '0';
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_OP =>
@@ -67,5 +66,20 @@ begin
          end if;
       end if;
    end process p_alu_mux;
+
+   p_reg_file : process(all)
+   begin
+      if (i_rst = '1') then
+         o_reg_wr_ctrl <= '0';
+      else
+         case i_opcode(6 downto 2) is
+            when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI | 
+                 C_OPCODE_OP =>
+                  o_reg_wr_ctrl <= '1';
+            -- when C_OPCODE_LOAD => 
+            when others => o_reg_wr_ctrl <= '0';
+         end case;
+      end if;
+   end process;
 
 end architecture rtl;
