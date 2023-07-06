@@ -28,18 +28,14 @@ architecture rtl of control is
 
 begin
 
-   p_control : process(all)
+   p_alu : process(all)
    begin
       if (i_rst = '1') then
-         o_alu_mux_1_ctrl  <= '0';
-         o_alu_mux_2_ctrl  <= '0';
          o_control_alu     <= (others => '0');
          o_reg_wr_ctrl     <= '0';
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_OP =>
-               o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
-               o_alu_mux_2_ctrl <= '0'; -- Select rs2 data as operand
                case i_func3 is
                   when C_FUNC3_ADD_SUB => 
                      o_control_alu <= C_SUB when i_func7 = C_FUNC7_SUB else C_ADD;
@@ -54,11 +50,22 @@ begin
                   when others          => o_control_alu <= (others => '0');
                end case;
             when others => 
-               o_alu_mux_1_ctrl  <= '0';
-               o_alu_mux_2_ctrl  <= '0';
                o_control_alu     <= (others => '0');
          end case;
       end if;
-   end process p_control;
+   end process p_alu;
+
+   p_alu_mux : process (all)
+   begin
+      if (i_rst = '1') then
+         o_alu_mux_1_ctrl  <= '0';
+         o_alu_mux_2_ctrl  <= '0';
+      else
+         if (i_opcode(6 downto 2) = C_OPCODE_OP) then
+            o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
+            o_alu_mux_2_ctrl <= '0'; -- Select rs2 data as operand
+         end if;
+      end if;
+   end process p_alu_mux;
 
 end architecture rtl;
