@@ -71,6 +71,7 @@ package opcodesPkg is
    --     FUNC7 OP     --
    --,,,,,,,,,,,,,,,,,,--
    constant C_FUNC7_SUB       : std_logic_vector(6 downto 0) := "0100000";
+   constant C_FUNC7_ADD       : std_logic_vector(6 downto 0) := "0000000";
    constant C_FUNC7_SRA       : std_logic_vector(6 downto 0) := "0100000";
 
    --''''''''''''''''''--
