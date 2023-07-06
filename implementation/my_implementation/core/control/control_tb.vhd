@@ -4,6 +4,10 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 library std;
   use std.env.all;
+library opcodes;
+   use opcodes.opcodesPkg.all;
+library alu_lib;
+   use alu_lib.alu_pkg.all;
 
 entity control_tb is
 end control_tb;
@@ -56,6 +60,23 @@ begin
       wait for 5 ns;
       rst_tb      <= '0';
 
+      ---- ALU ----
+      -- ALU return 011100 = SUB
+      opcode_tb   <= C_OPCODE_OP & "11";
+      func3_tb    <= C_FUNC3_ADD_SUB;
+      func7_tb    <= C_FUNC7_SUB;
+      wait for 5 ns;
+      -- ALU return 011011 = ADD
+      func7_tb    <= C_FUNC7_ADD;
+      wait for 5 ns;
+      -- ALU return 011101 = SLL
+      func3_tb    <= C_FUNC3_SLL;
+      wait for 5 ns;
+      -- ALU return 100011 = OR
+      func3_tb    <= C_FUNC3_OR;
+      wait for 5 ns;
+      ---- ALU MUX ----
+      ---- REG WR ----
 
       wait for 25 ns;
       stop(2);
