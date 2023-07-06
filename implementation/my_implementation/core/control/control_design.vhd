@@ -43,7 +43,7 @@ begin
                   when C_FUNC3_SLTU    => o_control_alu <= C_SLTU;
                   when C_FUNC3_XOR     => o_control_alu <= C_XOR;
                   when C_FUNC3_SRL_SRA =>
-                     o_control_alu <= C_SRA when i_func7 = C_SRA else C_SRL;
+                     o_control_alu <= C_SRA when i_func7 = C_FUNC7_SRA else C_SRL;
                   when C_FUNC3_OR      => o_control_alu <= C_OR;
                   when C_FUNC3_AND     => o_control_alu <= C_AND;
                   when others          => o_control_alu <= (others => '0');
