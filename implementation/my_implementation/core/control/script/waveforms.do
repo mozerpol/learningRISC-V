@@ -6,14 +6,14 @@
 
 
 ##### Add waves: #####
-add wave -expand -group TB -radix bin /control_tb/rst_tb 
-add wave -expand -group TB -radix bin /control_tb/opcode_tb 
-add wave -expand -group TB -radix bin /control_tb/func3_tb 
-add wave -expand -group TB -radix bin /control_tb/func7_tb
-add wave -expand -group TB -radix bin /control_tb/alu_mux_1_ctrl_tb 
-add wave -expand -group TB -radix bin /control_tb/alu_mux_2_ctrl_tb 
-add wave -expand -group TB -radix bin /control_tb/control_alu_tb 
-add wave -expand -group TB -radix bin /control_tb/reg_wr_ctrl_tb
+add wave -expand -group TB -radix bin /control_tb/inst_control/i_rst 
+add wave -expand -group TB -radix bin /control_tb/inst_control/i_opcode 
+add wave -expand -group TB -radix bin /control_tb/inst_control/i_func3 
+add wave -expand -group TB -radix bin /control_tb/inst_control/i_func7
+add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_mux_1_ctrl 
+add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_mux_2_ctrl 
+add wave -expand -group TB -radix bin /control_tb/inst_control/o_control_alu 
+add wave -expand -group TB -radix bin /control_tb/inst_control/o_reg_wr_ctrl
 
 
 ##### Waveform window settings: #####
