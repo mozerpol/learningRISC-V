@@ -80,7 +80,11 @@ begin
       func7_tb    <= C_FUNC7_SRA;
       wait for 5 ns;
       ---- ALU MUX ----
+      -- Check if alu mux pass rs1 and rs1
+      -- opcode_tb   <= C_OPCODE_OP & "11";
       ---- REG WR ----
+      -- Save in GPR data
+      opcode_tb      <= C_OPCODE_JALR & "11";
 
       wait for 25 ns;
       stop(2);
