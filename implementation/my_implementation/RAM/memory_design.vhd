@@ -20,10 +20,15 @@ end entity memory;
 
 architecture rtl of memory is
 
+   signal ram : t_ram;
+
 begin
 
    p_memory : process(all)
    begin
+      if (i_rst = '1') then
+         ram   <= C_CODE;
+      end if;
    end process p_memory;
 
 end architecture rtl;
