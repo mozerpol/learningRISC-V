@@ -43,8 +43,19 @@ begin
       o_q         => q_tb
    );
 
+   p_clk : process
+   begin
+      clk_tb <= '1';
+      wait for 1 ns;
+      clk_tb <= '0';
+      wait for 1 ns;
+   end process p_clk;
+
    p_tb : process
    begin
+      rst_tb   <= '1';
+      wait for 5 ns;
+      rst_tb   <= '0';
 
       wait for 25 ns;
       stop(2);
