@@ -8,11 +8,12 @@
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_rst 
 add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_clk 
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_rd_addr 
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_wr_addr 
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_wr_data 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/i_rd_addr 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/i_wr_addr 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/i_wr_data 
 add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_wr_enable 
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/o_q 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/o_q 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/ram
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
