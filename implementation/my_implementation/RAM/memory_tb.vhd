@@ -53,9 +53,42 @@ begin
 
    p_tb : process
    begin
-      rst_tb   <= '1';
+      rd_addr_tb     <= (others => '0');
+      wr_addr_tb     <= (others => '0');
+      wr_data_tb     <= (others => '0');
+      wr_enable_tb   <= '0';
+      rst_tb         <= '1';
       wait for 5 ns;
-      rst_tb   <= '0';
+      rst_tb         <= '0';
+
+      wr_enable_tb   <= '0';
+      rd_addr_tb     <= 8d"0";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 8d"1";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 8d"2";
+      wait for 5 ns;
+
+      rd_addr_tb     <= 8d"3";
+      wait for 5 ns;
+
+      wr_enable_tb   <= '1';
+      wr_data_tb     <= 32x"00000000";
+      wr_addr_tb     <= 8d"0";
+      wait for 5 ns;
+
+      wr_data_tb     <= 32x"00000001";
+      wr_addr_tb     <= 8d"1";
+      wait for 5 ns;
+
+      wr_data_tb     <= 32x"00000002";
+      wr_addr_tb     <= 8d"2";
+      wait for 5 ns;
+
+      wr_data_tb     <= 32x"00000003";
+      wr_addr_tb     <= 8d"3";
 
       wait for 25 ns;
       stop(2);
