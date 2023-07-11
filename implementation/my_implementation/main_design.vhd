@@ -8,7 +8,11 @@ library main_lib;
 
 entity main is
    port (
-      i_rst             : in std_logic
+      i_rst          : in std_logic;
+      i_clk          : in std_logic;
+      i_wr_data      : in std_logic_vector(31 downto 0);
+      i_wr_enable    : in std_logic;
+      o_rd_data      : out std_logic_vector(31 downto 0)
    );
 end entity main;
 
