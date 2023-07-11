@@ -12,6 +12,52 @@ set module        "main"
 #                         .
 # vcom -2008 -quiet -work   $library_name $hdl_dir/file.vhd
 
+set hdl_dir                "../RAM"
+set library_name           "memory_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/memory_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/memory_design.vhd
+
+
+set hdl_dir                "../core"
+set library_name           "opcodes"
+vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
+
+
+set hdl_dir                "../core/alu"
+set library_name           "alu_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_design.vhd
+
+
+set hdl_dir                "../core/alu_mux_1"
+set library_name           "alu_mux_1_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhd
+
+
+set hdl_dir                "../core/alu_mux_2"
+set library_name           "alu_mux_2_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhd
+
+
+set hdl_dir                "../core/control"
+set library_name           "control_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/control_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
+
+
+set hdl_dir                "../core/decoder"
+set library_name           "decoder_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_design.vhd
+
+
+set hdl_dir                "../core/reg_file"
+set library_name           "reg_file_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
+
 
 ##################################
 #         PROJECT TREE:
