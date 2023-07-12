@@ -17,9 +17,9 @@ architecture tb of decoder_tb is
    port (
       i_rst          : in std_logic;
       i_instruction  : in std_logic_vector(31 downto 0);
-      o_rd_data      : out std_logic_vector(4 downto 0);
-      o_rs1_data     : out std_logic_vector(4 downto 0);
-      o_rs2_data     : out std_logic_vector(4 downto 0);
+      o_rd_addr      : out std_logic_vector(4 downto 0);
+      o_rs1_addr     : out std_logic_vector(4 downto 0);
+      o_rs2_addr     : out std_logic_vector(4 downto 0);
       o_imm          : out std_logic_vector(31 downto 0);
       o_opcode       : out std_logic_vector(6 downto 0);
       o_func3        : out std_logic_vector(2 downto 0);
@@ -29,9 +29,9 @@ architecture tb of decoder_tb is
 
    signal rst_tb           : std_logic;
    signal instruction_tb   : std_logic_vector(31 downto 0);
-   signal rd_data_tb       : std_logic_vector(4 downto 0);
-   signal rs1_data_tb      : std_logic_vector(4 downto 0);
-   signal rs2_data_tb      : std_logic_vector(4 downto 0);
+   signal rd_addr_tb       : std_logic_vector(4 downto 0);
+   signal rs1_addr_tb      : std_logic_vector(4 downto 0);
+   signal rs2_addr_tb      : std_logic_vector(4 downto 0);
    signal imm_tb           : std_logic_vector(31 downto 0);
    signal opcode_tb        : std_logic_vector(6 downto 0);
    signal func3_tb         : std_logic_vector(2 downto 0);
@@ -43,9 +43,9 @@ begin
    port map (
       i_rst          => rst_tb,
       i_instruction  => instruction_tb,
-      o_rd_data      => rd_data_tb,
-      o_rs1_data     => rs1_data_tb,
-      o_rs2_data     => rs2_data_tb,
+      o_rd_addr      => rd_addr_tb,
+      o_rs1_addr     => rs1_addr_tb,
+      o_rs2_addr     => rs2_addr_tb,
       o_imm          => imm_tb,
       o_opcode       => opcode_tb,
       o_func3        => func3_tb,
