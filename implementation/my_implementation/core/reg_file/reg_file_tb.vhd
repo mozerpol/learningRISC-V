@@ -18,7 +18,7 @@ architecture tb of reg_file_tb is
       i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
       i_rd_addr      : in std_logic_vector(4 downto 0);
       i_reg_wr_ctrl  : in std_logic;
-      i_alu_out      : in std_logic_vector(31 downto 0);
+      i_alu_result   : in std_logic_vector(31 downto 0);
       o_rs1_data     : out std_logic_vector(31 downto 0);
       o_rs2_data     : out std_logic_vector(31 downto 0)
    );
@@ -30,7 +30,7 @@ architecture tb of reg_file_tb is
    signal rs2_addr_tb      : std_logic_vector(4 downto 0);
    signal rd_addr_tb       : std_logic_vector(4 downto 0);
    signal reg_wr_ctrl_tb   : std_logic;
-   signal alu_out_tb       : std_logic_vector(31 downto 0);
+   signal alu_result_tb    : std_logic_vector(31 downto 0);
    signal rs1_data_tb      : std_logic_vector(31 downto 0);
    signal rs2_data_tb      : std_logic_vector(31 downto 0);
 
@@ -44,7 +44,7 @@ begin
       i_rs2_addr     => rs2_addr_tb,
       i_rd_addr      => rd_addr_tb,
       i_reg_wr_ctrl  => reg_wr_ctrl_tb,
-      i_alu_out      => alu_out_tb,
+      i_alu_result   => alu_result_tb,
       o_rs1_data     => rs1_data_tb,
       o_rs2_data     => rs2_data_tb
    );
@@ -65,29 +65,29 @@ begin
       rs2_addr_tb    <= (others => '0');
       rd_addr_tb     <= (others => '0');
       reg_wr_ctrl_tb <= '0';
-      alu_out_tb     <= (others => '0');
+      alu_result_tb  <= (others => '0');
       wait for 5 ns;
       rst_tb         <= '0';
       -- Save data to GPR
       reg_wr_ctrl_tb <= '1';
       rd_addr_tb     <= 5b"00000";
-      alu_out_tb     <= 32x"00000002";
+      alu_result_tb  <= 32x"00000002";
       wait for 5 ns;
 
       rd_addr_tb     <= 5b"00001";
-      alu_out_tb     <= 32x"00000004";
+      alu_result_tb  <= 32x"00000004";
       wait for 5 ns;
 
       rd_addr_tb     <= 5b"000010";
-      alu_out_tb     <= 32x"00000022";
+      alu_result_tb  <= 32x"00000022";
       wait for 5 ns;
 
       rd_addr_tb     <= 5b"00011";
-      alu_out_tb     <= 32x"00000012";
+      alu_result_tb  <= 32x"00000012";
       wait for 5 ns;
 
       rd_addr_tb     <= 5b"00100";
-      alu_out_tb     <= 32x"10110002";
+      alu_result_tb  <= 32x"10110002";
       wait for 5 ns;
       -- Read data from GPR
       reg_wr_ctrl_tb <= '0';

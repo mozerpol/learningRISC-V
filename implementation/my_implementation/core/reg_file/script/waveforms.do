@@ -12,7 +12,7 @@ add wave -expand -group DESIGN -radix dec /reg_file_tb/inst_reg_file/i_rs1_addr
 add wave -expand -group DESIGN -radix dec /reg_file_tb/inst_reg_file/i_rs2_addr
 add wave -expand -group DESIGN -radix dec /reg_file_tb/inst_reg_file/i_rd_addr
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_wr_ctrl
-add wave -expand -group DESIGN -radix hex /reg_file_tb/inst_reg_file/i_alu_out
+add wave -expand -group DESIGN -radix hex /reg_file_tb/inst_reg_file/i_alu_result
 add wave -expand -group DESIGN -radix hex /reg_file_tb/inst_reg_file/o_rs1_data
 add wave -expand -group DESIGN -radix hex /reg_file_tb/inst_reg_file/o_rs2_data
 add wave -expand -group DESIGN -radix hex /reg_file_tb/inst_reg_file/gpr
