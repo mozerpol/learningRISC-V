@@ -12,35 +12,35 @@ architecture tb of memory_tb is
 
    component memory is
    port (
-      i_rst       : in std_logic;
-      i_clk       : in std_logic;
-      i_rd_addr   : in std_logic_vector(7 downto 0);
-      i_wr_addr   : in std_logic_vector(7 downto 0);
-      i_wr_data   : in std_logic_vector(31 downto 0);
-      i_wr_enable : in std_logic;
-      o_q         : out std_logic_vector(31 downto 0)
+      i_rst          : in std_logic;
+      i_clk          : in std_logic;
+      i_rd_addr      : in std_logic_vector(7 downto 0);
+      i_wr_addr      : in std_logic_vector(7 downto 0);
+      i_wr_data      : in std_logic_vector(31 downto 0);
+      i_wr_enable    : in std_logic;
+      o_instruction  : out std_logic_vector(31 downto 0)
    );
    end component memory;
 
-      signal rst_tb        : std_logic;
-      signal clk_tb        : std_logic;
-      signal rd_addr_tb    : std_logic_vector(7 downto 0);
-      signal wr_addr_tb    : std_logic_vector(7 downto 0);
-      signal wr_data_tb    : std_logic_vector(31 downto 0);
-      signal wr_enable_tb  : std_logic;
-      signal q_tb          : std_logic_vector(31 downto 0);
+      signal rst_tb           : std_logic;
+      signal clk_tb           : std_logic;
+      signal rd_addr_tb       : std_logic_vector(7 downto 0);
+      signal wr_addr_tb       : std_logic_vector(7 downto 0);
+      signal wr_data_tb       : std_logic_vector(31 downto 0);
+      signal wr_enable_tb     : std_logic;
+      signal instruction_tb   : std_logic_vector(31 downto 0);
 
 begin
 
    inst_memory : component memory
    port map (
-      i_rst       => rst_tb,
-      i_clk       => clk_tb,
-      i_rd_addr   => rd_addr_tb,
-      i_wr_addr   => wr_addr_tb,
-      i_wr_data   => wr_data_tb,
-      i_wr_enable => wr_enable_tb,
-      o_q         => q_tb
+      i_rst          => rst_tb,
+      i_clk          => clk_tb,
+      i_rd_addr      => rd_addr_tb,
+      i_wr_addr      => wr_addr_tb,
+      i_wr_data      => wr_data_tb,
+      i_wr_enable    => wr_enable_tb,
+      o_instruction  => instruction_tb
    );
 
    p_clk : process
