@@ -10,7 +10,7 @@ add wave -expand -group TB -radix bin /alu_tb/rst_tb
 add wave -expand -group TB -radix bin /alu_tb/control_tb 
 add wave -expand -group TB -radix dec /alu_tb/alu_operand_1_tb 
 add wave -expand -group TB -radix dec /alu_tb/alu_operand_2_tb 
-add wave -expand -group TB -radix dec /alu_tb/alu_out_tb 
+add wave -expand -group TB -radix dec /alu_tb/alu_result_tb 
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
