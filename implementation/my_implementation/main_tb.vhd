@@ -14,17 +14,23 @@ architecture tb of main_tb is
    port (
       i_rst          : in std_logic;
       i_clk          : in std_logic;
-      i_wr_data      : in std_logic_vector(31 downto 0);
-      i_wr_enable    : in std_logic;
-      o_rd_data      : out std_logic_vector(31 downto 0)
+      i_instruction  : in std_logic_vector(31 downto 0);
+      o_rd_data      : out std_logic_vector(31 downto 0);
+      o_wr_data      : out std_logic_vector(31 downto 0);
+      o_rd_addr      : out std_logic_vector(7 downto 0);
+      o_wr_addr      : out std_logic_vector(7 downto 0);
+      o_wr_enable    : out std_logic
    );
    end component main;
 
-   signal rst_tb        : std_logic;
-   signal clk_tb        : std_logic;
-   signal wr_data_tb    : std_logic_vector(31 downto 0);
-   signal wr_enable_tb  : std_logic;
-   signal rd_data_tb    : std_logic_vector(31 downto 0);
+   signal rst_tb           : std_logic;
+   signal clk_tb           : std_logic;
+   signal instruction_tb   : std_logic_vector(31 downto 0);
+   signal rd_data_tb       : std_logic_vector(31 downto 0);
+   signal wr_data_tb       : std_logic_vector(31 downto 0);
+   signal rd_addr_tb       : std_logic_vector(7 downto 0);
+   signal wr_addr_tb       : std_logic_vector(7 downto 0);
+   signal wr_enable_tb     : std_logic;
 
 begin
 
@@ -32,9 +38,12 @@ begin
    port map (
       i_rst          => rst_tb,
       i_clk          => clk_tb,
-      i_wr_data      => wr_data_tb,
-      i_wr_enable    => wr_enable_tb,
-      o_rd_data      => rd_data_tb
+      i_instruction  => instruction_tb,
+      o_rd_data      => rd_data_tb,
+      o_wr_data      => wr_data_tb,
+      o_rd_addr      => rd_addr_tb,
+      o_wr_addr      => wr_addr_tb,
+      o_wr_enable    => wr_enable_tb
    );
 
    p_tb : process
