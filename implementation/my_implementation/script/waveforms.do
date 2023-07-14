@@ -9,11 +9,11 @@
 add wave -expand -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_rst
 add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_clk
 add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_instruction
-add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_rd_data
-add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_wr_data
-add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_rd_addr
-add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_wr_addr
-add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_wr_enable
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_ram_read_data
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_ram_write_data
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_ram_read_addr
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_ram_write_addr
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_ram_write_enable
 
    
 ##### Waveform window settings: #####

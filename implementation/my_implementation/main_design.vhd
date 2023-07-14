@@ -8,14 +8,14 @@ library main_lib;
 
 entity main is
    port (
-      i_rst          : in std_logic;
-      i_clk          : in std_logic;
-      i_instruction  : in std_logic_vector(31 downto 0);
-      o_rd_data      : out std_logic_vector(31 downto 0);
-      o_wr_data      : out std_logic_vector(31 downto 0);
-      o_rd_addr      : out std_logic_vector(4 downto 0);
-      o_wr_addr      : out std_logic_vector(7 downto 0);
-      o_wr_enable    : out std_logic
+      i_rst                : in std_logic;
+      i_clk                : in std_logic;
+      i_instruction        : in std_logic_vector(31 downto 0);
+      o_ram_read_data      : out std_logic_vector(31 downto 0);
+      o_ram_write_data     : out std_logic_vector(31 downto 0);
+      o_ram_read_addr      : out std_logic_vector(7 downto 0);
+      o_ram_write_addr     : out std_logic_vector(7 downto 0);
+      o_ram_write_enable   : out std_logic
    );
 end entity main;
 
@@ -24,13 +24,13 @@ architecture rtl of main is
 
    component memory is
       port (
-         i_rst       : in std_logic;
-         i_clk       : in std_logic;
-         i_rd_addr   : in std_logic_vector(7 downto 0);
-         i_wr_addr   : in std_logic_vector(7 downto 0);
-         i_wr_data   : in std_logic_vector(31 downto 0);
-         i_wr_enable : in std_logic;
-         o_instruction : out std_logic_vector(31 downto 0)
+         i_rst                : in std_logic;
+         i_clk                : in std_logic;
+         i_ram_read_addr      : in std_logic_vector(7 downto 0);
+         i_ram_write_addr     : in std_logic_vector(7 downto 0);
+         i_ram_write_data     : in std_logic_vector(31 downto 0);
+         i_ram_write_enable   : in std_logic;
+         o_instruction        : out std_logic_vector(31 downto 0)
       );
    end component memory;
 
@@ -107,10 +107,10 @@ architecture rtl of main is
 
    signal rst              : std_logic;
    signal clk              : std_logic;
-   signal rd_addr          : std_logic_vector(7 downto 0);
-   signal wr_addr          : std_logic_vector(7 downto 0);
-   signal wr_data          : std_logic_vector(31 downto 0);
-   signal wr_enable        : std_logic;
+   signal ram_read_addr    : std_logic_vector(7 downto 0);
+   signal ram_write_addr   : std_logic_vector(7 downto 0);
+   signal ram_write_data   : std_logic_vector(31 downto 0);
+   signal ram_write_enable : std_logic;
    signal alu_operand_1    : std_logic_vector(31 downto 0);
    signal alu_operand_2    : std_logic_vector(31 downto 0);
    signal alu_result       : std_logic_vector(31 downto 0);
@@ -128,19 +128,20 @@ architecture rtl of main is
    signal func7            : std_logic_vector(6 downto 0);
    signal rs1_addr         : std_logic_vector(4 downto 0);
    signal rs2_addr         : std_logic_vector(4 downto 0);
+   signal rd_addr          : std_logic_vector(4 downto 0);
    signal reg_wr_ctrl      : std_logic;
 
 begin
 
    inst_memory : component memory
    port map (
-      i_rst         => rst,
-      i_clk         => clk,
-      i_rd_addr     => rd_addr,
-      i_wr_addr     => wr_addr,
-      i_wr_data     => wr_data,
-      i_wr_enable   => wr_enable,
-      o_instruction => instruction
+      i_rst                => rst,
+      i_clk                => clk,
+      i_ram_read_addr      => ram_read_addr,
+      i_ram_write_addr     => ram_write_addr,
+      i_ram_write_data     => ram_write_data,
+      i_ram_write_enable   => ram_write_enable,
+      o_instruction        => instruction
    );
 
    inst_alu : component alu 
