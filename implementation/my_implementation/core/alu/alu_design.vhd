@@ -11,7 +11,7 @@ entity alu is
       i_rst             : in std_logic;
       i_alu_operand_1   : in std_logic_vector(31 downto 0);
       i_alu_operand_2   : in std_logic_vector(31 downto 0);
-      i_control         : in std_logic_vector(5 downto 0);
+      i_alu_control     : in std_logic_vector(5 downto 0);
       o_alu_result      : out std_logic_vector(31 downto 0)
    );
 end entity alu;
@@ -25,7 +25,7 @@ begin
       if (i_rst) then
          o_alu_result   <= (others => '0');
       else
-         case i_control is
+         case i_alu_control is
             ---- R-type -----
             when C_ADD  => o_alu_result <= i_alu_operand_1 + i_alu_operand_2; 
             when C_SUB  => o_alu_result <= i_alu_operand_1 - i_alu_operand_2; 

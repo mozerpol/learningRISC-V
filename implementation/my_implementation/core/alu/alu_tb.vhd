@@ -15,7 +15,7 @@ architecture tb of alu_tb is
       i_rst             : in std_logic;
       i_alu_operand_1   : in std_logic_vector(31 downto 0);
       i_alu_operand_2   : in std_logic_vector(31 downto 0);
-      i_control         : in std_logic_vector(5 downto 0);
+      i_alu_control     : in std_logic_vector(5 downto 0);
       o_alu_result      : out std_logic_vector(31 downto 0)
    );
    end component alu;
@@ -23,7 +23,7 @@ architecture tb of alu_tb is
    signal rst_tb           : std_logic;
    signal alu_operand_1_tb : std_logic_vector(31 downto 0);
    signal alu_operand_2_tb : std_logic_vector(31 downto 0);
-   signal control_tb       : std_logic_vector(5 downto 0);
+   signal alu_control_tb   : std_logic_vector(5 downto 0);
    signal alu_result_tb    : std_logic_vector(31 downto 0);
 
 begin
@@ -33,7 +33,7 @@ begin
       i_rst             => rst_tb,
       i_alu_operand_1   => alu_operand_1_tb,
       i_alu_operand_2   => alu_operand_2_tb,
-      i_control         => control_tb,
+      i_alu_control     => alu_control_tb,
       o_alu_result      => alu_result_tb
    );
 
@@ -42,12 +42,12 @@ begin
 
       alu_operand_1_tb  <= (others => '0');
       alu_operand_2_tb  <= (others => '0');
-      control_tb        <= (others => '0');
+      alu_control_tb    <= (others => '0');
       rst_tb            <= '1';
       wait for 20 ns;
       rst_tb            <= '0';
       -- ADD instruction
-      control_tb        <= "000000";
+      alu_control_tb    <= "000000";
       alu_operand_1_tb  <= 32d"2";
       alu_operand_2_tb  <= 32d"11";
       wait for 20 ns;

@@ -9,7 +9,7 @@
 add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_rst 
 add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_alu_operand_1
 add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_alu_operand_2
-add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_control
+add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_alu_control
 add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/o_alu_result
 
 ##### Waveform window settings: #####
