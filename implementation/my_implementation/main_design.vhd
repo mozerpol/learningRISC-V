@@ -207,11 +207,16 @@ begin
       i_alu_result   => alu_result,
       o_rs1_data     => rs1_data,
       o_rs2_data     => rs2_data
-   );
+   ); 
 
    p_main : process(all)
    begin
       if (i_rst) then
+         o_ram_read_data      <= (others => '0');
+         o_ram_write_data     <= (others => '0');
+         o_ram_read_addr      <= (others => '0');
+         o_ram_write_addr     <= (others => '0');
+         o_ram_write_enable   <= '0';
       -- elsif (clk'event and clk = '1') then
       end if;
    end process p_main;
