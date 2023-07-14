@@ -7,11 +7,15 @@
 
 ##### Add waves: #####
 add wave -expand -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_rst
-add wave -expand -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_clk
-add wave -expand -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_wr_data
-add wave -expand -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_wr_enable
-add wave -expand -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_rd_data
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_clk
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/i_instruction
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_rd_data
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_wr_data
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_rd_addr
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_wr_addr
+add wave         -group MAIN_DESIGN -radix bin /main_tb/inst_main/o_wr_enable
 
+   
 ##### Waveform window settings: #####
 quietly wave cursor active 1
 configure wave -namecolwidth 194
