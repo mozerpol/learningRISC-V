@@ -8,13 +8,13 @@ library memory_lib;
 
 entity memory is
    port (
-      i_rst          : in std_logic;
-      i_clk          : in std_logic;
-      i_rd_addr      : in std_logic_vector(7 downto 0);
-      i_wr_addr      : in std_logic_vector(7 downto 0);
-      i_wr_data      : in std_logic_vector(31 downto 0);
-      i_wr_enable    : in std_logic;
-      o_instruction  : out std_logic_vector(31 downto 0)
+      i_rst                : in std_logic;
+      i_clk                : in std_logic;
+      i_ram_read_addr      : in std_logic_vector(7 downto 0);
+      i_ram_write_addr     : in std_logic_vector(7 downto 0);
+      i_ram_write_data     : in std_logic_vector(31 downto 0);
+      i_ram_write_enable   : in std_logic;
+      o_instruction        : out std_logic_vector(31 downto 0)
    );
 end entity memory;
 
@@ -30,17 +30,17 @@ begin
          ram   <= C_CODE;
          o_instruction   <= (others => '0');
       elsif (i_clk'event and i_clk = '1') then
-         if (i_wr_enable = '1') then
-            ram(to_integer(unsigned(i_wr_addr)))(7 downto 0)
-               <= i_wr_data(7 downto 0);
-            ram(to_integer(unsigned(i_wr_addr)))(15 downto 8)
-               <= i_wr_data(15 downto 8);
-            ram(to_integer(unsigned(i_wr_addr)))(23 downto 16)
-               <= i_wr_data(23 downto 16);
-            ram(to_integer(unsigned(i_wr_addr)))(31 downto 24)
-               <= i_wr_data(31 downto 24);
+         if (i_ram_write_enable = '1') then
+            ram(to_integer(unsigned(i_ram_write_addr)))(7 downto 0)
+               <= i_ram_write_data(7 downto 0);
+            ram(to_integer(unsigned(i_ram_write_addr)))(15 downto 8)
+               <= i_ram_write_data(15 downto 8);
+            ram(to_integer(unsigned(i_ram_write_addr)))(23 downto 16)
+               <= i_ram_write_data(23 downto 16);
+            ram(to_integer(unsigned(i_ram_write_addr)))(31 downto 24)
+               <= i_ram_write_data(31 downto 24);
          end if;
-         o_instruction <= ram(to_integer(unsigned(i_rd_addr)));
+         o_instruction <= ram(to_integer(unsigned(i_ram_read_addr)));
       end if;
    end process p_memory;
 
