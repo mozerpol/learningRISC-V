@@ -4,6 +4,9 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 library std;
   use std.env.all;
+library alu_lib;
+   use alu_lib.all;
+   use alu_lib.alu_pkg.all;
 
 entity alu_tb is
 end alu_tb;
@@ -46,8 +49,9 @@ begin
       rst_tb            <= '1';
       wait for 20 ns;
       rst_tb            <= '0';
+      
       -- ADD instruction
-      alu_control_tb    <= "000000";
+      alu_control_tb    <= C_ADD;
       alu_operand_1_tb  <= 32d"2";
       alu_operand_2_tb  <= 32d"11";
       wait for 20 ns;
@@ -60,7 +64,37 @@ begin
       alu_operand_1_tb  <= 32d"20";
       alu_operand_2_tb  <= 32x"FFFFFFF0"; -- -16
       wait for 20 ns;
-
+      
+      -- SUB instruction
+      alu_control_tb    <= C_SUB;
+      alu_operand_1_tb  <= 32d"2";
+      alu_operand_2_tb  <= 32d"11";
+      wait for 20 ns;
+      alu_operand_1_tb  <= 32d"4";
+      alu_operand_2_tb  <= 32d"4";
+      wait for 20 ns;
+      alu_operand_1_tb  <= 32d"10";
+      alu_operand_2_tb  <= 32x"FFFFFFFC"; -- -4
+      wait for 20 ns;
+      alu_operand_1_tb  <= 32d"20";
+      alu_operand_2_tb  <= 32x"FFFFFFF0"; -- -16
+      wait for 20 ns;
+      
+      -- SLT instruction
+      alu_control_tb    <= C_SLT;
+      alu_operand_1_tb  <= 32d"2";
+      alu_operand_2_tb  <= 32d"11";
+      wait for 20 ns;
+      alu_operand_1_tb  <= 32d"4";
+      alu_operand_2_tb  <= 32d"4";
+      wait for 20 ns;
+      alu_operand_1_tb  <= 32d"10";
+      alu_operand_2_tb  <= 32x"FFFFFFFC"; -- -4
+      wait for 20 ns;
+      alu_operand_1_tb  <= 32d"20";
+      alu_operand_2_tb  <= 32x"FFFFFFF0"; -- -16
+      wait for 20 ns;
+      
       wait for 25 ns;
       stop(2); 
    end process p_tb;
