@@ -46,10 +46,19 @@ begin
       o_ram_write_enable   => ram_write_enable_tb
    );
 
+   p_clk : process
+   begin
+      clk_tb   <= '1';
+      wait for 1 ns;
+      clk_tb   <= '0';
+      wait for 1 ns;
+   end process;
+
    p_tb : process
    begin
-
+      
       rst_tb            <= '1';
+      instruction_tb    <= (others => '0');
       wait for 20 ns;
       rst_tb            <= '0';
 
