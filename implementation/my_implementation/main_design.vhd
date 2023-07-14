@@ -13,7 +13,7 @@ entity main is
       i_instruction  : in std_logic_vector(31 downto 0);
       o_rd_data      : out std_logic_vector(31 downto 0);
       o_wr_data      : out std_logic_vector(31 downto 0);
-      o_rd_addr      : out std_logic_vector(7 downto 0);
+      o_rd_addr      : out std_logic_vector(4 downto 0);
       o_wr_addr      : out std_logic_vector(7 downto 0);
       o_wr_enable    : out std_logic
    );
@@ -30,7 +30,7 @@ architecture rtl of main is
          i_wr_addr   : in std_logic_vector(7 downto 0);
          i_wr_data   : in std_logic_vector(31 downto 0);
          i_wr_enable : in std_logic;
-         o_q         : out std_logic_vector(31 downto 0)
+         o_instruction : out std_logic_vector(31 downto 0)
       );
    end component memory;
 
@@ -39,8 +39,8 @@ architecture rtl of main is
          i_rst             : in std_logic;
          i_alu_operand_1   : in std_logic_vector(31 downto 0);
          i_alu_operand_2   : in std_logic_vector(31 downto 0);
-         i_control         : in std_logic_vector(5 downto 0);
-         o_alu_out         : out std_logic_vector(31 downto 0)
+         i_alu_control     : in std_logic_vector(5 downto 0);
+         o_alu_result      : out std_logic_vector(31 downto 0)
       );
    end component alu;
 
@@ -72,7 +72,7 @@ architecture rtl of main is
          i_func7           : in std_logic_vector(6 downto 0);
          o_alu_mux_1_ctrl  : out std_logic;
          o_alu_mux_2_ctrl  : out std_logic;
-         o_control_alu     : out std_logic_vector(5 downto 0);
+         o_alu_control     : out std_logic_vector(5 downto 0);
          o_reg_wr_ctrl     : out std_logic
       );
    end component control;
@@ -81,9 +81,9 @@ architecture rtl of main is
       port (
          i_rst          : in std_logic;
          i_instruction  : in std_logic_vector(31 downto 0);
-         o_rd_data      : out std_logic_vector(4 downto 0);
-         o_rs1_data     : out std_logic_vector(4 downto 0);
-         o_rs2_data     : out std_logic_vector(4 downto 0);
+         o_rd_addr      : out std_logic_vector(4 downto 0);
+         o_rs1_addr     : out std_logic_vector(4 downto 0);
+         o_rs2_addr     : out std_logic_vector(4 downto 0);
          o_imm          : out std_logic_vector(31 downto 0);
          o_opcode       : out std_logic_vector(6 downto 0);
          o_func3        : out std_logic_vector(2 downto 0);
@@ -99,7 +99,7 @@ architecture rtl of main is
          i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
          i_rd_addr      : in std_logic_vector(4 downto 0);
          i_reg_wr_ctrl  : in std_logic;
-         i_alu_out      : in std_logic_vector(31 downto 0);
+         i_alu_result   : in std_logic_vector(31 downto 0);
          o_rs1_data     : out std_logic_vector(31 downto 0);
          o_rs2_data     : out std_logic_vector(31 downto 0)
       );
@@ -111,10 +111,10 @@ architecture rtl of main is
    signal wr_addr          : std_logic_vector(7 downto 0);
    signal wr_data          : std_logic_vector(31 downto 0);
    signal wr_enable        : std_logic;
-   signal q                : std_logic_vector(31 downto 0);
    signal alu_operand_1    : std_logic_vector(31 downto 0);
    signal alu_operand_2    : std_logic_vector(31 downto 0);
-   signal alu_out          : std_logic_vector(31 downto 0);
+   signal alu_result       : std_logic_vector(31 downto 0);
+   signal alu_control      : std_logic_vector(5 downto 0);
    signal alu_mux_1_ctrl   : std_logic;
    signal rs1_data         : std_logic_vector(31 downto 0);
    signal pc_addr          : std_logic_vector(31 downto 0);
@@ -122,7 +122,6 @@ architecture rtl of main is
    signal rs2_data         : std_logic_vector(31 downto 0);
    signal imm              : std_logic_vector(31 downto 0);
    signal opcode           : std_logic_vector(6 downto 0);
-   signal control_alu      : std_logic_vector(5 downto 0);
    signal instruction      : std_logic_vector(31 downto 0);
    signal rd_data          : std_logic_vector(4 downto 0);
    signal func3            : std_logic_vector(2 downto 0);
@@ -135,13 +134,13 @@ begin
 
    inst_memory : component memory
    port map (
-      i_rst       => rst,
-      i_clk       => clk,
-      i_rd_addr   => rd_addr,
-      i_wr_addr   => wr_addr,
-      i_wr_data   => wr_data,
-      i_wr_enable => wr_enable,
-      o_q         => q
+      i_rst         => rst,
+      i_clk         => clk,
+      i_rd_addr     => rd_addr,
+      i_wr_addr     => wr_addr,
+      i_wr_data     => wr_data,
+      i_wr_enable   => wr_enable,
+      o_instruction => instruction
    );
 
    inst_alu : component alu 
@@ -149,8 +148,8 @@ begin
       i_rst             => rst,
       i_alu_operand_1   => alu_operand_1,
       i_alu_operand_2   => alu_operand_2,
-      i_control         => control,
-      o_alu_out         => alu_out
+      i_alu_control     => alu_control,
+      o_alu_result      => alu_result
    );
    
    inst_alu_mux_1 : component alu_mux_1
@@ -179,7 +178,7 @@ begin
       i_func7           => func7,
       o_alu_mux_1_ctrl  => alu_mux_1_ctrl,
       o_alu_mux_2_ctrl  => alu_mux_2_ctrl,
-      o_control_alu     => control_alu,
+      o_alu_control     => alu_control,
       o_reg_wr_ctrl     => reg_wr_ctrl
    );
 
@@ -187,9 +186,9 @@ begin
    port map (
       i_rst          => rst,
       i_instruction  => instruction,
-      o_rd_data      => rd_data,
-      o_rs1_data     => rs1_data,
-      o_rs2_data     => rs2_data,
+      o_rd_addr      => rd_addr,
+      o_rs1_addr     => rs1_addr,
+      o_rs2_addr     => rs2_addr,
       o_imm          => imm,
       o_opcode       => opcode,
       o_func3        => func3,
@@ -204,7 +203,7 @@ begin
       i_rs2_addr     => rs2_addr,
       i_rd_addr      => rd_addr,
       i_reg_wr_ctrl  => reg_wr_ctrl,
-      i_alu_out      => alu_out,
+      i_alu_result   => alu_result,
       o_rs1_data     => rs1_data,
       o_rs2_data     => rs2_data
    );
