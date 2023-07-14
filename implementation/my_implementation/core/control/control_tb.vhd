@@ -22,7 +22,7 @@ architecture tb of control_tb is
       i_func7           : in std_logic_vector(6 downto 0);
       o_alu_mux_1_ctrl  : out std_logic;
       o_alu_mux_2_ctrl  : out std_logic;
-      o_control_alu     : out std_logic_vector(5 downto 0);
+      o_alu_control     : out std_logic_vector(5 downto 0);
       o_reg_wr_ctrl     : out std_logic
    );
    end component control;
@@ -33,7 +33,7 @@ architecture tb of control_tb is
    signal func7_tb            : std_logic_vector(6 downto 0);
    signal alu_mux_1_ctrl_tb   : std_logic;
    signal alu_mux_2_ctrl_tb   : std_logic;
-   signal control_alu_tb      : std_logic_vector(5 downto 0);
+   signal alu_control_tb      : std_logic_vector(5 downto 0);
    signal reg_wr_ctrl_tb      : std_logic;
 
 begin
@@ -46,7 +46,7 @@ begin
       i_func7           => func7_tb,
       o_alu_mux_1_ctrl  => alu_mux_1_ctrl_tb,
       o_alu_mux_2_ctrl  => alu_mux_2_ctrl_tb,
-      o_control_alu     => control_alu_tb,
+      o_alu_control     => alu_control_tb,
       o_reg_wr_ctrl     => reg_wr_ctrl_tb
    );
 

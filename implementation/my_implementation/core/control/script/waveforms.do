@@ -12,7 +12,7 @@ add wave -expand -group TB -radix bin /control_tb/inst_control/i_func3
 add wave -expand -group TB -radix bin /control_tb/inst_control/i_func7
 add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_mux_1_ctrl 
 add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_mux_2_ctrl 
-add wave -expand -group TB -radix bin /control_tb/inst_control/o_control_alu 
+add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_control
 add wave -expand -group TB -radix bin /control_tb/inst_control/o_reg_wr_ctrl
 
 

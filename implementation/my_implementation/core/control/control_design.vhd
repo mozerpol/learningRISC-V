@@ -19,7 +19,7 @@ entity control is
       i_func7           : in std_logic_vector(6 downto 0);
       o_alu_mux_1_ctrl  : out std_logic;
       o_alu_mux_2_ctrl  : out std_logic;
-      o_control_alu     : out std_logic_vector(5 downto 0);
+      o_alu_control     : out std_logic_vector(5 downto 0);
       o_reg_wr_ctrl     : out std_logic
    );
 end entity control;
@@ -31,25 +31,25 @@ begin
    p_alu : process(all)
    begin
       if (i_rst = '1') then
-         o_control_alu     <= (others => '0');
+         o_alu_control     <= (others => '0');
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_OP =>
                case i_func3 is
                   when C_FUNC3_ADD_SUB => 
-                     o_control_alu <= C_SUB when i_func7 = C_FUNC7_SUB else C_ADD;
-                  when C_FUNC3_SLL     => o_control_alu <= C_SLL;
-                  when C_FUNC3_SLT     => o_control_alu <= C_SLT;
-                  when C_FUNC3_SLTU    => o_control_alu <= C_SLTU;
-                  when C_FUNC3_XOR     => o_control_alu <= C_XOR;
+                     o_alu_control <= C_SUB when i_func7 = C_FUNC7_SUB else C_ADD;
+                  when C_FUNC3_SLL     => o_alu_control <= C_SLL;
+                  when C_FUNC3_SLT     => o_alu_control <= C_SLT;
+                  when C_FUNC3_SLTU    => o_alu_control <= C_SLTU;
+                  when C_FUNC3_XOR     => o_alu_control <= C_XOR;
                   when C_FUNC3_SRL_SRA =>
-                     o_control_alu <= C_SRA when i_func7 = C_FUNC7_SRA else C_SRL;
-                  when C_FUNC3_OR      => o_control_alu <= C_OR;
-                  when C_FUNC3_AND     => o_control_alu <= C_AND;
-                  when others          => o_control_alu <= (others => '0');
+                     o_alu_control <= C_SRA when i_func7 = C_FUNC7_SRA else C_SRL;
+                  when C_FUNC3_OR      => o_alu_control <= C_OR;
+                  when C_FUNC3_AND     => o_alu_control <= C_AND;
+                  when others          => o_alu_control <= (others => '0');
                end case;
             when others => 
-               o_control_alu     <= (others => '0');
+               o_alu_control     <= (others => '0');
          end case;
       end if;
    end process p_alu;
