@@ -9,8 +9,8 @@ library ieee;
    type t_ram is array (0 to 7) of std_logic_vector(31 downto 0);
 
    constant C_CODE : t_ram := (
-                              x"123450b7",
-                              x"67808093",
+                              x"001101b3", -- add x3 x2 x1
+                              x"40308133", -- sub x2 x1 x3
                               x"fff0f113",
                               x"00f0e193",
                               x"fff02213",
@@ -21,6 +21,7 @@ library ieee;
                                
  end;
  
+
  package body memory_pkg is
  
  end package body;
