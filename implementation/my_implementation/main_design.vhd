@@ -10,9 +10,12 @@ entity main is
    port (
       i_rst          : in std_logic;
       i_clk          : in std_logic;
-      i_wr_data      : in std_logic_vector(31 downto 0);
-      i_wr_enable    : in std_logic;
-      o_rd_data      : out std_logic_vector(31 downto 0)
+      i_instruction  : in std_logic_vector(31 downto 0);
+      o_rd_data      : out std_logic_vector(31 downto 0);
+      o_wr_data      : out std_logic_vector(31 downto 0);
+      o_rd_addr      : out std_logic_vector(7 downto 0);
+      o_wr_addr      : out std_logic_vector(7 downto 0);
+      o_wr_enable    : out std_logic
    );
 end entity main;
 
@@ -129,6 +132,82 @@ architecture rtl of main is
    signal reg_wr_ctrl      : std_logic;
 
 begin
+
+   inst_memory : component memory
+   port map (
+      i_rst       => rst,
+      i_clk       => clk,
+      i_rd_addr   => rd_addr,
+      i_wr_addr   => wr_addr,
+      i_wr_data   => wr_data,
+      i_wr_enable => wr_enable,
+      o_q         => q
+   );
+
+   inst_alu : component alu 
+   port map (
+      i_rst             => rst,
+      i_alu_operand_1   => alu_operand_1,
+      i_alu_operand_2   => alu_operand_2,
+      i_control         => control,
+      o_alu_out         => alu_out
+   );
+   
+   inst_alu_mux_1 : component alu_mux_1
+   port map (
+      i_rst             => rst,
+      i_alu_mux_1_ctrl  => alu_mux_1_ctrl,
+      i_rs1_data        => rs1_data,
+      i_pc_addr         => pc_addr,
+      o_alu_operand_1   => alu_operand_1
+   );
+
+   inst_alu_mux_2 : component alu_mux_2
+   port map (
+      i_rst             => rst,
+      i_alu_mux_2_ctrl  => alu_mux_2_ctrl,
+      i_rs2_data        => rs2_data,
+      i_imm             => imm,
+      o_alu_operand_2   => alu_operand_2
+   );
+
+   inst_control : component control
+   port map (
+      i_rst             => rst,
+      i_opcode          => opcode,
+      i_func3           => func3,
+      i_func7           => func7,
+      o_alu_mux_1_ctrl  => alu_mux_1_ctrl,
+      o_alu_mux_2_ctrl  => alu_mux_2_ctrl,
+      o_control_alu     => control_alu,
+      o_reg_wr_ctrl     => reg_wr_ctrl
+   );
+
+   inst_decoder : component decoder
+   port map (
+      i_rst          => rst,
+      i_instruction  => instruction,
+      o_rd_data      => rd_data,
+      o_rs1_data     => rs1_data,
+      o_rs2_data     => rs2_data,
+      o_imm          => imm,
+      o_opcode       => opcode,
+      o_func3        => func3,
+      o_func7        => func7
+   );
+   
+   inst_reg_file : component reg_file
+   port map (
+      i_rst          => rst,
+      i_clk          => clk,
+      i_rs1_addr     => rs1_addr,
+      i_rs2_addr     => rs2_addr,
+      i_rd_addr      => rd_addr,
+      i_reg_wr_ctrl  => reg_wr_ctrl,
+      i_alu_out      => alu_out,
+      o_rs1_data     => rs1_data,
+      o_rs2_data     => rs2_data
+   );
 
    p_main : process(all)
    begin
