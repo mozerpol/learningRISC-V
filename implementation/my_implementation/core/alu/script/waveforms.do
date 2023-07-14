@@ -6,11 +6,11 @@
 
 
 ##### Add waves: #####
-add wave -expand -group TB -radix bin /alu_tb/rst_tb 
-add wave -expand -group TB -radix bin /alu_tb/control_tb 
-add wave -expand -group TB -radix dec /alu_tb/alu_operand_1_tb 
-add wave -expand -group TB -radix dec /alu_tb/alu_operand_2_tb 
-add wave -expand -group TB -radix dec /alu_tb/alu_result_tb 
+add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_rst 
+add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_alu_operand_1
+add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_alu_operand_2
+add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/i_control
+add wave -expand -group DESIGN -radix dec /alu_tb/inst_alu/o_alu_result
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
