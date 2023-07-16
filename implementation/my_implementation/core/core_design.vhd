@@ -5,9 +5,6 @@ library ieee;
 library core_lib;
    use core_lib.all;
    use core_lib.core_pkg.all;
-library memory_lib;
-   use memory_lib.all;
-   use memory_lib.memory_pkg.all;
 library alu_lib;
    use alu_lib.all;
    use alu_lib.alu_pkg.all;
@@ -183,7 +180,7 @@ begin
    inst_decoder : component decoder
    port map (
       i_rst             => rst,
-      i_inst_to_decode  => o_ram_read_data, -- From core_design to decoder
+      i_inst_to_decode  => i_instruction_read,
       o_rd_addr         => rd_addr,
       o_rs1_addr        => rs1_addr,
       o_rs2_addr        => rs2_addr,
