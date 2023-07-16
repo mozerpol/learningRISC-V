@@ -45,7 +45,76 @@ end entity core;
 architecture rtl of core is
 
 
+   component alu is
+      port (
+         i_rst             : in std_logic;
+         i_alu_operand_1   : in std_logic_vector(31 downto 0);
+         i_alu_operand_2   : in std_logic_vector(31 downto 0);
+         i_alu_control     : in std_logic_vector(5 downto 0);
+         o_alu_result      : out std_logic_vector(31 downto 0)
+      );
+   end component alu;
 
+   component alu_mux_1 is
+      port (
+         i_rst             : in std_logic;
+         i_alu_mux_1_ctrl  : in std_logic;
+         i_rs1_data        : in std_logic_vector(31 downto 0); -- From reg_file
+         i_pc_addr         : in std_logic_vector(31 downto 0);
+         o_alu_operand_1   : out std_logic_vector(31 downto 0)
+      );
+   end component alu_mux_1;
+
+   component alu_mux_2 is
+      port (
+         i_rst             : in std_logic;
+         i_alu_mux_2_ctrl  : in std_logic;
+         i_rs2_data        : in std_logic_vector(31 downto 0); -- From reg_file
+         i_imm             : in std_logic_vector(31 downto 0);
+         o_alu_operand_2   : out std_logic_vector(31 downto 0)
+      );
+   end component alu_mux_2;
+
+   component control is
+      port (
+         i_rst             : in std_logic;
+         i_opcode          : in std_logic_vector(6 downto 0);
+         i_func3           : in std_logic_vector(2 downto 0);
+         i_func7           : in std_logic_vector(6 downto 0);
+         o_alu_mux_1_ctrl  : out std_logic;
+         o_alu_mux_2_ctrl  : out std_logic;
+         o_alu_control     : out std_logic_vector(5 downto 0);
+         o_reg_wr_ctrl     : out std_logic
+      );
+   end component control;
+
+   component decoder is
+      port (
+         i_rst             : in std_logic;
+         i_inst_to_decode  : in std_logic_vector(31 downto 0);
+         o_rd_addr         : out std_logic_vector(4 downto 0);
+         o_rs1_addr        : out std_logic_vector(4 downto 0);
+         o_rs2_addr        : out std_logic_vector(4 downto 0);
+         o_imm             : out std_logic_vector(31 downto 0);
+         o_opcode          : out std_logic_vector(6 downto 0);
+         o_func3           : out std_logic_vector(2 downto 0);
+         o_func7           : out std_logic_vector(6 downto 0)
+      );
+   end component decoder;
+
+   component reg_file is
+      port (
+         i_rst          : in std_logic;
+         i_clk          : in std_logic;
+         i_rs1_addr     : in std_logic_vector(4 downto 0); -- address of rs1
+         i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
+         i_rd_addr      : in std_logic_vector(4 downto 0);
+         i_reg_wr_ctrl  : in std_logic;
+         i_alu_result   : in std_logic_vector(31 downto 0);
+         o_rs1_data     : out std_logic_vector(31 downto 0);
+         o_rs2_data     : out std_logic_vector(31 downto 0)
+      );
+   end component reg_file;
 
 
 
