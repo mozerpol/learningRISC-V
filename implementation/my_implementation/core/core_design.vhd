@@ -206,6 +206,18 @@ begin
       o_rs2_data     => rs2_data
    ); 
 
+   rst               <= i_rst;
+   clk               <= i_clk;
 
+   p_core : process(all)
+   begin
+      if (i_rst) then
+         o_instruction_write  <= (others => '0');
+         o_addr_read          <= (others => '0');
+         o_addr_write         <= (others => '0');
+         o_write_enable       <= '0';
+      -- elsif (clk'event and clk = '1') then
+      end if;
+   end process p_core;
 
 end architecture rtl;
