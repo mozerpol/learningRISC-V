@@ -141,7 +141,70 @@ architecture rtl of core is
 
 begin
 
+   inst_alu : component alu 
+   port map (
+      i_rst             => rst,
+      i_alu_operand_1   => alu_operand_1,
+      i_alu_operand_2   => alu_operand_2,
+      i_alu_control     => alu_control,
+      o_alu_result      => alu_result
+   );
+   
+   inst_alu_mux_1 : component alu_mux_1
+   port map (
+      i_rst             => rst,
+      i_alu_mux_1_ctrl  => alu_mux_1_ctrl,
+      i_rs1_data        => rs1_data,
+      i_pc_addr         => pc_addr,
+      o_alu_operand_1   => alu_operand_1
+   );
 
+   inst_alu_mux_2 : component alu_mux_2
+   port map (
+      i_rst             => rst,
+      i_alu_mux_2_ctrl  => alu_mux_2_ctrl,
+      i_rs2_data        => rs2_data,
+      i_imm             => imm,
+      o_alu_operand_2   => alu_operand_2
+   );
+
+   inst_control : component control
+   port map (
+      i_rst             => rst,
+      i_opcode          => opcode,
+      i_func3           => func3,
+      i_func7           => func7,
+      o_alu_mux_1_ctrl  => alu_mux_1_ctrl,
+      o_alu_mux_2_ctrl  => alu_mux_2_ctrl,
+      o_alu_control     => alu_control,
+      o_reg_wr_ctrl     => reg_wr_ctrl
+   );
+
+   inst_decoder : component decoder
+   port map (
+      i_rst             => rst,
+      i_inst_to_decode  => o_ram_read_data, -- From core_design to decoder
+      o_rd_addr         => rd_addr,
+      o_rs1_addr        => rs1_addr,
+      o_rs2_addr        => rs2_addr,
+      o_imm             => imm,
+      o_opcode          => opcode,
+      o_func3           => func3,
+      o_func7           => func7
+   );
+   
+   inst_reg_file : component reg_file
+   port map (
+      i_rst          => rst,
+      i_clk          => clk,
+      i_rs1_addr     => rs1_addr,
+      i_rs2_addr     => rs2_addr,
+      i_rd_addr      => rd_addr,
+      i_reg_wr_ctrl  => reg_wr_ctrl,
+      i_alu_result   => alu_result,
+      o_rs1_data     => rs1_data,
+      o_rs2_data     => rs2_data
+   ); 
 
 
 
