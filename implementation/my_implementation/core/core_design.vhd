@@ -32,7 +32,13 @@ library reg_file_lib;
    
 entity core is
    port (
-
+      i_rst                : in std_logic;
+      i_clk                : in std_logic;
+      i_instruction_read   : in std_logic_vector(31 downto 0);
+      o_instruction_write  : out std_logic_vector(31 downto 0);
+      o_addr_read          : out std_logic_vector(7 downto 0);
+      o_addr_write         : out std_logic_vector(7 downto 0);
+      o_write_enable       : out std_logic
    );
 end entity core;
 
