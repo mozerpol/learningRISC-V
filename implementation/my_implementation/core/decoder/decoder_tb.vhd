@@ -16,7 +16,7 @@ architecture tb of decoder_tb is
    component decoder is
    port (
       i_rst             : in std_logic;
-      i_inst_to_decode  : in std_logic_vector(31 downto 0);
+      i_instruction     : in std_logic_vector(31 downto 0);
       o_rd_addr         : out std_logic_vector(4 downto 0);
       o_rs1_addr        : out std_logic_vector(4 downto 0);
       o_rs2_addr        : out std_logic_vector(4 downto 0);
@@ -42,7 +42,7 @@ begin
    inst_decoder : component decoder
    port map (
       i_rst             => rst_tb,
-      i_inst_to_decode  => instruction_tb,
+      i_instruction     => instruction_tb,
       o_rd_addr         => rd_addr_tb,
       o_rs1_addr        => rs1_addr_tb,
       o_rs2_addr        => rs2_addr_tb,
