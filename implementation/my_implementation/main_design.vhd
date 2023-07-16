@@ -70,8 +70,8 @@ begin
 
    inst_memory : component memory
    port map (
-      i_rst                => rst,
-      i_clk                => clk,
+      i_rst                => i_rst,
+      i_clk                => i_clk,
       i_ram_read_addr      => ram_read_addr,
       i_ram_write_addr     => ram_write_addr,
       i_ram_write_data     => ram_write_data,
@@ -81,8 +81,8 @@ begin
 
    inst_core : component core 
    port map (
-      i_rst                => rst,
-      i_clk                => clk,
+      i_rst                => i_rst,
+      i_clk                => i_clk,
       i_instruction_read   => instruction_read,
       o_instruction_write  => instruction_write,
       o_addr_read          => addr_read,
@@ -90,8 +90,13 @@ begin
       o_write_enable       => write_enable
    );
 
-   rst               <= i_rst;
-   clk               <= i_clk;
+    
+   ram_read_addr     <= addr_read; 
+   ram_write_addr    <= addr_write;
+   ram_write_data    <= instruction_write; 
+   ram_write_enable  <= write_enable;
+   --
+   instruction_read  <= instruction;
 
    p_main : process(all)
    begin
