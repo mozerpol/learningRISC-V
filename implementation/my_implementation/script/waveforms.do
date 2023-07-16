@@ -9,18 +9,18 @@
 add wave -expand -group MAIN_DESIGN -radix bin  /main_tb/inst_main/i_rst 
 add wave         -group MAIN_DESIGN -radix bin  /main_tb/inst_main/i_clk
 
-add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/i_ram_read_addr 
-add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/i_ram_write_addr 
-add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/i_ram_write_data 
-add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/i_ram_write_enable 
 add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/o_instruction
+add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/i_ram_read_addr 
+add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/i_ram_write_data 
+add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/i_ram_write_addr 
+add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/i_ram_write_enable 
 add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/ram
 
-add wave         -group CORE -radix dec          /main_tb/inst_main/inst_core/i_instruction_read 
-add wave         -group CORE -radix dec          /main_tb/inst_main/inst_core/o_instruction_write 
-add wave         -group CORE -radix dec          /main_tb/inst_main/inst_core/o_addr_read
-add wave         -group CORE -radix dec          /main_tb/inst_main/inst_core/o_addr_write
-add wave         -group CORE -radix dec          /main_tb/inst_main/inst_core/o_write_enable
+add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/i_instruction_read 
+add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_addr_read
+add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/o_instruction_write 
+add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_addr_write
+add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_write_enable
 
 
    
