@@ -52,7 +52,7 @@ add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_control/
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_control/o_reg_wr_ctrl
 
 add wave         -group DECODER -radix bin      /main_tb/inst_main/inst_decoder/i_rst 
-add wave         -group DECODER -radix hex      /main_tb/inst_main/inst_decoder/i_instruction
+add wave         -group DECODER -radix hex      /main_tb/inst_main/inst_decoder/i_inst_to_decode
 add wave         -group DECODER -radix dec      /main_tb/inst_main/inst_decoder/o_rd_addr
 add wave         -group DECODER -radix dec      /main_tb/inst_main/inst_decoder/o_rs1_addr
 add wave         -group DECODER -radix dec      /main_tb/inst_main/inst_decoder/o_rs2_addr

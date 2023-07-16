@@ -103,15 +103,15 @@ architecture rtl of main is
 
    component decoder is
       port (
-         i_rst          : in std_logic;
-         i_instruction  : in std_logic_vector(31 downto 0);
-         o_rd_addr      : out std_logic_vector(4 downto 0);
-         o_rs1_addr     : out std_logic_vector(4 downto 0);
-         o_rs2_addr     : out std_logic_vector(4 downto 0);
-         o_imm          : out std_logic_vector(31 downto 0);
-         o_opcode       : out std_logic_vector(6 downto 0);
-         o_func3        : out std_logic_vector(2 downto 0);
-         o_func7        : out std_logic_vector(6 downto 0)
+         i_rst             : in std_logic;
+         i_inst_to_decode  : in std_logic_vector(31 downto 0);
+         o_rd_addr         : out std_logic_vector(4 downto 0);
+         o_rs1_addr        : out std_logic_vector(4 downto 0);
+         o_rs2_addr        : out std_logic_vector(4 downto 0);
+         o_imm             : out std_logic_vector(31 downto 0);
+         o_opcode          : out std_logic_vector(6 downto 0);
+         o_func3           : out std_logic_vector(2 downto 0);
+         o_func7           : out std_logic_vector(6 downto 0)
       );
    end component decoder;
 
@@ -147,6 +147,7 @@ architecture rtl of main is
    signal imm              : std_logic_vector(31 downto 0);
    signal opcode           : std_logic_vector(6 downto 0);
    signal instruction      : std_logic_vector(31 downto 0);
+   signal inst_to_decode   : std_logic_vector(31 downto 0);
    signal rd_data          : std_logic_vector(4 downto 0);
    signal func3            : std_logic_vector(2 downto 0);
    signal func7            : std_logic_vector(6 downto 0);
@@ -209,15 +210,15 @@ begin
 
    inst_decoder : component decoder
    port map (
-      i_rst          => rst,
-      i_instruction  => instruction,
-      o_rd_addr      => rd_addr,
-      o_rs1_addr     => rs1_addr,
-      o_rs2_addr     => rs2_addr,
-      o_imm          => imm,
-      o_opcode       => opcode,
-      o_func3        => func3,
-      o_func7        => func7
+      i_rst             => rst,
+      i_inst_to_decode  => inst_to_decode,
+      o_rd_addr         => rd_addr,
+      o_rs1_addr        => rs1_addr,
+      o_rs2_addr        => rs2_addr,
+      o_imm             => imm,
+      o_opcode          => opcode,
+      o_func3           => func3,
+      o_func7           => func7
    );
    
    inst_reg_file : component reg_file
@@ -232,6 +233,9 @@ begin
       o_rs1_data     => rs1_data,
       o_rs2_data     => rs2_data
    ); 
+
+   rst <= i_rst;
+   clk <= i_clk;
 
    p_main : process(all)
    begin
