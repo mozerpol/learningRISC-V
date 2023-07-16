@@ -116,7 +116,28 @@ architecture rtl of core is
       );
    end component reg_file;
 
-
+   signal rst              : std_logic;
+   signal clk              : std_logic;
+   signal alu_operand_1    : std_logic_vector(31 downto 0);
+   signal alu_operand_2    : std_logic_vector(31 downto 0);
+   signal alu_result       : std_logic_vector(31 downto 0);
+   signal alu_control      : std_logic_vector(5 downto 0);
+   signal alu_mux_1_ctrl   : std_logic;
+   signal rs1_data         : std_logic_vector(31 downto 0);
+   signal pc_addr          : std_logic_vector(31 downto 0);
+   signal alu_mux_2_ctrl   : std_logic;
+   signal rs2_data         : std_logic_vector(31 downto 0);
+   signal imm              : std_logic_vector(31 downto 0);
+   signal opcode           : std_logic_vector(6 downto 0);
+   signal instruction      : std_logic_vector(31 downto 0);
+   signal inst_to_decode   : std_logic_vector(31 downto 0);
+   signal rd_data          : std_logic_vector(4 downto 0);
+   signal func3            : std_logic_vector(2 downto 0);
+   signal func7            : std_logic_vector(6 downto 0);
+   signal rs1_addr         : std_logic_vector(4 downto 0);
+   signal rs2_addr         : std_logic_vector(4 downto 0);
+   signal rd_addr          : std_logic_vector(4 downto 0);
+   signal reg_wr_ctrl      : std_logic;
 
 begin
 
