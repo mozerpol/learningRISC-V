@@ -15,15 +15,15 @@ architecture tb of decoder_tb is
 
    component decoder is
    port (
-      i_rst          : in std_logic;
-      i_instruction  : in std_logic_vector(31 downto 0);
-      o_rd_addr      : out std_logic_vector(4 downto 0);
-      o_rs1_addr     : out std_logic_vector(4 downto 0);
-      o_rs2_addr     : out std_logic_vector(4 downto 0);
-      o_imm          : out std_logic_vector(31 downto 0);
-      o_opcode       : out std_logic_vector(6 downto 0);
-      o_func3        : out std_logic_vector(2 downto 0);
-      o_func7        : out std_logic_vector(6 downto 0)
+      i_rst             : in std_logic;
+      i_inst_to_decode  : in std_logic_vector(31 downto 0);
+      o_rd_addr         : out std_logic_vector(4 downto 0);
+      o_rs1_addr        : out std_logic_vector(4 downto 0);
+      o_rs2_addr        : out std_logic_vector(4 downto 0);
+      o_imm             : out std_logic_vector(31 downto 0);
+      o_opcode          : out std_logic_vector(6 downto 0);
+      o_func3           : out std_logic_vector(2 downto 0);
+      o_func7           : out std_logic_vector(6 downto 0)
    );
    end component decoder;
 
@@ -41,15 +41,15 @@ begin
 
    inst_decoder : component decoder
    port map (
-      i_rst          => rst_tb,
-      i_instruction  => instruction_tb,
-      o_rd_addr      => rd_addr_tb,
-      o_rs1_addr     => rs1_addr_tb,
-      o_rs2_addr     => rs2_addr_tb,
-      o_imm          => imm_tb,
-      o_opcode       => opcode_tb,
-      o_func3        => func3_tb,
-      o_func7        => func7_tb
+      i_rst             => rst_tb,
+      i_inst_to_decode  => instruction_tb,
+      o_rd_addr         => rd_addr_tb,
+      o_rs1_addr        => rs1_addr_tb,
+      o_rs2_addr        => rs2_addr_tb,
+      o_imm             => imm_tb,
+      o_opcode          => opcode_tb,
+      o_func3           => func3_tb,
+      o_func7           => func7_tb
    );
 
    p_tb : process

@@ -7,7 +7,7 @@
 
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/i_rst
-add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/i_instruction
+add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/i_inst_to_decode
 add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_rd_addr
 add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_rs1_addr
 add wave -expand -group DESIGN -radix bin /decoder_tb/inst_decoder/o_rs2_addr
