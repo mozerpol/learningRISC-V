@@ -23,13 +23,13 @@ architecture tb of core_tb is
    );
    end component core;
 
-   signal rst_tb              : std_logic;
-   signal clk_tb              : std_logic;
-   signal instruction_read_tb      : std_logic_vector(31 downto 0);
-   signal instruction_write_tb    : std_logic_vector(31 downto 0);
-   signal addr_read_tb    : std_logic_vector(7 downto 0);
-   signal addr_write_tb   : std_logic_vector(7 downto 0);
-   signal write_enable_tb : std_logic;
+   signal rst_tb                 : std_logic;
+   signal clk_tb                 : std_logic;
+   signal instruction_read_tb    : std_logic_vector(31 downto 0);
+   signal instruction_write_tb   : std_logic_vector(31 downto 0);
+   signal addr_read_tb           : std_logic_vector(7 downto 0);
+   signal addr_write_tb          : std_logic_vector(7 downto 0);
+   signal write_enable_tb        : std_logic;
 
 begin
 
@@ -37,8 +37,8 @@ begin
    port map (
       i_rst                => rst_tb,
       i_clk                => clk_tb,
-      i_instruction_read        => instruction_read_tb,
-      o_instruction_write      => instruction_write_tb,
+      i_instruction_read   => instruction_read_tb,
+      o_instruction_write  => instruction_write_tb,
       o_addr_read          => addr_read_tb,
       o_addr_write         => addr_write_tb,
       o_write_enable       => write_enable_tb
@@ -55,10 +55,14 @@ begin
    p_tb : process
    begin
       
-      rst_tb            <= '1';
-      instruction_read_tb    <= (others => '0');
+      rst_tb               <= '1';
+      instruction_read_tb  <= (others => '0');
       wait for 20 ns;
-      rst_tb            <= '0';
+      rst_tb               <= '0';
+
+      instruction_read_tb  <= x"001101b3"; -- add x3 x2 x1
+      wait for 5 ns;
+      instruction_read_tb  <= x"40308133"; -- sub x2 x1 x3
 
       wait for 25 ns;
       stop(2);
