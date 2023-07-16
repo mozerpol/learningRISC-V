@@ -5,12 +5,13 @@ library ieee;
 library std;
   use std.env.all;
 
-entity main_tb is
-end main_tb;
+entity core_tb is
+end core_tb;
 
-architecture tb of main_tb is
 
-   component main is
+architecture tb of core_tb is
+
+   component core is
    port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
@@ -20,7 +21,7 @@ architecture tb of main_tb is
       o_addr_write         : out std_logic_vector(7 downto 0);
       o_write_enable       : out std_logic
    );
-   end component main;
+   end component core;
 
    signal rst_tb              : std_logic;
    signal clk_tb              : std_logic;
@@ -32,7 +33,7 @@ architecture tb of main_tb is
 
 begin
 
-   inst_main : component main
+   inst_core : component core
    port map (
       i_rst                => rst_tb,
       i_clk                => clk_tb,
