@@ -35,7 +35,7 @@ begin
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         -- Nothing
+         gpr <= (others => (others => '0'));
       elsif (i_clk'event and i_clk = '1') then
          if (i_reg_wr_ctrl = '1') then
             gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
