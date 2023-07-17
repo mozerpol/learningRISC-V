@@ -30,6 +30,8 @@ architecture tb of core_tb is
    signal addr_read_tb           : std_logic_vector(7 downto 0);
    signal addr_write_tb          : std_logic_vector(7 downto 0);
    signal write_enable_tb        : std_logic;
+   type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
+   alias gpr_spy is <<signal .core_tb.inst_core.inst_reg_file.gpr: t_gpr >>;
 
 begin
 
@@ -59,10 +61,18 @@ begin
       instruction_read_tb  <= (others => '0');
       wait for 20 ns;
       rst_tb               <= '0';
-
-      instruction_read_tb  <= x"001101b3"; -- add x3 x2 x1
+      
+      -- addi x1, x0, 10 - Add x0 and 10, save in x1
+      instruction_read_tb  <= x"00a00093";
       wait for 5 ns;
-      instruction_read_tb  <= x"40308133"; -- sub x2 x1 x3
+      -- addi x2, x0, -667
+      instruction_read_tb  <= x"d6500113";
+      wait for 5 ns;
+      -- add x3, x2, x1 - Add x2 and x1, save in x3
+      instruction_read_tb  <= x"001101b3";
+      wait for 5 ns;
+
+
 
       wait for 25 ns;
       stop(2);
