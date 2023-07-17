@@ -63,17 +63,17 @@ begin
       wait until rising_edge(clk_tb);
       rst_tb               <= '0';
       
-      -- addi x1, x0, 10 - Add x0 and 10, save 10 in x1. x1 = 10 = A
+      -- addi x1, x0, 10      ---- x1  =  x0  +  10    = 10
       instruction_read_tb  <= x"00a00093";
       wait until rising_edge(clk_tb);
-      -- addi x2, x0, -667, x2 = -667 = FD65
+      -- addi x2, x0, -667    ---- x2  =  x0  + (-667) = -667
       instruction_read_tb  <= x"d6500113";
       wait until rising_edge(clk_tb);
-      -- add x3, x2, x1 - x3 = -657 = FD6F
+      -- add x3, x2, x1       ---- x3  =  x2  + x1     = -657
       instruction_read_tb  <= x"001101b3";
       wait until rising_edge(clk_tb);
-      -- 
-      instruction_read_tb  <= x"";
+      -- sub x3, x1, x2       ---- x3  =  x1  - x2     = 677
+      instruction_read_tb  <= x"402081b3";
       wait until rising_edge(clk_tb);
 
 
