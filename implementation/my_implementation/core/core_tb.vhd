@@ -75,8 +75,18 @@ begin
       -- sub x3, x1, x2       ---- x3  =  x1  - x2     = 677
       instruction_read_tb  <= x"402081b3";
       wait until rising_edge(clk_tb);
-
-
+      -- slti x4, x2, 20      ---- x4  =  x2  > 20     = 1
+      instruction_read_tb  <= x"01412213";
+      wait until rising_edge(clk_tb);
+      -- sll x5, x4, x1       ---- x5  = x4  << x1     = 1024
+      instruction_read_tb  <= x"001212b3";
+      wait until rising_edge(clk_tb);
+      -- xori x4, x4, 1       ---- X4  = X4  xori 1    = 0
+      instruction_read_tb  <= x"00124213";
+      wait until rising_edge(clk_tb);
+      -- sra x3, x1, x2       ---- x3  = x1 >>  x2     = 0
+      instruction_read_tb  <= x"4020d1b3";
+      wait until rising_edge(clk_tb);
 
       wait for 25 ns;
       stop(2);
