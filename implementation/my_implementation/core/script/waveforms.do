@@ -60,7 +60,7 @@ add wave         -group REG_FILE -radix bin     /core_tb/inst_core/inst_reg_file
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/i_alu_result
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/o_rs1_data
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/o_rs2_data
-add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/gpr
+add wave         -group REG_FILE -radix dec     /core_tb/inst_core/inst_reg_file/gpr
    
 ##### Waveform window settings: #####
 quietly wave cursor active 1
