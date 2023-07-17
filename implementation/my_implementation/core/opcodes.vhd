@@ -45,15 +45,14 @@ package opcodesPkg is
    constant C_FUNC3_ORI       : std_logic_vector(2 downto 0) := "110";
    constant C_FUNC3_ANDI      : std_logic_vector(2 downto 0) := "111";
    constant C_FUNC3_SLLI      : std_logic_vector(2 downto 0) := "001";
-   constant C_FUNC3_SRLI      : std_logic_vector(2 downto 0) := "101";
-   constant C_FUNC3_SRAI      : std_logic_vector(2 downto 0) := "101";
+   constant C_FUNC3_SRLI_SRAI : std_logic_vector(2 downto 0) := "101";
    
    --''''''''''''''''''--
    --   FUNC7 OP_IMM   --
    --,,,,,,,,,,,,,,,,,,--
    constant C_FUNC7_SRLI      : std_logic_vector(6 downto 0) := "0000000";
-   constant C_FUNC7_SLLI      : std_logic_vector(6 downto 0) := "0000000";
    constant C_FUNC7_SRAI      : std_logic_vector(6 downto 0) := "0100000";
+   constant C_FUNC7_SLLI      : std_logic_vector(6 downto 0) := "0000000";
    
    --''''''''''''''''''--
    --     FUNC3 OP     --
