@@ -36,19 +36,32 @@ begin
          case i_opcode(6 downto 2) is
             when C_OPCODE_OP =>
                case i_func3 is
-                  when C_FUNC3_ADD_SUB => 
+                  when C_FUNC3_ADD_SUB =>
                      o_alu_control <= C_SUB when i_func7 = C_FUNC7_SUB else C_ADD;
-                  when C_FUNC3_SLL     => o_alu_control <= C_SLL;
-                  when C_FUNC3_SLT     => o_alu_control <= C_SLT;
-                  when C_FUNC3_SLTU    => o_alu_control <= C_SLTU;
-                  when C_FUNC3_XOR     => o_alu_control <= C_XOR;
-                  when C_FUNC3_SRL_SRA =>
+                  when C_FUNC3_SLL        => o_alu_control <= C_SLL;
+                  when C_FUNC3_SLT        => o_alu_control <= C_SLT;
+                  when C_FUNC3_SLTU       => o_alu_control <= C_SLTU;
+                  when C_FUNC3_XOR        => o_alu_control <= C_XOR;
+                  when C_FUNC3_SRL_SRA    =>
                      o_alu_control <= C_SRA when i_func7 = C_FUNC7_SRA else C_SRL;
-                  when C_FUNC3_OR      => o_alu_control <= C_OR;
-                  when C_FUNC3_AND     => o_alu_control <= C_AND;
-                  when others          => o_alu_control <= (others => '0');
+                  when C_FUNC3_OR         => o_alu_control <= C_OR;
+                  when C_FUNC3_AND        => o_alu_control <= C_AND;
+                  when others             => o_alu_control <= (others => '0');
                end case;
-            when others => 
+            when C_OPCODE_OPIMM =>
+               case i_func3 is
+                  when C_FUNC3_ADDI       => o_alu_control <= C_ADDI;
+                  when C_FUNC3_SLTI       => o_alu_control <= C_SLTI;
+                  when C_FUNC3_SLTIU      => o_alu_control <= C_SLTIU;
+                  when C_FUNC3_XORI       => o_alu_control <= C_XORI;
+                  when C_FUNC3_ORI        => o_alu_control <= C_ORI;
+                  when C_FUNC3_ANDI       => o_alu_control <= C_ANDI;
+                  when C_FUNC3_SLLI       => o_alu_control <= C_SLLI;
+                  when C_FUNC3_SRLI_SRAI  =>
+                     o_alu_control <= C_SRLI when i_func7 = C_FUNC7_SRLI else C_SRAI;
+                  when others             => o_alu_control <= (others => '0');
+               end case;
+            when others =>
                o_alu_control     <= (others => '0');
          end case;
       end if;
@@ -63,6 +76,8 @@ begin
          if (i_opcode(6 downto 2) = C_OPCODE_OP) then
             o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
             o_alu_mux_2_ctrl <= '0'; -- Select rs2 data as operand
+         elsif (i_opcode(6 downto 2) = C_OPCODE_OPIMM) then
+            o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
          end if;
       end if;
    end process p_alu_mux;
@@ -73,10 +88,10 @@ begin
          o_reg_wr_ctrl <= '0';
       else
          case i_opcode(6 downto 2) is
-            when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI | 
+            when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
                  C_OPCODE_OP =>
                   o_reg_wr_ctrl <= '1';
-            -- when C_OPCODE_LOAD => 
+            -- when C_OPCODE_LOAD =>
             when others => o_reg_wr_ctrl <= '0';
          end case;
       end if;
