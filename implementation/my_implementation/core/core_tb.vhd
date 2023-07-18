@@ -87,6 +87,16 @@ begin
       -- sra x3, x1, x2       ---- x3  = x1 >>  x2     = 0
       instruction_read_tb  <= x"4020d1b3";
       wait until rising_edge(clk_tb);
+      ---- LUI ----
+      -- lui x1, 0xFFFFF
+      instruction_read_tb  <= x"fffff0b7";
+      wait until rising_edge(clk_tb);
+      -- lui x1, 0x123
+      instruction_read_tb  <= x"001230b7";
+      wait until rising_edge(clk_tb);
+      -- lui x1, 0x9
+      instruction_read_tb  <= x"000090b7";
+      wait until rising_edge(clk_tb);
 
       wait for 25 ns;
       stop(2);
