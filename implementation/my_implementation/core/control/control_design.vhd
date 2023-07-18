@@ -61,6 +61,7 @@ begin
                      o_alu_control <= C_SRLI when i_func7 = C_FUNC7_SRLI else C_SRAI;
                   when others             => o_alu_control <= (others => '0');
                end case;
+            when C_OPCODE_LUI => o_alu_control <= C_LUI;
             when others =>
                o_alu_control     <= (others => '0');
          end case;
@@ -76,8 +77,11 @@ begin
          if (i_opcode(6 downto 2) = C_OPCODE_OP) then
             o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
             o_alu_mux_2_ctrl <= '0'; -- Select rs2 data as operand
+         -- elsif (i_opcode(6 downto 2) = (C_OPCODE_OPIMM or C_OPCODE_LUI)) then
          elsif (i_opcode(6 downto 2) = C_OPCODE_OPIMM) then
             o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
+         elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
+            o_alu_mux_2_ctrl <= '1';
          end if;
       end if;
    end process p_alu_mux;

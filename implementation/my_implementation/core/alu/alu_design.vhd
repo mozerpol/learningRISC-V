@@ -53,6 +53,7 @@ begin
                o_alu_result <= (0 => '1', others => '0') when 
                         unsigned(i_alu_operand_1) < unsigned(i_alu_operand_2) else
                         (others => '0'); 
+            when C_LUI => o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
             when others => o_alu_result <= (others => '0');
          end case;
       end if;
