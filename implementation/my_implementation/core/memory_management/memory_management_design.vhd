@@ -22,6 +22,14 @@ architecture rtl of memory_management is
 
 begin
 
-
+   p_memory_management : process(all)
+   begin
+      if (i_rst = '1') then
+         o_read_addr    <= (others => '0');
+         o_write_addr   <= (others => '0');
+         o_write_data   <= (others => '0');
+      else
+      end if;
+   end process p_memory_management;
 
 end architecture rtl;

@@ -49,6 +49,14 @@ begin
    p_tb : process
    begin
 
+      rst_tb         <= '1';
+      alu_out_tb     <= (others => '0');
+      rs2_data_tb    <= (others => '0');
+      alu_control_tb <= (others => '0');
+      wait for 5 ns;
+      rst_tb         <= '0';
+      
+
 
       wait for 25 ns;
       stop(2);
