@@ -51,6 +51,14 @@ add wave         -group DECODER -radix dec      /core_tb/inst_core/inst_decoder/
 add wave         -group DECODER -radix bin      /core_tb/inst_core/inst_decoder/o_func3
 add wave         -group DECODER -radix bin      /core_tb/inst_core/inst_decoder/o_func7
 
+add wave         -group MEM_MNGT -radix hex     /core_tb/inst_core/inst_memory_management/i_rst 
+add wave         -group MEM_MNGT -radix hex     /core_tb/inst_core/inst_memory_management/i_alu_out 
+add wave         -group MEM_MNGT -radix hex     /core_tb/inst_core/inst_memory_management/i_rs2_data 
+add wave         -group MEM_MNGT -radix dec     /core_tb/inst_core/inst_memory_management/i_alu_control 
+add wave         -group MEM_MNGT -radix dec     /core_tb/inst_core/inst_memory_management/o_read_addr 
+add wave         -group MEM_MNGT -radix dec     /core_tb/inst_core/inst_memory_management/o_write_addr 
+add wave         -group MEM_MNGT -radix hex     /core_tb/inst_core/inst_memory_management/o_write_data 
+
 add wave         -group REG_FILE -radix bin     /core_tb/inst_core/inst_reg_file/i_rst 
 add wave         -group REG_FILE -radix bin     /core_tb/inst_core/inst_reg_file/i_clk 
 add wave         -group REG_FILE -radix dec     /core_tb/inst_core/inst_reg_file/i_rs1_addr
@@ -60,7 +68,7 @@ add wave         -group REG_FILE -radix bin     /core_tb/inst_core/inst_reg_file
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/i_alu_result
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/o_rs1_data
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/o_rs2_data
-add wave         -group REG_FILE -radix dec     /core_tb/inst_core/inst_reg_file/gpr
+add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/gpr
    
 ##### Waveform window settings: #####
 quietly wave cursor active 1
