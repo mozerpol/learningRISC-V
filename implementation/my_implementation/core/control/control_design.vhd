@@ -20,7 +20,8 @@ entity control is
       o_alu_mux_1_ctrl  : out std_logic;
       o_alu_mux_2_ctrl  : out std_logic;
       o_alu_control     : out std_logic_vector(5 downto 0);
-      o_reg_wr_ctrl     : out std_logic
+      o_reg_wr_ctrl     : out std_logic;
+      o_ram_wr_ctrl     : out std_logic
    );
 end entity control;
 
@@ -65,7 +66,7 @@ begin
             when C_OPCODE_LOAD   =>
                case i_func3 is
                   when C_FUNC3_LB         => o_alu_control <= C_LB;
-                  when C_FUNC3_LH         => o_alu_control <= C_LH
+                  when C_FUNC3_LH         => o_alu_control <= C_LH;
                   when C_FUNC3_LW         => o_alu_control <= C_LW;
                   when C_FUNC3_LBU        => o_alu_control <= C_LBU;
                   when C_FUNC3_LHU        => o_alu_control <= C_LHU;
@@ -118,5 +119,17 @@ begin
          end case;
       end if;
    end process;
+
+   p_memory_management : process(all)
+   begin
+      if (i_rst = '1') then
+        o_ram_wr_ctrl <= '0';
+      else
+         case i_opcode(6 downto 2) is
+            when C_OPCODE_STORE  => o_ram_wr_ctrl <= '1';
+            when others          => o_ram_wr_ctrl <= '0'; 
+         end case;
+      end if;
+   end process p_memory_management;
 
 end architecture rtl;
