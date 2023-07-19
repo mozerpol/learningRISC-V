@@ -7,6 +7,12 @@
 
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_rst 
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_alu_out
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_rs2_data
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_alu_control
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/o_read_addr
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/o_write_addr
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/o_write_data
 
 
 ##### Waveform window settings: #####
