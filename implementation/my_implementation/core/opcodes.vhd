@@ -89,9 +89,7 @@ package opcodesPkg is
    --,,,,,,,,,,,,,,,,,,,,,,--
    constant C_FUNC3_SB        : std_logic_vector(2 downto 0) := "000"; 
    constant C_FUNC3_SH        : std_logic_vector(2 downto 0) := "001"; 
-   constant C_FUNC3_SW        : std_logic_vector(2 downto 0) := "010"; 
-   constant C_FUNC3_SBU       : std_logic_vector(2 downto 0) := "100"; 
-   constant C_FUNC3_SHU       : std_logic_vector(2 downto 0) := "101";
+   constant C_FUNC3_SW        : std_logic_vector(2 downto 0) := "010";
 
 end;
 
