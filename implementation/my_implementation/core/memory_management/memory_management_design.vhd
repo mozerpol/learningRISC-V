@@ -5,6 +5,9 @@ library ieee;
 library memory_management_lib;
    use memory_management_lib.all;
    use memory_management_lib.memory_management_pkg.all;
+library alu_lib;
+   use alu_lib.alu_pkg.all;
+
 
 entity memory_management is
    port (
@@ -29,6 +32,12 @@ begin
          o_write_addr   <= (others => '0');
          o_write_data   <= (others => '0');
       else
+         case i_alu_control is
+            when C_SW   => 
+               o_write_addr <= i_alu_out(7 downto 0);
+               o_write_data <= i_rs2_data;
+            when others => 
+         end case;
       end if;
    end process p_memory_management;
 
