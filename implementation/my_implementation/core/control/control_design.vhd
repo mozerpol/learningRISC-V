@@ -61,9 +61,24 @@ begin
                      o_alu_control <= C_SRLI when i_func7 = C_FUNC7_SRLI else C_SRAI;
                   when others             => o_alu_control <= (others => '0');
                end case;
-            when C_OPCODE_LUI => o_alu_control <= C_LUI;
-            when others =>
-               o_alu_control     <= (others => '0');
+            when C_OPCODE_LUI    => o_alu_control <= C_LUI;
+            when C_OPCODE_LOAD   =>
+               case i_func3 is
+                  when C_FUNC3_LB         => o_alu_control <= C_LB;
+                  when C_FUNC3_LH         => o_alu_control <= C_LH
+                  when C_FUNC3_LW         => o_alu_control <= C_LW;
+                  when C_FUNC3_LBU        => o_alu_control <= C_LBU;
+                  when C_FUNC3_LHU        => o_alu_control <= C_LHU;
+                  when others             => o_alu_control <= (others => '0');
+               end case;
+            when C_OPCODE_STORE  =>
+               case i_func3 is
+                  when C_FUNC3_SB         => o_alu_control <= C_SB;
+                  when C_FUNC3_SH         => o_alu_control <= C_SH;
+                  when C_FUNC3_SW         => o_alu_control <= C_SW;
+                  when others             => o_alu_control <= (others => '0');
+               end case;
+            when others    => o_alu_control  <= (others => '0');
          end case;
       end if;
    end process p_alu;
