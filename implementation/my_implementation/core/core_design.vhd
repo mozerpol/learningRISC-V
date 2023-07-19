@@ -24,7 +24,10 @@ library decoder_lib;
    use decoder_lib.decoder_pkg.all;
 library reg_file_lib;
    use reg_file_lib.all;
-   use reg_file_lib.reg_file_pkg.all; 
+   use reg_file_lib.reg_file_pkg.all;
+library memory_management_lib;
+   use memory_management_lib.all;
+   use memory_management_lib.memory_management_pkg.all;
    
    
 entity core is
@@ -81,7 +84,8 @@ architecture rtl of core is
          o_alu_mux_1_ctrl  : out std_logic;
          o_alu_mux_2_ctrl  : out std_logic;
          o_alu_control     : out std_logic_vector(5 downto 0);
-         o_reg_wr_ctrl     : out std_logic
+         o_reg_wr_ctrl     : out std_logic;
+         o_ram_wr_ctrl     : out std_logic
       );
    end component control;
 
@@ -112,6 +116,18 @@ architecture rtl of core is
          o_rs2_data     : out std_logic_vector(31 downto 0)
       );
    end component reg_file;
+   
+   component memory_management is
+      port (
+         i_rst          : in std_logic;
+         i_alu_out      : in std_logic_vector(31 downto 0);
+         i_rs2_data     : in std_logic_vector(31 downto 0);
+         i_alu_control  : in std_logic_vector(5 downto 0);
+         o_read_addr    : out std_logic_vector(7 downto 0);
+         o_write_addr   : out std_logic_vector(7 downto 0);
+         o_write_data   : out std_logic_vector(31 downto 0)
+      );
+   end component memory_management;
 
    signal rst              : std_logic;
    signal clk              : std_logic;
@@ -134,6 +150,11 @@ architecture rtl of core is
    signal rs2_addr         : std_logic_vector(4 downto 0);
    signal rd_addr          : std_logic_vector(4 downto 0);
    signal reg_wr_ctrl      : std_logic;
+   signal ram_wr_ctrl      : std_logic;
+   signal read_addr        : std_logic_vector(7 downto 0);
+   signal write_addr       : std_logic_vector(7 downto 0);
+   signal write_data       : std_logic_vector(31 downto 0);
+
 
 begin
 
@@ -173,7 +194,8 @@ begin
       o_alu_mux_1_ctrl  => alu_mux_1_ctrl,
       o_alu_mux_2_ctrl  => alu_mux_2_ctrl,
       o_alu_control     => alu_control,
-      o_reg_wr_ctrl     => reg_wr_ctrl
+      o_reg_wr_ctrl     => reg_wr_ctrl,
+      o_ram_wr_ctrl     => ram_wr_ctrl
    );
 
    inst_decoder : component decoder
@@ -201,19 +223,34 @@ begin
       o_rs1_data     => rs1_data,
       o_rs2_data     => rs2_data
    ); 
+   
+   inst_memory_management : component memory_management
+   port map (
+      i_rst          => rst,
+      i_alu_out      => alu_result,
+      i_rs2_data     => rs2_data,
+      i_alu_control  => alu_control,
+      o_read_addr    => read_addr,
+      o_write_addr   => write_addr,
+      o_write_data   => write_data
+   ); 
 
-   rst               <= i_rst;
-   clk               <= i_clk;
+   rst                  <= i_rst;
+   clk                  <= i_clk;
+   o_instruction_write  <= write_data;
+   o_addr_read          <= read_addr;
+   o_addr_write         <= write_addr;
+   o_write_enable       <= ram_wr_ctrl;
 
-   p_core : process(all)
-   begin
-      if (i_rst) then
-         o_instruction_write  <= (others => '0');
-         o_addr_read          <= (others => '0');
-         o_addr_write         <= (others => '0');
-         o_write_enable       <= '0';
-      -- elsif (clk'event and clk = '1') then
-      end if;
-   end process p_core;
+--   p_core : process(all)
+--   begin
+--      if (i_rst) then
+--         o_instruction_write  <= (others => '0');
+--         o_addr_read          <= (others => '0');
+--         o_addr_write         <= (others => '0');
+--         o_write_enable       <= '0';
+--      -- elsif (clk'event and clk = '1') then
+--      end if;
+--   end process p_core;
 
 end architecture rtl;
