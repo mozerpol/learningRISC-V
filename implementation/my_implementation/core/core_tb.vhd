@@ -97,6 +97,16 @@ begin
       -- lui x1, 0x9
       instruction_read_tb  <= x"000090b7";
       wait until rising_edge(clk_tb);
+      ---- STORE ----
+      -- sw x1 8(x3)
+      instruction_read_tb  <= x"0011a423";
+      wait until rising_edge(clk_tb);
+      -- addi x3 x3 12
+      instruction_read_tb  <= x"00c18193";
+      wait until rising_edge(clk_tb);
+      -- sw x1 4(x3)
+      instruction_read_tb  <= x"0011a223";
+      wait until rising_edge(clk_tb);
 
       wait for 25 ns;
       stop(2);
