@@ -26,26 +26,26 @@ begin
          o_alu_result   <= (others => '0');
       else
          case i_alu_control is
-            when C_ADD | C_ADDI => 
+            when C_ADD | C_ADDI  => 
                o_alu_result <= i_alu_operand_1 + i_alu_operand_2; 
-            when C_SUB  => 
+            when C_SUB           => 
                o_alu_result <= i_alu_operand_1 - i_alu_operand_2; 
-            when C_XOR | C_XORI => 
+            when C_XOR | C_XORI  => 
                o_alu_result <= i_alu_operand_1 xor i_alu_operand_2; 
-            when C_OR  | C_ORI  => 
+            when C_OR  | C_ORI   => 
                o_alu_result <= i_alu_operand_1 or i_alu_operand_2; 
-            when C_AND | C_ANDI =>
+            when C_AND | C_ANDI  =>
                o_alu_result <= i_alu_operand_1 and i_alu_operand_2; 
-            when C_SLL | C_SLLI => 
+            when C_SLL | C_SLLI  => 
                o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) sll 
                         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
-            when C_SRL | C_SRLI => 
+            when C_SRL | C_SRLI  => 
                o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) srl 
                         to_integer(unsigned(i_alu_operand_2(4 downto 0)))); 
-            when C_SRA | C_SRAI => 
+            when C_SRA | C_SRAI  => 
                o_alu_result <= std_logic_vector(signed(i_alu_operand_1) sra 
                         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
-            when C_SLT | C_SLTI => 
+            when C_SLT | C_SLTI  => 
                o_alu_result <= (0 => '1', others => '0') when 
                         signed(i_alu_operand_1) < signed(i_alu_operand_2) else 
                         (others => '0');
@@ -53,7 +53,10 @@ begin
                o_alu_result <= (0 => '1', others => '0') when 
                         unsigned(i_alu_operand_1) < unsigned(i_alu_operand_2) else
                         (others => '0'); 
-            when C_LUI => o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
+            when C_LUI           => 
+               o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
+            when C_SW            =>
+               o_alu_result <= i_alu_operand_1 + i_alu_operand_2; 
             when others => o_alu_result <= (others => '0');
          end case;
       end if;
