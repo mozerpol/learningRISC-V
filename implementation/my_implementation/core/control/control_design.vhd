@@ -97,6 +97,9 @@ begin
             o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
          elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
             o_alu_mux_2_ctrl <= '1';
+         elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
+            o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
+            o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
          end if;
       end if;
    end process p_alu_mux;
@@ -111,7 +114,7 @@ begin
                  C_OPCODE_OP =>
                   o_reg_wr_ctrl <= '1';
             -- when C_OPCODE_LOAD =>
-            when others => o_reg_wr_ctrl <= '0';
+            when others => o_reg_wr_ctrl <= '0'; -- C_OPCODE_STORE
          end case;
       end if;
    end process;
