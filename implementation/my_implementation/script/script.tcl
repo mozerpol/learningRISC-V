@@ -59,6 +59,12 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
 
 
+set hdl_dir                "../core/memory_management"
+set library_name           "memory_management_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/memory_management_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/memory_management_design.vhd
+
+
 set hdl_dir                "../core"
 set library_name           "core_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/core_pkg.vhd
