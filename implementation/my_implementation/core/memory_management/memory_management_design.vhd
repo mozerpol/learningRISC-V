@@ -11,13 +11,13 @@ library alu_lib;
 
 entity memory_management is
    port (
-      i_rst          : in std_logic;
-      i_alu_result   : in std_logic_vector(31 downto 0);
-      i_rs2_data     : in std_logic_vector(31 downto 0);
-      i_alu_control  : in std_logic_vector(5 downto 0);
-      o_ram_read_addr    : out std_logic_vector(7 downto 0);
-      o_ram_write_addr   : out std_logic_vector(7 downto 0);
-      o_ram_write_data   : out std_logic_vector(31 downto 0)
+      i_rst             : in std_logic;
+      i_alu_result      : in std_logic_vector(31 downto 0);
+      i_rs2_data        : in std_logic_vector(31 downto 0);
+      i_alu_control     : in std_logic_vector(5 downto 0);
+      o_ram_read_addr   : out std_logic_vector(7 downto 0);
+      o_ram_write_addr  : out std_logic_vector(7 downto 0);
+      o_ram_write_data  : out std_logic_vector(31 downto 0)
    );
 end entity memory_management;
 
