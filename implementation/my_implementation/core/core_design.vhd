@@ -28,6 +28,9 @@ library reg_file_lib;
 library memory_management_lib;
    use memory_management_lib.all;
    use memory_management_lib.memory_management_pkg.all;
+library program_counter_lib;
+   use program_counter_lib.all;
+   use program_counter_lib.program_counter_pkg.all;
    
    
 entity core is
@@ -85,7 +88,8 @@ architecture rtl of core is
          o_alu_mux_2_ctrl  : out std_logic;
          o_alu_control     : out std_logic_vector(5 downto 0);
          o_reg_wr_ctrl     : out std_logic;
-         o_ram_wr_ctrl     : out std_logic
+         o_ram_wr_ctrl     : out std_logic;
+         o_pc_ctrl         : out std_logic_vector(1 downto 0)
       );
    end component control;
 
@@ -119,15 +123,25 @@ architecture rtl of core is
    
    component memory_management is
       port (
-      i_rst             : in std_logic;
-      i_alu_result      : in std_logic_vector(31 downto 0);
-      i_rs2_data        : in std_logic_vector(31 downto 0);
-      i_alu_control     : in std_logic_vector(5 downto 0);
-      o_ram_read_addr   : out std_logic_vector(7 downto 0);
-      o_ram_write_addr  : out std_logic_vector(7 downto 0);
-      o_ram_write_data  : out std_logic_vector(31 downto 0)
+         i_rst             : in std_logic;
+         i_alu_result      : in std_logic_vector(31 downto 0);
+         i_rs2_data        : in std_logic_vector(31 downto 0);
+         i_alu_control     : in std_logic_vector(5 downto 0);
+         o_ram_read_addr   : out std_logic_vector(7 downto 0);
+         o_ram_write_addr  : out std_logic_vector(7 downto 0);
+         o_ram_write_data  : out std_logic_vector(31 downto 0)
       );
    end component memory_management;
+   
+   component program_counter is
+      port (
+         i_rst          : in std_logic;
+         i_clk          : in std_logic;
+         i_alu_result   : in std_logic_vector(31 downto 0);
+         i_pc_ctrl      : in std_logic_vector(1 downto 0);
+         o_pc_addr      : out std_logic_vector(31 downto 0)
+      );
+   end component program_counter;
 
    signal rst              : std_logic;
    signal clk              : std_logic;
@@ -154,7 +168,7 @@ architecture rtl of core is
    signal read_addr        : std_logic_vector(7 downto 0);
    signal write_addr       : std_logic_vector(7 downto 0);
    signal write_data       : std_logic_vector(31 downto 0);
-
+   signal pc_ctrl          : std_logic_vector(1 downto 0);
 
 begin
 
@@ -195,7 +209,8 @@ begin
       o_alu_mux_2_ctrl  => alu_mux_2_ctrl,
       o_alu_control     => alu_control,
       o_reg_wr_ctrl     => reg_wr_ctrl,
-      o_ram_wr_ctrl     => ram_wr_ctrl
+      o_ram_wr_ctrl     => ram_wr_ctrl,
+      o_pc_ctrl         => pc_ctrl
    );
 
    inst_decoder : component decoder
@@ -234,6 +249,16 @@ begin
       o_ram_write_addr  => o_addr_write,
       o_ram_write_data  => o_instruction_write
    );
+      
+   inst_program_counter : component program_counter
+   port map (
+      i_rst             => rst,
+      i_clk             => clk,
+      i_alu_result      => alu_result,
+      i_pc_ctrl         => pc_ctrl,
+      o_pc_addr         => pc_addr
+   );
+      
       
    rst                  <= i_rst;
    clk                  <= i_clk;
