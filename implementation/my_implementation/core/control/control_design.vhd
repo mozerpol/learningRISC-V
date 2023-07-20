@@ -21,7 +21,8 @@ entity control is
       o_alu_mux_2_ctrl  : out std_logic;
       o_alu_control     : out std_logic_vector(5 downto 0);
       o_reg_wr_ctrl     : out std_logic;
-      o_ram_wr_ctrl     : out std_logic
+      o_ram_wr_ctrl     : out std_logic;
+      o_pc_ctrl         : out std_logic_vector(1 downto 0)
    );
 end entity control;
 
@@ -133,5 +134,14 @@ begin
          end case;
       end if;
    end process p_memory_management;
+
+   p_program_counter : process(all)
+   begin
+      if (i_rst = '1') then
+         o_pc_ctrl   <= "00";
+      else
+         -- Manage pc depending on instructions
+      end if;
+   end process p_program_counter;
 
 end architecture rtl;
