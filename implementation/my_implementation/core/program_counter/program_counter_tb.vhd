@@ -53,7 +53,16 @@ begin
       pc_ctrl_tb     <= (others => '0');
       wait for 5 ns;
       rst_tb         <= '0';
-
+      pc_ctrl_tb     <= "10";
+      alu_result_tb  <= 32d"16";
+      wait until rising_edge(clk_tb);
+      alu_result_tb  <= (others => '0');
+      wait until rising_edge(clk_tb);
+      pc_ctrl_tb     <= "00";
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      pc_ctrl_tb     <= "01";
        
       wait for 25 ns;
       stop(2); 
