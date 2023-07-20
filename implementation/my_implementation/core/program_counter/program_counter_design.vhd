@@ -22,6 +22,17 @@ begin
 
    p_program_counter : process(all)
    begin
+      if (i_rst = '1') then
+         o_pc_addr   <= (others => '0');
+      elsif (i_clk'event and i_clk = '1') then
+         case i_pc_ctrl is
+            when "00"   => o_pc_addr <= o_pc_addr + 4;
+            when "01"   => o_pc_addr <= o_pc_addr - 4;
+            when "10"   => o_pc_addr <= i_alu_result; 
+            when "11"   => NULL;
+            when others => o_pc_addr <= (others => '0');
+         end case;
+      end if;
    end process p_program_counter;
 
 end architecture rtl;
