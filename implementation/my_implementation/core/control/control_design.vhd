@@ -127,6 +127,8 @@ begin
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_STORE  => o_ram_wr_ctrl <= '1';
+                -- Later add controlling which part of RAM to write depending on
+                -- the instruction
             when others          => o_ram_wr_ctrl <= '0'; 
          end case;
       end if;

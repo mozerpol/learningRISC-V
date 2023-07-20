@@ -36,6 +36,9 @@ begin
             when C_SW   => 
                o_ram_write_addr <= i_alu_result(7 downto 0);
                o_ram_write_data <= i_rs2_data;
+            when C_SH   => 
+               o_ram_write_addr                 <= i_alu_result(7 downto 0);
+               o_ram_write_data(15 downto 0)    <= i_rs2_data(15 downto 0);
             when others => 
          end case;
       end if;
