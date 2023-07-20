@@ -39,6 +39,13 @@ begin
 
    p_tb : process
    begin
+
+      rst_tb         <= '1';
+      alu_result_tb  <= (others => '0');
+      pc_ctrl_tb     <= (others => '0');
+      wait for 5 ns;
+      rst_tb         <= '0';
+
        
       wait for 25 ns;
       stop(2); 
