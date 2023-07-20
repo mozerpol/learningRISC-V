@@ -6,6 +6,11 @@
 
 
 ##### Add waves: #####
+add wave -expand -group DESIGN -radix bin   /program_counter_tb/inst_program_counter/i_rst 
+add wave -expand -group DESIGN -radix bin   /program_counter_tb/inst_program_counter/i_clk 
+add wave -expand -group DESIGN -radix dec   /program_counter_tb/inst_program_counter/i_alu_result 
+add wave -expand -group DESIGN -radix bin   /program_counter_tb/inst_program_counter/i_pc_ctrl 
+add wave -expand -group DESIGN -radix dec   /program_counter_tb/inst_program_counter/o_pc_addr 
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
