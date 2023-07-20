@@ -98,14 +98,14 @@ begin
       instruction_read_tb  <= x"000090b7";
       wait until rising_edge(clk_tb);
       ---- STORE ----
-      -- sw x1 8(x3)
-      instruction_read_tb  <= x"0011a423";
+      -- addi x1 x0 3
+      instruction_read_tb  <= x"00300093";
       wait until rising_edge(clk_tb);
-      -- addi x3 x3 12
-      instruction_read_tb  <= x"00c18193";
+      -- addi x2 x0 0xff
+      instruction_read_tb  <= x"0ff00113";
       wait until rising_edge(clk_tb);
-      -- sw x1 4(x3)
-      instruction_read_tb  <= x"0011a223";
+      -- sw x2 1(x1)
+      instruction_read_tb  <= x"0020a0a3";
       wait until rising_edge(clk_tb);
 
       wait for 25 ns;
