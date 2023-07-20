@@ -40,6 +40,8 @@ add wave         -group CONTROL -radix bin      /core_tb/inst_core/inst_control/
 add wave         -group CONTROL -radix bin      /core_tb/inst_core/inst_control/o_alu_mux_2_ctrl 
 add wave         -group CONTROL -radix bin      /core_tb/inst_core/inst_control/o_alu_control
 add wave         -group CONTROL -radix bin      /core_tb/inst_core/inst_control/o_reg_wr_ctrl
+add wave         -group CONTROL -radix bin      /core_tb/inst_core/inst_control/o_ram_wr_ctrl
+add wave         -group CONTROL -radix bin      /core_tb/inst_core/inst_control/o_pc_ctrl
 
 add wave         -group DECODER -radix bin      /core_tb/inst_core/inst_decoder/i_rst 
 add wave         -group DECODER -radix hex      /core_tb/inst_core/inst_decoder/i_instruction
@@ -69,7 +71,13 @@ add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/o_rs1_data
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/o_rs2_data
 add wave         -group REG_FILE -radix hex     /core_tb/inst_core/inst_reg_file/gpr
-   
+
+add wave         -group PC -radix bin           /core_tb/inst_core/inst_program_counter/i_rst 
+add wave         -group PC -radix bin           /core_tb/inst_core/inst_program_counter/i_clk 
+add wave         -group PC -radix hex           /core_tb/inst_core/inst_program_counter/i_alu_result 
+add wave         -group PC -radix bin           /core_tb/inst_core/inst_program_counter/i_pc_ctrl 
+add wave         -group PC -radix dec           /core_tb/inst_core/inst_program_counter/o_pc_addr 
+
 ##### Waveform window settings: #####
 quietly wave cursor active 1
 configure wave -namecolwidth 194
