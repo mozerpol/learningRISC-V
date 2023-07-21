@@ -17,6 +17,7 @@ architecture tb of memory_management_tb is
    port (
       i_rst             : in std_logic;
       i_alu_result      : in std_logic_vector(31 downto 0);
+      i_pc_addr         : in std_logic_vector(31 downto 0);
       i_rs2_data        : in std_logic_vector(31 downto 0);
       i_alu_control     : in std_logic_vector(5 downto 0);
       o_ram_read_addr   : out std_logic_vector(7 downto 0);
@@ -27,6 +28,7 @@ architecture tb of memory_management_tb is
 
    signal rst_tb              : std_logic;
    signal alu_result_tb       : std_logic_vector(31 downto 0);
+   signal pc_addr_tb          : std_logic_vector(31 downto 0);
    signal rs2_data_tb         : std_logic_vector(31 downto 0);
    signal alu_control_tb      : std_logic_vector(5 downto 0);
    signal ram_read_addr_tb    : std_logic_vector(7 downto 0);
@@ -39,6 +41,7 @@ begin
    port map (
       i_rst             => rst_tb,
       i_alu_result      => alu_result_tb,
+      i_pc_addr         => pc_addr_tb,
       i_rs2_data        => rs2_data_tb,
       i_alu_control     => alu_control_tb,
       o_ram_read_addr   => ram_read_addr_tb,
@@ -53,6 +56,7 @@ begin
       alu_result_tb  <= (others => '0');
       rs2_data_tb    <= (others => '0');
       alu_control_tb <= (others => '0');
+      pc_addr_tb     <= (others => '0');
       wait for 5 ns;
       rst_tb         <= '0';
       
