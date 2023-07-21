@@ -8,6 +8,7 @@
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_rst 
 add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_alu_result
+add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_pc_addr
 add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_rs2_data
 add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/i_alu_control
 add wave -expand -group DESIGN -radix bin /memory_management_tb/inst_memory_management/o_ram_read_addr
