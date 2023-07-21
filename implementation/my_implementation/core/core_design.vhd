@@ -125,6 +125,7 @@ architecture rtl of core is
       port (
          i_rst             : in std_logic;
          i_alu_result      : in std_logic_vector(31 downto 0);
+         i_pc_addr         : in std_logic_vector(31 downto 0);
          i_rs2_data        : in std_logic_vector(31 downto 0);
          i_alu_control     : in std_logic_vector(5 downto 0);
          o_ram_read_addr   : out std_logic_vector(7 downto 0);
@@ -243,6 +244,7 @@ begin
    port map (
       i_rst             => rst,
       i_alu_result      => alu_result,
+      i_pc_addr         => pc_addr,
       i_rs2_data        => rs2_data,
       i_alu_control     => alu_control,
       o_ram_read_addr   => o_addr_read,
@@ -259,10 +261,10 @@ begin
       o_pc_addr         => pc_addr
    );
       
-      
    rst                  <= i_rst;
    clk                  <= i_clk;
    o_write_enable       <= ram_wr_ctrl;
+   
 
 --   p_core : process(all)
 --   begin
