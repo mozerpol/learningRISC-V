@@ -13,6 +13,7 @@ entity memory_management is
    port (
       i_rst             : in std_logic;
       i_alu_result      : in std_logic_vector(31 downto 0);
+      i_pc_addr         : in std_logic_vector(31 downto 0);
       i_rs2_data        : in std_logic_vector(31 downto 0);
       i_alu_control     : in std_logic_vector(5 downto 0);
       o_ram_read_addr   : out std_logic_vector(7 downto 0);
@@ -39,7 +40,7 @@ begin
             when C_SH   => 
                o_ram_write_addr                 <= i_alu_result(7 downto 0);
                o_ram_write_data(15 downto 0)    <= i_rs2_data(15 downto 0);
-            when others => 
+            when others => o_ram_read_addr      <= i_pc_addr(7 downto 0);
          end case;
       end if;
    end process p_memory_management;
