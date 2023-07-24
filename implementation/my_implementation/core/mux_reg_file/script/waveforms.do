@@ -7,6 +7,12 @@
 
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin   /mux_reg_file_tb/inst_mux_reg_file/i_rst
+add wave -expand -group DESIGN -radix bin   /mux_reg_file_tb/inst_mux_reg_file/i_rst 
+add wave -expand -group DESIGN -radix hex   /mux_reg_file_tb/inst_mux_reg_file/i_alu_result 
+add wave -expand -group DESIGN -radix hex   /mux_reg_file_tb/inst_mux_reg_file/i_instruction 
+add wave -expand -group DESIGN -radix bin   /mux_reg_file_tb/inst_mux_reg_file/i_mux_reg_file_ctrl 
+add wave -expand -group DESIGN -radix hex   /mux_reg_file_tb/inst_mux_reg_file/o_rd_data 
+add wave -expand -group DESIGN -radix hex   /mux_reg_file_tb/inst_mux_reg_file/o_instruction 
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
