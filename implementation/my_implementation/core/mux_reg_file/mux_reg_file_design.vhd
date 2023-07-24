@@ -8,7 +8,12 @@ library mux_reg_file_lib;
 
 entity mux_reg_file is
    port (
-      i_rst             : in std_logic
+      i_rst                : in std_logic;
+      i_alu_result         : in std_logic_vector(31 downto 0);
+      i_instruction        : in std_logic_vector(31 downto 0);
+      i_mux_reg_file_ctrl  : in std_logic;
+      o_rd_data            : out std_logic_vector(31 downto 0);
+      o_instruction        : out std_logic_vector(31 downto 0)
    );
 end entity mux_reg_file;
 
