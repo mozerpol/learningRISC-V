@@ -21,4 +21,19 @@ architecture rtl of mux_reg_file is
 
 begin
 
+   p_mux : process(all)
+   begin
+      if (i_rst = '1') then
+         o_rd_data      <= (others => '0');
+         o_instruction  <= (others => '0');
+      else
+         if (i_mux_reg_file_ctrl = '1') then
+            o_rd_data      <= i_instruction;
+         else
+            -- TODO: add i_alu_result handler
+            o_instruction  <= i_instruction;
+         end if;
+      end if;
+   end process p_mux;
+
 end architecture rtl;
