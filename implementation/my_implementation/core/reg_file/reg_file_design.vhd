@@ -14,7 +14,7 @@ entity reg_file is
       i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
       i_rd_addr      : in std_logic_vector(4 downto 0);
       i_reg_wr_ctrl  : in std_logic;
-      i_alu_result   : in std_logic_vector(31 downto 0);
+      i_rd_data      : in std_logic_vector(31 downto 0);
       o_rs1_data     : out std_logic_vector(31 downto 0);
       o_rs2_data     : out std_logic_vector(31 downto 0)
    );
@@ -38,7 +38,7 @@ begin
          gpr <= (others => (others => '0'));
       elsif (i_clk'event and i_clk = '1') then
          if (i_reg_wr_ctrl = '1') then
-            gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
+            gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
          end if;
       end if;
    end process p_reg_file;
