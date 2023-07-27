@@ -71,6 +71,12 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 
+set hdl_dir                "../core/mux_reg_file"
+set library_name           "mux_reg_file_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/mux_reg_file_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/mux_reg_file_design.vhd
+
+
 set hdl_dir                "../core"
 set library_name           "core_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/core_pkg.vhd
