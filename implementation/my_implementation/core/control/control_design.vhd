@@ -14,6 +14,7 @@ library alu_lib;
 entity control is
    port (
       i_rst             : in std_logic;
+      i_clk             : in std_logic;
       i_opcode          : in std_logic_vector(6 downto 0);
       i_func3           : in std_logic_vector(2 downto 0);
       i_func7           : in std_logic_vector(6 downto 0);
@@ -22,7 +23,8 @@ entity control is
       o_alu_control     : out std_logic_vector(5 downto 0);
       o_reg_wr_ctrl     : out std_logic;
       o_ram_wr_ctrl     : out std_logic;
-      o_pc_ctrl         : out std_logic_vector(1 downto 0)
+      o_pc_ctrl         : out std_logic_vector(1 downto 0);
+      o_mux_reg_file_ctrl     : out std_logic
    );
 end entity control;
 
@@ -102,6 +104,9 @@ begin
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
             o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
             o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
+         elsif (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
+            o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
+            o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
          end if;
       end if;
    end process p_alu_mux;
@@ -115,7 +120,8 @@ begin
             when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
                  C_OPCODE_OP =>
                   o_reg_wr_ctrl <= '1';
-            -- when C_OPCODE_LOAD =>
+            when C_OPCODE_LOAD =>
+                  o_reg_wr_ctrl <= '1';
             when others => o_reg_wr_ctrl <= '0'; -- C_OPCODE_STORE
          end case;
       end if;
@@ -140,8 +146,27 @@ begin
       if (i_rst = '1') then
          o_pc_ctrl   <= "00";
       else
+        if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
+            o_pc_ctrl   <= "11";
+        else
+            o_pc_ctrl   <= "00";
+        end if;
          -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
-
+   
+   p_mux_reg_file : process(all)
+   begin
+      if (i_rst = '1') then
+         o_mux_reg_file_ctrl <= '0';
+      else
+         o_mux_reg_file_ctrl <= '0';
+         if (i_func3 = C_FUNC3_LW) then
+            o_mux_reg_file_ctrl <= '1'; -- instruction
+         else
+            o_mux_reg_file_ctrl <= '0'; -- alu_result
+         end if;
+      end if;
+   end process p_mux_reg_file;
+   
 end architecture rtl;
