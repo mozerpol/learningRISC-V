@@ -43,6 +43,8 @@ begin
             when C_SB   =>
                o_ram_write_addr                 <= i_alu_result(7 downto 0);
                o_ram_write_data(7 downto 0)     <= i_rs2_data(7 downto 0);
+            when C_LW   =>
+                o_ram_read_addr      <= i_alu_result(7 downto 0);
             when others =>
                o_ram_read_addr      <= i_pc_addr(7 downto 0);
          end case;
