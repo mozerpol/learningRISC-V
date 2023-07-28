@@ -5,7 +5,7 @@
 # All rights reserved.
 #
 
-vsim -novopt work.rysy_tb -GCODE=code/load_sim.mem
+vsim -voptargs=+acc work.rysy_tb -GCODE=code/load_sim.mem
 
 add wave -position end sim:/rysy_tb/clk
 add wave -position end sim:/rysy_tb/dut/core/rst
