@@ -146,7 +146,7 @@ begin
       if (i_rst = '1') then
          o_pc_ctrl   <= "00";
       else
-        if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
+        if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
             o_pc_ctrl   <= "11";
         else
             o_pc_ctrl   <= "00";
