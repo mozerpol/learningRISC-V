@@ -14,7 +14,6 @@ library alu_lib;
 entity control is
    port (
       i_rst             : in std_logic;
-      i_clk             : in std_logic;
       i_opcode          : in std_logic_vector(6 downto 0);
       i_func3           : in std_logic_vector(2 downto 0);
       i_func7           : in std_logic_vector(6 downto 0);
@@ -22,9 +21,7 @@ entity control is
       o_alu_mux_2_ctrl  : out std_logic;
       o_alu_control     : out std_logic_vector(5 downto 0);
       o_reg_wr_ctrl     : out std_logic;
-      o_ram_wr_ctrl     : out std_logic;
-      o_pc_ctrl         : out std_logic_vector(1 downto 0);
-      o_mux_reg_file_ctrl     : out std_logic
+      o_pc_ctrl         : out std_logic_vector(1 downto 0)
    );
 end entity control;
 
@@ -155,18 +152,5 @@ begin
       end if;
    end process p_program_counter;
    
-   p_mux_reg_file : process(all)
-   begin
-      if (i_rst = '1') then
-         o_mux_reg_file_ctrl <= '0';
-      else
-         o_mux_reg_file_ctrl <= '0';
-         if (i_func3 = C_FUNC3_LW) then
-            o_mux_reg_file_ctrl <= '1'; -- instruction
-         else
-            o_mux_reg_file_ctrl <= '0'; -- alu_result
-         end if;
-      end if;
-   end process p_mux_reg_file;
    
 end architecture rtl;
