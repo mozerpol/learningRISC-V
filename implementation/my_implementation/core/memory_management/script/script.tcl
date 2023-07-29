@@ -1,5 +1,5 @@
 ###### Set module name ######
-set module        "memory_management"
+set module        "ram_management"
 
 
 ###### Include external libraries ######
