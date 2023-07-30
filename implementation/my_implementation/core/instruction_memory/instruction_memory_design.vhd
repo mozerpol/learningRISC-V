@@ -9,7 +9,9 @@ library instruction_memory_lib;
 
 entity instruction_memory is
    port (
-      i_rst             : in std_logic
+      i_rst             : in std_logic;
+      i_ram_read_addr   : in std_logic_vector(31 downto 0);
+      o_instruction     : out std_logic_vector(31 downto 0)
    );
 end entity instruction_memory;
 
@@ -20,7 +22,7 @@ begin
    p_instruction_memory : process(all)
    begin
       if (i_rst = '1') then
-        NULL;
+        o_instruction <= (others => '0');
       else
         NULL;
       end if;
