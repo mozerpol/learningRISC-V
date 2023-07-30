@@ -15,17 +15,23 @@ architecture tb of instruction_memory_tb is
 
    component instruction_memory is
    port (
-      i_rst             : in std_logic
+      i_rst             : in std_logic;
+      i_ram_read_addr   : in std_logic_vector(31 downto 0);
+      o_instruction     : out std_logic_vector(31 downto 0)
    );
    end component instruction_memory;
 
    signal rst_tb              : std_logic;
+   signal ram_read_addr_tb    : std_logic_vector(31 downto 0);
+   signal instruction_tb      : std_logic_vector(31 downto 0);
 
 begin
 
    inst_instruction_memory : component instruction_memory
    port map (
-      i_rst             => rst_tb
+      i_rst             => rst_tb,
+      i_ram_read_addr   => ram_read_addr_tb,
+      o_instruction     => instruction_tb
    );
 
    p_tb : process
