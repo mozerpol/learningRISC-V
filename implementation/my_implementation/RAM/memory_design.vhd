@@ -10,11 +10,10 @@ entity memory is
    port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
-      i_ram_read_addr      : in std_logic_vector(7 downto 0);
-      i_ram_write_addr     : in std_logic_vector(7 downto 0);
-      i_ram_write_data     : in std_logic_vector(31 downto 0);
-      i_ram_write_enable   : in std_logic;
-      o_instruction        : out std_logic_vector(31 downto 0)
+      i_ram_addr           : in std_logic_vector(7 downto 0);
+      i_write_enable       : in std_logic;
+      i_data               : in std_logic_vector(31 downto 0);
+      o_ram_data           : out std_logic_vector(31 downto 0)
    );
 end entity memory;
 
