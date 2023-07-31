@@ -37,9 +37,10 @@ begin
    p_tb : process
    begin
 
-      rst_tb         <= '1';
+      rst_tb            <= '1';
+      ram_read_addr_tb  <= (others => '0');
       wait for 5 ns;
-      rst_tb         <= '0';
+      rst_tb            <= '0';
 
 
       wait for 25 ns;
