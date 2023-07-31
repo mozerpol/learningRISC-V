@@ -17,14 +17,17 @@ end entity instruction_memory;
 
 architecture rtl of instruction_memory is
 
+   signal ram : t_instruction_memory;
+
 begin
 
    p_instruction_memory : process(all)
    begin
       if (i_rst = '1') then
         o_instruction <= (others => '0');
+        ram           <= C_CODE;
       else
-        NULL;
+         o_instruction  <= ram(to_integer(unsigned(i_ram_read_addr)));
       end if;
    end process p_instruction_memory;
 
