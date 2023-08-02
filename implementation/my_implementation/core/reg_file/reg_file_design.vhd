@@ -15,6 +15,7 @@ entity reg_file is
       i_rd_addr      : in std_logic_vector(4 downto 0);
       i_reg_wr_ctrl  : in std_logic;
       i_rd_data      : in std_logic_vector(31 downto 0);
+      i_alu_result   : in std_logic_vector(31 downto 0);
       o_rs1_data     : out std_logic_vector(31 downto 0);
       o_rs2_data     : out std_logic_vector(31 downto 0)
    );
