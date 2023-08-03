@@ -21,7 +21,8 @@ entity control is
       o_alu_mux_2_ctrl  : out std_logic;
       o_pc_ctrl         : out std_logic_vector(1 downto 0);
       o_alu_control     : out std_logic_vector(5 downto 0);
-      o_reg_file_ctrl   : out std_logic
+      o_reg_file_inst_ctrl   : out std_logic;
+      o_reg_file_wr_ctrl   : out std_logic
    );
 end entity control;
 
@@ -111,15 +112,20 @@ begin
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         o_reg_file_ctrl <= '0';
+         o_reg_file_inst_ctrl <= '0';
+         o_reg_file_wr_ctrl <= '0';
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
                  C_OPCODE_OP =>
-                  o_reg_file_ctrl <= '1';
+                  o_reg_file_inst_ctrl <= '1';
+                  o_reg_file_wr_ctrl <= '1';
             when C_OPCODE_LOAD =>
-                  o_reg_file_ctrl <= '1';
-            when others => o_reg_file_ctrl <= '0'; -- C_OPCODE_STORE
+                  o_reg_file_inst_ctrl <= '0';
+                  o_reg_file_wr_ctrl <= '1';
+            when others => 
+            o_reg_file_inst_ctrl <= '0'; -- C_OPCODE_STORE
+            o_reg_file_wr_ctrl <= '0';
          end case;
       end if;
    end process;
