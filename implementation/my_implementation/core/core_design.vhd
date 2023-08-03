@@ -90,7 +90,8 @@ architecture rtl of core is
          o_alu_mux_2_ctrl     : out std_logic;
          o_pc_ctrl            : out std_logic_vector(1 downto 0);
          o_alu_control        : out std_logic_vector(5 downto 0);
-         o_reg_file_ctrl      : out std_logic
+         o_reg_file_wr_ctrl      : out std_logic;
+         o_reg_file_inst_ctrl      : out std_logic
       );
    end component control;
 
@@ -115,7 +116,8 @@ architecture rtl of core is
          i_rs1_addr     : in std_logic_vector(4 downto 0); -- address of rs1
          i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
          i_rd_addr      : in std_logic_vector(4 downto 0);
-         i_reg_wr_ctrl  : in std_logic;
+         i_reg_file_wr_ctrl  : in std_logic;
+         i_reg_file_inst_ctrl  : in std_logic;
          i_rd_data      : in std_logic_vector(31 downto 0);
          i_alu_result   : in std_logic_vector(31 downto 0);
          o_rs1_data     : out std_logic_vector(31 downto 0);
@@ -175,7 +177,6 @@ end component;
    signal rs1_addr            : std_logic_vector(4 downto 0);
    signal rs2_addr            : std_logic_vector(4 downto 0);
    signal rd_addr             : std_logic_vector(4 downto 0);
-   signal reg_wr_ctrl         : std_logic;
    signal ram_wr_ctrl         : std_logic;
    signal addr_read           : std_logic_vector(7 downto 0);
    signal addr_write          : std_logic_vector(7 downto 0);
@@ -184,7 +185,8 @@ end component;
    signal ram_write_data      : std_logic_vector(31 downto 0);
    signal write_data          : std_logic_vector(31 downto 0);
    signal pc_ctrl             : std_logic_vector(1 downto 0);
-   signal reg_file_ctrl       : std_logic;
+   signal reg_file_wr_ctrl       : std_logic;
+   signal reg_file_inst_ctrl       : std_logic;
 
 begin
 
@@ -225,7 +227,8 @@ begin
       o_alu_mux_2_ctrl     => alu_mux_2_ctrl,
       o_pc_ctrl            => pc_ctrl,
       o_alu_control        => alu_control,
-      o_reg_file_ctrl      => reg_file_ctrl
+      o_reg_file_inst_ctrl      => reg_file_inst_ctrl,
+      o_reg_file_wr_ctrl      => reg_file_wr_ctrl
    );
 
    inst_decoder : component decoder
@@ -248,7 +251,8 @@ begin
       i_rs1_addr     => rs1_addr,
       i_rs2_addr     => rs2_addr,  
       i_rd_addr      => rd_addr,   
-      i_reg_wr_ctrl  => reg_wr_ctrl,
+      i_reg_file_wr_ctrl  => reg_file_wr_ctrl,
+      i_reg_file_inst_ctrl  => reg_file_inst_ctrl,
       i_rd_data      => rd_data,
       i_alu_result   => alu_result,
       o_rs1_data     => rs1_data,
@@ -285,6 +289,7 @@ port map (
 
    rst                  <= i_rst;
    clk                  <= i_clk;
+   rd_data              <= i_ram_data_read;
 
 
 --   p_core : process(all)
