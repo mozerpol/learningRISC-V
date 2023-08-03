@@ -15,23 +15,21 @@ architecture tb of core_tb is
    port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
-      i_instruction_read   : in std_logic_vector(31 downto 0);
-      o_instruction_write  : out std_logic_vector(31 downto 0);
-      o_addr_read          : out std_logic_vector(7 downto 0);
-      o_addr_write         : out std_logic_vector(7 downto 0);
+      i_ram_data_read      : in std_logic_vector(31 downto 0);
+      o_ram_data_write     : out std_logic_vector(31 downto 0);
+      o_ram_addr           : out std_logic_vector(7 downto 0);
       o_write_enable       : out std_logic
    );
    end component core;
 
    signal rst_tb                 : std_logic;
    signal clk_tb                 : std_logic;
-   signal instruction_read_tb    : std_logic_vector(31 downto 0);
-   signal instruction_write_tb   : std_logic_vector(31 downto 0);
-   signal addr_read_tb           : std_logic_vector(7 downto 0);
-   signal addr_write_tb          : std_logic_vector(7 downto 0);
+   signal ram_data_read_tb       : std_logic_vector(31 downto 0);
+   signal ram_data_write_tb      : std_logic_vector(31 downto 0);
+   signal ram_addr_tb            : std_logic_vector(7 downto 0);
    signal write_enable_tb        : std_logic;
-   type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
-   alias spy_gpr is <<signal .core_tb.inst_core.inst_reg_file.gpr: t_gpr >>;
+  -- type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
+  -- alias spy_gpr is <<signal .core_tb.inst_core.inst_reg_file.gpr: t_gpr >>;
 
 begin
 
@@ -39,10 +37,9 @@ begin
    port map (
       i_rst                => rst_tb,
       i_clk                => clk_tb,
-      i_instruction_read   => instruction_read_tb,
-      o_instruction_write  => instruction_write_tb,
-      o_addr_read          => addr_read_tb,
-      o_addr_write         => addr_write_tb,
+      i_ram_data_read      => ram_data_read_tb,
+      o_ram_data_write     => ram_data_write_tb,
+      o_ram_addr           => ram_addr_tb,
       o_write_enable       => write_enable_tb
    );
 
@@ -58,24 +55,13 @@ begin
    begin
       
       rst_tb               <= '1';
-      instruction_read_tb  <= (others => '0');
+      ram_data_read_tb  <= (others => '0');
       wait for 20 ns;
       wait until rising_edge(clk_tb);
       rst_tb               <= '0';
   
-      -- addi x1, x0, 2      ---- x1  =  x0  +  2    = 2
-      instruction_read_tb  <= x"00200093";
-      wait until rising_edge(clk_tb);
-      -- addi x4, x0, 10      ---- x4  =  x0  +  10    = 10
-      instruction_read_tb  <= x"00a00213";
-      wait until rising_edge(clk_tb);
-      -- lw x3, 2(x1)    ---- x3  =  data from memory addres 0x4
-      instruction_read_tb  <= x"0020a183";
-      wait until (addr_read_tb = "00000100");
-      instruction_read_tb  <= x"11111111";
-      wait until rising_edge(clk_tb);
-      -- addi x2, x0, -667    ---- x2  =  x0  + (-667) = -667
-      instruction_read_tb  <= x"d6500113";
+      -- add x3, x2, x1       ---- x3  =  x2  + x1     = -657
+      ram_data_read_tb<= x"001101b3";
       wait until rising_edge(clk_tb);
       
       
