@@ -83,24 +83,21 @@ architecture rtl of core is
    component control is
       port (
          i_rst                : in std_logic;
-         i_clk                : in std_logic;
          i_opcode             : in std_logic_vector(6 downto 0);
          i_func3              : in std_logic_vector(2 downto 0);
          i_func7              : in std_logic_vector(6 downto 0);
          o_alu_mux_1_ctrl     : out std_logic;
          o_alu_mux_2_ctrl     : out std_logic;
-         o_alu_control        : out std_logic_vector(5 downto 0);
-         o_reg_wr_ctrl        : out std_logic;
-         o_ram_wr_ctrl        : out std_logic;
          o_pc_ctrl            : out std_logic_vector(1 downto 0);
-         o_mux_reg_file_ctrl  : out std_logic
+         o_alu_control        : out std_logic_vector(5 downto 0);
+         o_reg_file_ctrl      : out std_logic
       );
    end component control;
 
    component decoder is
       port (
          i_rst             : in std_logic;
-         i_instruction_dec : in std_logic_vector(31 downto 0);
+         i_instruction     : in std_logic_vector(31 downto 0);
          o_rd_addr         : out std_logic_vector(4 downto 0);
          o_rs1_addr        : out std_logic_vector(4 downto 0);
          o_rs2_addr        : out std_logic_vector(4 downto 0);
@@ -120,23 +117,23 @@ architecture rtl of core is
          i_rd_addr      : in std_logic_vector(4 downto 0);
          i_reg_wr_ctrl  : in std_logic;
          i_rd_data      : in std_logic_vector(31 downto 0);
+         i_alu_result   : in std_logic_vector(31 downto 0);
          o_rs1_data     : out std_logic_vector(31 downto 0);
          o_rs2_data     : out std_logic_vector(31 downto 0)
       );
    end component reg_file;
 
-   component memory_management is
+   component ram_management is
       port (
          i_rst             : in std_logic;
-         i_alu_result      : in std_logic_vector(31 downto 0);
-         i_pc_addr         : in std_logic_vector(31 downto 0);
-         i_rs2_data        : in std_logic_vector(31 downto 0);
          i_alu_control     : in std_logic_vector(5 downto 0);
-         o_ram_read_addr   : out std_logic_vector(7 downto 0);
-         o_ram_write_addr  : out std_logic_vector(7 downto 0);
-         o_ram_write_data  : out std_logic_vector(31 downto 0)
+         i_alu_result      : in std_logic_vector(31 downto 0);
+         i_rs2_data        : in std_logic_vector(31 downto 0);
+         o_ram_addr        : out std_logic_vector(7 downto 0);
+         o_write_enable    : out std_logic;
+         o_data            : out std_logic_vector(31 downto 0)
       );
-   end component memory_management;
+   end component ram_management;
 
    component program_counter is
       port (
@@ -147,18 +144,15 @@ architecture rtl of core is
          o_pc_addr      : out std_logic_vector(31 downto 0)
       );
    end component program_counter;
+   
+component instruction_memory is
+   port (
+      i_rst             : in std_logic;
+      i_ram_read_addr   : in std_logic_vector(31 downto 0);
+      o_instruction     : out std_logic_vector(31 downto 0)
+   );
+end component;
 
-    component mux_reg_file is
-       port (
-          i_rst                : in std_logic;
-          i_clk                : in std_logic;
-          i_alu_result         : in std_logic_vector(31 downto 0);
-          i_instruction        : in std_logic_vector(31 downto 0);
-          i_mux_reg_file_ctrl  : in std_logic;
-          o_rd_data            : out std_logic_vector(31 downto 0);
-          o_instruction_dec    : out std_logic_vector(31 downto 0)
-       );
-    end component mux_reg_file;
 
    signal rst                 : std_logic;
    signal clk                 : std_logic;
@@ -174,7 +168,6 @@ architecture rtl of core is
    signal imm                 : std_logic_vector(31 downto 0);
    signal opcode              : std_logic_vector(6 downto 0);
    signal instruction         : std_logic_vector(31 downto 0);
-   signal instruction_dec     : std_logic_vector(31 downto 0);
    signal instruction_write   : std_logic_vector(31 downto 0);
    signal rd_data             : std_logic_vector(31 downto 0);
    signal func3               : std_logic_vector(2 downto 0);
@@ -191,7 +184,7 @@ architecture rtl of core is
    signal ram_write_data      : std_logic_vector(31 downto 0);
    signal write_data          : std_logic_vector(31 downto 0);
    signal pc_ctrl             : std_logic_vector(1 downto 0);
-   signal mux_reg_file_ctrl   : std_logic;
+   signal reg_file_ctrl       : std_logic;
 
 begin
 
@@ -225,23 +218,20 @@ begin
    inst_control : component control
    port map (
       i_rst                => rst,
-      i_clk                => clk,
       i_opcode             => opcode,
       i_func3              => func3,
       i_func7              => func7,
       o_alu_mux_1_ctrl     => alu_mux_1_ctrl,
       o_alu_mux_2_ctrl     => alu_mux_2_ctrl,
-      o_alu_control        => alu_control,
-      o_reg_wr_ctrl        => reg_wr_ctrl,
-      o_ram_wr_ctrl        => o_write_enable,
       o_pc_ctrl            => pc_ctrl,
-      o_mux_reg_file_ctrl  => mux_reg_file_ctrl
+      o_alu_control        => alu_control,
+      o_reg_file_ctrl      => reg_file_ctrl
    );
 
    inst_decoder : component decoder
    port map (
       i_rst             => rst,
-      i_instruction_dec => instruction_dec,
+      i_instruction     => instruction,
       o_rd_addr         => rd_addr,
       o_rs1_addr        => rs1_addr,
       o_rs2_addr        => rs2_addr,
@@ -256,24 +246,24 @@ begin
       i_rst          => rst,
       i_clk          => clk,
       i_rs1_addr     => rs1_addr,
-      i_rs2_addr     => rs2_addr,
-      i_rd_addr      => rd_addr,
+      i_rs2_addr     => rs2_addr,  
+      i_rd_addr      => rd_addr,   
       i_reg_wr_ctrl  => reg_wr_ctrl,
       i_rd_data      => rd_data,
+      i_alu_result   => alu_result,
       o_rs1_data     => rs1_data,
       o_rs2_data     => rs2_data
    );
 
-   inst_memory_management : component memory_management
+   inst_ram_management : component ram_management
    port map (
       i_rst             => rst,
-      i_alu_result      => alu_result,
-      i_pc_addr         => pc_addr,
-      i_rs2_data        => rs2_data,
       i_alu_control     => alu_control,
-      o_ram_read_addr   => o_addr_read,
-      o_ram_write_addr  => o_addr_write,
-      o_ram_write_data  => o_instruction_write
+      i_alu_result      => alu_result,
+      i_rs2_data        => rs2_data,
+      o_ram_addr        => o_ram_addr,
+      o_write_enable    => o_write_enable,
+      o_data            => o_ram_data_write
    );
 
    inst_program_counter : component program_counter
@@ -285,21 +275,16 @@ begin
       o_pc_addr         => pc_addr
    );
 
-   inst_mux_reg_file : component mux_reg_file
-   port map (
-      i_rst                => rst,
-      i_clk                => clk,
-      i_alu_result         => alu_result,
-      i_instruction        => instruction,
-      i_mux_reg_file_ctrl  => mux_reg_file_ctrl,
-      o_rd_data            => rd_data,
-      o_instruction_dec    => instruction_dec
+inst_instruction_memory : component instruction_memory
+port map (
+      i_rst             => rst,
+      i_ram_read_addr   => pc_addr,
+      o_instruction     => instruction
    );
 
 
    rst                  <= i_rst;
    clk                  <= i_clk;
-   instruction          <= i_instruction_read;
 
 
 --   p_core : process(all)
