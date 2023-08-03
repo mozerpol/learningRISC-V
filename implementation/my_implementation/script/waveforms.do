@@ -54,7 +54,7 @@ add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/ins
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_alu_mux_1_ctrl 
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_alu_mux_2_ctrl 
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_alu_control
-add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_reg_wr_ctrl
+add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_reg_file_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_ram_wr_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_pc_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_mux_reg_file_ctrl
@@ -90,7 +90,7 @@ add wave         -group REG_FILE -radix bin     /main_tb/inst_main/inst_core/ins
 add wave         -group REG_FILE -radix dec     /main_tb/inst_main/inst_core/inst_reg_file/i_rs1_addr
 add wave         -group REG_FILE -radix dec     /main_tb/inst_main/inst_core/inst_reg_file/i_rs2_addr
 add wave         -group REG_FILE -radix dec     /main_tb/inst_main/inst_core/inst_reg_file/i_rd_addr
-add wave         -group REG_FILE -radix bin     /main_tb/inst_main/inst_core/inst_reg_file/i_reg_wr_ctrl
+add wave         -group REG_FILE -radix bin     /main_tb/inst_main/inst_core/inst_reg_file/i_reg_file_ctrl
 add wave         -group REG_FILE -radix hex     /main_tb/inst_main/inst_core/inst_reg_file/i_rd_data
 add wave         -group REG_FILE -radix hex     /main_tb/inst_main/inst_core/inst_reg_file/o_rs1_data
 add wave         -group REG_FILE -radix hex     /main_tb/inst_main/inst_core/inst_reg_file/o_rs2_data
