@@ -19,9 +19,9 @@ entity control is
       i_func7           : in std_logic_vector(6 downto 0);
       o_alu_mux_1_ctrl  : out std_logic;
       o_alu_mux_2_ctrl  : out std_logic;
+      o_pc_ctrl         : out std_logic_vector(1 downto 0);
       o_alu_control     : out std_logic_vector(5 downto 0);
-      o_reg_wr_ctrl     : out std_logic;
-      o_pc_ctrl         : out std_logic_vector(1 downto 0)
+      o_reg_file_ctrl   : out std_logic
    );
 end entity control;
 
@@ -111,32 +111,27 @@ begin
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         o_reg_wr_ctrl <= '0';
+         o_reg_file_ctrl <= '0';
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
                  C_OPCODE_OP =>
-                  o_reg_wr_ctrl <= '1';
+                  o_reg_file_ctrl <= '1';
             when C_OPCODE_LOAD =>
-                  o_reg_wr_ctrl <= '1';
-            when others => o_reg_wr_ctrl <= '0'; -- C_OPCODE_STORE
+                  o_reg_file_ctrl <= '1';
+            when others => o_reg_file_ctrl <= '0'; -- C_OPCODE_STORE
          end case;
       end if;
    end process;
 
-   p_memory_management : process(all)
+   p_ram_management : process(all)
    begin
       if (i_rst = '1') then
-        o_ram_wr_ctrl <= '0';
+       NULL;
       else
-         case i_opcode(6 downto 2) is
-            when C_OPCODE_STORE  => o_ram_wr_ctrl <= '1';
-                -- Later add controlling which part of RAM to write depending on
-                -- the instruction
-            when others          => o_ram_wr_ctrl <= '0'; 
-         end case;
+       NULL;
       end if;
-   end process p_memory_management;
+   end process p_ram_management;
 
    p_program_counter : process(all)
    begin
