@@ -11,11 +11,11 @@ package instruction_memory_pkg is
    constant C_CODE : t_instruction_memory := (
                               x"00200093", -- addi x1 x0 2           x1  =  x0  +  2     = 2
                               x"00a00213", -- addi x4 x0 10          x4  =  x0  +  10    = 10
-                              x"0040a183", -- lw x3, 4(x1)           x3  =  data from memory addres 0x6
-                              x"00200113", -- addi x2 x0 2           x1  =  x0  +  2     = 2
-                              x"00500293", -- addi x5 x0 5           x4  =  x0  +  10    = 10
+                              x"001201b3", -- add x3, x4, x1         x3  =  10  +  2     = 12
                               x"00000000",
-                              x"11111111",
+                              x"00000000",
+                              x"00000000",
+                              x"00000000",
                               x"00000000",
                               x"00000000",
                               x"00000000",
