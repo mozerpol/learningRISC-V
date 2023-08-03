@@ -3,12 +3,12 @@ library ieee;
  use IEEE.std_logic_unsigned.all;
  use IEEE.math_real.all;
  
-package memory_management_pkg is
+package ram_management_pkg is
 
    -- constant C_NAME : std_logic_vector(N downto M) := "X";
 
 end;
 
-package body memory_management_pkg is
+package body ram_management_pkg is
    
 end package body;
