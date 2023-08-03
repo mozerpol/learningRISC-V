@@ -61,7 +61,6 @@ begin
       rst_tb               <= '0';
   
       -- add x3, x2, x1       ---- x3  =  x2  + x1     = -657
-      ram_data_read_tb<= x"001101b3";
       wait until rising_edge(clk_tb);
       
       
