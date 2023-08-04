@@ -25,7 +25,7 @@ package opcodesPkg is
    ---- R-type ----
    -- C_OPCODE_OP = ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
    constant C_OPCODE_OP       : std_logic_vector(4 downto 0) := "01100";
-   
+
    --''''''''''''''''''''''--
    --      FUNC3 LOAD      --
    --,,,,,,,,,,,,,,,,,,,,,,--
@@ -34,7 +34,7 @@ package opcodesPkg is
    constant C_FUNC3_LW        : std_logic_vector(2 downto 0) := "010";
    constant C_FUNC3_LBU       : std_logic_vector(2 downto 0) := "100";
    constant C_FUNC3_LHU       : std_logic_vector(2 downto 0) := "101";
-   
+
    --''''''''''''''''''--
    --   FUNC3 OP_IMM   --
    --,,,,,,,,,,,,,,,,,,--
@@ -46,14 +46,14 @@ package opcodesPkg is
    constant C_FUNC3_ANDI      : std_logic_vector(2 downto 0) := "111";
    constant C_FUNC3_SLLI      : std_logic_vector(2 downto 0) := "001";
    constant C_FUNC3_SRLI_SRAI : std_logic_vector(2 downto 0) := "101";
-   
+
    --''''''''''''''''''--
    --   FUNC7 OP_IMM   --
    --,,,,,,,,,,,,,,,,,,--
    constant C_FUNC7_SRLI      : std_logic_vector(6 downto 0) := "0000000";
    constant C_FUNC7_SRAI      : std_logic_vector(6 downto 0) := "0100000";
    constant C_FUNC7_SLLI      : std_logic_vector(6 downto 0) := "0000000";
-   
+
    --''''''''''''''''''--
    --     FUNC3 OP     --
    --,,,,,,,,,,,,,,,,,,--
@@ -64,7 +64,7 @@ package opcodesPkg is
    constant C_FUNC3_XOR       : std_logic_vector(2 downto 0) := "100";
    constant C_FUNC3_SRL_SRA   : std_logic_vector(2 downto 0) := "101";
    constant C_FUNC3_OR        : std_logic_vector(2 downto 0) := "110";
-   constant C_FUNC3_AND       : std_logic_vector(2 downto 0) := "111";   
+   constant C_FUNC3_AND       : std_logic_vector(2 downto 0) := "111";
 
    --''''''''''''''''''--
    --     FUNC7 OP     --
@@ -87,8 +87,8 @@ package opcodesPkg is
    --''''''''''''''''''''''--
    --     FUNC3 STORE      --
    --,,,,,,,,,,,,,,,,,,,,,,--
-   constant C_FUNC3_SB        : std_logic_vector(2 downto 0) := "000"; 
-   constant C_FUNC3_SH        : std_logic_vector(2 downto 0) := "001"; 
+   constant C_FUNC3_SB        : std_logic_vector(2 downto 0) := "000";
+   constant C_FUNC3_SH        : std_logic_vector(2 downto 0) := "001";
    constant C_FUNC3_SW        : std_logic_vector(2 downto 0) := "010";
 
 end;

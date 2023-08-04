@@ -90,8 +90,8 @@ architecture rtl of core is
          o_alu_mux_2_ctrl     : out std_logic;
          o_pc_ctrl            : out std_logic_vector(1 downto 0);
          o_alu_control        : out std_logic_vector(5 downto 0);
-         o_reg_file_wr_ctrl      : out std_logic;
-         o_reg_file_inst_ctrl      : out std_logic
+         o_reg_file_wr_ctrl   : out std_logic;
+         o_reg_file_inst_ctrl : out std_logic
       );
    end component control;
 
@@ -111,17 +111,17 @@ architecture rtl of core is
 
    component reg_file is
       port (
-         i_rst          : in std_logic;
-         i_clk          : in std_logic;
-         i_rs1_addr     : in std_logic_vector(4 downto 0); -- address of rs1
-         i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
-         i_rd_addr      : in std_logic_vector(4 downto 0);
-         i_reg_file_wr_ctrl  : in std_logic;
-         i_reg_file_inst_ctrl  : in std_logic;
-         i_rd_data      : in std_logic_vector(31 downto 0);
-         i_alu_result   : in std_logic_vector(31 downto 0);
-         o_rs1_data     : out std_logic_vector(31 downto 0);
-         o_rs2_data     : out std_logic_vector(31 downto 0)
+         i_rst                : in std_logic;
+         i_clk                : in std_logic;
+         i_rs1_addr           : in std_logic_vector(4 downto 0);
+         i_rs2_addr           : in std_logic_vector(4 downto 0);
+         i_rd_addr            : in std_logic_vector(4 downto 0);
+         i_reg_file_wr_ctrl   : in std_logic;
+         i_reg_file_inst_ctrl : in std_logic;
+         i_rd_data            : in std_logic_vector(31 downto 0);
+         i_alu_result         : in std_logic_vector(31 downto 0);
+         o_rs1_data           : out std_logic_vector(31 downto 0);
+         o_rs2_data           : out std_logic_vector(31 downto 0)
       );
    end component reg_file;
 
@@ -146,7 +146,7 @@ architecture rtl of core is
          o_pc_addr      : out std_logic_vector(31 downto 0)
       );
    end component program_counter;
-   
+
 component instruction_memory is
    port (
       i_rst             : in std_logic;
@@ -185,8 +185,8 @@ end component;
    signal ram_write_data      : std_logic_vector(31 downto 0);
    signal write_data          : std_logic_vector(31 downto 0);
    signal pc_ctrl             : std_logic_vector(1 downto 0);
-   signal reg_file_wr_ctrl       : std_logic;
-   signal reg_file_inst_ctrl       : std_logic;
+   signal reg_file_wr_ctrl    : std_logic;
+   signal reg_file_inst_ctrl  : std_logic;
 
 begin
 
@@ -227,8 +227,8 @@ begin
       o_alu_mux_2_ctrl     => alu_mux_2_ctrl,
       o_pc_ctrl            => pc_ctrl,
       o_alu_control        => alu_control,
-      o_reg_file_inst_ctrl      => reg_file_inst_ctrl,
-      o_reg_file_wr_ctrl      => reg_file_wr_ctrl
+      o_reg_file_inst_ctrl => reg_file_inst_ctrl,
+      o_reg_file_wr_ctrl   => reg_file_wr_ctrl
    );
 
    inst_decoder : component decoder
@@ -246,17 +246,17 @@ begin
 
    inst_reg_file : component reg_file
    port map (
-      i_rst          => rst,
-      i_clk          => clk,
-      i_rs1_addr     => rs1_addr,
-      i_rs2_addr     => rs2_addr,  
-      i_rd_addr      => rd_addr,   
-      i_reg_file_wr_ctrl  => reg_file_wr_ctrl,
-      i_reg_file_inst_ctrl  => reg_file_inst_ctrl,
-      i_rd_data      => rd_data,
-      i_alu_result   => alu_result,
-      o_rs1_data     => rs1_data,
-      o_rs2_data     => rs2_data
+      i_rst                => rst,
+      i_clk                => clk,
+      i_rs1_addr           => rs1_addr,
+      i_rs2_addr           => rs2_addr,
+      i_rd_addr            => rd_addr,
+      i_reg_file_wr_ctrl   => reg_file_wr_ctrl,
+      i_reg_file_inst_ctrl => reg_file_inst_ctrl,
+      i_rd_data            => rd_data,
+      i_alu_result         => alu_result,
+      o_rs1_data           => rs1_data,
+      o_rs2_data           => rs2_data
    );
 
    inst_ram_management : component ram_management
@@ -287,9 +287,9 @@ port map (
    );
 
 
-   rst                  <= i_rst;
-   clk                  <= i_clk;
-   rd_data              <= i_ram_data_read;
+   rst      <= i_rst;
+   clk      <= i_clk;
+   rd_data  <= i_ram_data_read;
 
 
 --   p_core : process(all)

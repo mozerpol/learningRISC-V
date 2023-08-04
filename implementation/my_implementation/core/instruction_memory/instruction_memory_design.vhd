@@ -24,10 +24,10 @@ begin
    p_instruction_memory : process(all)
    begin
       if (i_rst = '1') then
-        o_instruction <= (others => '0');
-        ram           <= C_CODE;
+         o_instruction  <= (others => '0');
+         ram            <= C_CODE;
       else
-         o_instruction  <= ram(to_integer(unsigned(i_ram_read_addr)));
+         o_instructiona <= ram(to_integer(unsigned(i_ram_read_addr)));
       end if;
    end process p_instruction_memory;
 

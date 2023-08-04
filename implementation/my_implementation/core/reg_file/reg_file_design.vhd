@@ -8,17 +8,17 @@ library reg_file_lib;
 
 entity reg_file is
    port (
-      i_rst          : in std_logic;
-      i_clk          : in std_logic;
-      i_rs1_addr     : in std_logic_vector(4 downto 0); -- address of rs1
-      i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
-      i_rd_addr      : in std_logic_vector(4 downto 0);
-      i_reg_file_inst_ctrl  : in std_logic;
-      i_reg_file_wr_ctrl  : in std_logic;
-      i_rd_data      : in std_logic_vector(31 downto 0);
-      i_alu_result   : in std_logic_vector(31 downto 0);
-      o_rs1_data     : out std_logic_vector(31 downto 0);
-      o_rs2_data     : out std_logic_vector(31 downto 0)
+      i_rst                : in std_logic;
+      i_clk                : in std_logic;
+      i_rs1_addr           : in std_logic_vector(4 downto 0);
+      i_rs2_addr           : in std_logic_vector(4 downto 0);
+      i_rd_addr            : in std_logic_vector(4 downto 0);
+      i_reg_file_inst_ctrl : in std_logic;
+      i_reg_file_wr_ctrl   : in std_logic;
+      i_rd_data            : in std_logic_vector(31 downto 0);
+      i_alu_result         : in std_logic_vector(31 downto 0);
+      o_rs1_data           : out std_logic_vector(31 downto 0);
+      o_rs2_data           : out std_logic_vector(31 downto 0)
    );
 end entity reg_file;
 
@@ -40,11 +40,11 @@ begin
          gpr <= (others => (others => '0'));
       elsif (i_clk'event and i_clk = '1') then
          if (i_reg_file_wr_ctrl = '1') then
-          if (i_reg_file_inst_ctrl = '0') then
-           gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
-          elsif (i_reg_file_inst_ctrl = '1') then
-            gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
-          end if;
+            if (i_reg_file_inst_ctrl = '0') then
+               gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
+            elsif (i_reg_file_inst_ctrl = '1') then
+               gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
+            end if;
          end if;
       end if;
    end process p_reg_file;

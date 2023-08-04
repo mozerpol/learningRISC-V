@@ -53,19 +53,19 @@ begin
 
    p_tb : process
    begin
-      
-      rst_tb               <= '1';
+
+      rst_tb            <= '1';
       ram_data_read_tb  <= (others => '0');
       wait for 20 ns;
       wait until rising_edge(clk_tb);
-      rst_tb               <= '0';
-  
+      rst_tb            <= '0';
+
       -- add x3, x2, x1       ---- x3  =  x2  + x1     = -657
       wait until rising_edge(clk_tb);
-      
-      
-      
-      
+
+
+
+
 --      -- addi x1, x0, 10      ---- x1  =  x0  +  10    = 10
 --      instruction_read_tb  <= x"00a00093";
 --      wait until rising_edge(clk_tb);

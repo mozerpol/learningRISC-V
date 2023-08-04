@@ -23,7 +23,7 @@ end entity decoder;
 architecture rtl of decoder is
 
 begin
-  
+
    p_decoder : process(all)
    begin
       if (i_rst) then
@@ -37,7 +37,7 @@ begin
       else
          case i_instruction(6 downto 2) is
             -- U-type
-            when C_OPCODE_LUI    | 
+            when C_OPCODE_LUI    |
                  C_OPCODE_AUIPC  =>
                o_rd_addr   <= i_instruction(11 downto 7);
                o_rs1_addr  <= (others => '0');
@@ -99,11 +99,11 @@ begin
             when C_OPCODE_STORE  =>
                if (i_instruction(31) = '1') then
                   o_imm(31 downto 11)  <= 21x"1fffff";
-                  o_imm(10 downto 0)   <= i_instruction(30 downto 25) & 
+                  o_imm(10 downto 0)   <= i_instruction(30 downto 25) &
                                           i_instruction(11 downto 7);
                else
                   o_imm(31 downto 11)  <= (others => '0');
-                  o_imm(10 downto 0)   <= i_instruction(30 downto 25) & 
+                  o_imm(10 downto 0)   <= i_instruction(30 downto 25) &
                                           i_instruction(11 downto 7);
                end if;
                o_rd_addr   <= (others => '0');

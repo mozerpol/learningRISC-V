@@ -13,15 +13,15 @@ library alu_lib;
 
 entity control is
    port (
-      i_rst             : in std_logic;
-      i_opcode          : in std_logic_vector(6 downto 0);
-      i_func3           : in std_logic_vector(2 downto 0);
-      i_func7           : in std_logic_vector(6 downto 0);
-      o_alu_mux_1_ctrl  : out std_logic;
-      o_alu_mux_2_ctrl  : out std_logic;
-      o_pc_ctrl         : out std_logic_vector(1 downto 0);
-      o_alu_control     : out std_logic_vector(5 downto 0);
-      o_reg_file_inst_ctrl   : out std_logic;
+      i_rst                : in std_logic;
+      i_opcode             : in std_logic_vector(6 downto 0);
+      i_func3              : in std_logic_vector(2 downto 0);
+      i_func7              : in std_logic_vector(6 downto 0);
+      o_alu_mux_1_ctrl     : out std_logic;
+      o_alu_mux_2_ctrl     : out std_logic;
+      o_pc_ctrl            : out std_logic_vector(1 downto 0);
+      o_alu_control        : out std_logic_vector(5 downto 0);
+      o_reg_file_inst_ctrl : out std_logic;
       o_reg_file_wr_ctrl   : out std_logic
    );
 end entity control;
@@ -118,14 +118,14 @@ begin
          case i_opcode(6 downto 2) is
             when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
                  C_OPCODE_OP =>
-                  o_reg_file_inst_ctrl <= '1';
-                  o_reg_file_wr_ctrl <= '1';
+                     o_reg_file_inst_ctrl <= '1';
+                     o_reg_file_wr_ctrl   <= '1';
             when C_OPCODE_LOAD =>
-                  o_reg_file_inst_ctrl <= '0';
-                  o_reg_file_wr_ctrl <= '1';
-            when others => 
-            o_reg_file_inst_ctrl <= '0'; -- C_OPCODE_STORE
-            o_reg_file_wr_ctrl <= '0';
+                     o_reg_file_inst_ctrl <= '0';
+                     o_reg_file_wr_ctrl   <= '1';
+            when others =>
+                     o_reg_file_inst_ctrl <= '0'; -- C_OPCODE_STORE
+                     o_reg_file_wr_ctrl   <= '0';
          end case;
       end if;
    end process;
@@ -133,9 +133,9 @@ begin
    p_ram_management : process(all)
    begin
       if (i_rst = '1') then
-       NULL;
+         NULL;
       else
-       NULL;
+         NULL;
       end if;
    end process p_ram_management;
 
@@ -145,13 +145,13 @@ begin
          o_pc_ctrl   <= "00";
       else
         if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
-            o_pc_ctrl   <= "11";
+           o_pc_ctrl   <= "11";
         else
-            o_pc_ctrl   <= "00";
+           o_pc_ctrl   <= "00";
         end if;
          -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
-   
-   
+
+
 end architecture rtl;

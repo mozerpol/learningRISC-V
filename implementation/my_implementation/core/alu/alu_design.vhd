@@ -26,37 +26,37 @@ begin
          o_alu_result   <= (others => '0');
       else
          case i_alu_control is
-            when C_ADD | C_ADDI  => 
-               o_alu_result <= i_alu_operand_1 + i_alu_operand_2; 
-            when C_SUB           => 
-               o_alu_result <= i_alu_operand_1 - i_alu_operand_2; 
-            when C_XOR | C_XORI  => 
-               o_alu_result <= i_alu_operand_1 xor i_alu_operand_2; 
-            when C_OR  | C_ORI   => 
-               o_alu_result <= i_alu_operand_1 or i_alu_operand_2; 
+            when C_ADD | C_ADDI  =>
+               o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
+            when C_SUB           =>
+               o_alu_result <= i_alu_operand_1 - i_alu_operand_2;
+            when C_XOR | C_XORI  =>
+               o_alu_result <= i_alu_operand_1 xor i_alu_operand_2;
+            when C_OR  | C_ORI   =>
+               o_alu_result <= i_alu_operand_1 or i_alu_operand_2;
             when C_AND | C_ANDI  =>
-               o_alu_result <= i_alu_operand_1 and i_alu_operand_2; 
-            when C_SLL | C_SLLI  => 
-               o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) sll 
+               o_alu_result <= i_alu_operand_1 and i_alu_operand_2;
+            when C_SLL | C_SLLI  =>
+               o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) sll
                         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
-            when C_SRL | C_SRLI  => 
-               o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) srl 
-                        to_integer(unsigned(i_alu_operand_2(4 downto 0)))); 
-            when C_SRA | C_SRAI  => 
-               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) sra 
+            when C_SRL | C_SRLI  =>
+               o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) srl
                         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
-            when C_SLT | C_SLTI  => 
-               o_alu_result <= (0 => '1', others => '0') when 
-                        signed(i_alu_operand_1) < signed(i_alu_operand_2) else 
+            when C_SRA | C_SRAI  =>
+               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) sra
+                        to_integer(unsigned(i_alu_operand_2(4 downto 0))));
+            when C_SLT | C_SLTI  =>
+               o_alu_result <= (0 => '1', others => '0') when
+                        signed(i_alu_operand_1) < signed(i_alu_operand_2) else
                         (others => '0');
-            when C_SLTU | C_SLTIU => 
-               o_alu_result <= (0 => '1', others => '0') when 
+            when C_SLTU | C_SLTIU =>
+               o_alu_result <= (0 => '1', others => '0') when
                         unsigned(i_alu_operand_1) < unsigned(i_alu_operand_2) else
-                        (others => '0'); 
-            when C_LUI           => 
+                        (others => '0');
+            when C_LUI           =>
                o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
             when C_SW | C_SH | C_SB | C_LW =>
-               o_alu_result <= i_alu_operand_1 + i_alu_operand_2; 
+               o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
             when others => o_alu_result <= (others => '0');
          end case;
       end if;
