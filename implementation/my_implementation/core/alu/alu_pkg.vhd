@@ -16,14 +16,6 @@ package alu_pkg is
    constant C_BGE      : std_logic_vector(5 downto 0) := "000111";
    constant C_BLTU     : std_logic_vector(5 downto 0) := "001000";
    constant C_BGEU     : std_logic_vector(5 downto 0) := "001001";
-   constant C_LB       : std_logic_vector(5 downto 0) := "001010";
-   constant C_LH       : std_logic_vector(5 downto 0) := "001011";
-   constant C_LW       : std_logic_vector(5 downto 0) := "001100";
-   constant C_LBU      : std_logic_vector(5 downto 0) := "001101";
-   constant C_LHU      : std_logic_vector(5 downto 0) := "001110";
-   constant C_SB       : std_logic_vector(5 downto 0) := "001111";
-   constant C_SH       : std_logic_vector(5 downto 0) := "010000";
-   constant C_SW       : std_logic_vector(5 downto 0) := "010001";
    constant C_ADDI     : std_logic_vector(5 downto 0) := "010010";
    constant C_SLTI     : std_logic_vector(5 downto 0) := "010011";
    constant C_SLTIU    : std_logic_vector(5 downto 0) := "010100";
@@ -53,6 +45,15 @@ package alu_pkg is
    constant C_CSRRWI   : std_logic_vector(5 downto 0) := "101100";
    constant C_CSRRSI   : std_logic_vector(5 downto 0) := "101101";
    constant C_CSRRCI   : std_logic_vector(5 downto 0) := "101110";
+   
+   constant C_LB       : std_logic_vector(2 downto 0) := "000";
+   constant C_LH       : std_logic_vector(2 downto 0) := "001";
+   constant C_LW       : std_logic_vector(2 downto 0) := "010";
+   constant C_LBU      : std_logic_vector(2 downto 0) := "011";
+   constant C_LHU      : std_logic_vector(2 downto 0) := "100";
+   constant C_SB       : std_logic_vector(2 downto 0) := "101";
+   constant C_SH       : std_logic_vector(2 downto 0) := "110";
+   constant C_SW       : std_logic_vector(2 downto 0) := "111";
 
 end;
 
