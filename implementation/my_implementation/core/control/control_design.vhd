@@ -21,6 +21,7 @@ entity control is
       o_alu_mux_2_ctrl     : out std_logic;
       o_pc_ctrl            : out std_logic_vector(1 downto 0);
       o_alu_control        : out std_logic_vector(5 downto 0);
+      o_ram_management_ctrl: out std_logic_vector(2 downto 0);
       o_reg_file_inst_ctrl : out std_logic;
       o_reg_file_wr_ctrl   : out std_logic
    );
@@ -64,15 +65,6 @@ begin
                   when others             => o_alu_control <= (others => '0');
                end case;
             when C_OPCODE_LUI    => o_alu_control <= C_LUI;
-            when C_OPCODE_LOAD   =>
-               case i_func3 is
-                  when C_FUNC3_LB         => o_alu_control <= C_LB;
-                  when C_FUNC3_LH         => o_alu_control <= C_LH;
-                  when C_FUNC3_LW         => o_alu_control <= C_LW;
-                  when C_FUNC3_LBU        => o_alu_control <= C_LBU;
-                  when C_FUNC3_LHU        => o_alu_control <= C_LHU;
-                  when others             => o_alu_control <= (others => '0');
-               end case;
             when C_OPCODE_STORE  =>
                case i_func3 is
                   when C_FUNC3_SB         => o_alu_control <= C_SB;
@@ -100,9 +92,6 @@ begin
          elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
             o_alu_mux_2_ctrl <= '1';
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
-            o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
-            o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
-         elsif (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
             o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
             o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
          end if;
@@ -133,9 +122,18 @@ begin
    p_ram_management : process(all)
    begin
       if (i_rst = '1') then
-         NULL;
+         o_ram_management_ctrl <= (others => '0');
       else
-         NULL;
+         if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
+               case i_func3 is
+                  when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
+                  when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
+                  when C_FUNC3_LW   => o_ram_management_ctrl <= C_LW;
+                  when C_FUNC3_LBU  => o_ram_management_ctrl <= C_LBU;
+                  when C_FUNC3_LHU  => o_ram_management_ctrl <= C_LHU;
+                  when others       => o_ram_management_ctrl <= (others => '0');
+               end case;
+         end if;
       end if;
    end process p_ram_management;
 
@@ -144,11 +142,11 @@ begin
       if (i_rst = '1') then
          o_pc_ctrl   <= "00";
       else
-        if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
-           o_pc_ctrl   <= "11";
-        else
-           o_pc_ctrl   <= "00";
-        end if;
+        --if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
+          -- o_pc_ctrl   <= "11";
+        --else
+          -- o_pc_ctrl   <= "00";
+        --end if;
          -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
