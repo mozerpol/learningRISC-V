@@ -55,8 +55,8 @@ begin
                         (others => '0');
             when C_LUI           =>
                o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
-            when C_SW | C_SH | C_SB | C_LW =>
-               o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
+            --when C_SW | C_SH | C_SB =>
+            --   o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
             when others => o_alu_result <= (others => '0');
          end case;
       end if;
