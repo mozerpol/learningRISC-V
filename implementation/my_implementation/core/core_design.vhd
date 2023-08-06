@@ -91,7 +91,8 @@ architecture rtl of core is
          o_pc_ctrl            : out std_logic_vector(1 downto 0);
          o_alu_control        : out std_logic_vector(5 downto 0);
          o_reg_file_wr_ctrl   : out std_logic;
-         o_reg_file_inst_ctrl : out std_logic
+         o_reg_file_inst_ctrl : out std_logic;
+         o_ram_management_ctrl : out std_logic_vector(2 downto 0)
       );
    end component control;
 
@@ -127,13 +128,15 @@ architecture rtl of core is
 
    component ram_management is
       port (
-         i_rst             : in std_logic;
-         i_alu_control     : in std_logic_vector(5 downto 0);
-         i_alu_result      : in std_logic_vector(31 downto 0);
-         i_rs2_data        : in std_logic_vector(31 downto 0);
-         o_ram_addr        : out std_logic_vector(7 downto 0);
-         o_write_enable    : out std_logic;
-         o_data            : out std_logic_vector(31 downto 0)
+      i_rst             : in std_logic;
+      i_ram_management_ctrl     : in std_logic_vector(2 downto 0);
+      i_alu_result      : in std_logic_vector(31 downto 0);
+      i_rs1_data        : in std_logic_vector(31 downto 0);
+      i_rs2_data        : in std_logic_vector(31 downto 0);
+      i_imm             : in std_logic_vector(31 downto 0);
+      o_ram_addr        : out std_logic_vector(7 downto 0);
+      o_write_enable    : out std_logic;
+      o_data            : out std_logic_vector(31 downto 0)
       );
    end component ram_management;
 
@@ -187,6 +190,7 @@ end component;
    signal pc_ctrl             : std_logic_vector(1 downto 0);
    signal reg_file_wr_ctrl    : std_logic;
    signal reg_file_inst_ctrl  : std_logic;
+   signal ram_management_ctrl : std_logic_vector(2 downto 0);
 
 begin
 
@@ -228,7 +232,8 @@ begin
       o_pc_ctrl            => pc_ctrl,
       o_alu_control        => alu_control,
       o_reg_file_inst_ctrl => reg_file_inst_ctrl,
-      o_reg_file_wr_ctrl   => reg_file_wr_ctrl
+      o_reg_file_wr_ctrl   => reg_file_wr_ctrl,
+      o_ram_management_ctrl => ram_management_ctrl
    );
 
    inst_decoder : component decoder
@@ -262,9 +267,11 @@ begin
    inst_ram_management : component ram_management
    port map (
       i_rst             => rst,
-      i_alu_control     => alu_control,
+      i_ram_management_ctrl => ram_management_ctrl,
       i_alu_result      => alu_result,
+      i_rs1_data        => rs1_data,
       i_rs2_data        => rs2_data,
+      i_imm             => imm,
       o_ram_addr        => o_ram_addr,
       o_write_enable    => o_write_enable,
       o_data            => o_ram_data_write
