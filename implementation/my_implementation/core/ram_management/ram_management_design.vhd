@@ -12,9 +12,11 @@ library alu_lib;
 entity ram_management is
    port (
       i_rst             : in std_logic;
-      i_alu_control     : in std_logic_vector(5 downto 0);
+      i_ram_management_ctrl     : in std_logic_vector(2 downto 0);
       i_alu_result      : in std_logic_vector(31 downto 0);
+      i_rs1_data        : in std_logic_vector(31 downto 0);
       i_rs2_data        : in std_logic_vector(31 downto 0);
+      i_imm             : in std_logic_vector(31 downto 0);
       o_ram_addr        : out std_logic_vector(7 downto 0);
       o_write_enable    : out std_logic;
       o_data            : out std_logic_vector(31 downto 0)
@@ -35,7 +37,7 @@ begin
          o_write_enable <= '0';
          o_data         <= (others => '0');
       else
-         case i_alu_control is
+         case i_ram_management_ctrl is
             when C_SW   =>
                o_ram_addr           <= i_alu_result(7 downto 0);
                o_data               <= i_rs2_data;
@@ -46,7 +48,7 @@ begin
                o_ram_addr           <= i_alu_result(7 downto 0);
                o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
             when C_LW   =>
-                o_ram_addr          <= i_alu_result(7 downto 0);
+                o_ram_addr          <= i_rs1_data(7 downto 0) + i_imm(7 downto 0);
             when others =>
               -- o_ram_addr      <= i_pc_addr(7 downto 0);
          end case;
