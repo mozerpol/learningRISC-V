@@ -80,20 +80,19 @@ begin
    p_alu_mux : process (all)
    begin
       if (i_rst = '1') then
-         o_alu_mux_1_ctrl  <= '0';
-         o_alu_mux_2_ctrl  <= '0';
+         o_alu_mux_1_ctrl  <= C_RS1_DATA;
+         o_alu_mux_2_ctrl  <= C_RS2_DATA;
       else
          if (i_opcode(6 downto 2) = C_OPCODE_OP) then
-            o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
-            o_alu_mux_2_ctrl <= '0'; -- Select rs2 data as operand
-         -- elsif (i_opcode(6 downto 2) = (C_OPCODE_OPIMM or C_OPCODE_LUI)) then
+            o_alu_mux_1_ctrl <= C_RS1_DATA;
+            o_alu_mux_2_ctrl <= C_RS2_DATA;
          elsif (i_opcode(6 downto 2) = C_OPCODE_OPIMM) then
-            o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
+            o_alu_mux_2_ctrl <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
-            o_alu_mux_2_ctrl <= '1';
+            o_alu_mux_2_ctrl <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
-            o_alu_mux_1_ctrl <= '0'; -- Select rs1 data as operand
-            o_alu_mux_2_ctrl <= '1'; -- Select imm data as operand
+            o_alu_mux_1_ctrl <= C_RS1_DATA;
+            o_alu_mux_2_ctrl <= C_IMM;
          end if;
       end if;
    end process p_alu_mux;
@@ -101,20 +100,20 @@ begin
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         o_reg_file_inst_ctrl <= '0';
-         o_reg_file_wr_ctrl <= '0';
+         o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+         o_reg_file_wr_ctrl <= C_READ_ENABLE;
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
                  C_OPCODE_OP =>
-                     o_reg_file_inst_ctrl <= '1';
-                     o_reg_file_wr_ctrl   <= '1';
+                     o_reg_file_inst_ctrl <= C_ALU_RESULT;
+                     o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_LOAD =>
-                     o_reg_file_inst_ctrl <= '0';
-                     o_reg_file_wr_ctrl   <= '1';
+                     o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+                     o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when others =>
-                     o_reg_file_inst_ctrl <= '0'; -- C_OPCODE_STORE
-                     o_reg_file_wr_ctrl   <= '0';
+                     o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+                     o_reg_file_wr_ctrl   <= C_READ_ENABLE;
          end case;
       end if;
    end process;
@@ -140,7 +139,7 @@ begin
    p_program_counter : process(all)
    begin
       if (i_rst = '1') then
-         o_pc_ctrl   <= "00";
+         o_pc_ctrl   <= C_INCREMENT_PC;
       else
         --if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
           -- o_pc_ctrl   <= "11";
