@@ -26,8 +26,8 @@ begin
          o_alu_operand_1 <= (others => '0');
       else
          case i_alu_mux_1_ctrl is
-            when '0'    => o_alu_operand_1 <= i_rs1_data;
-            when '1'    => o_alu_operand_1 <= i_pc_addr;
+            when C_RS1_DATA    => o_alu_operand_1 <= i_rs1_data;
+            when C_PC_ADDR    => o_alu_operand_1 <= i_pc_addr;
             when others => o_alu_operand_1 <= (others => '0');
          end case;
       end if;
