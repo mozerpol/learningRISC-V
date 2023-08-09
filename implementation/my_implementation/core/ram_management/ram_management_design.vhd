@@ -34,7 +34,7 @@ begin
    begin
       if (i_rst = '1') then
          o_ram_addr     <= (others => '0');
-         o_write_enable <= '0';
+         o_write_enable <= C_READ_ENABLE;
          o_data         <= (others => '0');
       else
          case i_ram_management_ctrl is
