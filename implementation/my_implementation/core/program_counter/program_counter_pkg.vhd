@@ -4,7 +4,11 @@ library ieee;
   use IEEE.math_real.all;
   
  package program_counter_pkg is
-    -- constant C_NAME : std_logic_vector(N downto M) := "X";
+ 
+constant C_INCREMENT_PC : std_logic_vector(1 downto 0) := "00";
+constant C_DECREMENT_PC : std_logic_vector(1 downto 0) := "01";
+constant C_LOAD_ALU_RESULT : std_logic_vector(1 downto 0) := "10";
+constant C_NOP : std_logic_vector(1 downto 0) := "11";
 
  end;
  
