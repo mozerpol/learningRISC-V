@@ -4,7 +4,11 @@ library ieee;
   use IEEE.math_real.all;
   
  package reg_file_pkg is
-    -- constant C_NAME : std_logic_vector(N downto M) := "X";
+ 
+constant C_READ_ENABLE : std_logic := '0';
+constant C_WRITE_ENABLE : std_logic := '1';
+constant C_DATA_REG_FILE : std_logic := '0';
+constant C_ALU_RESULT : std_logic := '1';
 
  end;
  

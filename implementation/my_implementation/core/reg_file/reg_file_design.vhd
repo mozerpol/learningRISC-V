@@ -39,10 +39,10 @@ begin
       if (i_rst = '1') then
          gpr <= (others => (others => '0'));
       elsif (i_clk'event and i_clk = '1') then
-         if (i_reg_file_wr_ctrl = '1') then
-            if (i_reg_file_inst_ctrl = '0') then
+         if (i_reg_file_wr_ctrl = C_WRITE_ENABLE) then
+            if (i_reg_file_inst_ctrl = C_DATA_REG_FILE) then
                gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
-            elsif (i_reg_file_inst_ctrl = '1') then
+            elsif (i_reg_file_inst_ctrl = C_ALU_RESULT) then
                gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
             end if;
          end if;
