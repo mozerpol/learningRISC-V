@@ -23,22 +23,18 @@ architecture rtl of memory is
 
 begin
 
-   o_instruction <= ram(to_integer(unsigned(i_ram_read_addr)));
+   o_ram_data <= ram(to_integer(unsigned(i_ram_addr)));
     
    p_memory : process(all)
    begin
       if (i_rst = '1') then
-         ram   <= C_CODE;
+         ram   <= (others => (others => '0'));
       elsif (i_clk'event and i_clk = '1') then
-         if (i_ram_write_enable = '1') then
-            ram(to_integer(unsigned(i_ram_write_addr)))(7 downto 0)
-               <= i_ram_write_data(7 downto 0);
-            ram(to_integer(unsigned(i_ram_write_addr)))(15 downto 8)
-               <= i_ram_write_data(15 downto 8);
-            ram(to_integer(unsigned(i_ram_write_addr)))(23 downto 16)
-               <= i_ram_write_data(23 downto 16);
-            ram(to_integer(unsigned(i_ram_write_addr)))(31 downto 24)
-               <= i_ram_write_data(31 downto 24);
+         if (i_write_enable = '1') then
+            ram(to_integer(unsigned(i_ram_addr)))(7 downto 0) <= i_data(7 downto 0);
+            ram(to_integer(unsigned(i_ram_addr)))(15 downto 8) <= i_data(15 downto 8);
+            ram(to_integer(unsigned(i_ram_addr)))(23 downto 16) <= i_data(23 downto 16);
+            ram(to_integer(unsigned(i_ram_addr)))(31 downto 24) <= i_data(31 downto 24);
          end if;
       end if;
    end process p_memory;
