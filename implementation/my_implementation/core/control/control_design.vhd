@@ -64,15 +64,8 @@ begin
                      o_alu_control <= C_SRLI when i_func7 = C_FUNC7_SRLI else C_SRAI;
                   when others             => o_alu_control <= (others => '0');
                end case;
-            when C_OPCODE_LUI    => o_alu_control <= C_LUI;
-            when C_OPCODE_STORE  =>
-               case i_func3 is
-                  when C_FUNC3_SB         => o_alu_control <= C_SB;
-                  when C_FUNC3_SH         => o_alu_control <= C_SH;
-                  when C_FUNC3_SW         => o_alu_control <= C_SW;
-                  when others             => o_alu_control <= (others => '0');
-               end case;
-            when others    => o_alu_control  <= (others => '0');
+            when C_OPCODE_LUI    => o_alu_control  <= C_LUI;
+            when others          => o_alu_control  <= (others => '0');
          end case;
       end if;
    end process p_alu;
@@ -111,6 +104,9 @@ begin
             when C_OPCODE_LOAD =>
                      o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
                      o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
+            when C_OPCODE_STORE =>
+                  -- o_reg_file_inst_ctrl <= vaule is not important in this case
+                     o_reg_file_wr_ctrl   <= C_READ_ENABLE;
             when others =>
                      o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
                      o_reg_file_wr_ctrl   <= C_READ_ENABLE;
@@ -124,14 +120,21 @@ begin
          o_ram_management_ctrl <= (others => '0');
       else
          if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
-               case i_func3 is
-                  when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
-                  when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
-                  when C_FUNC3_LW   => o_ram_management_ctrl <= C_LW;
-                  when C_FUNC3_LBU  => o_ram_management_ctrl <= C_LBU;
-                  when C_FUNC3_LHU  => o_ram_management_ctrl <= C_LHU;
-                  when others       => o_ram_management_ctrl <= (others => '0');
-               end case;
+            case i_func3 is
+               when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
+               when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
+               when C_FUNC3_LW   => o_ram_management_ctrl <= C_LW;
+               when C_FUNC3_LBU  => o_ram_management_ctrl <= C_LBU;
+               when C_FUNC3_LHU  => o_ram_management_ctrl <= C_LHU;
+               when others       => o_ram_management_ctrl <= (others => '0');
+            end case;
+         elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
+            case i_func3 is
+               when C_FUNC3_SB   => o_ram_management_ctrl <= C_SB;
+               when C_FUNC3_SH   => o_ram_management_ctrl <= C_SH;
+               when C_FUNC3_SW   => o_ram_management_ctrl <= C_SW;
+               when others       => o_ram_management_ctrl <= (others => '0');
+            end case;
          end if;
       end if;
    end process p_ram_management;
@@ -139,13 +142,13 @@ begin
    p_program_counter : process(all)
    begin
       if (i_rst = '1') then
-         o_pc_ctrl   <= C_INCREMENT_PC;
+         o_pc_ctrl   <= C_NOP;
       else
-        --if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
-          -- o_pc_ctrl   <= "11";
-        --else
-          -- o_pc_ctrl   <= "00";
-        --end if;
+    if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
+      o_pc_ctrl   <= C_INCREMENT_PC;
+    else
+      o_pc_ctrl   <= C_INCREMENT_PC;
+    end if;
          -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
