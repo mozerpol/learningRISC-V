@@ -33,14 +33,15 @@ begin
    p_ram_management : process(all)
    begin
       if (i_rst = '1') then
-         o_ram_addr     <= (others => '0');
          o_write_enable <= C_READ_ENABLE;
+         o_ram_addr     <= (others => '0');
          o_data         <= (others => '0');
       else
          case i_ram_management_ctrl is
             when C_SW   =>
-               o_ram_addr           <= i_alu_result(7 downto 0);
+               o_ram_addr           <= i_rs1_data(7 downto 0) + i_imm(7 downto 0);
                o_data               <= i_rs2_data;
+               o_write_enable       <= C_WRITE_ENABLE;
             when C_SH   =>
                o_ram_addr           <= i_alu_result(7 downto 0);
                o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
@@ -50,7 +51,9 @@ begin
             when C_LW   =>
                 o_ram_addr          <= i_rs1_data(7 downto 0) + i_imm(7 downto 0);
             when others =>
-              -- o_ram_addr      <= i_pc_addr(7 downto 0);
+                o_write_enable      <= C_READ_ENABLE;
+                o_ram_addr          <= (others => '0');
+                o_data              <= (others => '0');
          end case;
       end if;
    end process p_ram_management;
