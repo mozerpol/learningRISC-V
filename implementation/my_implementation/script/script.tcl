@@ -53,16 +53,10 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_design.vhd
 
 
-set hdl_dir                "../core/reg_file"
-set library_name           "reg_file_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
-vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
-
-
-set hdl_dir                "../core/memory_management"
-set library_name           "memory_management_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/memory_management_pkg.vhd
-vcom -2008 -quiet -work    $library_name $hdl_dir/memory_management_design.vhd
+set hdl_dir                "../core/instruction_memory"
+set library_name           "instruction_memory_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
 
 
 set hdl_dir                "../core/program_counter"
@@ -71,10 +65,16 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 
-set hdl_dir                "../core/mux_reg_file"
-set library_name           "mux_reg_file_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/mux_reg_file_pkg.vhd
-vcom -2008 -quiet -work    $library_name $hdl_dir/mux_reg_file_design.vhd
+set hdl_dir                "../core/ram_management"
+set library_name           "ram_management_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_design.vhd
+
+
+set hdl_dir                "../core/reg_file"
+set library_name           "reg_file_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
 
 
 set hdl_dir                "../core"
