@@ -299,15 +299,14 @@ port map (
    rd_data  <= i_ram_data_read;
 
 
---   p_core : process(all)
---   begin
---      if (i_rst) then
---         o_instruction_write  <= (others => '0');
---         o_addr_read          <= (others => '0');
---         o_addr_write         <= (others => '0');
---         o_write_enable       <= '0';
---      -- elsif (clk'event and clk = '1') then
---      end if;
---   end process p_core;
+   p_core : process(all)
+   begin
+      if (i_rst = '1') then
+      --   o_ram_data_write  <= (others => '0');
+      --   o_ram_addr        <= (others => '0');
+      --   o_write_enable    <= '0';
+      -- elsif (clk'event and clk = '1') then
+      end if;
+   end process p_core;
 
 end architecture rtl;
