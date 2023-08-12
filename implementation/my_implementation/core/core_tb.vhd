@@ -59,8 +59,8 @@ begin
       wait for 20 ns;
       wait until rising_edge(clk_tb);
       rst_tb            <= '0';
-      wait until ram_addr_tb = d"4";
-      ram_data_read_tb  <= x"00000045";
+      wait until ram_addr_tb = d"12";
+      ram_data_read_tb  <= x"0000000c";
 
 
 --      -- addi x1, x0, 10      ---- x1  =  x0  +  10    = 10
