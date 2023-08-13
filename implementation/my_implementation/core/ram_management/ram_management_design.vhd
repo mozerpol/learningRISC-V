@@ -43,12 +43,15 @@ begin
                o_data               <= i_rs2_data;
                o_write_enable       <= C_WRITE_ENABLE;
             when C_SH   =>
+               o_write_enable      <= C_READ_ENABLE;
                o_ram_addr           <= i_alu_result(7 downto 0);
                o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
             when C_SB   =>
+               o_write_enable      <= C_READ_ENABLE;
                o_ram_addr           <= i_alu_result(7 downto 0);
                o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
             when C_LW   =>
+                o_write_enable      <= C_READ_ENABLE;
                 o_ram_addr          <= i_rs1_data(7 downto 0) + i_imm(7 downto 0);
             when others =>
                 o_write_enable      <= C_READ_ENABLE;
