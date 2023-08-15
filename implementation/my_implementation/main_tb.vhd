@@ -3,7 +3,7 @@ library ieee;
    use ieee.numeric_std.all;
    use ieee.std_logic_unsigned.all;
 library std;
-  use std.env.all;
+   use std.env.all;
 
 entity main_tb is
 end main_tb;
@@ -12,20 +12,20 @@ architecture tb of main_tb is
 
    component main is
    port (
-      i_rst                : in std_logic;
-      i_clk                : in std_logic
+      i_rst       : in std_logic;
+      i_clk       : in std_logic
    );
    end component main;
 
-   signal rst_tb            : std_logic;
-   signal clk_tb            : std_logic;
+   signal rst_tb  : std_logic;
+   signal clk_tb  : std_logic;
 
 begin
 
    inst_main : component main
    port map (
-      i_rst                => rst_tb,
-      i_clk                => clk_tb
+      i_rst       => rst_tb,
+      i_clk       => clk_tb
    );
 
    p_clk : process
@@ -38,10 +38,9 @@ begin
 
    p_tb : process
    begin
-      
-      rst_tb            <= '1';
+      rst_tb   <= '1';
       wait for 20 ns;
-      rst_tb            <= '0';
+      rst_tb   <= '0';
 
       wait for 25 ns;
       stop(2);

@@ -11,8 +11,8 @@ library memory_lib;
 library core_lib;
    use core_lib.all;
    use core_lib.core_pkg.all;
-   
-   
+
+
 entity main is
    port (
       i_rst     : in std_logic;
@@ -35,7 +35,7 @@ architecture rtl of main is
       o_write_enable       : out std_logic
       );
    end component core;
-   
+
 
    component memory is
       port (
@@ -48,52 +48,51 @@ architecture rtl of main is
       );
    end component memory;
 
-   
+
    -- General
-   signal rst               : std_logic;
-   signal clk               : std_logic;
--- core
-signal ram_data_read_core      : std_logic_vector(31 downto 0);
-signal ram_data_write_core     : std_logic_vector(31 downto 0);
-signal ram_addr_core           : std_logic_vector(7 downto 0);
-signal write_enable_core       : std_logic;
--- RAM
-signal ram_addr_memory           : std_logic_vector(7 downto 0);
-signal write_enable_memory       : std_logic;
-signal data_memory               : std_logic_vector(31 downto 0);
-signal ram_data_memory           : std_logic_vector(31 downto 0);
+   signal rst                    : std_logic;
+   signal clk                    : std_logic;
+   -- core
+   signal ram_data_read_core     : std_logic_vector(31 downto 0);
+   signal ram_data_write_core    : std_logic_vector(31 downto 0);
+   signal ram_addr_core          : std_logic_vector(7 downto 0);
+   signal write_enable_core      : std_logic;
+   -- RAM
+   signal ram_addr_memory        : std_logic_vector(7 downto 0);
+   signal write_enable_memory    : std_logic;
+   signal data_memory            : std_logic_vector(31 downto 0);
+   signal ram_data_memory        : std_logic_vector(31 downto 0);
 
 
 begin
 
-   inst_core : component core 
+   inst_core : component core
    port map (
-      i_rst                => rst,
-      i_clk                => clk,
+      i_rst             => rst,
+      i_clk             => clk,
       -- TODO: remove "ram" prefix, it's confusing, add sufix core instead
-      i_ram_data_read      => ram_data_read_core,
-      o_ram_data_write     => ram_data_write_core, 
-      o_ram_addr           => ram_addr_core,
-      o_write_enable       => write_enable_core 
+      i_ram_data_read   => ram_data_read_core,
+      o_ram_data_write  => ram_data_write_core,
+      o_ram_addr        => ram_addr_core,
+      o_write_enable    => write_enable_core
    );
 
    inst_memory : component memory
    port map (
-      i_rst                => rst,
-      i_clk                => clk,
-      i_ram_addr           => ram_addr_memory,
-      i_write_enable       => write_enable_memory,
-      i_data               => data_memory,
-      o_ram_data           => ram_data_memory
+      i_rst             => rst,
+      i_clk             => clk,
+      i_ram_addr        => ram_addr_memory,
+      i_write_enable    => write_enable_memory,
+      i_data            => data_memory,
+      o_ram_data        => ram_data_memory
    );
 
-rst <= i_rst;
-clk <= i_clk;
-
-ram_addr_memory <= ram_addr_core;
-write_enable_memory <= write_enable_core;
-data_memory <= ram_data_write_core;
-ram_data_read_core <= ram_data_memory;
+   rst                  <= i_rst;
+   clk                  <= i_clk;
+   ram_addr_memory      <= ram_addr_core;
+   write_enable_memory  <= write_enable_core;
+   data_memory          <= ram_data_write_core;
+   ram_data_read_core   <= ram_data_memory;
 
 
 
