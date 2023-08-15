@@ -24,7 +24,7 @@ end entity reg_file;
 
 architecture rtl of reg_file is
 
-   type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
+   type t_gpr is array(0 to 31) of std_logic_vector(31 downto 0);
    signal gpr : t_gpr; -- general puprose register
 
 begin

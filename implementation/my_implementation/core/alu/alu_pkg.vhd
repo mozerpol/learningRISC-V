@@ -1,8 +1,8 @@
 library ieee;
- use ieee.std_logic_1164.all;
- use IEEE.std_logic_unsigned.all;
- use IEEE.math_real.all;
- 
+   use ieee.std_logic_1164.all;
+   use IEEE.std_logic_unsigned.all;
+   use IEEE.math_real.all;
+
 package alu_pkg is
 
    -- constant C_NAME : std_logic_vector(N downto M) := "X";
@@ -45,9 +45,9 @@ package alu_pkg is
    constant C_CSRRWI   : std_logic_vector(5 downto 0) := "101100";
    constant C_CSRRSI   : std_logic_vector(5 downto 0) := "101101";
    constant C_CSRRCI   : std_logic_vector(5 downto 0) := "101110";
-   
+
 end;
 
 package body alu_pkg is
-   
+
 end package body;

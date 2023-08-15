@@ -23,12 +23,12 @@ begin
    p_alu_mux_2 : process(all)
    begin
       if (i_rst = '1') then
-         o_alu_operand_2 <= (others => '0');
+         o_alu_operand_2      <= (others => '0');
       else
          case i_alu_mux_2_ctrl is
-            when C_RS2_DATA    => o_alu_operand_2 <= i_rs2_data;
-            when C_IMM    => o_alu_operand_2 <= i_imm;
-            when others => o_alu_operand_2 <= (others => '0');
+            when C_RS2_DATA   => o_alu_operand_2 <= i_rs2_data;
+            when C_IMM        => o_alu_operand_2 <= i_imm;
+            when others       => o_alu_operand_2 <= (others => '0');
          end case;
       end if;
    end process p_alu_mux_2;

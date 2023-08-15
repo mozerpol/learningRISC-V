@@ -3,7 +3,7 @@ library ieee;
    use ieee.numeric_std.all;
    use ieee.std_logic_unsigned.all;
 library std;
-  use std.env.all;
+   use std.env.all;
 library memory_management_lib;
    use memory_management_lib.all;
    use memory_management_lib.memory_management_pkg.all;
@@ -59,7 +59,7 @@ begin
       pc_addr_tb     <= (others => '0');
       wait for 5 ns;
       rst_tb         <= '0';
-      
+
 
 
       wait for 25 ns;

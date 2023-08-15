@@ -13,17 +13,17 @@ library alu_lib;
 
 entity control is
    port (
-      i_rst                : in std_logic;
-      i_opcode             : in std_logic_vector(6 downto 0);
-      i_func3              : in std_logic_vector(2 downto 0);
-      i_func7              : in std_logic_vector(6 downto 0);
-      o_alu_mux_1_ctrl     : out std_logic;
-      o_alu_mux_2_ctrl     : out std_logic;
-      o_pc_ctrl            : out std_logic_vector(1 downto 0);
-      o_alu_control        : out std_logic_vector(5 downto 0);
-      o_ram_management_ctrl: out std_logic_vector(2 downto 0);
-      o_reg_file_inst_ctrl : out std_logic;
-      o_reg_file_wr_ctrl   : out std_logic
+      i_rst                   : in std_logic;
+      i_opcode                : in std_logic_vector(6 downto 0);
+      i_func3                 : in std_logic_vector(2 downto 0);
+      i_func7                 : in std_logic_vector(6 downto 0);
+      o_alu_mux_1_ctrl        : out std_logic;
+      o_alu_mux_2_ctrl        : out std_logic;
+      o_pc_ctrl               : out std_logic_vector(1 downto 0);
+      o_alu_control           : out std_logic_vector(5 downto 0);
+      o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
+      o_reg_file_inst_ctrl    : out std_logic;
+      o_reg_file_wr_ctrl      : out std_logic
    );
 end entity control;
 
@@ -73,19 +73,19 @@ begin
    p_alu_mux : process (all)
    begin
       if (i_rst = '1') then
-         o_alu_mux_1_ctrl  <= C_RS1_DATA;
-         o_alu_mux_2_ctrl  <= C_RS2_DATA;
+         o_alu_mux_1_ctrl     <= C_RS1_DATA;
+         o_alu_mux_2_ctrl     <= C_RS2_DATA;
       else
          if (i_opcode(6 downto 2) = C_OPCODE_OP) then
-            o_alu_mux_1_ctrl <= C_RS1_DATA;
-            o_alu_mux_2_ctrl <= C_RS2_DATA;
+            o_alu_mux_1_ctrl  <= C_RS1_DATA;
+            o_alu_mux_2_ctrl  <= C_RS2_DATA;
          elsif (i_opcode(6 downto 2) = C_OPCODE_OPIMM) then
-            o_alu_mux_2_ctrl <= C_IMM;
+            o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
-            o_alu_mux_2_ctrl <= C_IMM;
+            o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
-            o_alu_mux_1_ctrl <= C_RS1_DATA;
-            o_alu_mux_2_ctrl <= C_IMM;
+            o_alu_mux_1_ctrl  <= C_RS1_DATA;
+            o_alu_mux_2_ctrl  <= C_IMM;
          end if;
       end if;
    end process p_alu_mux;
@@ -93,8 +93,8 @@ begin
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
-         o_reg_file_wr_ctrl <= C_READ_ENABLE;
+         o_reg_file_inst_ctrl    <= C_DATA_REG_FILE;
+         o_reg_file_wr_ctrl      <= C_READ_ENABLE;
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
@@ -117,7 +117,7 @@ begin
    p_ram_management : process(all)
    begin
       if (i_rst = '1') then
-         o_ram_management_ctrl <= (others => '0');
+         o_ram_management_ctrl   <= (others => '0');
       else
          if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
             case i_func3 is

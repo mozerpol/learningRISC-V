@@ -3,7 +3,7 @@ library ieee;
    use ieee.numeric_std.all;
    use ieee.std_logic_unsigned.all;
 library std;
-  use std.env.all;
+   use std.env.all;
 
 entity reg_file_tb is
 end reg_file_tb;

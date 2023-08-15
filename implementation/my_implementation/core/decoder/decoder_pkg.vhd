@@ -1,8 +1,8 @@
 library ieee;
-  use ieee.std_logic_1164.all;
-  use IEEE.std_logic_unsigned.all;
-  use IEEE.math_real.all;
-  
+   use ieee.std_logic_1164.all;
+   use IEEE.std_logic_unsigned.all;
+   use IEEE.math_real.all;
+
  package decoder_pkg is
 
    -- Opcodes, all are in documentation in table on page 104
@@ -29,6 +29,7 @@ library ieee;
    constant C_OPCODE_OP       : std_logic_vector(4 downto 0) := "01100";
 
  end;
+
  package body decoder_pkg is
- 
+
  end package body;

@@ -16,14 +16,14 @@ architecture tb of control_tb is
 
    component control is
    port (
-      i_rst             : in std_logic;
-      i_opcode          : in std_logic_vector(6 downto 0);
-      i_func3           : in std_logic_vector(2 downto 0);
-      i_func7           : in std_logic_vector(6 downto 0);
-      o_alu_mux_1_ctrl  : out std_logic;
-      o_alu_mux_2_ctrl  : out std_logic;
-      o_alu_control     : out std_logic_vector(5 downto 0);
-      o_reg_wr_ctrl     : out std_logic
+      i_rst                   : in std_logic;
+      i_opcode                : in std_logic_vector(6 downto 0);
+      i_func3                 : in std_logic_vector(2 downto 0);
+      i_func7                 : in std_logic_vector(6 downto 0);
+      o_alu_mux_1_ctrl        : out std_logic;
+      o_alu_mux_2_ctrl        : out std_logic;
+      o_alu_control           : out std_logic_vector(5 downto 0);
+      o_reg_wr_ctrl           : out std_logic
    );
    end component control;
 

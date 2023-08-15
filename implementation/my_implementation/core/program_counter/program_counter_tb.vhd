@@ -3,7 +3,7 @@ library ieee;
    use ieee.numeric_std.all;
    use ieee.std_logic_unsigned.all;
 library std;
-  use std.env.all;
+   use std.env.all;
 
 entity program_counter_tb is
 end program_counter_tb;
@@ -28,7 +28,7 @@ architecture tb of program_counter_tb is
 
 begin
 
-   inst_program_counter : component program_counter 
+   inst_program_counter : component program_counter
    port map (
       i_rst         => rst_tb,
       i_clk         => clk_tb,
@@ -63,9 +63,9 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       pc_ctrl_tb     <= "01";
-       
+
       wait for 25 ns;
-      stop(2); 
+      stop(2);
    end process p_tb;
 
 end architecture tb;

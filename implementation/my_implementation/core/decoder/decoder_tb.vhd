@@ -82,7 +82,7 @@ begin
       -- lb x12, -67(x1)
       -- Binary = 1111 1011 1101 0000 1000 0110 0000 0011
       -- Hexadecimal = 0xfbd08603
-      instruction_tb <= "11111011110100001000011000000011"; 
+      instruction_tb <= "11111011110100001000011000000011";
       wait for 5 ns;
       -- 1. When instruction(31) = 0
       -- jalr x1, x2, 3
