@@ -76,6 +76,7 @@ begin
          o_alu_mux_1_ctrl     <= C_RS1_DATA;
          o_alu_mux_2_ctrl     <= C_RS2_DATA;
       else
+         -- TODO: CHANGE IF-ELSE TO CASE
          if (i_opcode(6 downto 2) = C_OPCODE_OP) then
             o_alu_mux_1_ctrl  <= C_RS1_DATA;
             o_alu_mux_2_ctrl  <= C_RS2_DATA;
@@ -85,6 +86,9 @@ begin
             o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
             o_alu_mux_1_ctrl  <= C_RS1_DATA;
+            o_alu_mux_2_ctrl  <= C_IMM;
+         elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
+            -- o_alu_mux_1_ctrl -- value is not important in this case
             o_alu_mux_2_ctrl  <= C_IMM;
          end if;
       end if;
@@ -97,19 +101,21 @@ begin
          o_reg_file_wr_ctrl      <= C_READ_ENABLE;
       else
          case i_opcode(6 downto 2) is
-            when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_LUI |
-                 C_OPCODE_OP =>
-                     o_reg_file_inst_ctrl <= C_ALU_RESULT;
-                     o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
+            when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_OP =>
+               o_reg_file_inst_ctrl <= C_ALU_RESULT;
+               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_LOAD =>
-                     o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
-                     o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
+               o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_STORE =>
-                  -- o_reg_file_inst_ctrl <= vaule is not important in this case
-                     o_reg_file_wr_ctrl   <= C_READ_ENABLE;
+               -- o_reg_file_inst_ctrl <= vaule is not important in this case
+               o_reg_file_wr_ctrl   <= C_READ_ENABLE;
+            when C_OPCODE_LUI   =>
+               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
+               o_reg_file_inst_ctrl <= C_ALU_RESULT;
             when others =>
-                     o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
-                     o_reg_file_wr_ctrl   <= C_READ_ENABLE;
+               o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+               o_reg_file_wr_ctrl   <= C_READ_ENABLE;
          end case;
       end if;
    end process;
@@ -119,6 +125,7 @@ begin
       if (i_rst = '1') then
          o_ram_management_ctrl   <= (others => '0');
       else
+         -- TODO: CHANGE IF-ELSE TO CASE
          if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
             case i_func3 is
                when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
@@ -135,6 +142,8 @@ begin
                when C_FUNC3_SW   => o_ram_management_ctrl <= C_SW;
                when others       => o_ram_management_ctrl <= (others => '0');
             end case;
+         else
+            o_ram_management_ctrl <= (others => '0');
          end if;
       end if;
    end process p_ram_management;
