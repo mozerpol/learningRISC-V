@@ -65,6 +65,7 @@ begin
                   when others             => o_alu_control <= (others => '0');
                end case;
             when C_OPCODE_LUI    => o_alu_control  <= C_LUI;
+            when C_OPCODE_AUIPC  => o_alu_control  <= C_AUIPC;
             when others          => o_alu_control  <= (others => '0');
          end case;
       end if;
@@ -90,6 +91,9 @@ begin
          elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
             -- o_alu_mux_1_ctrl -- value is not important in this case
             o_alu_mux_2_ctrl  <= C_IMM;
+         elsif (i_opcode(6 downto 2) = C_OPCODE_AUIPC) then
+            o_alu_mux_1_ctrl  <= C_PC_ADDR;
+            o_alu_mux_2_ctrl  <= C_IMM;
          end if;
       end if;
    end process p_alu_mux;
@@ -110,7 +114,7 @@ begin
             when C_OPCODE_STORE =>
                -- o_reg_file_inst_ctrl <= vaule is not important in this case
                o_reg_file_wr_ctrl   <= C_READ_ENABLE;
-            when C_OPCODE_LUI   =>
+            when C_OPCODE_LUI | C_OPCODE_AUIPC =>
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
                o_reg_file_inst_ctrl <= C_ALU_RESULT;
             when others =>
