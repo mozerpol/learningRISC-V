@@ -15,7 +15,7 @@ package instruction_memory_pkg is
                               x"00322123", -- sw x3, 2(x4)        RAM[2+10]           = 12 -- load 32 bits from gpr(rs2) to RAM(rs1+offset)
                               x"0001a103", -- lw x2, 0(x3)        x2  =  RAM[0+12]    = 12 -- load 32 bits from RAM(rs1+offset) to gpr(rd)
                               x"00fff2b7", -- lui x5, 0xFFF       x5                  = 0x00fff000
-                              x"00000000",
+                              x"0ffff317", -- auipc x6, 0xffff    x6  =  CHECK AFTER MODIFYNG RAM!!!!!!!!1
                               x"00000000",
                               x"00000000",
                               x"00000000",
