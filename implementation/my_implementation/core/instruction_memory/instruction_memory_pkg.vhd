@@ -5,18 +5,18 @@ library ieee;
 
 package instruction_memory_pkg is
 
-    -- constant C_NAME : std_logic_vector(N downto M) := "X";
-   type t_instruction_memory is array (0 to 10) of std_logic_vector(31 downto 0);
+   constant C_INSTRUCTIONS_NUMBER : integer := 10;
+   type t_instructions  is array (0 to C_INSTRUCTIONS_NUMBER-1) of std_logic_vector(31 downto 0);
+   type t_rom           is array (0 to C_INSTRUCTIONS_NUMBER*4-1) of std_logic_vector(7 downto 0);
 
-   constant C_CODE : t_instruction_memory := (
+   constant C_CODE : t_instructions := (
                               x"00200093", -- addi x1, x0, 2      x1  =  x0  +  2     = 2
                               x"00a00213", -- addi x4, x0, 10     x4  =  x0  +  10    = 10
                               x"001201b3", -- add x3, x4, x1      x3  =  10  +  2     = 12
                               x"00322123", -- sw x3, 2(x4)        RAM[2+10]           = 12 -- load 32 bits from gpr(rs2) to RAM(rs1+offset)
                               x"0001a103", -- lw x2, 0(x3)        x2  =  RAM[0+12]    = 12 -- load 32 bits from RAM(rs1+offset) to gpr(rd)
-                              x"00fff2b7", -- lui x5, 0xFFF       x5                  = 0x00fff000
-                              x"0ffff317", -- auipc x6, 0xffff    x6  =  CHECK AFTER MODIFYNG RAM!!!!!!!!1
-                              x"00000000",
+                              x"00fff2b7", -- lui x5, 0xFFF       x5                  = 00fff000
+                              x"0ffff317", -- auipc x6, 0xffff    x6                  = 0ffff018
                               x"00000000",
                               x"00000000",
                               x"00000000"
