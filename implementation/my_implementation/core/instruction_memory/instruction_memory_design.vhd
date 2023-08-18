@@ -17,7 +17,7 @@ end entity instruction_memory;
 
 architecture rtl of instruction_memory is
 
-   signal ram : t_instruction_memory;
+   signal rom : t_rom;
 
 begin
 
@@ -25,9 +25,18 @@ begin
    begin
       if (i_rst = '1') then
          o_instruction  <= (others => '0');
-         ram            <= C_CODE;
+       --  ram            <= C_CODE;
+         for i in 0 to 9 loop
+             rom(i*4)   <= C_CODE(i)(7 downto 0);
+             rom(i*4+1) <= C_CODE(i)(15 downto 8);
+             rom(i*4+2) <= C_CODE(i)(23 downto 16);
+             rom(i*4+3) <= C_CODE(i)(31 downto 24);
+         end loop;
       else
-         o_instruction  <= ram(to_integer(unsigned(i_ram_read_addr)));
+         o_instruction(7 downto 0)   <= rom(to_integer(unsigned(i_ram_read_addr)));
+         o_instruction(15 downto 8)  <= rom(to_integer(unsigned(i_ram_read_addr+1)));
+         o_instruction(23 downto 16) <= rom(to_integer(unsigned(i_ram_read_addr+2)));
+         o_instruction(31 downto 24) <= rom(to_integer(unsigned(i_ram_read_addr+3)));
       end if;
    end process p_instruction_memory;
 
