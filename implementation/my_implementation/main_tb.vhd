@@ -42,7 +42,7 @@ begin
       wait for 20 ns;
       rst_tb   <= '0';
 
-      wait for 25 ns;
+      wait for 35 ns;
       stop(2);
    end process p_tb;
 
