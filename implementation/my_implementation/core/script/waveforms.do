@@ -22,7 +22,7 @@ add wave         -group PC                  -radix dec  /core_tb/inst_core/inst_
 add wave         -group INSTRUCTION_MEMORY  -radix bin  /core_tb/inst_core/inst_instruction_memory/i_rst
 add wave         -group INSTRUCTION_MEMORY  -radix dec  /core_tb/inst_core/inst_instruction_memory/i_ram_read_addr
 add wave         -group INSTRUCTION_MEMORY  -radix hex  /core_tb/inst_core/inst_instruction_memory/o_instruction
-add wave         -group INSTRUCTION_MEMORY  -radix hex  /core_tb/inst_core/inst_instruction_memory/ram
+add wave         -group INSTRUCTION_MEMORY  -radix hex  /core_tb/inst_core/inst_instruction_memory/rom
 
 add wave         -group ALU                 -radix bin  /core_tb/inst_core/inst_alu/i_rst
 add wave         -group ALU                 -radix dec  /core_tb/inst_core/inst_alu/i_alu_operand_1
