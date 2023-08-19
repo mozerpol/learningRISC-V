@@ -57,7 +57,7 @@ add wave         -group DECODER -radix bin      /main_tb/inst_main/inst_core/ins
 
 add wave         -group INSTRUCTION_MEM -radix dec     /main_tb/inst_main/inst_core/inst_instruction_memory/i_ram_read_addr 
 add wave         -group INSTRUCTION_MEM -radix hex     /main_tb/inst_main/inst_core/inst_instruction_memory/o_instruction 
-add wave         -group INSTRUCTION_MEM -radix hex     /main_tb/inst_main/inst_core/inst_instruction_memory/ram 
+add wave         -group INSTRUCTION_MEM -radix hex     /main_tb/inst_main/inst_core/inst_instruction_memory/rom 
 
 add wave         -group PC -radix hex           /main_tb/inst_main/inst_core/inst_program_counter/i_alu_result 
 add wave         -group PC -radix bin           /main_tb/inst_main/inst_core/inst_program_counter/i_pc_ctrl 
