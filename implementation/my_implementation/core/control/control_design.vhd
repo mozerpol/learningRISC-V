@@ -83,8 +83,7 @@ begin
             o_alu_mux_1_ctrl  <= C_RS1_DATA;
             o_alu_mux_2_ctrl  <= C_RS2_DATA;
          elsif (i_opcode(6 downto 2) = C_OPCODE_OPIMM) then
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
+            o_alu_mux_1_ctrl  <= C_RS1_DATA;
             o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
             o_alu_mux_1_ctrl  <= C_RS1_DATA;
