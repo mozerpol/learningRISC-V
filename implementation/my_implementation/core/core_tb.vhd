@@ -62,7 +62,7 @@ begin
       wait until ram_addr_tb = d"12";
       ram_data_read_tb  <= x"0000000c";
 
-      wait for 25 ns;
+      wait for 35 ns;
       stop(2);
    end process p_tb;
 
