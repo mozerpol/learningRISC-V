@@ -57,8 +57,10 @@ begin
                o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
                o_alu_result(11 downto 0)  <= (others => '0');
             when C_AUIPC         =>
-               o_alu_result               <= i_alu_operand_2(19 downto 0) & 
+               o_alu_result <= i_alu_operand_2(19 downto 0) & 
                                              i_alu_operand_1(11 downto 0);
+            when C_JAL           =>
+               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2));
             when others => o_alu_result <= (others => '0');
          end case;
       end if;
