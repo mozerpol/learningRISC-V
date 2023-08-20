@@ -22,7 +22,7 @@ entity control is
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_alu_control           : out std_logic_vector(5 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
-      o_reg_file_inst_ctrl    : out std_logic;
+      o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
       o_reg_file_wr_ctrl      : out std_logic
    );
 end entity control;
@@ -66,6 +66,7 @@ begin
                end case;
             when C_OPCODE_LUI    => o_alu_control  <= C_LUI;
             when C_OPCODE_AUIPC  => o_alu_control  <= C_AUIPC;
+            when C_OPCODE_JAL    => o_alu_control  <= C_JAL;
             when others          => o_alu_control  <= (others => '0');
          end case;
       end if;
@@ -94,6 +95,9 @@ begin
          elsif (i_opcode(6 downto 2) = C_OPCODE_AUIPC) then
             o_alu_mux_1_ctrl  <= C_PC_ADDR;
             o_alu_mux_2_ctrl  <= C_IMM;
+         elsif (i_opcode(6 downto 2) = C_OPCODE_JAL) then
+            o_alu_mux_1_ctrl  <= C_PC_ADDR;
+            o_alu_mux_2_ctrl  <= C_IMM;
          end if;
       end if;
    end process p_alu_mux;
@@ -101,24 +105,27 @@ begin
    p_reg_file : process(all)
    begin
       if (i_rst = '1') then
-         o_reg_file_inst_ctrl    <= C_DATA_REG_FILE;
+         o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
          o_reg_file_wr_ctrl      <= C_READ_ENABLE;
       else
          case i_opcode(6 downto 2) is
-            when C_OPCODE_JAL | C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_OP =>
-               o_reg_file_inst_ctrl <= C_ALU_RESULT;
+            when C_OPCODE_JALR | C_OPCODE_OPIMM | C_OPCODE_OP =>
+               o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-            when C_OPCODE_LOAD =>
-               o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+            when C_OPCODE_LOAD   =>
+               o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-            when C_OPCODE_STORE =>
+            when C_OPCODE_STORE  =>
                -- o_reg_file_inst_ctrl <= vaule is not important in this case
                o_reg_file_wr_ctrl   <= C_READ_ENABLE;
             when C_OPCODE_LUI | C_OPCODE_AUIPC =>
+               o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-               o_reg_file_inst_ctrl <= C_ALU_RESULT;
-            when others =>
-               o_reg_file_inst_ctrl <= C_DATA_REG_FILE;
+            when C_OPCODE_JAL    =>
+               o_reg_file_inst_ctrl <= C_WRITE_PC_ADDR;
+               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
+            when others          =>
+               o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_READ_ENABLE;
          end case;
       end if;
@@ -159,6 +166,8 @@ begin
       else
     if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
       o_pc_ctrl   <= C_INCREMENT_PC;
+    elsif (i_opcode(6 downto 0) = C_OPCODE_JAL & "11") then
+      o_pc_ctrl   <= C_LOAD_ALU_RESULT;
     else
       o_pc_ctrl   <= C_INCREMENT_PC;
     end if;
