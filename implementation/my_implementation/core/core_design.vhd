@@ -91,7 +91,7 @@ architecture rtl of core is
          o_pc_ctrl               : out std_logic_vector(1 downto 0);
          o_alu_control           : out std_logic_vector(5 downto 0);
          o_reg_file_wr_ctrl      : out std_logic;
-         o_reg_file_inst_ctrl    : out std_logic;
+         o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
          o_ram_management_ctrl   : out std_logic_vector(2 downto 0)
       );
    end component control;
@@ -118,9 +118,10 @@ architecture rtl of core is
          i_rs2_addr           : in std_logic_vector(4 downto 0);
          i_rd_addr            : in std_logic_vector(4 downto 0);
          i_reg_file_wr_ctrl   : in std_logic;
-         i_reg_file_inst_ctrl : in std_logic;
+         i_reg_file_inst_ctrl : in std_logic_vector(1 downto 0);
          i_rd_data            : in std_logic_vector(31 downto 0);
          i_alu_result         : in std_logic_vector(31 downto 0);
+         i_pc_addr            : in std_logic_vector(31 downto 0);
          o_rs1_data           : out std_logic_vector(31 downto 0);
          o_rs2_data           : out std_logic_vector(31 downto 0)
       );
@@ -189,7 +190,7 @@ architecture rtl of core is
    signal write_data          : std_logic_vector(31 downto 0);
    signal pc_ctrl             : std_logic_vector(1 downto 0);
    signal reg_file_wr_ctrl    : std_logic;
-   signal reg_file_inst_ctrl  : std_logic;
+   signal reg_file_inst_ctrl  : std_logic_vector(1 downto 0);
    signal ram_management_ctrl : std_logic_vector(2 downto 0);
 
 begin
@@ -260,6 +261,7 @@ begin
       i_reg_file_inst_ctrl => reg_file_inst_ctrl,
       i_rd_data            => rd_data,
       i_alu_result         => alu_result,
+      i_pc_addr            => pc_addr,
       o_rs1_data           => rs1_data,
       o_rs2_data           => rs2_data
    );
