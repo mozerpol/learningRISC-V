@@ -10,14 +10,14 @@ package instruction_memory_pkg is
    type t_rom           is array (0 to C_INSTRUCTIONS_NUMBER*4-1) of std_logic_vector(7 downto 0);
 
    constant C_CODE : t_instructions := (
-                              x"00200093", -- addi x1, x0, 2      x1  =  x0  +  2     = 2
-                              x"00a00213", -- addi x4, x0, 10     x4  =  x0  +  10    = 10
-                              x"001201b3", -- add x3, x4, x1      x3  =  10  +  2     = 12
-                              x"00322123", -- sw x3, 2(x4)        RAM[2+10]           = 12 -- load 32 bits from gpr(rs2) to RAM(rs1+offset)
-                              x"0001a103", -- lw x2, 0(x3)        x2  =  RAM[0+12]    = 12 -- load 32 bits from RAM(rs1+offset) to gpr(rd)
-                              x"00fff2b7", -- lui x5, 0xFFF       x5                  = 00fff000
-                              x"0ffff317", -- auipc x6, 0xffff    x6                  = 0ffff018
-                              x"00000000",
+                              x"00200093", -- addi  x1, x0, 2      x1  =  x0  +  2     = 2
+                              x"00a00213", -- addi  x4, x0, 10     x4  =  x0  +  10    = 10
+                              x"001201b3", -- add   x3, x4, x1     x3  =  10  +  2     = 12
+                              x"00322123", -- sw    x3, 2(x4)      RAM[2+10]           = 12 -- load 32 bits from gpr(rs2) to RAM(rs1+offset)
+                              x"0001a103", -- lw    x2, 0(x3)      x2  =  RAM[0+12]    = 12 -- load 32 bits from RAM(rs1+offset) to gpr(rd)
+                              x"00fff2b7", -- lui   x5, 0xFFF      x5                  = 00fff000
+                              x"0ffff317", -- auipc x6, 0xffff     x6                  = 0ffff018
+                              x"fe5ff3ef", -- jal   x7, -28        x7                  = 0x32
                               x"00000000",
                               x"00000000"
                            );
