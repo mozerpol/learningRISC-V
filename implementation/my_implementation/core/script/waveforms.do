@@ -83,6 +83,7 @@ add wave         -group REG_FILE            -radix bin  /core_tb/inst_core/inst_
 add wave         -group REG_FILE            -radix bin  /core_tb/inst_core/inst_reg_file/i_reg_file_inst_ctrl
 add wave         -group REG_FILE            -radix hex  /core_tb/inst_core/inst_reg_file/i_rd_data
 add wave         -group REG_FILE            -radix hex  /core_tb/inst_core/inst_reg_file/i_alu_result
+add wave         -group REG_FILE            -radix hex  /core_tb/inst_core/inst_reg_file/i_pc_addr
 add wave         -group REG_FILE            -radix hex  /core_tb/inst_core/inst_reg_file/o_rs1_data
 add wave         -group REG_FILE            -radix hex  /core_tb/inst_core/inst_reg_file/o_rs2_data
 add wave         -group REG_FILE            -radix dec  /core_tb/inst_core/inst_reg_file/gpr
