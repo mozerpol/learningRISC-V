@@ -26,7 +26,7 @@ begin
       if (i_rst = '1') then
          o_instruction  <= (others => '0');
        --  ram            <= C_CODE;
-         for i in 0 to 9 loop
+         for i in 0 to C_INSTRUCTIONS_NUMBER-1 loop
              rom(i*4)   <= C_CODE(i)(7 downto 0);
              rom(i*4+1) <= C_CODE(i)(15 downto 8);
              rom(i*4+2) <= C_CODE(i)(23 downto 16);
