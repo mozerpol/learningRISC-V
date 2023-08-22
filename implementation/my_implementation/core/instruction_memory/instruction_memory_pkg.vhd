@@ -5,7 +5,7 @@ library ieee;
 
 package instruction_memory_pkg is
 
-   constant C_INSTRUCTIONS_NUMBER : integer := 10;
+   constant C_INSTRUCTIONS_NUMBER : integer := 14;
    type t_instructions  is array (0 to C_INSTRUCTIONS_NUMBER-1) of std_logic_vector(31 downto 0);
    type t_rom           is array (0 to C_INSTRUCTIONS_NUMBER*4-1) of std_logic_vector(7 downto 0);
 
@@ -17,7 +17,11 @@ package instruction_memory_pkg is
                               x"0001a103", -- lw    x2, 0(x3)      x2  =  RAM[0+12]    = 12 -- load 32 bits from RAM(rs1+offset) to gpr(rd)
                               x"00fff2b7", -- lui   x5, 0xFFF      x5                  = 00fff000
                               x"0ffff317", -- auipc x6, 0xffff     x6                  = 0ffff018
-                              x"fe5ff3ef", -- jal   x7, -28        x7                  = 0x32
+                              x"010003ef", -- jal   x7, 16         x7                  = 0x20
+                              x"00000013", -- addi  x0, x0, 0      x0  =  x0  +  0     = 0  -- nop
+                              x"00000013", -- addi  x0, x0, 0      x0  =  x0  +  0     = 0  -- nop
+                              x"001080b3", -- add   x1, x1, x1    
+                              x"ff618113", -- addi  x2, x3, -10    x2  =  12  -  10    = 2
                               x"00000000",
                               x"00000000"
                            );
@@ -26,3 +30,5 @@ end;
 package body instruction_memory_pkg is
 
 end package body;
+
+
