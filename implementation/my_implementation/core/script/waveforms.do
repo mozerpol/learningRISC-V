@@ -66,7 +66,6 @@ add wave         -group DECODER             -radix bin  /core_tb/inst_core/inst_
 
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_rst
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_ram_management_ctrl
-add wave         -group RAM_MNGT            -radix dec  /core_tb/inst_core/inst_ram_management/i_alu_result
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_rs1_data
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_rs2_data
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_imm
