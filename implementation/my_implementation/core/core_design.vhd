@@ -131,7 +131,6 @@ architecture rtl of core is
       port (
       i_rst                   : in std_logic;
       i_ram_management_ctrl   : in std_logic_vector(2 downto 0);
-      i_alu_result            : in std_logic_vector(31 downto 0);
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
@@ -270,7 +269,6 @@ begin
    port map (
       i_rst                   => rst,
       i_ram_management_ctrl   => ram_management_ctrl,
-      i_alu_result            => alu_result,
       i_rs1_data              => rs1_data,
       i_rs2_data              => rs2_data,
       i_imm                   => imm,
