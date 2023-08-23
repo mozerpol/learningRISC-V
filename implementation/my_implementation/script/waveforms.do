@@ -63,7 +63,6 @@ add wave         -group PC -radix hex           /main_tb/inst_main/inst_core/ins
 add wave         -group PC -radix bin           /main_tb/inst_main/inst_core/inst_program_counter/i_pc_ctrl 
 add wave         -group PC -radix dec           /main_tb/inst_main/inst_core/inst_program_counter/o_pc_addr 
 
-add wave         -group RAM_MNGT -radix hex     /main_tb/inst_main/inst_core/inst_ram_management/i_alu_result 
 add wave         -group RAM_MNGT -radix hex     /main_tb/inst_main/inst_core/inst_ram_management/i_ram_management_ctrl 
 add wave         -group RAM_MNGT -radix hex     /main_tb/inst_main/inst_core/inst_ram_management/i_rs1_data 
 add wave         -group RAM_MNGT -radix hex     /main_tb/inst_main/inst_core/inst_ram_management/i_rs2_data 
