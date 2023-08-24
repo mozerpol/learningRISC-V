@@ -7,10 +7,10 @@
 
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin   /branch_instructions_tb/inst_branch_instructions/i_rst
-add wave -expand -group DESIGN -radix bin   /branch_instructions_tb/inst_branch_instructions/i_branch_ctrl
-add wave -expand -group DESIGN -radix bin   /branch_instructions_tb/inst_branch_instructions/i_rs1_data
-add wave -expand -group DESIGN -radix bin   /branch_instructions_tb/inst_branch_instructions/i_rs2_data
-add wave -expand -group DESIGN -radix bin   /branch_instructions_tb/inst_branch_instructions/o_branch_result
+add wave -expand -group DESIGN -radix dec   /branch_instructions_tb/inst_branch_instructions/i_branch_ctrl
+add wave -expand -group DESIGN -radix dec   /branch_instructions_tb/inst_branch_instructions/i_rs1_data
+add wave -expand -group DESIGN -radix dec   /branch_instructions_tb/inst_branch_instructions/i_rs2_data
+add wave -expand -group DESIGN -radix dec   /branch_instructions_tb/inst_branch_instructions/o_branch_result
 
 
 ##### Waveform window settings: #####
