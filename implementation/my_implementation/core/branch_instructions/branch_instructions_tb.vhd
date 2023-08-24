@@ -46,11 +46,63 @@ begin
       branch_ctrl_tb    <= (others => '0');
       rs1_data_tb       <= (others => '0');
       rs2_data_tb       <= (others => '0');
-      branch_result_tb  <= '0';
       wait for 10 ns;
       rst_tb            <= '0';
+      -- BEQ
+      branch_ctrl_tb    <= C_BEQ;
+      rs1_data_tb       <= 32d"1";
+      rs2_data_tb       <= 32d"1";
+      wait for 1 ns;
+      branch_ctrl_tb    <= C_BEQ;
+      rs1_data_tb       <= 32d"0";
+      rs2_data_tb       <= 32d"11";
+      wait for 1 ns;
+      -- C_BNE
+      branch_ctrl_tb    <= C_BNE;
+      rs1_data_tb       <= 32d"2";
+      rs2_data_tb       <= 32d"2";
+      wait for 1 ns;
+      branch_ctrl_tb    <= C_BNE;
+      rs1_data_tb       <= 32d"23";
+      rs2_data_tb       <= 32d"22";
+      wait for 1 ns;
+      -- C_BLT
+      branch_ctrl_tb    <= C_BLT;
+      rs1_data_tb       <= 32d"3";
+      rs2_data_tb       <= 32d"3";
+      wait for 1 ns;
+      branch_ctrl_tb    <= C_BLT;
+      rs1_data_tb       <= 32d"33";
+      rs2_data_tb       <= 32d"1";
+      wait for 1 ns;
+      -- C_BGE
+      branch_ctrl_tb    <= C_BGE;
+      rs1_data_tb       <= 32d"4";
+      rs2_data_tb       <= 32d"4";
+      wait for 1 ns;
+      branch_ctrl_tb    <= C_BGE;
+      rs1_data_tb       <= 32d"44";
+      rs2_data_tb       <= 32d"43";
+      wait for 1 ns;
+      -- C_BLTU
+      branch_ctrl_tb    <= C_BGE;
+      rs1_data_tb       <= 32d"5";
+      rs2_data_tb       <= 32d"5";
+      wait for 1 ns;
+      branch_ctrl_tb    <= C_BGE;
+      rs1_data_tb       <= 32d"45";
+      rs2_data_tb       <= 32d"55";
+      wait for 1 ns;
+      -- C_BGEU
+      branch_ctrl_tb    <= C_BGE;
+      rs1_data_tb       <= 32d"6";
+      rs2_data_tb       <= 32d"6";
+      wait for 1 ns;
+      branch_ctrl_tb    <= C_BGE;
+      rs1_data_tb       <= 32d"64";
+      rs2_data_tb       <= 32d"66";
 
-      wait for 25 ns;
+      wait for 5 ns;
       stop(2);
    end process p_tb;
 
