@@ -25,6 +25,19 @@ begin
       if (i_rst) then
          o_branch_result <= '0';
       else
+         case (i_branch_ctrl) is
+            when C_BEQ  => o_branch_result <= '1' when i_rs1_data = i_rs2_data else '0';
+            when C_BNE  => o_branch_result <= '1' when i_rs1_data /= i_rs2_data else '0';
+            when C_BLT  => o_branch_result <= '1' when signed(i_rs1_data) <
+                                                       signed(i_rs2_data) else '0';
+            when C_BGE  => o_branch_result <= '1' when signed(i_rs1_data) >=
+                                                       signed(i_rs2_data) else '0';
+            when C_BLTU => o_branch_result <= '1' when unsigned(i_rs1_data) <
+                                                       unsigned(i_rs2_data) else '0';
+            when C_BGEU => o_branch_result <= '1' when unsigned(i_rs1_data) >=
+                                                       unsigned(i_rs2_data) else '0';
+            when others => o_branch_result <= '0';
+         end case;
       end if;
    end process p_branch_instructions;
 
