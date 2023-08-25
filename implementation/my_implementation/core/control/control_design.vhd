@@ -17,13 +17,15 @@ entity control is
       i_opcode                : in std_logic_vector(6 downto 0);
       i_func3                 : in std_logic_vector(2 downto 0);
       i_func7                 : in std_logic_vector(6 downto 0);
+      i_branch_result         : in std_logic;
       o_alu_mux_1_ctrl        : out std_logic;
       o_alu_mux_2_ctrl        : out std_logic;
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_alu_control           : out std_logic_vector(5 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
-      o_reg_file_wr_ctrl      : out std_logic
+      o_reg_file_wr_ctrl      : out std_logic;
+      o_branch_ctrl           : out std_logic_vector(2 downto 0)
    );
 end entity control;
 
@@ -179,6 +181,26 @@ begin
          -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
+
+   p_branch_instructions : process(all)
+   begin
+      if (i_rst = '1') then
+         o_branch_ctrl <= (others => '0');
+      else
+         if (i_opcode(6 downto 2) = C_OPCODE_BRANCH) then
+            case i_func3 is
+               when C_FUNC3_BEQ  => o_branch_ctrl <= C_BEQ;
+               when C_FUNC3_BNE  => o_branch_ctrl <= C_BNE;
+               when C_FUNC3_BLT  => o_branch_ctrl <= C_BLT;
+               when C_FUNC3_BGE  => o_branch_ctrl <= C_BGE;
+               when C_FUNC3_BLTU => o_branch_ctrl <= C_BLTU;
+               when C_FUNC3_BGEU => o_branch_ctrl <= C_BGEU;
+               when others       => o_branch_ctrl <= (others => '0');
+            end case;
+         end if;
+      end if;
+   end process p_branch_instructions;
+
 
 
 end architecture rtl;
