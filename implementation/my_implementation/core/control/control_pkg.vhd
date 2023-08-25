@@ -30,7 +30,13 @@ library ieee;
    constant C_SB                 : std_logic_vector(2 downto 0) := "101";
    constant C_SH                 : std_logic_vector(2 downto 0) := "110";
    constant C_SW                 : std_logic_vector(2 downto 0) := "111";
-
+   -- branch_instructions
+   constant C_BEQ                : std_logic_vector(2 downto 0) := "000";
+   constant C_BNE                : std_logic_vector(2 downto 0) := "001";
+   constant C_BLT                : std_logic_vector(2 downto 0) := "010";
+   constant C_BGE                : std_logic_vector(2 downto 0) := "011";
+   constant C_BLTU               : std_logic_vector(2 downto 0) := "100";
+   constant C_BGEU               : std_logic_vector(2 downto 0) := "101";
  end;
 
  package body control_pkg is
