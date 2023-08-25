@@ -52,6 +52,7 @@ add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/i_opcode
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/i_func3
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/i_func7
+add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/i_branch_result
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_alu_mux_1_ctrl
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_alu_mux_2_ctrl
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_pc_ctrl
@@ -59,6 +60,7 @@ add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_reg_file_inst_ctrl
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_reg_file_wr_ctrl
 add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_ram_management_ctrl
+add wave         -group CONTROL             -radix bin  /core_tb/inst_core/inst_control/o_branch_ctrl
 
 add wave         -group DECODER             -radix bin  /core_tb/inst_core/inst_decoder/i_rst
 add wave         -group DECODER             -radix hex  /core_tb/inst_core/inst_decoder/i_instruction
