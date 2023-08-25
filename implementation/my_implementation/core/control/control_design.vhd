@@ -169,15 +169,21 @@ begin
       if (i_rst = '1') then
          o_pc_ctrl   <= C_NOP;
       else
-    if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
-      o_pc_ctrl   <= C_INCREMENT_PC;
-    elsif (i_opcode(6 downto 0) = C_OPCODE_JAL & "11") then
-      o_pc_ctrl   <= C_LOAD_ALU_RESULT;
-    elsif (i_opcode(6 downto 0) = C_OPCODE_JALR & "11") then
-      o_pc_ctrl   <= C_LOAD_ALU_RESULT;
-    else
-      o_pc_ctrl   <= C_INCREMENT_PC;
-    end if;
+         if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
+            o_pc_ctrl   <= C_INCREMENT_PC;
+         elsif (i_opcode(6 downto 0) = C_OPCODE_JAL & "11") then
+            o_pc_ctrl   <= C_LOAD_ALU_RESULT;
+         elsif (i_opcode(6 downto 0) = C_OPCODE_JALR & "11") then
+            o_pc_ctrl   <= C_LOAD_ALU_RESULT;
+         elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
+            if (i_branch_result = '1') then
+               o_pc_ctrl   <= C_LOAD_ALU_RESULT;
+            else
+               o_pc_ctrl   <= C_INCREMENT_PC;
+            end if;
+         else
+            o_pc_ctrl   <= C_INCREMENT_PC;
+         end if;
          -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
