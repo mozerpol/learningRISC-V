@@ -16,6 +16,9 @@ library alu_mux_1_lib;
 library alu_mux_2_lib;
    use alu_mux_2_lib.all;
    use alu_mux_2_lib.alu_mux_2_pkg.all;
+library branch_instructions_lib;
+   use branch_instructions_lib.all;
+   use branch_instructions_lib.branch_instructions_pkg.all;
 library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
@@ -79,6 +82,16 @@ architecture rtl of core is
          o_alu_operand_2   : out std_logic_vector(31 downto 0)
       );
    end component alu_mux_2;
+
+   component branch_instructions is
+      port (
+         i_rst             : in std_logic;
+         i_branch_ctrl     : in std_logic_vector(2 downto 0);
+         i_rs1_data        : in std_logic_vector(31 downto 0);
+         i_rs2_data        : in std_logic_vector(31 downto 0);
+         o_branch_result   : out std_logic
+      );
+   end component branch_instructions;
 
    component control is
       port (
@@ -171,6 +184,8 @@ architecture rtl of core is
    signal alu_mux_2_ctrl      : std_logic;
    signal rs2_data            : std_logic_vector(31 downto 0);
    signal imm                 : std_logic_vector(31 downto 0);
+   signal branch_ctrl         : std_logic_vector(2 downto 0);
+   signal branch_result       : std_logic;   
    signal opcode              : std_logic_vector(6 downto 0);
    signal instruction         : std_logic_vector(31 downto 0);
    signal instruction_write   : std_logic_vector(31 downto 0);
@@ -219,6 +234,15 @@ begin
       i_rs2_data        => rs2_data,
       i_imm             => imm,
       o_alu_operand_2   => alu_operand_2
+   );
+   
+   inst_branch_instructions : component branch_instructions
+   port map (
+      i_rst             => rst,
+      i_branch_ctrl     => branch_ctrl,
+      i_rs1_data        => rs1_data,
+      i_rs2_data        => rs2_data,
+      o_branch_result   => branch_result
    );
 
    inst_control : component control
