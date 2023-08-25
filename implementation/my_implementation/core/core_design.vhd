@@ -99,13 +99,15 @@ architecture rtl of core is
          i_opcode                : in std_logic_vector(6 downto 0);
          i_func3                 : in std_logic_vector(2 downto 0);
          i_func7                 : in std_logic_vector(6 downto 0);
+         i_branch_result         : in std_logic;
          o_alu_mux_1_ctrl        : out std_logic;
          o_alu_mux_2_ctrl        : out std_logic;
          o_pc_ctrl               : out std_logic_vector(1 downto 0);
          o_alu_control           : out std_logic_vector(5 downto 0);
          o_reg_file_wr_ctrl      : out std_logic;
          o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
-         o_ram_management_ctrl   : out std_logic_vector(2 downto 0)
+         o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
+         o_branch_ctrl           : out std_logic_vector(2 downto 0)
       );
    end component control;
 
@@ -251,13 +253,15 @@ begin
       i_opcode                => opcode,
       i_func3                 => func3,
       i_func7                 => func7,
+      i_branch_result         => branch_result,
       o_alu_mux_1_ctrl        => alu_mux_1_ctrl,
       o_alu_mux_2_ctrl        => alu_mux_2_ctrl,
       o_pc_ctrl               => pc_ctrl,
       o_alu_control           => alu_control,
       o_reg_file_inst_ctrl    => reg_file_inst_ctrl,
       o_reg_file_wr_ctrl      => reg_file_wr_ctrl,
-      o_ram_management_ctrl   => ram_management_ctrl
+      o_ram_management_ctrl   => ram_management_ctrl,
+      o_branch_ctrl           => branch_ctrl
    );
 
    inst_decoder : component decoder
