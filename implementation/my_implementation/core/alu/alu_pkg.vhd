@@ -10,12 +10,6 @@ package alu_pkg is
    constant C_AUIPC    : std_logic_vector(5 downto 0) := "000001";
    constant C_JAL      : std_logic_vector(5 downto 0) := "000010";
    constant C_JALR     : std_logic_vector(5 downto 0) := "000011";
-   constant C_BEQ      : std_logic_vector(5 downto 0) := "000100";
-   constant C_BNE      : std_logic_vector(5 downto 0) := "000101";
-   constant C_BLT      : std_logic_vector(5 downto 0) := "000110";
-   constant C_BGE      : std_logic_vector(5 downto 0) := "000111";
-   constant C_BLTU     : std_logic_vector(5 downto 0) := "001000";
-   constant C_BGEU     : std_logic_vector(5 downto 0) := "001001";
    constant C_ADDI     : std_logic_vector(5 downto 0) := "010010";
    constant C_SLTI     : std_logic_vector(5 downto 0) := "010011";
    constant C_SLTIU    : std_logic_vector(5 downto 0) := "010100";
