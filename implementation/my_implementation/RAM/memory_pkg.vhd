@@ -6,9 +6,12 @@ library ieee;
  package memory_pkg is
 
     -- constant C_NAME : std_logic_vector(N downto M) := "X";
-  -- type t_ram is array (0 to 127) of std_logic_vector(31 downto 0);
-   
    type t_ram is array (0 to 127, 0 to 3) of std_logic_vector(7 downto 0);
+   constant C_READ_ENABLE  : std_logic                      := '0';
+   constant C_WRITE_ENABLE : std_logic                      := '1';   
+   constant C_STORE_WORD   : std_logic_vector(1 downto 0)   := "00";
+   constant C_STORE_HALF   : std_logic_vector(1 downto 0)   := "01";
+   constant C_STORE_BYTE   : std_logic_vector(1 downto 0)   := "10";
 
  end;
 
