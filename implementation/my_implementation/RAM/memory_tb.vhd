@@ -14,21 +14,21 @@ architecture tb of memory_tb is
    port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
-      i_ram_read_addr      : in std_logic_vector(7 downto 0);
-      i_ram_write_addr     : in std_logic_vector(7 downto 0);
-      i_ram_write_data     : in std_logic_vector(31 downto 0);
-      i_ram_write_enable   : in std_logic;
-      o_instruction        : out std_logic_vector(31 downto 0)
+      i_ram_addr           : in std_logic_vector(7 downto 0);
+      i_write_enable       : in std_logic;
+      i_data               : in std_logic_vector(31 downto 0);
+      i_bytes_number       : in std_logic_vector(1 downto 0);
+      o_ram_data           : out std_logic_vector(31 downto 0)
    );
    end component memory;
 
    signal rst_tb              : std_logic;
    signal clk_tb              : std_logic;
-   signal ram_read_addr_tb    : std_logic_vector(7 downto 0);
-   signal ram_write_addr_tb   : std_logic_vector(7 downto 0);
-   signal ram_write_data_tb   : std_logic_vector(31 downto 0);
-   signal ram_write_enable_tb : std_logic;
-   signal instruction_tb      : std_logic_vector(31 downto 0);
+   signal ram_addr_tb         : std_logic_vector(7 downto 0);
+   signal write_enable_tb     : std_logic;
+   signal data_tb             : std_logic_vector(31 downto 0);
+   signal bytes_number_tb     : std_logic_vector(1 downto 0);
+   signal ram_data_tb         : std_logic_vector(31 downto 0);
 
 begin
 
@@ -36,59 +36,31 @@ begin
    port map (
       i_rst                => rst_tb,
       i_clk                => clk_tb,
-      i_ram_read_addr      => ram_read_addr_tb,
-      i_ram_write_addr     => ram_write_addr_tb,
-      i_ram_write_data     => ram_write_data_tb,
-      i_ram_write_enable   => ram_write_enable_tb,
-      o_instruction        => instruction_tb
+      i_ram_addr           => ram_addr_tb,
+      i_write_enable       => write_enable_tb,
+      i_data               => data_tb,
+      i_bytes_number       => bytes_number_tb,
+      o_ram_data           => ram_data_tb
    );
 
    p_clk : process
    begin
-      clk_tb               <= '1';
+      clk_tb            <= '1';
       wait for 1 ns;
-      clk_tb               <= '0';
+      clk_tb            <= '0';
       wait for 1 ns;
    end process p_clk;
 
    p_tb : process
    begin
-      ram_read_addr_tb     <= (others => '0');
-      ram_write_addr_tb    <= (others => '0');
-      ram_write_data_tb    <= (others => '0');
-      ram_write_enable_tb  <= '0';
-      rst_tb               <= '1';
-      wait for 5 ns;
-      rst_tb               <= '0';
-
-      ram_write_enable_tb  <= '0';
-      ram_read_addr_tb     <= 8d"0";
-      wait for 5 ns;
-
-      ram_read_addr_tb     <= 8d"1";
-      wait for 5 ns;
-
-      ram_read_addr_tb     <= 8d"2";
-      wait for 5 ns;
-
-      ram_read_addr_tb     <= 8d"3";
-      wait for 5 ns;
-
-      ram_write_enable_tb  <= '1';
-      ram_write_data_tb    <= 32x"00000000";
-      ram_write_addr_tb    <= 8d"0";
-      wait for 5 ns;
-
-      ram_write_data_tb    <= 32x"00000001";
-      ram_write_addr_tb    <= 8d"1";
-      wait for 5 ns;
-
-      ram_write_data_tb    <= 32x"00000002";
-      ram_write_addr_tb    <= 8d"2";
-      wait for 5 ns;
-
-      ram_write_data_tb    <= 32x"00000003";
-      ram_write_addr_tb    <= 8d"3";
+      
+      ram_addr_tb       <= (others => '0');
+      write_enable_tb   <= '0';
+      data_tb           <= (others => '0');
+      bytes_number_tb   <= (others => '0');
+      rst_tb            <= '1';
+      wait for 10 ns;
+      rst_tb            <= '0';
 
       wait for 25 ns;
       stop(2);
