@@ -4,6 +4,9 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 library std;
    use std.env.all;
+library memory_lib;
+   use memory_lib.all;
+   use memory_lib.memory_pkg.all;
 
 entity memory_tb is
 end memory_tb;
@@ -55,12 +58,25 @@ begin
    begin
       
       ram_addr_tb       <= (others => '0');
-      write_enable_tb   <= '0';
+      write_enable_tb   <= C_READ_ENABLE;
       data_tb           <= (others => '0');
-      bytes_number_tb   <= (others => '0');
+      bytes_number_tb   <= C_STORE_WORD;
       rst_tb            <= '1';
       wait for 10 ns;
       rst_tb            <= '0';
+      write_enable_tb   <= C_WRITE_ENABLE;
+      ----------------------
+      ---- WRITE TO RAM ----
+      ----------------------
+      ---- SW instruction ----
+      -- positive vmemorye
+      bytes_number_tb   <= C_STORE_WORD;
+      ram_addr_tb       <= 8d"0";
+      data_tb           <= 32x"12345678";
+      -- negative vmemorye
+      bytes_number_tb   <= C_STORE_WORD;
+      data_tb           <= 32x"12345678";
+
 
       wait for 25 ns;
       stop(2);
