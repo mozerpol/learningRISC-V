@@ -20,27 +20,27 @@ end entity memory;
 
 architecture rtl of memory is
 
-   signal ram : t_ram;
+   signal ram        : t_ram;
 
 begin
 
-   --o_ram_data <= ram(to_integer(unsigned(i_ram_addr)));
-
    p_memory : process(all)
+      variable v_column : natural range 0 to 3;
+      variable v_row    : natural range 0 to C_RAM_DEPTH-1;
    begin
       if (i_rst = '1') then
-         ram   <= (others => (others => (others => '0')));
-         o_ram_data <= (others => '0');
+         ram         <= (others => (others => (others => '0')));
+         v_column    := 0;
+         v_row       := 0;
+         o_ram_data  <= (others => '0');
       elsif (i_clk'event and i_clk = '1') then
          if (i_write_enable = C_WRITE_ENABLE) then
+            v_column := to_integer(unsigned(i_ram_addr - (i_ram_addr(7 downto 2) & "00")));
+            v_row    := to_integer(unsigned(i_ram_addr(7 downto 2)));
+            ram(v_row, v_column) <= (others => '1');
             if (i_bytes_number = C_STORE_WORD) then -- SW
-               ram(to_integer(unsigned(i_ram_addr)), 0) <= i_data(7 downto 0);
-               ram(to_integer(unsigned(i_ram_addr)), 1) <= i_data(15 downto 8);
-               ram(to_integer(unsigned(i_ram_addr)), 2) <= i_data(23 downto 16);
-               ram(to_integer(unsigned(i_ram_addr)), 3) <= i_data(31 downto 24);
-            elsif (i_bytes_number = "01") then -- 
-            elsif (i_bytes_number = "10") then -- 
-            elsif (i_bytes_number = "11") then -- 
+            elsif (i_bytes_number = C_STORE_HALF) then -- SH
+            elsif (i_bytes_number = C_STORE_BYTE) then -- SB
             end if;
          end if;
       end if;
