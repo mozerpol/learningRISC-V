@@ -13,7 +13,7 @@ entity memory is
       i_ram_addr           : in std_logic_vector(7 downto 0);
       i_write_enable       : in std_logic;
       i_data               : in std_logic_vector(31 downto 0);
-      i_bytes_number       : in std_logic_vector(1 downto 0);
+      i_byte_number        : in std_logic_vector(3 downto 0);
       o_ram_data           : out std_logic_vector(31 downto 0)
    );
 end entity memory;
@@ -24,6 +24,8 @@ architecture rtl of memory is
 
 begin
 
+   --o_ram_data <= ram(to_integer(unsigned(i_ram_addr)));
+
    p_memory : process(all)
       variable v_column : natural range 0 to 3;
       variable v_row    : natural range 0 to C_RAM_DEPTH-1;
@@ -32,15 +34,19 @@ begin
          ram         <= (others => (others => (others => '0')));
          v_column    := 0;
          v_row       := 0;
-         o_ram_data  <= (others => '0');
       elsif (i_clk'event and i_clk = '1') then
          if (i_write_enable = C_WRITE_ENABLE) then
-            v_column := to_integer(unsigned(i_ram_addr - (i_ram_addr(7 downto 2) & "00")));
-            v_row    := to_integer(unsigned(i_ram_addr(7 downto 2)));
-            ram(v_row, v_column) <= (others => '1');
-            if (i_bytes_number = C_STORE_WORD) then -- SW
-            elsif (i_bytes_number = C_STORE_HALF) then -- SH
-            elsif (i_bytes_number = C_STORE_BYTE) then -- SB
+            if (i_byte_number (0) = '1') then
+               ram(to_integer(unsigned(i_ram_addr)), 0) <= i_data(7 downto 0);
+            end if;
+            if (i_byte_number (1) = '1') then
+               ram(to_integer(unsigned(i_ram_addr)), 1) <= i_data(15 downto 8);
+            end if;
+            if (i_byte_number (2) = '1') then
+               ram(to_integer(unsigned(i_ram_addr)), 2) <= i_data(23 downto 16);
+            end if;
+            if (i_byte_number (3) = '1') then
+               ram(to_integer(unsigned(i_ram_addr)), 3) <= i_data(31 downto 24);
             end if;
          end if;
       end if;
