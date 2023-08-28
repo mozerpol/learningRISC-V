@@ -32,6 +32,7 @@ architecture rtl of main is
       i_ram_data_read      : in std_logic_vector(31 downto 0);
       o_ram_data_write     : out std_logic_vector(31 downto 0);
       o_ram_addr           : out std_logic_vector(7 downto 0);
+      o_byte_number        : out std_logic_vector(3 downto 0);
       o_write_enable       : out std_logic
       );
    end component core;
@@ -43,6 +44,7 @@ architecture rtl of main is
       i_clk                : in std_logic;
       i_ram_addr           : in std_logic_vector(7 downto 0);
       i_write_enable       : in std_logic;
+      i_byte_number        : in std_logic_vector(3 downto 0);
       i_data               : in std_logic_vector(31 downto 0);
       o_ram_data           : out std_logic_vector(31 downto 0)
       );
@@ -57,11 +59,13 @@ architecture rtl of main is
    signal ram_data_write_core    : std_logic_vector(31 downto 0);
    signal ram_addr_core          : std_logic_vector(7 downto 0);
    signal write_enable_core      : std_logic;
+   signal byte_number_core       : std_logic_vector(3 downto 0);
    -- RAM
    signal ram_addr_memory        : std_logic_vector(7 downto 0);
    signal write_enable_memory    : std_logic;
    signal data_memory            : std_logic_vector(31 downto 0);
    signal ram_data_memory        : std_logic_vector(31 downto 0);
+   signal byte_number_memory     : std_logic_vector(3 downto 0);
 
 
 begin
@@ -74,6 +78,7 @@ begin
       i_ram_data_read   => ram_data_read_core,
       o_ram_data_write  => ram_data_write_core,
       o_ram_addr        => ram_addr_core,
+      o_byte_number     => byte_number_core,
       o_write_enable    => write_enable_core
    );
 
@@ -83,6 +88,7 @@ begin
       i_clk             => clk,
       i_ram_addr        => ram_addr_memory,
       i_write_enable    => write_enable_memory,
+      i_byte_number     => byte_number_memory,
       i_data            => data_memory,
       o_ram_data        => ram_data_memory
    );
@@ -93,6 +99,7 @@ begin
    write_enable_memory  <= write_enable_core;
    data_memory          <= ram_data_write_core;
    ram_data_read_core   <= ram_data_memory;
+   byte_number_memory   <= byte_number_core;
 
 
 
