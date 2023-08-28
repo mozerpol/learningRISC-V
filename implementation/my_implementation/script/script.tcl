@@ -40,6 +40,11 @@ set library_name           "alu_mux_2_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhd
 
+set hdl_dir                "../core/branch_instructions"
+set library_name           "branch_instructions_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
+
 
 set hdl_dir                "../core/control"
 set library_name           "control_lib"
