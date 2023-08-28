@@ -46,6 +46,7 @@ entity core is
       i_ram_data_read      : in std_logic_vector(31 downto 0);
       o_ram_data_write     : out std_logic_vector(31 downto 0);
       o_ram_addr           : out std_logic_vector(7 downto 0);
+      o_byte_number        : out std_logic_vector(3 downto 0);
       o_write_enable       : out std_logic
    );
 end entity core;
@@ -151,6 +152,7 @@ architecture rtl of core is
       i_imm                   : in std_logic_vector(31 downto 0);
       o_ram_addr              : out std_logic_vector(7 downto 0);
       o_write_enable          : out std_logic;
+      o_byte_number           : out std_logic_vector(3 downto 0);
       o_data                  : out std_logic_vector(31 downto 0)
       );
    end component ram_management;
@@ -302,6 +304,7 @@ begin
       i_imm                   => imm,
       o_ram_addr              => o_ram_addr,
       o_write_enable          => o_write_enable,
+      o_byte_number           => o_byte_number,
       o_data                  => o_ram_data_write
    );
 
