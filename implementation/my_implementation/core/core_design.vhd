@@ -106,8 +106,10 @@ architecture rtl of core is
          o_pc_ctrl               : out std_logic_vector(1 downto 0);
          o_alu_control           : out std_logic_vector(5 downto 0);
          o_reg_file_wr_ctrl      : out std_logic;
+         o_load_inst_ctrl        : out std_logic;
          o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
          o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
+         o_load_instruction      : out std_logic_vector(2 downto 0);
          o_branch_ctrl           : out std_logic_vector(2 downto 0)
       );
    end component control;
@@ -138,6 +140,7 @@ architecture rtl of core is
          i_rd_data            : in std_logic_vector(31 downto 0);
          i_alu_result         : in std_logic_vector(31 downto 0);
          i_pc_addr            : in std_logic_vector(31 downto 0);
+         i_load_instruction   : in std_logic_vector(2 downto 0);
          o_rs1_data           : out std_logic_vector(31 downto 0);
          o_rs2_data           : out std_logic_vector(31 downto 0)
       );
@@ -150,6 +153,7 @@ architecture rtl of core is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
+      i_load_inst_ctrl        : in std_logic;
       o_ram_addr              : out std_logic_vector(7 downto 0);
       o_write_enable          : out std_logic;
       o_byte_number           : out std_logic_vector(3 downto 0);
@@ -210,6 +214,8 @@ architecture rtl of core is
    signal reg_file_wr_ctrl    : std_logic;
    signal reg_file_inst_ctrl  : std_logic_vector(1 downto 0);
    signal ram_management_ctrl : std_logic_vector(2 downto 0);
+   signal load_instruction    : std_logic_vector(2 downto 0);
+   signal load_inst_ctrl      : std_logic;
 
 begin
 
@@ -263,6 +269,8 @@ begin
       o_reg_file_inst_ctrl    => reg_file_inst_ctrl,
       o_reg_file_wr_ctrl      => reg_file_wr_ctrl,
       o_ram_management_ctrl   => ram_management_ctrl,
+      o_load_inst_ctrl        => load_inst_ctrl,
+      o_load_instruction      => load_instruction,
       o_branch_ctrl           => branch_ctrl
    );
 
@@ -291,6 +299,7 @@ begin
       i_rd_data            => rd_data,
       i_alu_result         => alu_result,
       i_pc_addr            => pc_addr,
+      i_load_instruction   => load_instruction,
       o_rs1_data           => rs1_data,
       o_rs2_data           => rs2_data
    );
@@ -302,6 +311,7 @@ begin
       i_rs1_data              => rs1_data,
       i_rs2_data              => rs2_data,
       i_imm                   => imm,
+      i_load_inst_ctrl        => load_inst_ctrl,
       o_ram_addr              => o_ram_addr,
       o_write_enable          => o_write_enable,
       o_byte_number           => o_byte_number,
