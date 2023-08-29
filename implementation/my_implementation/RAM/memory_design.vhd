@@ -24,28 +24,56 @@ architecture rtl of memory is
 
 begin
 
-   --o_ram_data <= ram(to_integer(unsigned(i_ram_addr)));
+   p_manage : process(all)
+   begin
+      if (i_rst = '1') then
+         o_ram_data <= (others => '0');
+      else
+         if (i_byte_number = "1111") then
+            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 0);
+            o_ram_data(15 downto 8)  <= ram(to_integer(unsigned(i_ram_addr)), 1);
+            o_ram_data(23 downto 16) <= ram(to_integer(unsigned(i_ram_addr)), 2);
+            o_ram_data(31 downto 24) <= ram(to_integer(unsigned(i_ram_addr)), 3);
+         elsif (i_byte_number = "0110") then
+            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 1);
+            o_ram_data(15 downto 8)  <= ram(to_integer(unsigned(i_ram_addr)), 2);
+            o_ram_data(31 downto 16) <= (others => '0');
+         elsif (i_byte_number = "0011") then
+            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 2);
+            o_ram_data(15 downto 8)  <= ram(to_integer(unsigned(i_ram_addr)), 3);
+            o_ram_data(31 downto 16) <= (others => '0');
+         elsif (i_byte_number = "0100") then
+            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 1);
+            o_ram_data(31 downto 8)  <= (others => '0');
+         elsif (i_byte_number = "0010") then
+            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 2);
+            o_ram_data(31 downto 8)  <= (others => '0');
+         elsif (i_byte_number = "0001") then
+            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 3);
+            o_ram_data(31 downto 8)  <= (others => '0');
+         else
+            o_ram_data(31 downto 8)  <= (others => '0');
+         end if;
+      end if;
+   end process p_manage;
+
 
    p_memory : process(all)
-      variable v_column : natural range 0 to 3;
-      variable v_row    : natural range 0 to C_RAM_DEPTH-1;
    begin
       if (i_rst = '1') then
          ram         <= (others => (others => (others => '0')));
-         v_column    := 0;
-         v_row       := 0;
       elsif (i_clk'event and i_clk = '1') then
          if (i_write_enable = C_WRITE_ENABLE) then
-            if (i_byte_number (0) = '1') then
+            if (i_byte_number(0) = '1') then
                ram(to_integer(unsigned(i_ram_addr)), 0) <= i_data(7 downto 0);
             end if;
-            if (i_byte_number (1) = '1') then
+            if (i_byte_number(1) = '1') then
                ram(to_integer(unsigned(i_ram_addr)), 1) <= i_data(15 downto 8);
             end if;
-            if (i_byte_number (2) = '1') then
+            if (i_byte_number(2) = '1') then
                ram(to_integer(unsigned(i_ram_addr)), 2) <= i_data(23 downto 16);
             end if;
-            if (i_byte_number (3) = '1') then
+            if (i_byte_number(3) = '1') then
                ram(to_integer(unsigned(i_ram_addr)), 3) <= i_data(31 downto 24);
             end if;
          end if;
