@@ -16,6 +16,7 @@ entity ram_management is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
+      i_load_inst_ctrl            : in std_logic;
       o_ram_addr              : out std_logic_vector(7 downto 0);
       o_write_enable          : out std_logic;
       o_byte_number           : out std_logic_vector(3 downto 0);
@@ -26,7 +27,7 @@ end entity ram_management;
 -- LW / SW - address must be divisible by 4
 -- LH / SH - address must be divisible by 2
 -- LB / SB
-   
+
 architecture rtl of ram_management is
 
 begin
@@ -48,7 +49,7 @@ begin
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable       <= C_WRITE_ENABLE;
-               o_ram_addr           <= v_address_row;
+               o_ram_addr           <= "00" & v_address_row(7 downto 2);
                o_data               <= i_rs2_data;
                o_byte_number        <= "1111";
             when C_SH   =>
@@ -80,13 +81,42 @@ begin
                   o_byte_number        <= "1000";
                   o_data(31 downto 24) <= i_rs2_data(7 downto 0);
                end if;
-            when C_LW   =>
-                o_write_enable      <= C_READ_ENABLE;
-                o_ram_addr          <= i_rs1_data(7 downto 0) + i_imm(7 downto 0);
+            when C_LW =>
+               if (i_load_inst_ctrl = '1') then
+                  o_write_enable       <= C_READ_ENABLE;
+                  o_ram_addr           <= "00" & v_address_row(7 downto 2);
+                  o_byte_number        <= "1111";
+               end if;
+            when C_LH | C_LHU =>
+               if (i_load_inst_ctrl = '1') then
+                  o_write_enable       <= C_READ_ENABLE;
+                  o_ram_addr           <= "00" & v_address_row(7 downto 2);
+                  if (v_address_column(1 downto 0) = "00") then
+                     o_byte_number        <= "1111";
+                  elsif (v_address_column(1 downto 0) = "01") then
+                     o_byte_number        <= "0110";
+                  elsif (v_address_column(1 downto 0) = "10") then
+                     o_byte_number        <= "0011";
+                  end if;
+               end if;
+            when C_LB | C_LBU =>
+               if (i_load_inst_ctrl = '1') then
+                  o_write_enable       <= C_READ_ENABLE;
+                  o_ram_addr           <= "00" & v_address_row(7 downto 2);
+                  if (v_address_column(1 downto 0) = "00") then
+                     o_byte_number        <= "1111";
+                  elsif (v_address_column(1 downto 0) = "01") then
+                     o_byte_number        <= "0100";
+                  elsif (v_address_column(1 downto 0) = "10") then
+                     o_byte_number        <= "0010";
+                  elsif (v_address_column(1 downto 0) = "11") then
+                     o_byte_number        <= "0001";
+                  end if;
+               end if;
             when others =>
-                o_write_enable      <= C_READ_ENABLE;
-                o_ram_addr          <= (others => '0');
-                o_data              <= (others => '0');
+               o_write_enable      <= C_READ_ENABLE;
+               o_ram_addr          <= (others => '0');
+               o_data              <= (others => '0');
          end case;
       end if;
    end process p_ram_management;
