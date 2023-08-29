@@ -23,8 +23,10 @@ entity control is
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_alu_control           : out std_logic_vector(5 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
+      o_load_inst_ctrl            : out std_logic;
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
       o_reg_file_wr_ctrl      : out std_logic;
+      o_load_instruction      : out std_logic_vector(2 downto 0);
       o_branch_ctrl           : out std_logic_vector(2 downto 0)
    );
 end entity control;
@@ -118,6 +120,14 @@ begin
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_LOAD   =>
+               case i_func3 is
+                  when C_FUNC3_LB   => o_load_instruction <= C_LB;
+                  when C_FUNC3_LH   => o_load_instruction <= C_LH;
+                  when C_FUNC3_LW   => o_load_instruction <= C_LW;
+                  when C_FUNC3_LBU  => o_load_instruction <= C_LBU;
+                  when C_FUNC3_LHU  => o_load_instruction <= C_LHU;
+                  when others       => o_load_instruction <= (others => '0');
+               end case;
                o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_STORE  =>
@@ -140,9 +150,11 @@ begin
    begin
       if (i_rst = '1') then
          o_ram_management_ctrl   <= (others => '0');
+         o_load_inst_ctrl            <= '0';
       else
          -- TODO: CHANGE IF-ELSE TO CASE
          if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
+            o_load_inst_ctrl   <= '1';
             case i_func3 is
                when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
                when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
@@ -152,6 +164,7 @@ begin
                when others       => o_ram_management_ctrl <= (others => '0');
             end case;
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
+            o_load_inst_ctrl   <= '0';
             case i_func3 is
                when C_FUNC3_SB   => o_ram_management_ctrl <= C_SB;
                when C_FUNC3_SH   => o_ram_management_ctrl <= C_SH;
@@ -160,6 +173,7 @@ begin
             end case;
          else
             o_ram_management_ctrl <= (others => '0');
+            o_load_inst_ctrl          <= '0';
          end if;
       end if;
    end process p_ram_management;
