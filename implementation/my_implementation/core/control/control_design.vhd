@@ -72,6 +72,10 @@ begin
             when C_OPCODE_AUIPC  => o_alu_control  <= C_AUIPC;
             when C_OPCODE_JAL    => o_alu_control  <= C_JAL;
             when C_OPCODE_JALR   => o_alu_control  <= C_JALR;
+            when C_OPCODE_BRANCH =>
+               if (i_branch_result = '1') then
+                  o_alu_control   <= C_PASS_IMM; --------- TODO: CHANGE TO IMM+PC_ADDR
+               end if;
             when others          => o_alu_control  <= (others => '0');
          end case;
       end if;
@@ -104,6 +108,9 @@ begin
             o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_JALR) then
             o_alu_mux_1_ctrl  <= C_RS1_DATA;
+            o_alu_mux_2_ctrl  <= C_IMM;
+         elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
+            o_alu_mux_1_ctrl  <= C_PC_ADDR;
             o_alu_mux_2_ctrl  <= C_IMM;
          end if;
       end if;
