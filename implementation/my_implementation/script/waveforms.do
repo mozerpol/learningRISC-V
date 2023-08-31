@@ -37,6 +37,11 @@ add wave         -group ALU_2_MUX -radix dec    /main_tb/inst_main/inst_core/ins
 add wave         -group ALU_2_MUX -radix dec    /main_tb/inst_main/inst_core/inst_alu_mux_2/i_imm 
 add wave         -group ALU_2_MUX -radix dec    /main_tb/inst_main/inst_core/inst_alu_mux_2/o_alu_operand_2
 
+add wave         -group BRANCH_INST -radix bin    /main_tb/inst_main/inst_core/inst_branch_instructions/i_branch_ctrl 
+add wave         -group BRANCH_INST -radix hex    /main_tb/inst_main/inst_core/inst_branch_instructions/i_rs1_data
+add wave         -group BRANCH_INST -radix hex    /main_tb/inst_main/inst_core/inst_branch_instructions/i_rs2_data 
+add wave         -group BRANCH_INST -radix hex    /main_tb/inst_main/inst_core/inst_branch_instructions/o_branch_result 
+
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/i_opcode 
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/i_func3 
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/i_func7
