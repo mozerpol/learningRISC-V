@@ -39,6 +39,7 @@ package alu_pkg is
    constant C_CSRRWI   : std_logic_vector(5 downto 0) := "101100";
    constant C_CSRRSI   : std_logic_vector(5 downto 0) := "101101";
    constant C_CSRRCI   : std_logic_vector(5 downto 0) := "101110";
+   constant C_PASS_IMM : std_logic_vector(5 downto 0) := "101111";
 
 end;
 
