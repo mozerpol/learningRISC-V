@@ -121,6 +121,7 @@ begin
       if (i_rst = '1') then
          o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
          o_reg_file_wr_ctrl      <= C_READ_ENABLE;
+         o_load_instruction      <= (others => '0');
       else
          case i_opcode(6 downto 2) is
             when C_OPCODE_OPIMM | C_OPCODE_OP =>
