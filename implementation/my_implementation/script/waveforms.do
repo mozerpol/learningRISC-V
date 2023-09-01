@@ -16,9 +16,9 @@ add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/i
 add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/i_data 
 add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/ram 
 
-add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/i_ram_data_read 
-add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/o_ram_data_write
-add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_ram_addr
+add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/i_core_data_read 
+add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/o_core_data_write
+add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_core_addr
 add wave         -group CORE -radix bin         /main_tb/inst_main/inst_core/o_byte_number
 add wave         -group CORE -radix bin         /main_tb/inst_main/inst_core/o_write_enable
 

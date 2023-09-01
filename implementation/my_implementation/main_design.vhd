@@ -29,9 +29,9 @@ architecture rtl of main is
       port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
-      i_ram_data_read      : in std_logic_vector(31 downto 0);
-      o_ram_data_write     : out std_logic_vector(31 downto 0);
-      o_ram_addr           : out std_logic_vector(7 downto 0);
+      i_core_data_read      : in std_logic_vector(31 downto 0);
+      o_core_data_write     : out std_logic_vector(31 downto 0);
+      o_core_addr           : out std_logic_vector(7 downto 0);
       o_byte_number        : out std_logic_vector(3 downto 0);
       o_write_enable       : out std_logic
       );
@@ -74,10 +74,9 @@ begin
    port map (
       i_rst             => rst,
       i_clk             => clk,
-      -- TODO: remove "ram" prefix, it's confusing, add sufix core instead
-      i_ram_data_read   => ram_data_read_core,
-      o_ram_data_write  => ram_data_write_core,
-      o_ram_addr        => ram_addr_core,
+      i_core_data_read  => ram_data_read_core,
+      o_core_data_write => ram_data_write_core,
+      o_core_addr       => ram_addr_core,
       o_byte_number     => byte_number_core,
       o_write_enable    => write_enable_core
    );
