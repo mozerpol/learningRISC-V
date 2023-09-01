@@ -60,6 +60,17 @@ proc s_create_lib_main {} {
     }
 }
 
+proc s_clear {} {
+    global lib_name
+    echo "----> Clear project folder:"
+    if {[file exists $lib_name/_info]} {
+        echo "Deleting $lib_name folder"
+        file delete -force $lib_name
+    } else {
+       echo "Project folder $lib_name doesn't exist"
+    }
+}
+
 proc s_map_lib_main {} {
     global lib_name
     echo "----> Map library:"
@@ -126,6 +137,7 @@ proc s_start_sim {} {
 }
 
 s_show_description
+s_clear
 s_create_lib_main
 s_map_lib_main
 s_comp_package_main
