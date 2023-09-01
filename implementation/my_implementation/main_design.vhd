@@ -101,14 +101,4 @@ begin
    byte_number_memory   <= byte_number_core;
 
 
-
-   p_main : process(all)
-   begin
-      if (i_rst) then
-
-      else
-
-      end if;
-   end process p_main;
-
 end architecture rtl;
