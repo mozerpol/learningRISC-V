@@ -12,41 +12,53 @@ architecture tb of reg_file_tb is
 
    component reg_file is
    port (
-      i_rst          : in std_logic;
-      i_clk          : in std_logic;
-      i_rs1_addr     : in std_logic_vector(4 downto 0); -- address of rs1
-      i_rs2_addr     : in std_logic_vector(4 downto 0); -- address of rs2
-      i_rd_addr      : in std_logic_vector(4 downto 0);
-      i_reg_wr_ctrl  : in std_logic;
-      i_alu_result   : in std_logic_vector(31 downto 0);
-      o_rs1_data     : out std_logic_vector(31 downto 0);
-      o_rs2_data     : out std_logic_vector(31 downto 0)
+      i_rst                : in std_logic;
+      i_clk                : in std_logic;
+      i_rs1_addr           : in std_logic_vector(4 downto 0);
+      i_rs2_addr           : in std_logic_vector(4 downto 0);
+      i_rd_addr            : in std_logic_vector(4 downto 0);
+      i_reg_file_inst_ctrl : in std_logic_vector(1 downto 0);
+      i_reg_file_wr_ctrl   : in std_logic;
+      i_rd_data            : in std_logic_vector(31 downto 0);
+      i_alu_result         : in std_logic_vector(31 downto 0);
+      i_pc_addr            : in std_logic_vector(31 downto 0);
+      i_load_instruction   : in std_logic_vector(2 downto 0);
+      o_rs1_data           : out std_logic_vector(31 downto 0);
+      o_rs2_data           : out std_logic_vector(31 downto 0)
    );
    end component reg_file;
 
-   signal rst_tb           : std_logic;
-   signal clk_tb           : std_logic;
-   signal rs1_addr_tb      : std_logic_vector(4 downto 0);
-   signal rs2_addr_tb      : std_logic_vector(4 downto 0);
-   signal rd_addr_tb       : std_logic_vector(4 downto 0);
-   signal reg_wr_ctrl_tb   : std_logic;
-   signal alu_result_tb    : std_logic_vector(31 downto 0);
-   signal rs1_data_tb      : std_logic_vector(31 downto 0);
-   signal rs2_data_tb      : std_logic_vector(31 downto 0);
+   signal clk_tb                 : std_logic;
+   signal rst_tb                 : std_logic;
+   signal rs1_addr_tb            : std_logic_vector(4 downto 0);
+   signal rs2_addr_tb            : std_logic_vector(4 downto 0);
+   signal rd_addr_tb             : std_logic_vector(4 downto 0);
+   signal reg_file_inst_ctrl_tb  : std_logic_vector(1 downto 0);
+   signal reg_file_wr_ctrl_tb    : std_logic;
+   signal rd_data_tb             : std_logic_vector(31 downto 0);
+   signal alu_result_tb          : std_logic_vector(31 downto 0);
+   signal pc_addr_tb             : std_logic_vector(31 downto 0);
+   signal load_instruction_tb    : std_logic_vector(2 downto 0);
+   signal rs1_data_tb            : std_logic_vector(31 downto 0);
+   signal rs2_data_tb            : std_logic_vector(31 downto 0);
 
 begin
 
    inst_reg_file : component reg_file
    port map (
-      i_rst          => rst_tb,
-      i_clk          => clk_tb,
-      i_rs1_addr     => rs1_addr_tb,
-      i_rs2_addr     => rs2_addr_tb,
-      i_rd_addr      => rd_addr_tb,
-      i_reg_wr_ctrl  => reg_wr_ctrl_tb,
-      i_alu_result   => alu_result_tb,
-      o_rs1_data     => rs1_data_tb,
-      o_rs2_data     => rs2_data_tb
+      i_rst                => rst_tb,
+      i_clk                => clk_tb,
+      i_rs1_addr           => rs1_addr_tb,
+      i_rs2_addr           => rs2_addr_tb,
+      i_rd_addr            => rd_addr_tb,
+      i_reg_file_inst_ctrl => reg_file_inst_ctrl_tb,
+      i_reg_file_wr_ctrl   => reg_file_wr_ctrl_tb,
+      i_rd_data            => rd_data_tb,
+      i_alu_result         => alu_result_tb,
+      i_pc_addr            => pc_addr_tb,
+      i_load_instruction   => load_instruction_tb,
+      o_rs1_data           => rs1_data_tb,
+      o_rs2_data           => rs2_data_tb
    );
 
    p_clk : process
@@ -59,48 +71,51 @@ begin
 
    p_tb : process
    begin
-
-      rst_tb         <= '1';
-      rs1_addr_tb    <= (others => '0');
-      rs2_addr_tb    <= (others => '0');
-      rd_addr_tb     <= (others => '0');
-      reg_wr_ctrl_tb <= '0';
-      alu_result_tb  <= (others => '0');
+      rst_tb                  <= '1';
+      rs1_addr_tb             <= (others => '0');
+      rs2_addr_tb             <= (others => '0');
+      rd_addr_tb              <= (others => '0');
+      reg_file_inst_ctrl_tb   <= (others => '0');
+      reg_file_wr_ctrl_tb     <= '0';
+      rd_data_tb              <= (others => '0');
+      alu_result_tb           <= (others => '0');
+      pc_addr_tb              <= (others => '0');
+      load_instruction_tb     <= (others => '0');
       wait for 5 ns;
-      rst_tb         <= '0';
+      rst_tb                  <= '0';
       -- Save data to GPR
-      reg_wr_ctrl_tb <= '1';
-      rd_addr_tb     <= 5b"00000";
-      alu_result_tb  <= 32x"00000002";
+      reg_file_wr_ctrl_tb  <= '1';
+      rd_addr_tb           <= 5b"00000";
+      alu_result_tb        <= 32x"00000002";
       wait for 5 ns;
 
-      rd_addr_tb     <= 5b"00001";
-      alu_result_tb  <= 32x"00000004";
+      rd_addr_tb           <= 5b"00001";
+      alu_result_tb        <= 32x"00000004";
       wait for 5 ns;
 
-      rd_addr_tb     <= 5b"000010";
-      alu_result_tb  <= 32x"00000022";
+      rd_addr_tb           <= 5b"000010";
+      alu_result_tb        <= 32x"00000022";
       wait for 5 ns;
 
-      rd_addr_tb     <= 5b"00011";
-      alu_result_tb  <= 32x"00000012";
+      rd_addr_tb           <= 5b"00011";
+      alu_result_tb        <= 32x"00000012";
       wait for 5 ns;
 
-      rd_addr_tb     <= 5b"00100";
-      alu_result_tb  <= 32x"10110002";
+      rd_addr_tb           <= 5b"00100";
+      alu_result_tb        <= 32x"10110002";
       wait for 5 ns;
       -- Read data from GPR
-      reg_wr_ctrl_tb <= '0';
-      rs1_addr_tb    <= 5b"00000";
-      rs2_addr_tb    <= 5b"00001";
+      reg_file_wr_ctrl_tb  <= '0';
+      rs1_addr_tb          <= 5b"00000";
+      rs2_addr_tb          <= 5b"00001";
       wait for 5 ns;
 
-      rs1_addr_tb    <= 5b"00010";
-      rs2_addr_tb    <= 5b"00011";
+      rs1_addr_tb          <= 5b"00010";
+      rs2_addr_tb          <= 5b"00011";
       wait for 5 ns;
 
-      rs1_addr_tb    <= 5b"00100";
-      rs2_addr_tb    <= 5b"00101";
+      rs1_addr_tb          <= 5b"00100";
+      rs2_addr_tb          <= 5b"00101";
 
       wait for 25 ns;
       stop(2);
