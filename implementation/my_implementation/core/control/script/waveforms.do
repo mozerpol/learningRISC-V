@@ -6,15 +6,21 @@
 
 
 ##### Add waves: #####
-add wave -expand -group TB -radix bin /control_tb/inst_control/i_rst 
-add wave -expand -group TB -radix bin /control_tb/inst_control/i_opcode 
-add wave -expand -group TB -radix bin /control_tb/inst_control/i_func3 
-add wave -expand -group TB -radix bin /control_tb/inst_control/i_func7
-add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_mux_1_ctrl 
-add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_mux_2_ctrl 
-add wave -expand -group TB -radix bin /control_tb/inst_control/o_alu_control
-add wave -expand -group TB -radix bin /control_tb/inst_control/o_reg_wr_ctrl
-
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/i_rst
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/i_opcode
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/i_func3
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/i_func7
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/i_branch_result
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_alu_mux_1_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_alu_mux_2_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_pc_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_alu_control
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_ram_management_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_load_inst_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_reg_file_inst_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_reg_file_wr_ctrl
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_load_instruction
+add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_branch_ctrl
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
