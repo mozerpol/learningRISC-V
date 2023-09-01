@@ -43,9 +43,9 @@ entity core is
    port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
-      i_ram_data_read      : in std_logic_vector(31 downto 0);
-      o_ram_data_write     : out std_logic_vector(31 downto 0);
-      o_ram_addr           : out std_logic_vector(7 downto 0);
+      i_core_data_read      : in std_logic_vector(31 downto 0);
+      o_core_data_write     : out std_logic_vector(31 downto 0);
+      o_core_addr           : out std_logic_vector(7 downto 0);
       o_byte_number        : out std_logic_vector(3 downto 0);
       o_write_enable       : out std_logic
    );
@@ -153,7 +153,7 @@ architecture rtl of core is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
-      i_load_inst_ctrl        : in std_logic;
+      i_load_inst_ctrl            : in std_logic;
       o_ram_addr              : out std_logic_vector(7 downto 0);
       o_write_enable          : out std_logic;
       o_byte_number           : out std_logic_vector(3 downto 0);
@@ -312,11 +312,11 @@ begin
       i_rs2_data              => rs2_data,
       i_imm                   => imm,
       i_load_inst_ctrl        => load_inst_ctrl,
-      o_ram_addr              => o_ram_addr,
+      o_ram_addr              => o_core_addr,
       o_write_enable          => o_write_enable,
       o_byte_number           => o_byte_number,
-      o_data                  => o_ram_data_write
-   );
+      o_data                  => o_core_data_write
+   ); 
 
    inst_program_counter : component program_counter
    port map (
@@ -337,7 +337,7 @@ begin
 
    rst      <= i_rst;
    clk      <= i_clk;
-   rd_data  <= i_ram_data_read;
+   rd_data  <= i_core_data_read;
 
 
    p_core : process(all)
