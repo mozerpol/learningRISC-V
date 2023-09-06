@@ -7,77 +7,47 @@ library memory_lib;
    use memory_lib.memory_pkg.all;
 
 entity memory is
-   port (
-      i_rst                : in std_logic;
-      i_clk                : in std_logic;
-      i_ram_addr           : in std_logic_vector(7 downto 0);
-      i_write_enable       : in std_logic;
-      i_data               : in std_logic_vector(31 downto 0);
-      i_byte_number        : in std_logic_vector(3 downto 0);
-      o_ram_data           : out std_logic_vector(31 downto 0)
-   );
-end entity memory;
+generic (DEPTH      : integer := 64;
+         NUM_BYTES  : integer :=  4;
+         BYTE_WIDTH : integer :=  8
+);
+port (
+    clk     : in  std_logic;
+    raddr   : in  integer range 0 to DEPTH -1 ;     -- address width = 6
+    waddr   : in  integer range 0 to DEPTH -1 ;  
+    we      : in  std_logic; 
+    wdata   : in  std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0);   -- width = 32
+    be      : in  std_logic_vector (NUM_BYTES-1 downto 0);   -- 4 bytes per word
+    q       : out std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0) 
+    ); -- width = 32
+end memory;
 
 architecture rtl of memory is
 
-   signal ram        : t_ram;
+    --  build up 2D array to hold the memory
+    type word_t is array (0 to NUM_BYTES-1) of std_logic_vector(BYTE_WIDTH-1 downto 0);
+    type ram_t is array (0 to DEPTH-1) of word_t;
 
-begin
+    signal ram : ram_t;
+    signal q_local : word_t;
 
-   p_manage : process(all)
-   begin
-      if (i_rst = '1') then
-         o_ram_data <= (others => '0');
-      else
-         if (i_byte_number = "1111") then
-            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 0);
-            o_ram_data(15 downto 8)  <= ram(to_integer(unsigned(i_ram_addr)), 1);
-            o_ram_data(23 downto 16) <= ram(to_integer(unsigned(i_ram_addr)), 2);
-            o_ram_data(31 downto 24) <= ram(to_integer(unsigned(i_ram_addr)), 3);
-         elsif (i_byte_number = "0110") then
-            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 1);
-            o_ram_data(15 downto 8)  <= ram(to_integer(unsigned(i_ram_addr)), 2);
-            o_ram_data(31 downto 16) <= (others => '0');
-         elsif (i_byte_number = "0011") then
-            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 2);
-            o_ram_data(15 downto 8)  <= ram(to_integer(unsigned(i_ram_addr)), 3);
-            o_ram_data(31 downto 16) <= (others => '0');
-         elsif (i_byte_number = "0100") then
-            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 1);
-            o_ram_data(31 downto 8)  <= (others => '0');
-         elsif (i_byte_number = "0010") then
-            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 2);
-            o_ram_data(31 downto 8)  <= (others => '0');
-         elsif (i_byte_number = "0001") then
-            o_ram_data(7 downto 0)   <= ram(to_integer(unsigned(i_ram_addr)), 3);
-            o_ram_data(31 downto 8)  <= (others => '0');
-         else
-            o_ram_data(31 downto 8)  <= (others => '0');
-         end if;
-      end if;
-   end process p_manage;
-
-
-   p_memory : process(all)
-   begin
-      if (i_rst = '1') then
-         ram         <= (others => (others => (others => '0')));
-      elsif (i_clk'event and i_clk = '1') then
-         if (i_write_enable = C_WRITE_ENABLE) then
-            if (i_byte_number(0) = '1') then
-               ram(to_integer(unsigned(i_ram_addr)), 0) <= i_data(7 downto 0);
+    begin  -- Re-organize the read data from the RAM to match the output
+        unpack: for i in 0 to NUM_BYTES-1 generate    
+            q(BYTE_WIDTH*(i+1) - 1 downto BYTE_WIDTH*i) <= q_local(i);
+    end generate unpack;
+        
+    -- port A
+    process(clk)
+    begin
+        if(rising_edge(clk)) then 
+            if(we = '1') then
+                for I in (NUM_BYTES-1) downto 0 loop
+                    if(be(I) = '1') then
+                        ram(waddr)(I) <= wdata(((I+1)*BYTE_WIDTH-1) downto I*BYTE_WIDTH);
+                    end if;
+                 end loop;
             end if;
-            if (i_byte_number(1) = '1') then
-               ram(to_integer(unsigned(i_ram_addr)), 1) <= i_data(15 downto 8);
-            end if;
-            if (i_byte_number(2) = '1') then
-               ram(to_integer(unsigned(i_ram_addr)), 2) <= i_data(23 downto 16);
-            end if;
-            if (i_byte_number(3) = '1') then
-               ram(to_integer(unsigned(i_ram_addr)), 3) <= i_data(31 downto 24);
-            end if;
-         end if;
-      end if;
-   end process p_memory;
-
-end architecture rtl;
+            q_local <= ram(raddr);
+        end if;
+    end process;  
+end rtl;
