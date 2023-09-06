@@ -6,15 +6,14 @@
 
 
 ##### Add waves: #####
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_rst 
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_clk 
-add wave -expand -group DESIGN -radix dec /memory_tb/inst_memory/i_ram_addr
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_write_enable 
-add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/i_data 
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/i_bytes_number 
-add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/o_ram_data
-add wave -expand -group DESIGN -radix dec /memory_tb/inst_memory/p_memory/v_column 
-add wave -expand -group DESIGN -radix dec /memory_tb/inst_memory/p_memory/v_row  
+add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/clk 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/raddr 
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/waddr
+add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/we
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/wdata
+add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/be
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/q
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/q_local
 add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/ram
 
 ##### Waveform window settings: #####
