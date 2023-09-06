@@ -14,36 +14,48 @@ end memory_tb;
 architecture tb of memory_tb is
 
    component memory is
-   port (
-      i_rst                : in std_logic;
-      i_clk                : in std_logic;
-      i_ram_addr           : in std_logic_vector(7 downto 0);
-      i_write_enable       : in std_logic;
-      i_data               : in std_logic_vector(31 downto 0);
-      i_byte_number        : in std_logic_vector(3 downto 0);
-      o_ram_data           : out std_logic_vector(31 downto 0)
+    generic (DEPTH      : integer := 64;
+             NUM_BYTES  : integer :=  4;
+             BYTE_WIDTH : integer :=  8
+    );
+    port (
+    clk     : in  std_logic;
+    raddr   : in  integer range 0 to DEPTH -1 ;     -- address width = 6
+    waddr   : in  integer range 0 to DEPTH -1 ;  
+    we      : in  std_logic; 
+    wdata   : in  std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0);   -- width = 32
+    be      : in  std_logic_vector (NUM_BYTES-1 downto 0);   -- 4 bytes per word
+    q       : out std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0) -- width = 32
    );
    end component memory;
 
-   signal rst_tb              : std_logic;
-   signal clk_tb              : std_logic;
-   signal ram_addr_tb         : std_logic_vector(7 downto 0);
-   signal write_enable_tb     : std_logic;
-   signal data_tb             : std_logic_vector(31 downto 0);
-   signal bytes_number_tb     : std_logic_vector(3 downto 0);
-   signal ram_data_tb         : std_logic_vector(31 downto 0);
+   constant DEPTH      : integer := 64;
+   constant NUM_BYTES      : integer := 4;
+   constant BYTE_WIDTH      : integer := 8;
+   signal clk_tb        : std_logic;
+   signal raddr_tb      : integer range 0 to DEPTH-1 ;
+   signal waddr_tb      : integer range 0 to DEPTH-1 ;  
+   signal we_tb         : std_logic;
+   signal wdata_tb      : std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0);   -- width = 32
+   signal be_tb         : std_logic_vector (NUM_BYTES-1 downto 0);   -- 4 bytes per word
+   signal q_tb          : std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0); -- width = 32
 
 begin
 
    inst_memory : component memory
+   generic map(
+       DEPTH => DEPTH,
+       NUM_BYTES => NUM_BYTES,
+       BYTE_WIDTH => BYTE_WIDTH
+   )
    port map (
-      i_rst                => rst_tb,
-      i_clk                => clk_tb,
-      i_ram_addr           => ram_addr_tb,
-      i_write_enable       => write_enable_tb,
-      i_data               => data_tb,
-      i_byte_number        => bytes_number_tb,
-      o_ram_data           => ram_data_tb
+      clk   => clk_tb,
+      raddr           => raddr_tb,
+      waddr       => waddr_tb,
+      we               => we_tb,
+      wdata        => wdata_tb,
+      be           => be_tb,
+      q           => q_tb
    );
 
    p_clk : process
@@ -57,58 +69,72 @@ begin
    p_tb : process
    begin
 
-      ram_addr_tb       <= (others => '0');
-      write_enable_tb   <= C_READ_ENABLE;
-      data_tb           <= (others => '0');
-      bytes_number_tb   <= "0000";
-      rst_tb            <= '1';
-      wait for 10 ns;
-      rst_tb            <= '0';
-      write_enable_tb   <= C_WRITE_ENABLE;
+      raddr_tb <= 0;
+      waddr_tb <= 0;
+      we_tb <= '0';
+      wdata_tb <= (others => '0');
+      be_tb <= (others => '0');
+      wait for 5 ns;
       ----------------------
       ---- WRITE TO RAM ----
       ----------------------
       ---- SW instruction ----
       -- RAM[0]: 78 56 34 12
-      bytes_number_tb   <= "1111";
-      ram_addr_tb       <= 8d"0";
-      data_tb           <= 32x"12345678";
+      we_tb <= '1';
+      waddr_tb <= 0;
+      be_tb <= "1111";
+      wdata_tb <= 32x"12345678";
       wait for 5 ns;
       ---- SH instruction ----
       -- RAM[1]: 78 56 -- --
-      bytes_number_tb   <= "0011";
-      ram_addr_tb       <= 8d"4";
-      data_tb           <= 32x"12345678";
+      waddr_tb <= 1;
+      be_tb <= "0011";
+      wdata_tb <= 32x"12345678";
       wait for 5 ns;
       ---- SB instruction ----
       -- RAM[2]: 78 -- -- --
-      bytes_number_tb   <= "0001";
-      data_tb           <= 32x"12345678";
-      ram_addr_tb       <= 8d"8";
+      waddr_tb <= 2;
+      be_tb <= "0001";
+      wdata_tb <= 32x"12345678";
       wait for 5 ns;
       --- Check saving to different addresses ---
+      ---- SW instruction ----
+      -- RAM[3]: -- 56 -- --
+      waddr_tb <= 3;
+      be_tb <= "0010";
+      wdata_tb <= 32x"12345678";
+      wait for 5 ns;
+      ---- SW instruction ----
+      -- RAM[4]: -- -- 34 --
+      waddr_tb <= 4;
+      be_tb <= "0100";
+      wdata_tb <= 32x"12345678";
+      wait for 5 ns;
       ---- SH instruction ----
-      -- RAM[3]: -- -- 78 56
-      bytes_number_tb   <= "0011";
-      ram_addr_tb       <= 8d"14";
-      data_tb           <= 32x"12345678";
+      -- RAM[5]: -- 56 34 --
+      waddr_tb <= 5;
+      be_tb <= "0110";
+      wdata_tb <= 32x"12345678";
       wait for 5 ns;
-      ---- SB instruction ----
-      -- RAM[4]: -- 78 -- --
-      bytes_number_tb   <= "0010";
-      ram_addr_tb       <= 8d"17";
-      data_tb           <= 32x"12345678";
-      wait for 5 ns;
-
       -----------------------
       ---- READ FROM RAM ----
       -----------------------
       ---- LW instruction ----
-      -- RAM[0]: 78 56 34 12
-   --   bytes_number_tb   <= C_STORE_WORD;
-   --   ram_addr_tb       <= 8d"0";
-  --    data_tb           <= 32x"12345678";
-  --    wait for 5 ns;
+      we_tb <= '0';
+      raddr_tb <= 0;
+      be_tb <= "1111";
+      wait for 5 ns;
+      ---- LH instruction ----
+      raddr_tb <= 1;
+      be_tb <= "1100";
+      wait for 5 ns;
+      ---- LB instruction ----
+      raddr_tb <= 2;
+      be_tb <= "1000";
+      wait for 5 ns;
+      ---- LB instruction ----
+      raddr_tb <= 3;
+      be_tb <= "0100";
 
       wait for 25 ns;
       stop(2);
