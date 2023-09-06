@@ -9,7 +9,7 @@
 add wave -expand -group DESIGN -radix bin   /instruction_memory_tb/inst_instruction_memory/i_rst
 add wave -expand -group DESIGN -radix bin   /instruction_memory_tb/inst_instruction_memory/i_ram_read_addr
 add wave -expand -group DESIGN -radix bin   /instruction_memory_tb/inst_instruction_memory/o_instruction
-add wave -expand -group DESIGN -radix bin   /instruction_memory_tb/inst_instruction_memory/ram
+add wave -expand -group DESIGN -radix bin   /instruction_memory_tb/inst_instruction_memory/rom
 
 
 ##### Waveform window settings: #####
