@@ -17,10 +17,16 @@ entity ram_management is
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
       i_load_inst_ctrl        : in std_logic;
-      o_ram_addr              : out std_logic_vector(7 downto 0);
-      o_write_enable          : out std_logic;
-      o_byte_number           : out std_logic_vector(3 downto 0);
-      o_data                  : out std_logic_vector(31 downto 0)
+      o_write_enable     : out  std_logic;                       -- we
+      o_byte_enable      : out  std_logic_vector (3 downto 0);   -- be
+      o_raddr            : out  integer range 0 to 63;
+      o_waddr            : out  integer range 0 to 63;  
+      o_data             : out  std_logic_vector(31 downto 0)    -- wdata
+    
+      -- o_ram_addr              : out std_logic_vector(7 downto 0);
+      -- o_write_enable          : out std_logic;
+      -- o_byte_number           : out std_logic_vector(3 downto 0);
+      -- o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
 
@@ -38,85 +44,55 @@ begin
    begin
       if (i_rst = '1') then
          o_write_enable    <= C_READ_ENABLE;
-         o_ram_addr        <= (others => '0');
-         o_data            <= (others => '0');
-         o_byte_number     <= (others => '0');
+         o_byte_enable        <= (others => '0');
+         o_raddr            <= 0;
+         o_waddr     <= 0;
+         o_data     <= (others => '0');
          v_address_row     := (others => '0');
          v_address_column  := (others => '0');
       else
          v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
          v_address_column  := v_address_row - (v_address_row(7 downto 2) & "00");
          case i_ram_management_ctrl is
-            when C_SW   =>
+            when C_SW   =>           
                o_write_enable       <= C_WRITE_ENABLE;
-               o_ram_addr           <= "00" & v_address_row(7 downto 2);
+               o_byte_enable        <= "1111";
+               o_waddr              <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
                o_data               <= i_rs2_data;
-               o_byte_number        <= "1111";
             when C_SH   =>
                o_write_enable       <= C_WRITE_ENABLE;
-               o_ram_addr           <= "00" & v_address_row(7 downto 2);
-               if (v_address_column(1 downto 0) = "00") then
-                  o_byte_number        <= "0011";
-                  o_data               <= i_rs2_data;
-               elsif (v_address_column(1 downto 0) = "01") then
-                  o_byte_number        <= "0110";
-                  o_data(23 downto 8)  <= i_rs2_data(15 downto 0);
-               elsif (v_address_column(1 downto 0) = "10") then
-                  o_byte_number        <= "1100";
-                  o_data(31 downto 16) <= i_rs2_data(15 downto 0);
-               end if;
+               o_byte_enable        <= "0011" sll to_integer(unsigned(v_address_column(1 downto 0)));
+               o_waddr              <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+               o_data               <= i_rs2_data;
             when C_SB   =>
                o_write_enable       <= C_WRITE_ENABLE;
-               o_ram_addr           <= "00" & v_address_row(7 downto 2);
-               if (v_address_column(1 downto 0) = "00") then
-                  o_byte_number        <= "0001";
-                  o_data               <= i_rs2_data;
-               elsif (v_address_column(1 downto 0) = "01") then
-                  o_byte_number        <= "0010";
-                  o_data(15 downto 8)  <= i_rs2_data(7 downto 0);
-               elsif (v_address_column(1 downto 0) = "10") then
-                  o_byte_number        <= "0100";
-                  o_data(23 downto 16) <= i_rs2_data(7 downto 0);
-               elsif (v_address_column(1 downto 0) = "11") then
-                  o_byte_number        <= "1000";
-                  o_data(31 downto 24) <= i_rs2_data(7 downto 0);
-               end if;
+               o_byte_enable        <= "0001" sll to_integer(unsigned(v_address_column(1 downto 0)));
+               o_waddr              <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+               o_data               <= i_rs2_data;
             when C_LW =>
                if (i_load_inst_ctrl = '1') then
-                  o_write_enable       <= C_READ_ENABLE;
-                  o_ram_addr           <= "00" & v_address_row(7 downto 2);
-                  o_byte_number        <= "1111";
+                o_write_enable       <= C_READ_ENABLE;
+                o_byte_enable        <= "1111";
+                o_raddr              <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
                end if;
             when C_LH | C_LHU =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable       <= C_READ_ENABLE;
-                  o_ram_addr           <= "00" & v_address_row(7 downto 2);
-                  if (v_address_column(1 downto 0) = "00") then
-                     o_byte_number        <= "1111";
-                  elsif (v_address_column(1 downto 0) = "01") then
-                     o_byte_number        <= "0110";
-                  elsif (v_address_column(1 downto 0) = "10") then
-                     o_byte_number        <= "0011";
-                  end if;
+                  o_byte_enable        <= "0011" sll to_integer(unsigned(v_address_column(1 downto 0)));
+                  o_raddr              <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
                end if;
             when C_LB | C_LBU =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable       <= C_READ_ENABLE;
-                  o_ram_addr           <= "00" & v_address_row(7 downto 2);
-                  if (v_address_column(1 downto 0) = "00") then
-                     o_byte_number        <= "1111";
-                  elsif (v_address_column(1 downto 0) = "01") then
-                     o_byte_number        <= "0100";
-                  elsif (v_address_column(1 downto 0) = "10") then
-                     o_byte_number        <= "0010";
-                  elsif (v_address_column(1 downto 0) = "11") then
-                     o_byte_number        <= "0001";
-                  end if;
+                  o_byte_enable        <= "0001" sll to_integer(unsigned(v_address_column(1 downto 0)));
+                  o_raddr              <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
                end if;
             when others =>
-               o_write_enable      <= C_READ_ENABLE;
-               o_ram_addr          <= (others => '0');
-               o_data              <= (others => '0');
+             o_write_enable    <= C_READ_ENABLE;
+             o_byte_enable        <= (others => '0');
+             o_raddr            <= 0;
+             o_waddr     <= 0;
+             o_data     <= (others => '0');
          end case;
       end if;
    end process p_ram_management;
