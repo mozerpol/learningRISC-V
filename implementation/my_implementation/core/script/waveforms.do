@@ -8,10 +8,12 @@
 ##### Add waves: #####
 add wave -expand -group CORE                -radix bin  /core_tb/inst_core/i_rst
 add wave         -group CORE                -radix bin  /core_tb/inst_core/i_clk
-add wave         -group CORE                -radix hex  /core_tb/inst_core/i_ram_data_read
-add wave         -group CORE                -radix hex  /core_tb/inst_core/o_ram_data_write
-add wave         -group CORE                -radix dec  /core_tb/inst_core/o_ram_addr
-add wave         -group CORE                -radix bin  /core_tb/inst_core/o_write_enable
+add wave         -group CORE                -radix hex  /core_tb/inst_core/i_core_data_read
+add wave         -group CORE                -radix hex  /core_tb/inst_core/o_core_data_write
+add wave         -group CORE                -radix bin  /core_tb/inst_core/o_core_write_enable
+add wave         -group CORE                -radix bin  /core_tb/inst_core/o_core_byte_enable
+add wave         -group CORE                -radix dec  /core_tb/inst_core/o_core_addr_read
+add wave         -group CORE                -radix dec  /core_tb/inst_core/o_core_addr_write
 
 add wave         -group PC                  -radix bin  /core_tb/inst_core/inst_program_counter/i_rst
 add wave         -group PC                  -radix bin  /core_tb/inst_core/inst_program_counter/i_clk
@@ -72,14 +74,17 @@ add wave         -group DECODER             -radix dec  /core_tb/inst_core/inst_
 add wave         -group DECODER             -radix bin  /core_tb/inst_core/inst_decoder/o_func3
 add wave         -group DECODER             -radix bin  /core_tb/inst_core/inst_decoder/o_func7
 
-add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_rst
-add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_ram_management_ctrl
+add wave         -group RAM_MNGT            -radix bin  /core_tb/inst_core/inst_ram_management/i_rst
+add wave         -group RAM_MNGT            -radix bin  /core_tb/inst_core/inst_ram_management/i_ram_management_ctrl
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_rs1_data
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_rs2_data
 add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/i_imm
-add wave         -group RAM_MNGT            -radix dec  /core_tb/inst_core/inst_ram_management/o_ram_addr
-add wave         -group RAM_MNGT            -radix dec  /core_tb/inst_core/inst_ram_management/o_write_enable
-add wave         -group RAM_MNGT            -radix dec  /core_tb/inst_core/inst_ram_management/o_data
+add wave         -group RAM_MNGT            -radix bin  /core_tb/inst_core/inst_ram_management/i_load_inst_ctrl
+add wave         -group RAM_MNGT            -radix bin  /core_tb/inst_core/inst_ram_management/o_write_enable
+add wave         -group RAM_MNGT            -radix bin  /core_tb/inst_core/inst_ram_management/o_byte_enable
+add wave         -group RAM_MNGT            -radix dec  /core_tb/inst_core/inst_ram_management/o_raddr
+add wave         -group RAM_MNGT            -radix dec  /core_tb/inst_core/inst_ram_management/o_waddr
+add wave         -group RAM_MNGT            -radix hex  /core_tb/inst_core/inst_ram_management/o_data
 
 add wave         -group REG_FILE            -radix bin  /core_tb/inst_core/inst_reg_file/i_rst
 add wave         -group REG_FILE            -radix bin  /core_tb/inst_core/inst_reg_file/i_clk
