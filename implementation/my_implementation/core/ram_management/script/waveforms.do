@@ -8,14 +8,15 @@
 ##### Add waves: #####
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_rst
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_ram_management_ctrl
-add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_rs1_data
-add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_rs2_data
-add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_imm
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/i_rs1_data
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/i_rs2_data
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/i_imm
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_load_inst_ctrl
-add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_ram_addr
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_write_enable
-add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_byte_number
-add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_data
+add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_byte_enable
+add wave -expand -group DESIGN -radix dec /ram_management_tb/inst_ram_management/o_raddr
+add wave -expand -group DESIGN -radix dec /ram_management_tb/inst_ram_management/o_waddr
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/o_data
 
 
 ##### Waveform window settings: #####
