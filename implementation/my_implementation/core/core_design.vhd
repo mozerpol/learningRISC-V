@@ -45,11 +45,13 @@ entity core is
       i_clk                : in std_logic;
       i_core_data_read      : in std_logic_vector(31 downto 0);
       o_core_data_write     : out std_logic_vector(31 downto 0);
-      o_core_addr           : out std_logic_vector(7 downto 0);
-      o_byte_number        : out std_logic_vector(3 downto 0);
-      o_write_enable       : out std_logic
+      o_core_write_enable   : out std_logic;
+      o_core_byte_enable        : out std_logic_vector(3 downto 0);
+      o_core_addr_read      : out integer range 0 to 63; 
+      o_core_addr_write   : out integer range 0 to 63
    );
 end entity core;
+
 
 architecture rtl of core is
 
@@ -153,13 +155,15 @@ architecture rtl of core is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
-      i_load_inst_ctrl            : in std_logic;
-      o_ram_addr              : out std_logic_vector(7 downto 0);
-      o_write_enable          : out std_logic;
-      o_byte_number           : out std_logic_vector(3 downto 0);
-      o_data                  : out std_logic_vector(31 downto 0)
+      i_load_inst_ctrl        : in std_logic;
+      o_write_enable     : out  std_logic;                       -- we
+      o_byte_enable      : out  std_logic_vector (3 downto 0);   -- be
+      o_raddr            : out  integer range 0 to 63;
+      o_waddr            : out  integer range 0 to 63;  
+      o_data             : out  std_logic_vector(31 downto 0)    -- wdata
       );
    end component ram_management;
+   
 
    component program_counter is
       port (
@@ -312,12 +316,13 @@ begin
       i_rs2_data              => rs2_data,
       i_imm                   => imm,
       i_load_inst_ctrl        => load_inst_ctrl,
-      o_ram_addr              => o_core_addr,
-      o_write_enable          => o_write_enable,
-      o_byte_number           => o_byte_number,
+      o_write_enable          => o_core_write_enable,
+      o_byte_enable           => o_core_byte_enable,
+      o_raddr                 => o_core_addr_read,
+      o_waddr                 => o_core_addr_write,
       o_data                  => o_core_data_write
    ); 
-
+   
    inst_program_counter : component program_counter
    port map (
       i_rst             => rst,
