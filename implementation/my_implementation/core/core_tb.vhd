@@ -13,12 +13,14 @@ architecture tb of core_tb is
 
    component core is
    port (
-      i_rst                   : in std_logic;
-      i_clk                   : in std_logic;
-      i_ram_data_read         : in std_logic_vector(31 downto 0);
-      o_ram_data_write        : out std_logic_vector(31 downto 0);
-      o_ram_addr              : out std_logic_vector(7 downto 0);
-      o_write_enable          : out std_logic
+      i_rst                : in std_logic;
+      i_clk                : in std_logic;
+      i_core_data_read      : in std_logic_vector(31 downto 0);
+      o_core_data_write     : out std_logic_vector(31 downto 0);
+      o_core_write_enable   : out std_logic;
+      o_core_byte_enable        : out std_logic_vector(3 downto 0);
+      o_core_addr_read      : out integer range 0 to 63;
+      o_core_addr_write   : out integer range 0 to 63
    );
    end component core;
 
@@ -26,8 +28,11 @@ architecture tb of core_tb is
    signal clk_tb              : std_logic;
    signal ram_data_read_tb    : std_logic_vector(31 downto 0);
    signal ram_data_write_tb   : std_logic_vector(31 downto 0);
-   signal ram_addr_tb         : std_logic_vector(7 downto 0);
-   signal write_enable_tb     : std_logic;
+   signal ram_write_enable_tb     : std_logic;
+   signal ram_byte_enable_tb     : std_logic_vector(3 downto 0);
+   signal ram_addr_read_tb    : integer range 0 to 63; 
+   signal ram_addr_write_tb   : integer range 0 to 63;
+   
   -- type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
   -- alias spy_gpr is <<signal .core_tb.inst_core.inst_reg_file.gpr: t_gpr >>;
 
@@ -37,10 +42,12 @@ begin
    port map (
       i_rst                => rst_tb,
       i_clk                => clk_tb,
-      i_ram_data_read      => ram_data_read_tb,
-      o_ram_data_write     => ram_data_write_tb,
-      o_ram_addr           => ram_addr_tb,
-      o_write_enable       => write_enable_tb
+      i_core_data_read       => ram_data_read_tb,
+      o_core_data_write       => ram_data_write_tb,
+      o_core_write_enable     => ram_write_enable_tb,
+      o_core_byte_enable         => ram_byte_enable_tb,
+      o_core_addr_read        => ram_addr_read_tb,
+      o_core_addr_write  => ram_addr_write_tb
    );
 
    p_clk : process
@@ -55,12 +62,12 @@ begin
    begin
 
       rst_tb            <= '1';
-      ram_data_read_tb  <= (others => '0');
+     -- ram_data_read_tb  <= (others => '0');
       wait for 20 ns;
-      wait until rising_edge(clk_tb);
+   --   wait until rising_edge(clk_tb);
       rst_tb            <= '0';
-      wait until ram_addr_tb = d"12";
-      ram_data_read_tb  <= x"0000000c";
+  --    wait until ram_addr_tb = d"12";
+    --  ram_data_read_tb  <= x"0000000c";
 
       wait for 35 ns;
       stop(2);
