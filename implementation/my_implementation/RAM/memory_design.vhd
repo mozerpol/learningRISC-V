@@ -47,7 +47,8 @@ architecture rtl of memory is
                     end if;
                  end loop;
             end if;
-            q_local <= ram(raddr);
+            -- q_local <= ram(raddr); -- otherwise data will be during rising edge
         end if;
+        q_local <= ram(raddr);
     end process;  
 end rtl;
