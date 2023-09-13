@@ -156,14 +156,15 @@ architecture rtl of core is
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
       i_load_inst_ctrl        : in std_logic;
+      i_data_from_ram         : in std_logic_vector(31 downto 0);
+      o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable     : out  std_logic;                       -- we
       o_byte_enable      : out  std_logic_vector (3 downto 0);   -- be
       o_raddr            : out  integer range 0 to 63;
       o_waddr            : out  integer range 0 to 63;  
       o_data             : out  std_logic_vector(31 downto 0)    -- wdata
       );
-   end component ram_management;
-   
+   end component ram_management;   
 
    component program_counter is
       port (
@@ -220,6 +221,7 @@ architecture rtl of core is
    signal ram_management_ctrl : std_logic_vector(2 downto 0);
    signal load_instruction    : std_logic_vector(2 downto 0);
    signal load_inst_ctrl      : std_logic;
+   signal data_from_ram         : std_logic_vector(31 downto 0);
 
 begin
 
@@ -316,6 +318,8 @@ begin
       i_rs2_data              => rs2_data,
       i_imm                   => imm,
       i_load_inst_ctrl        => load_inst_ctrl,
+      i_data_from_ram         => data_from_ram,
+      o_rd_data               => rd_data,
       o_write_enable          => o_core_write_enable,
       o_byte_enable           => o_core_byte_enable,
       o_raddr                 => o_core_addr_read,
@@ -342,7 +346,7 @@ begin
 
    rst      <= i_rst;
    clk      <= i_clk;
-   rd_data  <= i_core_data_read;
+   data_from_ram  <= i_core_data_read;
 
 
    p_core : process(all)
