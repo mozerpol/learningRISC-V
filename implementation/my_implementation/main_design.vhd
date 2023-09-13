@@ -33,8 +33,8 @@ architecture rtl of main is
       o_core_data_write    : out std_logic_vector(31 downto 0);
       o_core_write_enable  : out std_logic;
       o_core_byte_enable   : out std_logic_vector(3 downto 0);
-      o_core_addr_read     : out integer range 0 to 63;
-      o_core_addr_write    : out integer range 0 to 63
+      o_core_addr_read     : out std_logic_vector (5 downto 0);
+      o_core_addr_write    : out std_logic_vector (5 downto 0)
       );
    end component core;
 
@@ -42,8 +42,8 @@ architecture rtl of main is
    component memory is
       port (
          clk   : in  std_logic;
-         raddr : in  integer range 0 to 63; -- address width = 6
-         waddr : in  integer range 0 to 63;
+         raddr : in  std_logic_vector (5 downto 0); -- address width = 6
+         waddr : in  std_logic_vector (5 downto 0);
          we    : in  std_logic;
          wdata : in  std_logic_vector(31 downto 0); -- width = 32
          be    : in  std_logic_vector (3 downto 0); -- 4 bytes per word
@@ -60,11 +60,11 @@ architecture rtl of main is
    signal core_data_write     : std_logic_vector(31 downto 0);
    signal core_write_enable   : std_logic;
    signal core_byte_enable    : std_logic_vector(3 downto 0);
-   signal core_addr_read      : integer range 0 to 63;
-   signal core_addr_write     : integer range 0 to 63;
+   signal core_addr_read      : std_logic_vector (5 downto 0);
+   signal core_addr_write     : std_logic_vector (5 downto 0);
    -- RAM
-   signal ram_raddr           : integer range 0 to 63; -- address width = 6
-   signal ram_waddr           : integer range 0 to 63;
+   signal ram_raddr           : std_logic_vector (5 downto 0); -- address width = 6
+   signal ram_waddr           : std_logic_vector (5 downto 0);
    signal ram_we              : std_logic;
    signal ram_wdata           : std_logic_vector(31 downto 0); -- width = 32
    signal ram_be              : std_logic_vector (3 downto 0); -- 4 bytes per word
