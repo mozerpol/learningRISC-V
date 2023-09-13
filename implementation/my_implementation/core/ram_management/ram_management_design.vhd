@@ -21,8 +21,8 @@ entity ram_management is
       o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
-      o_raddr                 : out integer range 0 to 63;
-      o_waddr                 : out integer range 0 to 63;
+      o_raddr                 : out std_logic_vector (5 downto 0);
+      o_waddr                 : out std_logic_vector (5 downto 0);
       o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
@@ -36,59 +36,59 @@ architecture rtl of ram_management is
 begin
 
    p_ram_management : process(all)
-      variable v_address_row     : std_logic_vector(7 downto 0);
-      variable v_address_column  : std_logic_vector(7 downto 0);
+      variable v_address_row     : std_logic_vector(5 downto 0);
+      variable v_address_column  : std_logic_vector(5 downto 0);
    begin
       if (i_rst = '1') then
          o_write_enable    <= C_READ_ENABLE;
          o_byte_enable     <= (others => '0');
-         o_raddr           <= 0;
-         o_waddr           <= 0;
+         o_raddr           <= (others => '0');
+         o_waddr           <= (others => '0');
          o_data            <= (others => '0');
          v_address_row     := (others => '0');
          v_address_column  := (others => '0');
       else
-         v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
-         v_address_column  := v_address_row - (v_address_row(7 downto 2) & "00");
+         v_address_row     := i_rs1_data(5 downto 0) + i_imm(5 downto 0);
+         v_address_column  := v_address_row - (v_address_row(5 downto 2) & "00");
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "1111";
-               o_waddr        <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+               o_waddr        <= "00" & v_address_row(5 downto 2);
                o_data         <= i_rs2_data;
             when C_SH   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "0011" sll to_integer(unsigned(v_address_column(1 downto 0)));
-               o_waddr        <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+               o_waddr        <= "00" & v_address_row(5 downto 2);
                o_data(to_integer(unsigned(v_address_column))*8+15 downto to_integer(unsigned(v_address_column))*8)   <= i_rs2_data(15 downto 0);
             when C_SB   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "0001" sll to_integer(unsigned(v_address_column(1 downto 0)));
-               o_waddr        <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+               o_waddr        <= "00" & v_address_row(5 downto 2);
                o_data(to_integer(unsigned(v_address_column))*8+7 downto to_integer(unsigned(v_address_column))*8)   <= i_rs2_data(7 downto 0);
             when C_LW   =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable <= C_READ_ENABLE;
                   o_byte_enable  <= "1111";
-                  o_raddr        <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+                  o_raddr        <= "00" & v_address_row(5 downto 2);
                end if;
             when C_LH | C_LHU =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable <= C_READ_ENABLE;
                   o_byte_enable  <= "0011" sll to_integer(unsigned(v_address_column(1 downto 0)));
-                  o_raddr        <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+                  o_raddr        <= "00" & v_address_row(5 downto 2);
                end if;
             when C_LB | C_LBU =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable <= C_READ_ENABLE;
                   o_byte_enable  <= "0001" sll to_integer(unsigned(v_address_column(1 downto 0)));
-                  o_raddr        <= to_integer(unsigned("00" & v_address_row(7 downto 2)));
+                  o_raddr        <= "00" & v_address_row(5 downto 2);
                end if;
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= (others => '0');
-               o_raddr        <= 0;
-               o_waddr        <= 0;
+               o_raddr        <= (others => '0');
+               o_waddr        <= (others => '0');
                o_data         <= (others => '0');
          end case;
       end if;
@@ -106,7 +106,7 @@ begin
          v_byte_enable     := (others => '0');
       else
          v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
-         v_address_column  := v_address_row - (v_address_row(7 downto 2) & "00");
+         v_address_column  := v_address_row - (v_address_row(5 downto 2) & "00");
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
