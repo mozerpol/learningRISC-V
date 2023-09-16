@@ -14,8 +14,8 @@ generic (
 );
 port (
    clk   : in  std_logic;
-   raddr : in  integer range 0 to DEPTH -1 ; -- address width = 6
-   waddr : in  integer range 0 to DEPTH -1 ;
+   raddr : in  std_logic_vector (5 downto 0); -- address width = 6
+   waddr : in  std_logic_vector (5 downto 0);
    we    : in  std_logic;
    wdata : in  std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0); -- width = 32
    be    : in  std_logic_vector (NUM_BYTES-1 downto 0); -- 4 bytes per word
@@ -45,12 +45,12 @@ begin  -- Re-organize the read data from the RAM to match the output
          if(we = '1') then
             for I in (NUM_BYTES-1) downto 0 loop
                if(be(I) = '1') then
-                  ram(waddr)(I) <= wdata(((I+1)*BYTE_WIDTH-1) downto I*BYTE_WIDTH);
+                  ram(to_integer(unsigned(waddr)))(I) <= wdata(((I+1)*BYTE_WIDTH-1) downto I*BYTE_WIDTH);
                end if;
             end loop;
          end if;
          -- q_local <= ram(raddr); -- otherwise data will be during rising edge
       end if;
-      q_local <= ram(raddr);
+      q_local <= ram(to_integer(unsigned(raddr)));
    end process;
 end rtl;
