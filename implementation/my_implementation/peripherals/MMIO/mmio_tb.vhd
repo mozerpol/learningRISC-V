@@ -15,13 +15,13 @@ architecture tb of mmio_tb is
 
    component mmio is
       port (
-         i_addr               : in integer range 0 to 63;
+         i_addr               : in std_logic_vector(5 downto 0);
          o_write_enable_ram   : out std_logic;
          o_write_enable_gpio  : out std_logic
    );
    end component mmio;
 
-   signal addr_tb                : integer range 0 to 63;
+   signal addr_tb                : std_logic_vector(5 downto 0);
    signal write_enable_ram_tb    : std_logic;
    signal write_enable_gpio_tb   : std_logic;
 
@@ -37,11 +37,11 @@ begin
 
    p_tb : process
    begin
-      addr_tb <= 0;
+      addr_tb <= (others => '0');
       wait for 5 ns;
-      addr_tb <= 63;
+      addr_tb <= 6d"63";
       wait for 5 ns;
-      addr_tb <= 60;
+      addr_tb <= 6d"60";
 
       wait for 25 ns;
       stop(2);
