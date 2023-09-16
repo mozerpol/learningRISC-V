@@ -6,7 +6,9 @@
 
 
 ##### Add waves: #####
-
+add wave -expand -group DESIGN -radix dec /mmio_tb/inst_mmio/i_addr
+add wave -expand -group DESIGN -radix dec /mmio_tb/inst_mmio/o_write_enable_ram
+add wave -expand -group DESIGN -radix dec /mmio_tb/inst_mmio/o_write_enable_gpio
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
