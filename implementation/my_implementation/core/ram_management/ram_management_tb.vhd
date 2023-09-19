@@ -22,6 +22,9 @@ architecture tb of ram_management_tb is
       i_imm                   : in std_logic_vector(31 downto 0);
       i_load_inst_ctrl        : in std_logic;
       
+      i_data_from_ram         : in std_logic_vector(31 downto 0);
+      o_rd_data               : out std_logic_vector(31 downto 0);
+      
       o_write_enable     : out  std_logic;                       -- we
       o_byte_enable      : out  std_logic_vector (3 downto 0);   -- be
       o_raddr            : out  integer range 0 to 63;
@@ -39,7 +42,8 @@ architecture tb of ram_management_tb is
    signal ram_addr_tb              : std_logic_vector(7 downto 0);
    signal write_enable_tb          : std_logic;-- we
    signal data_tb                  : std_logic_vector(31 downto 0); -- wdata
-        
+   signal data_from_ram_tb         : std_logic_vector(31 downto 0);
+   signal rd_data_tb               : std_logic_vector(31 downto 0);
       signal byte_enable_tb      : std_logic_vector (3 downto 0);   -- be
       signal raddr_tb            : integer range 0 to 63;
       signal waddr_tb            : integer range 0 to 63;
@@ -54,6 +58,8 @@ begin
       i_rs2_data             => rs2_data_tb,
       i_imm                   => imm_tb,
       i_load_inst_ctrl      => load_inst_ctrl_tb,
+      i_data_from_ram         =>data_from_ram_tb,
+      o_rd_data             => rd_data_tb,
       o_write_enable     => write_enable_tb,
       o_byte_enable    => byte_enable_tb,
       o_raddr          => raddr_tb,
@@ -70,6 +76,7 @@ begin
       rs2_data_tb             <= (others => '0');
       imm_tb                  <= (others => '0');
       load_inst_ctrl_tb       <= '0';
+      data_from_ram_tb        <= (others => '0');
       wait for 5 ns;
       rst_tb                  <= '0';
       ---- SW ----
