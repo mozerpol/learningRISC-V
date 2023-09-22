@@ -31,22 +31,23 @@ architecture rtl of main is
       i_clk                : in std_logic;
       i_core_data_read      : in std_logic_vector(31 downto 0);
       o_core_data_write     : out std_logic_vector(31 downto 0);
-      o_core_addr           : out std_logic_vector(7 downto 0);
-      o_byte_number        : out std_logic_vector(3 downto 0);
-      o_write_enable       : out std_logic
+      o_core_write_enable   : out std_logic;
+      o_core_byte_enable        : out std_logic_vector(3 downto 0);
+      o_core_addr_read      : out integer range 0 to 63; 
+      o_core_addr_write   : out integer range 0 to 63
       );
    end component core;
 
 
    component memory is
       port (
-      i_rst                : in std_logic;
-      i_clk                : in std_logic;
-      i_ram_addr           : in std_logic_vector(7 downto 0);
-      i_write_enable       : in std_logic;
-      i_byte_number        : in std_logic_vector(3 downto 0);
-      i_data               : in std_logic_vector(31 downto 0);
-      o_ram_data           : out std_logic_vector(31 downto 0)
+        clk     : in  std_logic;
+        raddr   : in  integer range 0 to 63;     -- address width = 6
+        waddr   : in  integer range 0 to 63;  
+        we      : in  std_logic; 
+        wdata   : in  std_logic_vector(31 downto 0);   -- width = 32
+        be      : in  std_logic_vector (3 downto 0);   -- 4 bytes per word
+        q       : out std_logic_vector(31 downto 0) 
       );
    end component memory;
 
@@ -55,17 +56,19 @@ architecture rtl of main is
    signal rst                    : std_logic;
    signal clk                    : std_logic;
    -- core
-   signal ram_data_read_core     : std_logic_vector(31 downto 0);
-   signal ram_data_write_core    : std_logic_vector(31 downto 0);
-   signal ram_addr_core          : std_logic_vector(7 downto 0);
-   signal write_enable_core      : std_logic;
-   signal byte_number_core       : std_logic_vector(3 downto 0);
+      signal core_data_read      : std_logic_vector(31 downto 0);
+      signal core_data_write     : std_logic_vector(31 downto 0);
+      signal core_write_enable   : std_logic;
+      signal core_byte_enable        : std_logic_vector(3 downto 0);
+      signal core_addr_read      : integer range 0 to 63; 
+      signal core_addr_write   : integer range 0 to 63;
    -- RAM
-   signal ram_addr_memory        : std_logic_vector(7 downto 0);
-   signal write_enable_memory    : std_logic;
-   signal data_memory            : std_logic_vector(31 downto 0);
-   signal ram_data_memory        : std_logic_vector(31 downto 0);
-   signal byte_number_memory     : std_logic_vector(3 downto 0);
+        signal ram_raddr   : integer range 0 to 63;     -- address width = 6
+        signal ram_waddr   : integer range 0 to 63;  
+        signal ram_we      : std_logic; 
+        signal ram_wdata   : std_logic_vector(31 downto 0);   -- width = 32
+        signal ram_be      : std_logic_vector (3 downto 0);   -- 4 bytes per word
+        signal ram_q       : std_logic_vector(31 downto 0);
 
 
 begin
@@ -74,31 +77,32 @@ begin
    port map (
       i_rst             => rst,
       i_clk             => clk,
-      i_core_data_read  => ram_data_read_core,
-      o_core_data_write => ram_data_write_core,
-      o_core_addr       => ram_addr_core,
-      o_byte_number     => byte_number_core,
-      o_write_enable    => write_enable_core
+      i_core_data_read  => core_data_read,
+      o_core_data_write => core_data_write,
+      o_core_write_enable => core_write_enable,
+      o_core_byte_enable => core_byte_enable,
+      o_core_addr_read  => core_addr_read,
+      o_core_addr_write => core_addr_write
    );
 
    inst_memory : component memory
    port map (
-      i_rst             => rst,
-      i_clk             => clk,
-      i_ram_addr        => ram_addr_memory,
-      i_write_enable    => write_enable_memory,
-      i_byte_number     => byte_number_memory,
-      i_data            => data_memory,
-      o_ram_data        => ram_data_memory
+      clk             => clk,
+      raddr  => ram_raddr,
+      waddr  => ram_waddr,
+      we  => ram_we,
+      wdata  => ram_wdata,
+      be  => ram_be,
+      q  => ram_q
    );
 
    rst                  <= i_rst;
    clk                  <= i_clk;
-   ram_addr_memory      <= ram_addr_core;
-   write_enable_memory  <= write_enable_core;
-   data_memory          <= ram_data_write_core;
-   ram_data_read_core   <= ram_data_memory;
-   byte_number_memory   <= byte_number_core;
-
+   core_data_read       <= ram_q;
+   ram_raddr <= core_addr_read;
+   ram_waddr <= core_addr_write;
+   ram_we <= core_write_enable;
+   ram_wdata <= core_data_write;
+   ram_be <= core_byte_enable;
 
 end architecture rtl;
