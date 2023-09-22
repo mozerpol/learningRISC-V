@@ -6,7 +6,10 @@
 
 
 ##### Add waves: #####
-
+add wave -expand -group DESIGN -radix bin /gpio_tb/inst_gpio/i_clk
+add wave -expand -group DESIGN -radix bin /gpio_tb/inst_gpio/i_addr
+add wave -expand -group DESIGN -radix bin /gpio_tb/inst_gpio/i_wdata
+add wave -expand -group DESIGN -radix bin /gpio_tb/inst_gpio/o_gpio
 
 ##### Waveform window settings: #####
 quietly wave cursor active 1
