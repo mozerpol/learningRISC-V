@@ -12,6 +12,10 @@ add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management
 add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/i_rs2_data
 add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/i_imm
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/i_load_inst_ctrl
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/i_data_from_ram
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/p_ram_management/v_address_row
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/p_ram_management/v_address_column
+add wave -expand -group DESIGN -radix hex /ram_management_tb/inst_ram_management/o_rd_data
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_write_enable
 add wave -expand -group DESIGN -radix bin /ram_management_tb/inst_ram_management/o_byte_enable
 add wave -expand -group DESIGN -radix dec /ram_management_tb/inst_ram_management/o_raddr
