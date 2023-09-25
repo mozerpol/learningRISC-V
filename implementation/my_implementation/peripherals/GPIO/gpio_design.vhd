@@ -9,14 +9,13 @@ library gpio_lib;
 entity gpio is
    port (
       i_clk    : in std_logic;
-      i_addr   : in std_logic_vector(31 downto 0);
+      i_addr   : in std_logic_vector(5 downto 0);
       i_wdata  : in std_logic_vector(31 downto 0);
       o_gpio   : out std_logic_vector(3 downto 0)
 );
 end gpio;
 
 architecture rtl of gpio is
-
 
 begin
 
