@@ -16,14 +16,14 @@ architecture tb of gpio_tb is
    component gpio is
       port (
          i_clk    : in std_logic;
-         i_addr   : in std_logic_vector(31 downto 0);
+         i_addr   : in std_logic_vector(5 downto 0);
          i_wdata  : in std_logic_vector(31 downto 0);
          o_gpio   : out std_logic_vector(3 downto 0)
       );
    end component gpio;
 
    signal clk_tb     : std_logic;
-   signal addr_tb    : std_logic_vector(31 downto 0);
+   signal addr_tb    : std_logic_vector(5 downto 0);
    signal wdata_tb   : std_logic_vector(31 downto 0);
    signal gpio_tb    : std_logic_vector(3 downto 0);
 
@@ -48,6 +48,17 @@ begin
 
    p_tb : process
    begin
+      wait until rising_edge(clk_tb);
+      addr_tb  <= 6d"0";
+      wdata_tb <= 32x"00000000";
+      wait for 4 ns;
+      addr_tb  <= 6d"62";
+      wdata_tb <= 32b"00000000000000000000000000000000";
+      wait for 4 ns;
+      addr_tb  <= 6d"63";
+      wdata_tb <= 32b"00000000000000000000000000001101";
+      wait for 4 ns;
+      wdata_tb <= 32b"00000000000000000000000000000110";
 
       wait for 25 ns;
       stop(2);
