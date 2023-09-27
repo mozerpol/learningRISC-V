@@ -8,6 +8,9 @@ library main_lib;
 library memory_lib;
    use memory_lib.all;
    use memory_lib.memory_pkg.all;
+library gpio_lib;
+   use gpio_lib.all;
+   use gpio_lib.gpio_pkg.all;
 library core_lib;
    use core_lib.all;
    use core_lib.core_pkg.all;
@@ -50,6 +53,16 @@ architecture rtl of main is
          q     : out std_logic_vector(31 downto 0)
       );
    end component memory;
+   
+   
+component gpio is
+   port (
+      i_clk    : in std_logic;
+      i_addr   : in std_logic_vector(5 downto 0);
+      i_wdata  : in std_logic_vector(31 downto 0);
+      o_gpio   : out std_logic_vector(3 downto 0)
+);
+end component gpio;
 
 
    -- General
@@ -69,6 +82,10 @@ architecture rtl of main is
    signal ram_wdata           : std_logic_vector(31 downto 0); -- width = 32
    signal ram_be              : std_logic_vector (3 downto 0); -- 4 bytes per word
    signal ram_q               : std_logic_vector(31 downto 0);
+   -- GPIO
+   signal gpio_addr   : std_logic_vector(5 downto 0);
+   signal gpio_wdata  : std_logic_vector(31 downto 0);
+   signal gpio_gpio   : std_logic_vector(3 downto 0);
 
 
 begin
@@ -95,6 +112,14 @@ begin
       be    => ram_be,
       q     => ram_q
    );
+   
+    inst_gpio : component gpio
+    port map(
+    i_clk  => clk,
+    i_addr    =>gpio_addr,
+    i_wdata  =>gpio_wdata,
+    o_gpio    =>gpio_gpio
+    );
 
    rst            <= i_rst;
    clk            <= i_clk;
@@ -104,5 +129,8 @@ begin
    ram_we         <= core_write_enable;
    ram_wdata      <= core_data_write;
    ram_be         <= core_byte_enable;
+   gpio_addr      <= core_addr_write;
+   gpio_wdata     <= core_data_write;
+   --gpio           <= 
 
 end architecture rtl;
