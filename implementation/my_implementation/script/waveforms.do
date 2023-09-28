@@ -9,18 +9,20 @@
 add wave -expand -group MAIN_DESIGN -radix bin  /main_tb/inst_main/i_rst 
 add wave         -group MAIN_DESIGN -radix bin  /main_tb/inst_main/i_clk
 
-add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/o_ram_data 
-add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/i_ram_addr 
-add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/i_write_enable 
-add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/i_byte_number 
-add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/i_data 
+add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/raddr 
+add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/waddr 
+add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/we 
+add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/wdata 
+add wave         -group RAM -radix bin          /main_tb/inst_main/inst_memory/be 
+add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/q
 add wave         -group RAM -radix hex          /main_tb/inst_main/inst_memory/ram 
 
 add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/i_core_data_read 
 add wave         -group CORE -radix hex         /main_tb/inst_main/inst_core/o_core_data_write
-add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_core_addr
-add wave         -group CORE -radix bin         /main_tb/inst_main/inst_core/o_byte_number
-add wave         -group CORE -radix bin         /main_tb/inst_main/inst_core/o_write_enable
+add wave         -group CORE -radix bin         /main_tb/inst_main/inst_core/o_core_write_enable
+add wave         -group CORE -radix bin         /main_tb/inst_main/inst_core/o_core_byte_enable
+add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_core_addr_read
+add wave         -group CORE -radix dec         /main_tb/inst_main/inst_core/o_core_addr_write
 
 add wave         -group ALU -radix hex          /main_tb/inst_main/inst_core/inst_alu/i_alu_operand_1
 add wave         -group ALU -radix hex          /main_tb/inst_main/inst_core/inst_alu/i_alu_operand_2
@@ -79,11 +81,14 @@ add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_cor
 add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_core/inst_ram_management/i_rs2_data 
 add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_core/inst_ram_management/i_imm 
 add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/i_load_inst_ctrl
+add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/i_data_from_ram
+add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/o_rd_data
 add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/p_ram_management/v_address_row 
 add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/p_ram_management/v_address_column 
-add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/o_ram_addr 
-add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/o_byte_number
 add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/o_write_enable 
+add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/o_byte_enable
+add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/o_raddr 
+add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/o_waddr 
 add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_core/inst_ram_management/o_data 
 
 add wave         -group REG_FILE -radix dec     /main_tb/inst_main/inst_core/inst_reg_file/i_rs1_addr 
