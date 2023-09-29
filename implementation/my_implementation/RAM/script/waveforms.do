@@ -6,8 +6,8 @@
 
 
 ##### Add waves: #####
-add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/clk 
-add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/raddr 
+add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/clk
+add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/raddr
 add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/waddr
 add wave -expand -group DESIGN -radix bin /memory_tb/inst_memory/we
 add wave -expand -group DESIGN -radix hex /memory_tb/inst_memory/wdata
