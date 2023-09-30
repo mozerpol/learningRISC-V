@@ -62,12 +62,11 @@ begin
    begin
 
       rst_tb            <= '1';
-     -- ram_data_read_tb  <= (others => '0');
+      ram_data_read_tb  <= (others => '0');
       wait for 20 ns;
-   --   wait until rising_edge(clk_tb);
       rst_tb            <= '0';
-  --    wait until ram_addr_tb = d"12";
-    --  ram_data_read_tb  <= x"0000000c";
+      ram_data_read_tb  <= 32x"00001103";
+      wait until rising_edge(clk_tb);
 
       wait for 35 ns;
       stop(2);
