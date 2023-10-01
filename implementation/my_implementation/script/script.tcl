@@ -18,6 +18,12 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/memory_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/memory_design.vhd
 
 
+set hdl_dir                "../peripherals/GPIO"
+set library_name           "gpio_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_design.vhd
+
+
 set hdl_dir                "../core"
 set library_name           "opcodes"
 vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
