@@ -14,57 +14,55 @@ end ram_management_tb;
 architecture tb of ram_management_tb is
 
    component ram_management is
-   port (
-      i_rst                   : in std_logic;
-      i_ram_management_ctrl   : in std_logic_vector(2 downto 0);
-      i_rs1_data              : in std_logic_vector(31 downto 0);
-      i_rs2_data              : in std_logic_vector(31 downto 0);
-      i_imm                   : in std_logic_vector(31 downto 0);
-      i_load_inst_ctrl        : in std_logic;
-      
-      i_data_from_ram         : in std_logic_vector(31 downto 0);
-      o_rd_data               : out std_logic_vector(31 downto 0);
-      
-      o_write_enable     : out  std_logic;                       -- we
-      o_byte_enable      : out  std_logic_vector (3 downto 0);   -- be
-      o_raddr            : out  integer range 0 to 63;
-      o_waddr            : out  integer range 0 to 63;
-      o_data             : out  std_logic_vector(31 downto 0)    -- wdata
-   );
+      port (
+         i_rst                   : in std_logic;
+         i_ram_management_ctrl   : in std_logic_vector(2 downto 0);
+         i_rs1_data              : in std_logic_vector(31 downto 0);
+         i_rs2_data              : in std_logic_vector(31 downto 0);
+         i_imm                   : in std_logic_vector(31 downto 0);
+         i_load_inst_ctrl        : in std_logic;
+         i_data_from_ram         : in std_logic_vector(31 downto 0);
+         o_rd_data               : out std_logic_vector(31 downto 0);
+         o_write_enable     : out  std_logic;
+         o_byte_enable      : out  std_logic_vector (3 downto 0);
+         o_raddr            : out  integer range 0 to 63;
+         o_waddr            : out  integer range 0 to 63;
+         o_data             : out  std_logic_vector(31 downto 0)
+      );
    end component ram_management;
 
-   signal rst_tb                   : std_logic;
-   signal ram_management_ctrl_tb   : std_logic_vector(2 downto 0);
-   signal rs1_data_tb              : std_logic_vector(31 downto 0);
-   signal rs2_data_tb              : std_logic_vector(31 downto 0);
-   signal imm_tb                   : std_logic_vector(31 downto 0);
-   signal load_inst_ctrl_tb        : std_logic;
-   signal ram_addr_tb              : std_logic_vector(7 downto 0);
-   signal write_enable_tb          : std_logic;-- we
-   signal data_tb                  : std_logic_vector(31 downto 0); -- wdata
-   signal data_from_ram_tb         : std_logic_vector(31 downto 0);
-   signal rd_data_tb               : std_logic_vector(31 downto 0);
-      signal byte_enable_tb      : std_logic_vector (3 downto 0);   -- be
-      signal raddr_tb            : integer range 0 to 63;
-      signal waddr_tb            : integer range 0 to 63;
+   signal rst_tb                 : std_logic;
+   signal ram_management_ctrl_tb : std_logic_vector(2 downto 0);
+   signal rs1_data_tb            : std_logic_vector(31 downto 0);
+   signal rs2_data_tb            : std_logic_vector(31 downto 0);
+   signal imm_tb                 : std_logic_vector(31 downto 0);
+   signal load_inst_ctrl_tb      : std_logic;
+   signal ram_addr_tb            : std_logic_vector(7 downto 0);
+   signal write_enable_tb        : std_logic;
+   signal data_tb                : std_logic_vector(31 downto 0);
+   signal data_from_ram_tb       : std_logic_vector(31 downto 0);
+   signal rd_data_tb             : std_logic_vector(31 downto 0);
+   signal byte_enable_tb         : std_logic_vector (3 downto 0);
+   signal raddr_tb               : integer range 0 to 63;
+   signal waddr_tb               : integer range 0 to 63;
 
 begin
 
    inst_ram_management : component ram_management
    port map (
-      i_rst                  => rst_tb,
+      i_rst                   => rst_tb,
       i_ram_management_ctrl   => ram_management_ctrl_tb,
-      i_rs1_data             => rs1_data_tb,
-      i_rs2_data             => rs2_data_tb,
+      i_rs1_data              => rs1_data_tb,
+      i_rs2_data              => rs2_data_tb,
       i_imm                   => imm_tb,
-      i_load_inst_ctrl      => load_inst_ctrl_tb,
+      i_load_inst_ctrl        => load_inst_ctrl_tb,
       i_data_from_ram         =>data_from_ram_tb,
-      o_rd_data             => rd_data_tb,
-      o_write_enable     => write_enable_tb,
-      o_byte_enable    => byte_enable_tb,
-      o_raddr          => raddr_tb,
-      o_waddr           => waddr_tb,
-      o_data             => data_tb
+      o_rd_data               => rd_data_tb,
+      o_write_enable          => write_enable_tb,
+      o_byte_enable           => byte_enable_tb,
+      o_raddr                 => raddr_tb,
+      o_waddr                 => waddr_tb,
+      o_data                  => data_tb
    );
 
    p_tb : process
@@ -126,8 +124,7 @@ begin
       ram_management_ctrl_tb  <= C_LB;
       rs1_data_tb             <= 32d"2";
       imm_tb                  <= 32d"3";
-      wait for 5 ns;
-      
+
       wait for 25 ns;
       stop(2);
    end process p_tb;
