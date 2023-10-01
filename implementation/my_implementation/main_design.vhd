@@ -18,9 +18,9 @@ library core_lib;
 
 entity main is
    port (
-      i_rst     : in std_logic;
-      i_clk     : in std_logic
-      -- Maybe will be GPIO handler in the future
+      i_rst    : in std_logic;
+      i_clk    : in std_logic;
+      o_gpio   : out std_logic_vector(3 downto 0)
    );
 end entity main;
 
@@ -116,9 +116,9 @@ begin
     inst_gpio : component gpio
     port map (
     i_clk   => clk,
-    i_addr  =>gpio_addr,
-    i_wdata =>gpio_wdata,
-    o_gpio  =>gpio_gpio
+    i_addr  => gpio_addr,
+    i_wdata => gpio_wdata,
+    o_gpio  => o_gpio
     );
 
    rst            <= i_rst;
@@ -131,6 +131,5 @@ begin
    ram_be         <= core_byte_enable;
    gpio_addr      <= core_addr_write;
    gpio_wdata     <= core_data_write;
-   --gpio           <=
 
 end architecture rtl;
