@@ -30,14 +30,14 @@ architecture rtl of main is
 
    component core is
       port (
-      i_rst                : in std_logic;
-      i_clk                : in std_logic;
-      i_core_data_read     : in std_logic_vector(31 downto 0);
-      o_core_data_write    : out std_logic_vector(31 downto 0);
-      o_core_write_enable  : out std_logic;
-      o_core_byte_enable   : out std_logic_vector(3 downto 0);
-      o_core_addr_read     : out std_logic_vector (5 downto 0);
-      o_core_addr_write    : out std_logic_vector (5 downto 0)
+         i_rst                : in std_logic;
+         i_clk                : in std_logic;
+         i_core_data_read     : in std_logic_vector(31 downto 0);
+         o_core_data_write    : out std_logic_vector(31 downto 0);
+         o_core_write_enable  : out std_logic;
+         o_core_byte_enable   : out std_logic_vector(3 downto 0);
+         o_core_addr_read     : out std_logic_vector (5 downto 0);
+         o_core_addr_write    : out std_logic_vector (5 downto 0)
       );
    end component core;
 
@@ -53,16 +53,16 @@ architecture rtl of main is
          q     : out std_logic_vector(31 downto 0)
       );
    end component memory;
-   
-   
-component gpio is
-   port (
-      i_clk    : in std_logic;
-      i_addr   : in std_logic_vector(5 downto 0);
-      i_wdata  : in std_logic_vector(31 downto 0);
-      o_gpio   : out std_logic_vector(3 downto 0)
-);
-end component gpio;
+
+
+   component gpio is
+      port (
+         i_clk    : in std_logic;
+         i_addr   : in std_logic_vector(5 downto 0);
+         i_wdata  : in std_logic_vector(31 downto 0);
+         o_gpio   : out std_logic_vector(3 downto 0)
+      );
+   end component gpio;
 
 
    -- General
@@ -83,9 +83,9 @@ end component gpio;
    signal ram_be              : std_logic_vector (3 downto 0); -- 4 bytes per word
    signal ram_q               : std_logic_vector(31 downto 0);
    -- GPIO
-   signal gpio_addr   : std_logic_vector(5 downto 0);
-   signal gpio_wdata  : std_logic_vector(31 downto 0);
-   signal gpio_gpio   : std_logic_vector(3 downto 0);
+   signal gpio_addr           : std_logic_vector(5 downto 0);
+   signal gpio_wdata          : std_logic_vector(31 downto 0);
+   signal gpio_gpio           : std_logic_vector(3 downto 0);
 
 
 begin
@@ -112,13 +112,13 @@ begin
       be    => ram_be,
       q     => ram_q
    );
-   
+
     inst_gpio : component gpio
-    port map(
-    i_clk  => clk,
-    i_addr    =>gpio_addr,
-    i_wdata  =>gpio_wdata,
-    o_gpio    =>gpio_gpio
+    port map (
+    i_clk   => clk,
+    i_addr  =>gpio_addr,
+    i_wdata =>gpio_wdata,
+    o_gpio  =>gpio_gpio
     );
 
    rst            <= i_rst;
@@ -131,6 +131,6 @@ begin
    ram_be         <= core_byte_enable;
    gpio_addr      <= core_addr_write;
    gpio_wdata     <= core_data_write;
-   --gpio           <= 
+   --gpio           <=
 
 end architecture rtl;
