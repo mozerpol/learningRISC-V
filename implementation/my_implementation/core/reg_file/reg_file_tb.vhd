@@ -63,9 +63,9 @@ begin
 
    p_clk : process
    begin
-      clk_tb <= '1';
+      clk_tb   <= '1';
       wait for 1 ns;
-      clk_tb <= '0';
+      clk_tb   <= '0';
       wait for 1 ns;
    end process p_clk;
 
@@ -84,38 +84,38 @@ begin
       wait for 5 ns;
       rst_tb                  <= '0';
       -- Save data to GPR
-      reg_file_wr_ctrl_tb  <= '1';
-      rd_addr_tb           <= 5b"00000";
-      alu_result_tb        <= 32x"00000002";
+      reg_file_wr_ctrl_tb     <= '1';
+      rd_addr_tb              <= 5b"00000";
+      alu_result_tb           <= 32x"00000002";
       wait for 5 ns;
 
-      rd_addr_tb           <= 5b"00001";
-      alu_result_tb        <= 32x"00000004";
+      rd_addr_tb              <= 5b"00001";
+      alu_result_tb           <= 32x"00000004";
       wait for 5 ns;
 
-      rd_addr_tb           <= 5b"000010";
-      alu_result_tb        <= 32x"00000022";
+      rd_addr_tb              <= 5b"000010";
+      alu_result_tb           <= 32x"00000022";
       wait for 5 ns;
 
-      rd_addr_tb           <= 5b"00011";
-      alu_result_tb        <= 32x"00000012";
+      rd_addr_tb              <= 5b"00011";
+      alu_result_tb           <= 32x"00000012";
       wait for 5 ns;
 
-      rd_addr_tb           <= 5b"00100";
-      alu_result_tb        <= 32x"10110002";
+      rd_addr_tb              <= 5b"00100";
+      alu_result_tb           <= 32x"10110002";
       wait for 5 ns;
       -- Read data from GPR
-      reg_file_wr_ctrl_tb  <= '0';
-      rs1_addr_tb          <= 5b"00000";
-      rs2_addr_tb          <= 5b"00001";
+      reg_file_wr_ctrl_tb     <= '0';
+      rs1_addr_tb             <= 5b"00000";
+      rs2_addr_tb             <= 5b"00001";
       wait for 5 ns;
 
-      rs1_addr_tb          <= 5b"00010";
-      rs2_addr_tb          <= 5b"00011";
+      rs1_addr_tb             <= 5b"00010";
+      rs2_addr_tb             <= 5b"00011";
       wait for 5 ns;
 
-      rs1_addr_tb          <= 5b"00100";
-      rs2_addr_tb          <= 5b"00101";
+      rs1_addr_tb             <= 5b"00100";
+      rs2_addr_tb             <= 5b"00101";
 
       wait for 25 ns;
       stop(2);
