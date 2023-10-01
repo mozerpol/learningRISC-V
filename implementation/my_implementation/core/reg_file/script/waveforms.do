@@ -6,20 +6,20 @@
 
 
 ##### Add waves: #####
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rst                  
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_clk                
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rs1_addr           
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rs2_addr           
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rd_addr            
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_file_inst_ctrl 
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_file_wr_ctrl   
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rd_data            
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_alu_result         
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_pc_addr            
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_load_instruction   
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs1_data           
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs2_data           
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/gpr 
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rst
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_clk
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rs1_addr
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rs2_addr
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rd_addr
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_file_inst_ctrl
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_file_wr_ctrl
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rd_data
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_alu_result
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_pc_addr
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_load_instruction
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs1_data
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs2_data
+add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/gpr
 
 
 ##### Waveform window settings: #####
