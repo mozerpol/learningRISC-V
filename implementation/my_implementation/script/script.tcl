@@ -98,7 +98,7 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/core_design.vhd
 # |   |___scripts
 # |       |___script.tcl (this file)
 # |       |___waveforms.do
-# 
+#
 #         RULES:
 # Design, testbench must have the VHD extension
 # Waveforms must have the DO extension
@@ -168,7 +168,7 @@ proc s_comp_design_main {} {
     echo "-> Design"
     if {[file exist $design_name.vhd]} {
        echo "OK"
-       vcom -2008 -quiet -work $lib_name $design_name.vhd 
+       vcom -2008 -quiet -work $lib_name $design_name.vhd
     } else {
        return "File $design_name not found, stop script"
     }
@@ -189,7 +189,7 @@ proc s_load_waves {} {
     global waveforms
     echo "----> Load waveforms:"
     if {[file exist waveforms.do]} {
-       vsim -voptargs=+acc $waveforms 
+       vsim -voptargs=+acc $waveforms
        # voptargs=+acc - Apply full visibility to all modules, Questa need this, may
        # in Modelsim can delete
        view wave -undock -title wave_TOP
@@ -219,4 +219,3 @@ s_comp_design_main
 s_comp_test_main
 s_load_waves
 s_start_sim
-
