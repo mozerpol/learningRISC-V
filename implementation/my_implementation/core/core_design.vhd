@@ -43,12 +43,12 @@ entity core is
    port (
       i_rst                : in std_logic;
       i_clk                : in std_logic;
-      i_core_data_read      : in std_logic_vector(31 downto 0);
-      o_core_data_write     : out std_logic_vector(31 downto 0);
-      o_core_write_enable   : out std_logic;
-      o_core_byte_enable        : out std_logic_vector(3 downto 0);
-      o_core_addr_read      : out integer range 0 to 63; 
-      o_core_addr_write   : out integer range 0 to 63
+      i_core_data_read     : in std_logic_vector(31 downto 0);
+      o_core_data_write    : out std_logic_vector(31 downto 0);
+      o_core_write_enable  : out std_logic;
+      o_core_byte_enable   : out std_logic_vector(3 downto 0);
+      o_core_addr_read     : out integer range 0 to 63;
+      o_core_addr_write    : out integer range 0 to 63
    );
 end entity core;
 
@@ -156,13 +156,13 @@ architecture rtl of core is
       i_load_inst_ctrl        : in std_logic;
       i_data_from_ram         : in std_logic_vector(31 downto 0);
       o_rd_data               : out std_logic_vector(31 downto 0);
-      o_write_enable     : out  std_logic;                       -- we
-      o_byte_enable      : out  std_logic_vector (3 downto 0);   -- be
-      o_raddr            : out  integer range 0 to 63;
-      o_waddr            : out  integer range 0 to 63;  
-      o_data             : out  std_logic_vector(31 downto 0)    -- wdata
+      o_write_enable          : out  std_logic;
+      o_byte_enable           : out  std_logic_vector (3 downto 0);
+      o_raddr                 : out  integer range 0 to 63;
+      o_waddr                 : out  integer range 0 to 63;
+      o_data                  : out  std_logic_vector(31 downto 0)
       );
-   end component ram_management;   
+   end component ram_management;
 
    component program_counter is
       port (
@@ -196,29 +196,21 @@ architecture rtl of core is
    signal rs2_data            : std_logic_vector(31 downto 0);
    signal imm                 : std_logic_vector(31 downto 0);
    signal branch_ctrl         : std_logic_vector(2 downto 0);
-   signal branch_result       : std_logic;   
+   signal branch_result       : std_logic;
    signal opcode              : std_logic_vector(6 downto 0);
    signal instruction         : std_logic_vector(31 downto 0);
-   signal instruction_write   : std_logic_vector(31 downto 0);
    signal rd_data             : std_logic_vector(31 downto 0);
    signal func3               : std_logic_vector(2 downto 0);
    signal func7               : std_logic_vector(6 downto 0);
    signal rs1_addr            : std_logic_vector(4 downto 0);
    signal rs2_addr            : std_logic_vector(4 downto 0);
    signal rd_addr             : std_logic_vector(4 downto 0);
-   signal ram_wr_ctrl         : std_logic;
-   signal addr_read           : std_logic_vector(7 downto 0);
-   signal addr_write          : std_logic_vector(7 downto 0);
-   signal read_addr           : std_logic_vector(7 downto 0);
-   signal write_addr          : std_logic_vector(7 downto 0);
-   signal ram_write_data      : std_logic_vector(31 downto 0);
-   signal write_data          : std_logic_vector(31 downto 0);
    signal pc_ctrl             : std_logic_vector(1 downto 0);
    signal reg_file_wr_ctrl    : std_logic;
    signal reg_file_inst_ctrl  : std_logic_vector(1 downto 0);
    signal ram_management_ctrl : std_logic_vector(2 downto 0);
    signal load_inst_ctrl      : std_logic;
-   signal data_from_ram         : std_logic_vector(31 downto 0);
+   signal data_from_ram       : std_logic_vector(31 downto 0);
 
 begin
 
@@ -248,7 +240,7 @@ begin
       i_imm             => imm,
       o_alu_operand_2   => alu_operand_2
    );
-   
+
    inst_branch_instructions : component branch_instructions
    port map (
       i_rst             => rst,
@@ -320,8 +312,8 @@ begin
       o_raddr                 => o_core_addr_read,
       o_waddr                 => o_core_addr_write,
       o_data                  => o_core_data_write
-   ); 
-   
+   );
+
    inst_program_counter : component program_counter
    port map (
       i_rst             => rst,
@@ -339,8 +331,8 @@ begin
    );
 
 
-   rst      <= i_rst;
-   clk      <= i_clk;
+   rst            <= i_rst;
+   clk            <= i_clk;
    data_from_ram  <= i_core_data_read;
 
 
