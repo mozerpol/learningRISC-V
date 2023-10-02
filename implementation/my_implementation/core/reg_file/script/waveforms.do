@@ -16,7 +16,6 @@ add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_reg_file_
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_rd_data
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_alu_result
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_pc_addr
-add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/i_load_instruction
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs1_data
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/o_rs2_data
 add wave -expand -group DESIGN -radix bin /reg_file_tb/inst_reg_file/gpr

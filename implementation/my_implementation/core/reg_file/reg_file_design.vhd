@@ -18,7 +18,6 @@ entity reg_file is
       i_rd_data            : in std_logic_vector(31 downto 0);
       i_alu_result         : in std_logic_vector(31 downto 0);
       i_pc_addr            : in std_logic_vector(31 downto 0);
-      i_load_instruction   : in std_logic_vector(2 downto 0);
       o_rs1_data           : out std_logic_vector(31 downto 0);
       o_rs2_data           : out std_logic_vector(31 downto 0)
    );

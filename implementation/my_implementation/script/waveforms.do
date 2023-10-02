@@ -56,7 +56,6 @@ add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/ins
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_load_inst_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_reg_file_inst_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_reg_file_wr_ctrl
-add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_load_instruction
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_branch_ctrl
 
 add wave         -group DECODER -radix hex      /main_tb/inst_main/inst_core/inst_decoder/i_instruction

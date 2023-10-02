@@ -19,7 +19,6 @@ add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_ram_managem
 add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_load_inst_ctrl
 add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_reg_file_inst_ctrl
 add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_reg_file_wr_ctrl
-add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_load_instruction
 add wave -expand -group DESIGN -radix bin /control_tb/inst_control/o_branch_ctrl
 
 ##### Waveform window settings: #####
