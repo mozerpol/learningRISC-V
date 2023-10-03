@@ -8,6 +8,7 @@
 ##### Add waves: #####
 add wave -expand -group MAIN_DESIGN -radix bin  /main_tb/inst_main/i_rst
 add wave         -group MAIN_DESIGN -radix bin  /main_tb/inst_main/i_clk
+add wave         -group MAIN_DESIGN -radix bin  /main_tb/inst_main/o_gpio
 
 add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/raddr
 add wave         -group RAM -radix dec          /main_tb/inst_main/inst_memory/waddr
