@@ -12,7 +12,7 @@ set module        "main"
 #                         .
 # vcom -2008 -quiet -work   $library_name $hdl_dir/file.vhd
 
-set hdl_dir                "../RAM"
+set hdl_dir                "../peripherals/RAM"
 set library_name           "memory_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/memory_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/memory_design.vhd
