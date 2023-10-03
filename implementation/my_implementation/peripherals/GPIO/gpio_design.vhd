@@ -22,8 +22,18 @@ begin
    p_gpio : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
+         -- The last RAM address (63) is mapped to the GPIO output, if necessary, 
+         -- get to the GPIO, need to do 63*4 (=255)
          if (i_addr = 6d"63") then
-            o_gpio <= i_wdata(3 downto 0);
+            -- Last 8 bits from wdata vector are mapped
+            o_gpio(0) <= i_wdata(24);
+            o_gpio(1) <= i_wdata(25);
+            o_gpio(2) <= i_wdata(26);
+            o_gpio(3) <= i_wdata(27);
+            -- o_gpio(4) <= i_wdata(28);
+            -- o_gpio(5) <= i_wdata(29);
+            -- o_gpio(6) <= i_wdata(30);
+            -- o_gpio(7) <= i_wdata(31);
          end if;
       end if;
    end process p_gpio;
