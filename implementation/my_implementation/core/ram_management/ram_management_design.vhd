@@ -37,7 +37,7 @@ begin
 
    p_ram_management : process(all)
    -- variables: are 8 bits, because 64 depth of RAM = 64*4 bytes = 255 = 8 bits
-      variable v_address_row     : std_logic_vector(7 downto 0);
+      variable v_address_row     : std_logic_vector(7 downto 0); ---------- Change name of this variable, because it's not addres_row, it's just addres
       variable v_address_column  : std_logic_vector(7 downto 0);
    begin
       if (i_rst = '1') then
@@ -61,12 +61,24 @@ begin
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "0011" sll to_integer(unsigned(v_address_column(1 downto 0)));
                o_waddr        <= v_address_row(7 downto 2);
-               o_data(to_integer(unsigned(v_address_column))*8+15 downto to_integer(unsigned(v_address_column))*8)   <= i_rs2_data(15 downto 0);
+               if (v_address_column = 2 or v_address_column = 3) then
+                  o_data(31 downto 16) <= i_rs2_data(15 downto 0);
+               else
+                  o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
+               end if;
             when C_SB   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "0001" sll to_integer(unsigned(v_address_column(1 downto 0)));
                o_waddr        <= v_address_row(7 downto 2);
-               o_data(to_integer(unsigned(v_address_column))*8+7 downto to_integer(unsigned(v_address_column))*8)   <= i_rs2_data(7 downto 0);
+               if (v_address_column = 0) then
+                  o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
+               elsif (v_address_column = 1) then
+                  o_data(15 downto 8)  <= i_rs2_data(7 downto 0);
+               elsif (v_address_column = 2) then
+                  o_data(23 downto 16) <= i_rs2_data(7 downto 0);
+               else
+                  o_data(31 downto 24) <= i_rs2_data(7 downto 0);
+               end if;
             when C_LW   =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable <= C_READ_ENABLE;
