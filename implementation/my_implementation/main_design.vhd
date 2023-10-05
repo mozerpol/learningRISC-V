@@ -85,7 +85,6 @@ architecture rtl of main is
    -- GPIO
    signal gpio_addr           : std_logic_vector(5 downto 0);
    signal gpio_wdata          : std_logic_vector(31 downto 0);
-   signal gpio_gpio           : std_logic_vector(3 downto 0);
 
 
 begin
