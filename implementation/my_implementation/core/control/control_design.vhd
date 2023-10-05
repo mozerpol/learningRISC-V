@@ -23,7 +23,7 @@ entity control is
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_alu_control           : out std_logic_vector(5 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
-      o_load_inst_ctrl            : out std_logic;
+      o_load_inst_ctrl        : out std_logic;
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
       o_reg_file_wr_ctrl      : out std_logic;
       o_branch_ctrl           : out std_logic_vector(2 downto 0)
@@ -43,13 +43,21 @@ begin
             when C_OPCODE_OP =>
                case i_func3 is
                   when C_FUNC3_ADD_SUB =>
-                     o_alu_control <= C_SUB when i_func7 = C_FUNC7_SUB else C_ADD;
+			            if (i_func7 = C_FUNC7_SUB) then
+                        o_alu_control <= C_SUB ;
+			            else
+                     	o_alu_control <= C_ADD;
+			            end if;
                   when C_FUNC3_SLL        => o_alu_control <= C_SLL;
                   when C_FUNC3_SLT        => o_alu_control <= C_SLT;
                   when C_FUNC3_SLTU       => o_alu_control <= C_SLTU;
                   when C_FUNC3_XOR        => o_alu_control <= C_XOR;
                   when C_FUNC3_SRL_SRA    =>
-                     o_alu_control <= C_SRA when i_func7 = C_FUNC7_SRA else C_SRL;
+                     if (i_func7 = C_FUNC7_SRA ) then
+                        o_alu_control <= C_SRA ;
+                     else
+                        o_alu_control <= C_SRL;
+                     end if;
                   when C_FUNC3_OR         => o_alu_control <= C_OR;
                   when C_FUNC3_AND        => o_alu_control <= C_AND;
                   when others             => o_alu_control <= (others => '0');
@@ -64,7 +72,11 @@ begin
                   when C_FUNC3_ANDI       => o_alu_control <= C_ANDI;
                   when C_FUNC3_SLLI       => o_alu_control <= C_SLLI;
                   when C_FUNC3_SRLI_SRAI  =>
-                     o_alu_control <= C_SRLI when i_func7 = C_FUNC7_SRLI else C_SRAI;
+                  if (i_func7 = C_FUNC7_SRLI ) then
+                     o_alu_control <= C_SRLI ;
+                  else
+                     o_alu_control <= C_SRAI;
+                  end if;
                   when others             => o_alu_control <= (others => '0');
                end case;
             when C_OPCODE_LUI    => o_alu_control  <= C_LUI;
@@ -97,7 +109,8 @@ begin
             o_alu_mux_1_ctrl  <= C_RS1_DATA;
             o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
-            -- o_alu_mux_1_ctrl -- value is not important in this case
+            o_alu_mux_1_ctrl  <= C_RS1_DATA; -- Value is not important in this
+            -- case, but needed for correct synthesis
             o_alu_mux_2_ctrl  <= C_IMM;
          elsif (i_opcode(6 downto 2) = C_OPCODE_AUIPC) then
             o_alu_mux_1_ctrl  <= C_PC_ADDR;
@@ -111,6 +124,9 @@ begin
          elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
             o_alu_mux_1_ctrl  <= C_PC_ADDR;
             o_alu_mux_2_ctrl  <= C_IMM;
+         else
+            o_alu_mux_1_ctrl  <= C_RS1_DATA;
+            o_alu_mux_2_ctrl  <= C_RS2_DATA;
          end if;
       end if;
    end process p_alu_mux;
@@ -148,7 +164,7 @@ begin
    begin
       if (i_rst = '1') then
          o_ram_management_ctrl   <= (others => '0');
-         o_load_inst_ctrl            <= '0';
+         o_load_inst_ctrl        <= '0';
       else
          -- TODO: CHANGE IF-ELSE TO CASE
          if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
@@ -171,7 +187,7 @@ begin
             end case;
          else
             o_ram_management_ctrl <= (others => '0');
-            o_load_inst_ctrl          <= '0';
+            o_load_inst_ctrl      <= '0';
          end if;
       end if;
    end process p_ram_management;
@@ -196,7 +212,6 @@ begin
          else
             o_pc_ctrl   <= C_INCREMENT_PC;
          end if;
-         -- Manage pc depending on instructions
       end if;
    end process p_program_counter;
 
@@ -218,7 +233,6 @@ begin
          end if;
       end if;
    end process p_branch_instructions;
-
 
 
 end architecture rtl;
