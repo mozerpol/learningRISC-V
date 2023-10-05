@@ -26,16 +26,42 @@ begin
          o_branch_result <= '0';
       else
          case (i_branch_ctrl) is
-            when C_BEQ  => o_branch_result <= '1' when i_rs1_data = i_rs2_data else '0';
-            when C_BNE  => o_branch_result <= '1' when i_rs1_data /= i_rs2_data else '0';
-            when C_BLT  => o_branch_result <= '1' when signed(i_rs1_data) <
-                                                       signed(i_rs2_data) else '0';
-            when C_BGE  => o_branch_result <= '1' when signed(i_rs1_data) >=
-                                                       signed(i_rs2_data) else '0';
-            when C_BLTU => o_branch_result <= '1' when unsigned(i_rs1_data) <
-                                                       unsigned(i_rs2_data) else '0';
-            when C_BGEU => o_branch_result <= '1' when unsigned(i_rs1_data) >=
-                                                       unsigned(i_rs2_data) else '0';
+            when C_BEQ  =>
+               if (i_rs1_data = i_rs2_data) then
+                  o_branch_result <= '1';
+               else
+                  o_branch_result <= '0';
+               end if;
+            when C_BNE  =>
+               if (i_rs1_data /= i_rs2_data) then
+                  o_branch_result <= '1';
+               else
+                  o_branch_result <= '0';
+               end if;
+            when C_BLT  =>
+               if (signed(i_rs1_data) < signed(i_rs2_data)) then
+                  o_branch_result <= '1';
+               else
+                  o_branch_result <= '0';
+               end if;
+            when C_BGE  =>
+               if (signed(i_rs1_data) >= signed(i_rs2_data)) then
+                  o_branch_result <= '1';
+               else
+                  o_branch_result <= '0';
+               end if;
+            when C_BLTU =>
+               if (unsigned(i_rs1_data) < unsigned(i_rs2_data)) then
+                  o_branch_result <= '1';
+               else
+                  o_branch_result <= '0';
+               end if;
+            when C_BGEU => 
+				   if (unsigned(i_rs1_data) >= unsigned(i_rs2_data)) then
+					   o_branch_result <= '1';
+				   else
+					   o_branch_result <= '0';
+				   end if;
             when others => o_branch_result <= '0';
          end case;
       end if;
