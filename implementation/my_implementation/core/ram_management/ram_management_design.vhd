@@ -128,13 +128,11 @@ begin
    p_reg_file : process(all)
       variable v_address_row     : std_logic_vector(7 downto 0);
       variable v_address_column  : std_logic_vector(7 downto 0);
-      variable v_byte_enable     : std_logic_vector (3 downto 0);
    begin
       if (i_rst = '1') then
          o_rd_data         <= (others => '0');
          v_address_row     := (others => '0');
          v_address_column  := (others => '0');
-         v_byte_enable     := (others => '0');
       else
          v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
          v_address_column  := v_address_row - (v_address_row(7 downto 2) & "00");
