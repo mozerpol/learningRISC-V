@@ -86,6 +86,8 @@ begin
             when C_OPCODE_BRANCH =>
                if (i_branch_result = '1') then
                   o_alu_control   <= C_PASS_IMM; --------- TODO: CHANGE TO IMM+PC_ADDR
+               else
+                  o_alu_control <= C_ADD;
                end if;
             when others          => o_alu_control  <= (others => '0');
          end case;
@@ -145,7 +147,8 @@ begin
                o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_STORE  =>
-               -- o_reg_file_inst_ctrl <= vaule is not important in this case
+               -- o_reg_file_inst_ctrl <= vaule is not important in this case, but added to avoid latch
+               o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_READ_ENABLE;
             when C_OPCODE_LUI | C_OPCODE_AUIPC =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
