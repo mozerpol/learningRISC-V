@@ -127,50 +127,57 @@ begin
 
    p_reg_file : process(all)
       variable v_address_row     : std_logic_vector(7 downto 0);
-      variable v_address_column  : std_logic_vector(7 downto 0);
    begin
       if (i_rst = '1') then
          o_rd_data         <= (others => '0');
          v_address_row     := (others => '0');
-         v_address_column  := (others => '0');
       else
          v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
-         v_address_column  := v_address_row - (v_address_row(7 downto 2) & "00");
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
-            when C_LH | C_LHU =>
-               if (i_ram_management_ctrl = C_LH) then
-                  if (i_data_from_ram(15) = '1') then
-                     o_rd_data(31 downto 16) <= 16x"ffff";
-                  else
-                     o_rd_data(31 downto 16) <= 16x"0000";
-                  end if;
-               elsif (i_ram_management_ctrl = C_LHU) then
+            when C_LH =>
+               if (i_data_from_ram(15) = '1') then
+                  o_rd_data(31 downto 16) <= 16x"ffff";
+               else
                   o_rd_data(31 downto 16) <= 16x"0000";
                end if;
-               if (v_address_column(1 downto 0) = "10") then
-                  o_rd_data(15 downto 0)   <= i_data_from_ram(31 downto 16);
-               else
-                  o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
+               if (v_address_row = "00") then
+                  o_rd_data(15 downto 00) <= i_data_from_ram(15 downto 0);
+               elsif (v_address_row = "10") then
+                  o_rd_data(15 downto 00) <= i_data_from_ram(31 downto 16);
                end if;
-            when C_LB | C_LBU =>
-               if (i_ram_management_ctrl = C_LB) then
-                  if (i_data_from_ram(7) = '1') then
-                     o_rd_data(31 downto 8)  <= 24x"ffffff";
-                  else
-                     o_rd_data(31 downto 8)  <= 24x"000000";
-                  end if;
-               elsif (i_ram_management_ctrl = C_LBU) then
+            when C_LHU =>
+               o_rd_data(31 downto 16) <= 16x"0000";
+               if (v_address_row = "00") then
+                  o_rd_data(15 downto 00) <= i_data_from_ram(15 downto 0);
+               elsif (v_address_row = "10") then
+                  o_rd_data(15 downto 00) <= i_data_from_ram(31 downto 16);
+               end if;
+            when C_LB =>
+               if (i_data_from_ram(7) = '1') then
+                  o_rd_data(31 downto 8)  <= 24x"ffffff";
+               else
                   o_rd_data(31 downto 8)  <= 24x"000000";
                end if;
-               if (v_address_column(1 downto 0) = "00") then
+               if (v_address_row(1 downto 0) = "00") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
-               elsif (v_address_column(1 downto 0) = "01") then
+               elsif (v_address_row(1 downto 0) = "01") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
-               elsif (v_address_column(1 downto 0) = "10") then
+               elsif (v_address_row(1 downto 0) = "10") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
-               elsif (v_address_column(1 downto 0) = "11") then
+               elsif (v_address_row(1 downto 0) = "11") then
+                  o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
+               end if;
+            when C_LBU =>
+               o_rd_data(31 downto 8)  <= 24x"000000";
+               if (v_address_row(1 downto 0) = "00") then
+                  o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
+               elsif (v_address_row(1 downto 0) = "01") then
+                  o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
+               elsif (v_address_row(1 downto 0) = "10") then
+                  o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
+               elsif (v_address_row(1 downto 0) = "11") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                end if;
             when others => o_rd_data <= (others => '0');
