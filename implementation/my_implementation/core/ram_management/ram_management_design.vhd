@@ -68,50 +68,25 @@ begin
                   o_data(31 downto 16)  <= i_rs2_data(15 downto 0);
                end if;
             when C_SB   =>
-              o_write_enable <= C_WRITE_ENABLE;
-              o_waddr        <= v_address_row(7 downto 2);
-              if (v_address_row(1 downto 0) = "00") then
-                o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
-                o_byte_enable        <= "0001";
-              elsif (v_address_row(1 downto 0) = "01") then
-                o_data(15 downto 8)   <= i_rs2_data(7 downto 0);
-                o_byte_enable        <= "0010";
-              elsif (v_address_row(1 downto 0) = "10") then
-                o_data(23 downto 16)   <= i_rs2_data(7 downto 0);
-                o_byte_enable        <= "0100";
-              elsif (v_address_row(1 downto 0) = "11") then
-                o_data(31 downto 24)   <= i_rs2_data(7 downto 0);
-                o_byte_enable        <= "1000";
-              end if;
-            when C_LW   =>
-               if (i_load_inst_ctrl = '1') then
-                  o_write_enable <= C_READ_ENABLE;
-                  o_byte_enable  <= "1111";
-                  o_raddr        <= v_address_row(7 downto 2);
+               o_write_enable <= C_WRITE_ENABLE;
+               o_waddr        <= v_address_row(7 downto 2);
+               if (v_address_row(1 downto 0) = "00") then
+                  o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
+                  o_byte_enable        <= "0001";
+               elsif (v_address_row(1 downto 0) = "01") then
+                  o_data(15 downto 8)   <= i_rs2_data(7 downto 0);
+                  o_byte_enable        <= "0010";
+               elsif (v_address_row(1 downto 0) = "10") then
+                  o_data(23 downto 16)   <= i_rs2_data(7 downto 0);
+                  o_byte_enable        <= "0100";
+               elsif (v_address_row(1 downto 0) = "11") then
+                  o_data(31 downto 24)   <= i_rs2_data(7 downto 0);
+                  o_byte_enable        <= "1000";
                end if;
-            when C_LH | C_LHU =>
-               if (i_load_inst_ctrl = '1') then
+            when C_LW | C_LH | C_LHU | C_LB | C_LBU  =>
+               if (i_load_inst_ctrl = '1') then -- During load instructions it works without load_inst_ctrl, so maybe remove it
                   o_write_enable <= C_READ_ENABLE;
                   o_raddr        <= v_address_row(7 downto 2);
-                  if (v_address_column(1 downto 0) = "10") then
-                     o_byte_enable        <= "1100";
-                  else
-                     o_byte_enable        <= "0011";
-                  end if;
-               end if;
-            when C_LB | C_LBU =>
-               if (i_load_inst_ctrl = '1') then
-                  o_write_enable <= C_READ_ENABLE;
-                  o_raddr        <= v_address_row(7 downto 2);
-                  if (v_address_column(1 downto 0) = "00") then
-                     o_byte_enable        <= "0001";
-                  elsif (v_address_column(1 downto 0) = "01") then
-                     o_byte_enable        <= "0010";
-                  elsif (v_address_column(1 downto 0) = "10") then
-                     o_byte_enable        <= "0100";
-                  else
-                     o_byte_enable        <= "1000";
-                  end if;
                end if;
             when others =>
                o_write_enable <= C_READ_ENABLE;
