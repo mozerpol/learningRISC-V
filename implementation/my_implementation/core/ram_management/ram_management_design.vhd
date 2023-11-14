@@ -60,31 +60,29 @@ begin
             when C_SH   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_waddr        <= v_address_row(7 downto 2);
-               -- v_address_column for values 1 and 3 is impossible because the
-               -- address for SH must be divisible by 2
-               if (v_address_column(1 downto 0) = "10") then
-                  o_byte_enable        <= "1100";
-                  o_data(31 downto 16) <= i_rs2_data(15 downto 0);
-               else
+               if (v_address_row(1 downto 0) = "00") then
                   o_byte_enable        <= "0011";
-                  o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
+                  o_data(15 downto 0) <= i_rs2_data(15 downto 0);
+               elsif (v_address_row(1 downto 0) = "10") then
+                  o_byte_enable        <= "1100";
+                  o_data(31 downto 16)  <= i_rs2_data(15 downto 0);
                end if;
             when C_SB   =>
-               o_write_enable <= C_WRITE_ENABLE;
-               o_waddr        <= v_address_row(7 downto 2);
-               if (v_address_column(1 downto 0) = "00") then
-                  o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
-                  o_byte_enable        <= "0001";
-               elsif (v_address_column(1 downto 0) = "01") then
-                  o_data(15 downto 8)  <= i_rs2_data(7 downto 0);
-                  o_byte_enable        <= "0010";
-               elsif (v_address_column(1 downto 0) = "10") then
-                  o_data(23 downto 16) <= i_rs2_data(7 downto 0);
-                  o_byte_enable        <= "0100";
-               else
-                  o_data(31 downto 24) <= i_rs2_data(7 downto 0);
-                  o_byte_enable        <= "1000";
-               end if;
+              o_write_enable <= C_WRITE_ENABLE;
+              o_waddr        <= v_address_row(7 downto 2);
+              if (v_address_row(1 downto 0) = "00") then
+                o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
+                o_byte_enable        <= "0001";
+              elsif (v_address_row(1 downto 0) = "01") then
+                o_data(15 downto 8)   <= i_rs2_data(7 downto 0);
+                o_byte_enable        <= "0010";
+              elsif (v_address_row(1 downto 0) = "10") then
+                o_data(23 downto 16)   <= i_rs2_data(7 downto 0);
+                o_byte_enable        <= "0100";
+              elsif (v_address_row(1 downto 0) = "11") then
+                o_data(31 downto 24)   <= i_rs2_data(7 downto 0);
+                o_byte_enable        <= "1000";
+              end if;
             when C_LW   =>
                if (i_load_inst_ctrl = '1') then
                   o_write_enable <= C_READ_ENABLE;
@@ -126,13 +124,13 @@ begin
    end process p_ram_management;
 
    p_reg_file : process(all)
-      variable v_address_row     : std_logic_vector(7 downto 0);
+      variable v_address_row     : std_logic_vector(1 downto 0);
    begin
       if (i_rst = '1') then
          o_rd_data         <= (others => '0');
          v_address_row     := (others => '0');
       else
-         v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
+         v_address_row     := i_rs1_data(1 downto 0) + i_imm(1 downto 0);
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
@@ -160,24 +158,24 @@ begin
                else
                   o_rd_data(31 downto 8)  <= 24x"000000";
                end if;
-               if (v_address_row(1 downto 0) = "00") then
+               if (v_address_row = "00") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
-               elsif (v_address_row(1 downto 0) = "01") then
+               elsif (v_address_row = "01") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
-               elsif (v_address_row(1 downto 0) = "10") then
+               elsif (v_address_row = "10") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
-               elsif (v_address_row(1 downto 0) = "11") then
+               elsif (v_address_row = "11") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                end if;
             when C_LBU =>
                o_rd_data(31 downto 8)  <= 24x"000000";
-               if (v_address_row(1 downto 0) = "00") then
+               if (v_address_row = "00") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
-               elsif (v_address_row(1 downto 0) = "01") then
+               elsif (v_address_row = "01") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
-               elsif (v_address_row(1 downto 0) = "10") then
+               elsif (v_address_row = "10") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
-               elsif (v_address_row(1 downto 0) = "11") then
+               elsif (v_address_row = "11") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                end if;
             when others => o_rd_data <= (others => '0');
