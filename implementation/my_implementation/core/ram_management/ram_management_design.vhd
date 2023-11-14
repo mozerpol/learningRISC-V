@@ -38,7 +38,6 @@ begin
    p_ram_management : process(all)
    -- variables: are 8 bits, because 64 depth of RAM = 64*4 bytes = 255 = 8 bits
       variable v_address_row     : std_logic_vector(7 downto 0); ---------- Change name of this variable, because it's not addres_row, it's just addres
-      variable v_address_column  : std_logic_vector(7 downto 0);
    begin
       if (i_rst = '1') then
          o_write_enable    <= C_READ_ENABLE;
@@ -47,10 +46,8 @@ begin
          o_waddr           <= (others => '0');
          o_data            <= (others => '0');
          v_address_row     := (others => '0');
-         v_address_column  := (others => '0');
       else
          v_address_row     := i_rs1_data(7 downto 0) + i_imm(7 downto 0);
-         v_address_column  := v_address_row - (v_address_row(7 downto 2) & "00");
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
@@ -84,10 +81,10 @@ begin
                   o_byte_enable        <= "1000";
                end if;
             when C_LW | C_LH | C_LHU | C_LB | C_LBU  =>
-               if (i_load_inst_ctrl = '1') then -- During load instructions it works without load_inst_ctrl, so maybe remove it
-                  o_write_enable <= C_READ_ENABLE;
-                  o_raddr        <= v_address_row(7 downto 2);
-               end if;
+             --  if (i_load_inst_ctrl = '1') then -- During load instructions it works without load_inst_ctrl, so maybe remove it
+               o_write_enable <= C_READ_ENABLE;
+               o_raddr        <= v_address_row(7 downto 2);
+              -- end if;
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= (others => '0');
