@@ -5,17 +5,17 @@ library ieee;
 
 package instruction_memory_pkg is
 
-   constant C_INSTRUCTIONS_NUMBER : integer := 25;
-   type t_instructions  is array (0 to C_INSTRUCTIONS_NUMBER-1) of std_logic_vector(31 downto 0);
-   type t_rom           is array (0 to C_INSTRUCTIONS_NUMBER*4-1) of std_logic_vector(7 downto 0);
+   --constant C_INSTRUCTIONS_NUMBER : integer := 18;
+   --type t_instructions  is array (0 to C_INSTRUCTIONS_NUMBER-1) of std_logic_vector(31 downto 0);
+   --type t_rom           is array (0 to C_INSTRUCTIONS_NUMBER*4-1) of std_logic_vector(7 downto 0);
+   constant C_INSTRUCTIONS_NUMBER : integer := 18;
+   type t_instructions  is array (0 to 1024-1) of std_logic_vector(31 downto 0);
+   type t_rom           is array (0 to 1024*4-1) of std_logic_vector(7 downto 0);
 
    constant C_CODE : t_instructions := (
 x"00100093",
 x"00200113",
 x"ffc00193",
-x"01200213",
-x"00c00293",
-x"12345337",
 x"67830313",
 x"abcde3b7",
 x"0ff38393",
@@ -30,11 +30,8 @@ x"00601423",
 x"00611423",
 x"fe721d23",
 x"00719923",
-x"fe622f23",
-x"00622123",
-x"0071ae23",
-x"00702e23",
-x"00000000"
+others => x"00000000"
+--x"00000000"
                               );
 end;
 
