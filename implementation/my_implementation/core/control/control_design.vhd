@@ -171,7 +171,7 @@ begin
       else
          -- TODO: CHANGE IF-ELSE TO CASE
          if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
-            o_load_inst_ctrl   <= '1';
+            -- o_load_inst_ctrl   <= '1';
             case i_func3 is
                when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
                when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
@@ -181,7 +181,7 @@ begin
                when others       => o_ram_management_ctrl <= (others => '0');
             end case;
          elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
-            o_load_inst_ctrl   <= '0';
+            -- o_load_inst_ctrl   <= '0';
             case i_func3 is
                when C_FUNC3_SB   => o_ram_management_ctrl <= C_SB;
                when C_FUNC3_SH   => o_ram_management_ctrl <= C_SH;
@@ -190,7 +190,7 @@ begin
             end case;
          else
             o_ram_management_ctrl <= (others => '0');
-            o_load_inst_ctrl      <= '0';
+            -- o_load_inst_ctrl      <= '0';
          end if;
       end if;
    end process p_ram_management;
