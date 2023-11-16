@@ -34,7 +34,6 @@ lb   x11, 0(x0) # load a positive number from RAM[0] when x11 contains a negativ
 lb   x12, 8(x0) # load a negative number from RAM[8] when x12 contains a negative number
 # LH instruction
 lh   x13, 0(x0) # same operating principle as before...
-lh   x14, 1(x0)
 lh   x15, 2(x0)
 lh   x16, 2(x2)
 lh   x17, 8(x0)
