@@ -21,6 +21,7 @@ entity control is
       o_alu_mux_1_ctrl        : out std_logic;
       o_alu_mux_2_ctrl        : out std_logic;
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
+      o_inst_addr_ctrl        : out std_logic;
       o_alu_control           : out std_logic_vector(5 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
       o_load_inst_ctrl        : out std_logic;
@@ -199,21 +200,28 @@ begin
    begin
       if (i_rst = '1') then
          o_pc_ctrl   <= C_NOP;
+         o_inst_addr_ctrl <= C_INST_ADDR_PC;
       else
          if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
             o_pc_ctrl   <= C_INCREMENT_PC;
+            o_inst_addr_ctrl <= C_INST_ADDR_PC;
          elsif (i_opcode(6 downto 0) = C_OPCODE_JAL & "11") then
             o_pc_ctrl   <= C_LOAD_ALU_RESULT;
+            o_inst_addr_ctrl <= C_INST_ADDR_ALU;
          elsif (i_opcode(6 downto 0) = C_OPCODE_JALR & "11") then
             o_pc_ctrl   <= C_LOAD_ALU_RESULT;
+            o_inst_addr_ctrl <= C_INST_ADDR_ALU;
          elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
             if (i_branch_result = '1') then
                o_pc_ctrl   <= C_LOAD_ALU_RESULT;
+               o_inst_addr_ctrl <= C_INST_ADDR_ALU;
             else
                o_pc_ctrl   <= C_INCREMENT_PC;
+               o_inst_addr_ctrl <= C_INST_ADDR_PC;
             end if;
          else
             o_pc_ctrl   <= C_INCREMENT_PC;
+            o_inst_addr_ctrl <= C_INST_ADDR_PC;
          end if;
       end if;
    end process p_program_counter;
