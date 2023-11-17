@@ -15,6 +15,8 @@ library ieee;
    constant C_DECREMENT_PC       : std_logic_vector(1 downto 0) := "01";
    constant C_LOAD_ALU_RESULT    : std_logic_vector(1 downto 0) := "10";
    constant C_NOP                : std_logic_vector(1 downto 0) := "11";
+   constant C_INST_ADDR_PC       : std_logic := '0';
+   constant C_INST_ADDR_ALU      : std_logic := '1';
    -- reg_file
    constant C_READ_ENABLE        : std_logic := '0';
    constant C_WRITE_ENABLE       : std_logic := '1';
