@@ -56,6 +56,7 @@ add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/ins
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_alu_mux_1_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_alu_mux_2_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_pc_ctrl
+add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_inst_addr_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_alu_control
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_ram_management_ctrl
 add wave         -group CONTROL -radix bin      /main_tb/inst_main/inst_core/inst_control/o_load_inst_ctrl
@@ -72,13 +73,14 @@ add wave         -group DECODER -radix bin      /main_tb/inst_main/inst_core/ins
 add wave         -group DECODER -radix bin      /main_tb/inst_main/inst_core/inst_decoder/o_func3
 add wave         -group DECODER -radix bin      /main_tb/inst_main/inst_core/inst_decoder/o_func7
 
-add wave         -group INSTRUCTION_MEM   -radix dec /main_tb/inst_main/inst_core/inst_instruction_memory/i_ram_read_addr
+add wave         -group INSTRUCTION_MEM   -radix dec /main_tb/inst_main/inst_core/inst_instruction_memory/i_instruction_addr
 add wave         -group INSTRUCTION_MEM   -radix hex /main_tb/inst_main/inst_core/inst_instruction_memory/o_instruction
-add wave         -group INSTRUCTION_MEM   -radix hex /main_tb/inst_main/inst_core/inst_instruction_memory/rom
 
 add wave         -group PC                -radix hex /main_tb/inst_main/inst_core/inst_program_counter/i_alu_result
 add wave         -group PC                -radix bin /main_tb/inst_main/inst_core/inst_program_counter/i_pc_ctrl
+add wave         -group PC                -radix bin /main_tb/inst_main/inst_core/inst_program_counter/i_inst_addr_ctrl
 add wave         -group PC                -radix dec /main_tb/inst_main/inst_core/inst_program_counter/o_pc_addr
+add wave         -group PC                -radix dec /main_tb/inst_main/inst_core/inst_program_counter/o_instruction_addr
 
 add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/i_ram_management_ctrl
 add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_core/inst_ram_management/i_rs1_data
