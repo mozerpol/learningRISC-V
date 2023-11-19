@@ -149,7 +149,7 @@ begin
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_STORE  =>
                -- o_reg_file_inst_ctrl <= vaule is not important in this case, but added to avoid latch
-               o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
+               o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_READ_ENABLE;
             when C_OPCODE_LUI | C_OPCODE_AUIPC =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
@@ -199,29 +199,29 @@ begin
    p_program_counter : process(all)
    begin
       if (i_rst = '1') then
-         o_pc_ctrl   <= C_NOP;
-         o_inst_addr_ctrl <= C_INST_ADDR_PC;
+         o_pc_ctrl         <= C_NOP;
+         o_inst_addr_ctrl  <= C_INST_ADDR_PC;
       else
          if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
-            o_pc_ctrl   <= C_INCREMENT_PC;
-            o_inst_addr_ctrl <= C_INST_ADDR_PC;
+            o_pc_ctrl         <= C_INCREMENT_PC;
+            o_inst_addr_ctrl  <= C_INST_ADDR_PC;
          elsif (i_opcode(6 downto 0) = C_OPCODE_JAL & "11") then
-            o_pc_ctrl   <= C_LOAD_ALU_RESULT;
-            o_inst_addr_ctrl <= C_INST_ADDR_ALU;
+            o_pc_ctrl         <= C_LOAD_ALU_RESULT;
+            o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
          elsif (i_opcode(6 downto 0) = C_OPCODE_JALR & "11") then
-            o_pc_ctrl   <= C_LOAD_ALU_RESULT;
-            o_inst_addr_ctrl <= C_INST_ADDR_ALU;
+            o_pc_ctrl         <= C_LOAD_ALU_RESULT;
+            o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
          elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
             if (i_branch_result = '1') then
-               o_pc_ctrl   <= C_LOAD_ALU_RESULT;
-               o_inst_addr_ctrl <= C_INST_ADDR_ALU;
+               o_pc_ctrl         <= C_LOAD_ALU_RESULT;
+               o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
             else
-               o_pc_ctrl   <= C_INCREMENT_PC;
-               o_inst_addr_ctrl <= C_INST_ADDR_PC;
+               o_pc_ctrl         <= C_INCREMENT_PC;
+               o_inst_addr_ctrl  <= C_INST_ADDR_PC;
             end if;
          else
-            o_pc_ctrl   <= C_INCREMENT_PC;
-            o_inst_addr_ctrl <= C_INST_ADDR_PC;
+            o_pc_ctrl         <= C_INCREMENT_PC;
+            o_inst_addr_ctrl  <= C_INST_ADDR_PC;
          end if;
       end if;
    end process p_program_counter;
