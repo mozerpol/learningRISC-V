@@ -47,8 +47,8 @@ entity core is
       o_core_data_write    : out std_logic_vector(31 downto 0);
       o_core_write_enable  : out std_logic;
       o_core_byte_enable   : out std_logic_vector(3 downto 0);
-      o_core_addr_read     : out std_logic_vector (5 downto 0);
-      o_core_addr_write    : out std_logic_vector (5 downto 0)
+      o_core_addr_read     : out integer range 0 to 63;
+      o_core_addr_write    : out integer range 0 to 63
    );
 end entity core;
 
@@ -159,8 +159,8 @@ architecture rtl of core is
          o_rd_data               : out std_logic_vector(31 downto 0);
          o_write_enable          : out  std_logic;
          o_byte_enable           : out  std_logic_vector (3 downto 0);
-         o_raddr                 : out  std_logic_vector (5 downto 0);
-         o_waddr                 : out  std_logic_vector (5 downto 0);
+         o_raddr                 : out  integer range 0 to 63;
+         o_waddr                 : out  integer range 0 to 63;
          o_data                  : out  std_logic_vector(31 downto 0)
       );
    end component ram_management;
