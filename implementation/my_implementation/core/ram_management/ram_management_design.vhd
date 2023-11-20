@@ -21,8 +21,8 @@ entity ram_management is
       o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
-      o_raddr                 : out std_logic_vector (5 downto 0);
-      o_waddr                 : out std_logic_vector (5 downto 0);
+      o_raddr                 : out integer range 0 to 63;
+      o_waddr                 : out integer range 0 to 63;
       o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
@@ -42,8 +42,8 @@ begin
       if (i_rst = '1') then
          o_write_enable    <= C_READ_ENABLE;
          o_byte_enable     <= (others => '0');
-         o_raddr           <= (others => '0');
-         o_waddr           <= (others => '0');
+         o_raddr           <= 0;
+         o_waddr           <= 0;
          o_data            <= (others => '0');
          v_address_row     := (others => '0');
       else
@@ -52,11 +52,11 @@ begin
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "1111";
-               o_waddr        <= v_address_row(7 downto 2);
+               o_waddr        <= to_integer(unsigned(v_address_row(7 downto 2)));
                o_data         <= i_rs2_data;
             when C_SH   =>
                o_write_enable <= C_WRITE_ENABLE;
-               o_waddr        <= v_address_row(7 downto 2);
+               o_waddr        <= to_integer(unsigned(v_address_row(7 downto 2)));
                if (v_address_row(1 downto 0) = "00") then
                   o_byte_enable        <= "0011";
                   o_data(15 downto 0) <= i_rs2_data(15 downto 0);
@@ -66,7 +66,7 @@ begin
                end if;
             when C_SB   =>
                o_write_enable <= C_WRITE_ENABLE;
-               o_waddr        <= v_address_row(7 downto 2);
+               o_waddr        <= to_integer(unsigned(v_address_row(7 downto 2)));
                if (v_address_row(1 downto 0) = "00") then
                   o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
                   o_byte_enable        <= "0001";
@@ -83,13 +83,13 @@ begin
             when C_LW | C_LH | C_LHU | C_LB | C_LBU  =>
              --  if (i_load_inst_ctrl = '1') then -- During load instructions it works without load_inst_ctrl, so maybe remove it
                o_write_enable <= C_READ_ENABLE;
-               o_raddr        <= v_address_row(7 downto 2);
+               o_raddr        <= to_integer(unsigned(v_address_row(7 downto 2)));
               -- end if;
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= (others => '0');
-               o_raddr        <= (others => '0');
-               o_waddr        <= (others => '0');
+               o_raddr        <= 0;
+               o_waddr        <= 0;
                o_data         <= (others => '0');
          end case;
       end if;
