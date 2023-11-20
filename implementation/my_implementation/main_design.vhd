@@ -36,29 +36,33 @@ architecture rtl of main is
          o_core_data_write    : out std_logic_vector(31 downto 0);
          o_core_write_enable  : out std_logic;
          o_core_byte_enable   : out std_logic_vector(3 downto 0);
-         o_core_addr_read     : out std_logic_vector (5 downto 0);
-         o_core_addr_write    : out std_logic_vector (5 downto 0)
+         o_core_addr_read     : out integer range 0 to 63; -- ADDR_WIDTH
+         o_core_addr_write    : out integer range 0 to 63
       );
    end component core;
+   
 
-
-   component memory is
+   component byte_enabled_simple_dual_port_ram is
+	generic (
+		ADDR_WIDTH : natural := 64;
+		BYTE_WIDTH : natural := 8;
+		BYTES      : natural := 4
+		);
       port (
-         clk   : in  std_logic;
-         raddr : in  std_logic_vector (5 downto 0); -- address width = 6
-         waddr : in  std_logic_vector (5 downto 0);
-         we    : in  std_logic;
-         wdata : in  std_logic_vector(31 downto 0); -- width = 32
-         be    : in  std_logic_vector (3 downto 0); -- 4 bytes per word
-         q     : out std_logic_vector(31 downto 0)
+		we, clk : in  std_logic;
+		be      : in  std_logic_vector (BYTES - 1 downto 0);
+		wdata   : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
+		waddr   : in  integer range 0 to 63;
+		raddr   : in  integer range 0 to 63;
+		q       : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0)
       );
-   end component memory;
+   end component byte_enabled_simple_dual_port_ram;
 
 
    component gpio is
       port (
          i_clk    : in std_logic;
-         i_addr   : in std_logic_vector(5 downto 0);
+         i_addr   : in integer range 0 to 63;
          i_wdata  : in std_logic_vector(31 downto 0);
          o_gpio   : out std_logic_vector(3 downto 0)
       );
@@ -73,18 +77,27 @@ architecture rtl of main is
    signal core_data_write     : std_logic_vector(31 downto 0);
    signal core_write_enable   : std_logic;
    signal core_byte_enable    : std_logic_vector(3 downto 0);
-   signal core_addr_read      : std_logic_vector (5 downto 0);
-   signal core_addr_write     : std_logic_vector (5 downto 0);
+   signal core_addr_read      : integer range 0 to 63;
+   signal core_addr_write     : integer range 0 to 63;
    -- RAM
-   signal ram_raddr           : std_logic_vector (5 downto 0); -- address width = 6
-   signal ram_waddr           : std_logic_vector (5 downto 0);
+   signal ram_raddr           : integer range 0 to 63; -- address width = 6
+   signal ram_waddr           : integer range 0 to 63;
    signal ram_we              : std_logic;
    signal ram_wdata           : std_logic_vector(31 downto 0); -- width = 32
    signal ram_be              : std_logic_vector (3 downto 0); -- 4 bytes per word
    signal ram_q               : std_logic_vector(31 downto 0);
    -- GPIO
-   signal gpio_addr           : std_logic_vector(5 downto 0);
+   signal gpio_addr           : integer range 0 to 63;
    signal gpio_wdata          : std_logic_vector(31 downto 0);
+
+
+
+
+
+-- ROBILEM POPRAWKI DO MEMORY_DESIGN, PROBOWALEM WRZUCIC TEMPLATE RAM, ZEBY SYNTEZA UZYLA GOTOWYCH RAM BLOCK, ALE NIE DZIALA DALEJ... NIE WIEM CZEMU
+-- ZAMIENILEM STD_LOGIC_VECTOR NA INTEGER RANGE... 
+
+
 
 
 begin
@@ -101,7 +114,7 @@ begin
       o_core_addr_write    => core_addr_write
    );
 
-   inst_memory : component memory
+   inst_memory : component byte_enabled_simple_dual_port_ram
    port map (
       clk   => clk,
       raddr => ram_raddr,
