@@ -1,56 +1,62 @@
+-- Quartus Prime VHDL Template
+-- Simple Dual-Port RAM with different read/write addresses and single read/write clock
+-- and with a control for writing single bytes into the memory word; byte enable
+
 library ieee;
-   use ieee.std_logic_1164.all;
-   use ieee.std_logic_unsigned.all;
-   use ieee.numeric_std.all;
-library memory_lib;
-   use memory_lib.all;
-   use memory_lib.memory_pkg.all;
+use ieee.std_logic_1164.all;
+library work;
 
-entity memory is
-generic (
-   DEPTH       : integer := 64;
-   NUM_BYTES   : integer :=  4;
-   BYTE_WIDTH  : integer :=  8
-);
-port (
-   clk   : in  std_logic;
-   raddr : in  std_logic_vector (5 downto 0); -- address width = 6
-   waddr : in  std_logic_vector (5 downto 0);
-   we    : in  std_logic;
-   wdata : in  std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0); -- width = 32
-   be    : in  std_logic_vector (NUM_BYTES-1 downto 0); -- 4 bytes per word
-   q     : out std_logic_vector((NUM_BYTES * BYTE_WIDTH -1) downto 0) -- width = 32
-);
-end memory;
+entity byte_enabled_simple_dual_port_ram is
+   
+	generic (
+		ADDR_WIDTH : natural := 64;
+		BYTE_WIDTH : natural := 8;
+		BYTES      : natural := 4
+		);
+  
+	port (
+		we, clk : in  std_logic;
+		be      : in  std_logic_vector (BYTES - 1 downto 0);
+		wdata   : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
+		waddr   : in  integer range 0 to ADDR_WIDTH - 1;
+		raddr   : in  integer range 0 to ADDR_WIDTH - 1;
+		q       : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0));
+end byte_enabled_simple_dual_port_ram;
 
-architecture rtl of memory is
+architecture rtl of byte_enabled_simple_dual_port_ram is
+	--  build up 2D array to hold the memory
+	type word_t is array (0 to BYTES-1) of std_logic_vector(BYTE_WIDTH-1 downto 0);
+	type ram_t is array (0 to ADDR_WIDTH - 1) of word_t;
+	-- declare the RAM
+	signal ram : ram_t;
+	signal q_local : word_t;
 
-   --  build up 2D array to hold the memory
-   type word_t is array (0 to NUM_BYTES-1) of std_logic_vector(BYTE_WIDTH-1 downto 0);
-   type ram_t is array (0 to DEPTH-1) of word_t;
-
-   signal ram : ram_t;
-   signal q_local : word_t;
-
-begin  -- Re-organize the read data from the RAM to match the output
-
-   unpack: for i in 0 to NUM_BYTES-1 generate
-      q(BYTE_WIDTH*(i+1) - 1 downto BYTE_WIDTH*i) <= q_local(i);
-   end generate unpack;
-
-   -- port A
-   process(clk)
-   begin
-      if(clk'event and clk = '1') then
-         if(we = '1') then
-            for I in (NUM_BYTES-1) downto 0 loop
-               if(be(I) = '1') then
-                  ram(to_integer(unsigned(waddr)))(I) <= wdata(((I+1)*BYTE_WIDTH-1) downto I*BYTE_WIDTH);
-               end if;
-            end loop;
-         end if;
-         -- q_local <= ram(raddr); -- otherwise data will be during rising edge
-      end if;
-      q_local <= ram(to_integer(unsigned(raddr)));
-   end process;
+begin  -- rtl
+	-- Re-organize the read data from the RAM to match the output
+	unpack: for i in 0 to BYTES - 1 generate    
+		q(BYTE_WIDTH*(i+1) - 1 downto BYTE_WIDTH*i) <= q_local(i);
+	end generate unpack;
+        
+	process(clk)
+	begin
+		if(rising_edge(clk)) then 
+			if(we = '1') then
+				-- edit this code if using other than four bytes per word
+				if(be(0) = '1') then
+					ram(waddr)(0) <= wdata(7 downto 0);
+				end if;
+				if be(1) = '1' then
+					ram(waddr)(1) <= wdata(15 downto 8);
+				end if;
+				if be(2) = '1' then
+					ram(waddr)(2) <= wdata(23 downto 16);
+				end if;
+				if be(3) = '1' then
+					ram(waddr)(3) <= wdata(31 downto 24);
+				end if;
+			end if;
+			-- q_local <= ram(raddr);
+		end if;
+		q_local <= ram(raddr);
+	end process;  
 end rtl;
