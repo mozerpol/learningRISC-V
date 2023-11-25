@@ -22,7 +22,7 @@ architecture rtl of program_counter is
 
 begin
 
-   p_program_counter : process(all)
+   p_program_counter : process(i_rst, i_clk)
    begin
       if (i_rst = '1') then
          o_pc_addr   <= (others => '0');
