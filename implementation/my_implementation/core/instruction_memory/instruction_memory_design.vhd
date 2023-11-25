@@ -20,7 +20,7 @@ architecture rtl of instruction_memory is
 
 begin
 
-   p_instruction_memory : process(all)
+   p_instruction_memory : process(i_clk, i_rst)
    begin
       if (i_rst = '1') then
          o_instruction  <= (others => '0');
