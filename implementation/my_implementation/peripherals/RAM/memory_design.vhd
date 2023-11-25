@@ -39,7 +39,7 @@ begin  -- rtl
         
 	process(clk)
 	begin
-		if(rising_edge(clk)) then 
+		if(clk'event and clk = '1') then 
 			if(we = '1') then
 				-- edit this code if using other than four bytes per word
 				if(be(0) = '1') then
