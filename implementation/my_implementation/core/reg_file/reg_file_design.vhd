@@ -35,7 +35,7 @@ begin
    o_rs2_data <= (others => '0') when i_rs2_addr = 5b"00000" else
                  gpr(to_integer(unsigned(i_rs2_addr)));
 
-   p_reg_file : process(all)
+   p_reg_file : process(i_rst, i_clk)
    begin
       if (i_rst = '1') then
          gpr <= (others => (others => '0'));
