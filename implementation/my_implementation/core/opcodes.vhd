@@ -5,25 +5,25 @@ library ieee;
 package opcodesPkg is
    -- All opcodes are in the documentation in the table on page 104
    ---- U-type ----
-   constant C_OPCODE_LUI      : std_logic_vector(4 downto 0) := "01101";
-   constant C_OPCODE_AUIPC    : std_logic_vector(4 downto 0) := "00101";
+   constant C_OPCODE_LUI      : std_logic_vector(6 downto 0) := "0110111";
+   constant C_OPCODE_AUIPC    : std_logic_vector(6 downto 0) := "0010111";
    ---- J-type ----
-   constant C_OPCODE_JAL      : std_logic_vector(4 downto 0) := "11011";
+   constant C_OPCODE_JAL      : std_logic_vector(6 downto 0) := "1101111";
    ---- I-type ----
-   constant C_OPCODE_JALR     : std_logic_vector(4 downto 0) := "11001";
-   constant C_OPCODE_LOAD     : std_logic_vector(4 downto 0) := "00000";
+   constant C_OPCODE_JALR     : std_logic_vector(6 downto 0) := "1100111";
+   constant C_OPCODE_LOAD     : std_logic_vector(6 downto 0) := "0000011";
    -- LOAD = LB, LH, LW, LBU, LHU, LD, LWU
-   constant C_OPCODE_OPIMM    : std_logic_vector(4 downto 0) := "00100";
+   constant C_OPCODE_OPIMM    : std_logic_vector(6 downto 0) := "0010011";
    -- OP_IMM = ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI,
    -- SRAI
    ---- B-type ----
-   constant C_OPCODE_BRANCH   : std_logic_vector(4 downto 0) := "11000";
+   constant C_OPCODE_BRANCH   : std_logic_vector(6 downto 0) := "1100011";
    -- BRANCH = BEQ, BNE, BLT, BGE, BLTU, BGEU
    ---- S-type ----
-   constant C_OPCODE_STORE    : std_logic_vector(4 downto 0) := "01000";
+   constant C_OPCODE_STORE    : std_logic_vector(6 downto 0) := "0100011";
    -- STORE = SB, SH, SW, SD
    ---- R-type ----
-   constant C_OPCODE_OP       : std_logic_vector(4 downto 0) := "01100";
+   constant C_OPCODE_OP       : std_logic_vector(6 downto 0) := "0110011";
    -- OP = ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
 
    --''''''''''''''''''''''--
