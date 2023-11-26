@@ -61,7 +61,7 @@ architecture rtl of core is
          i_rst             : in std_logic;
          i_alu_operand_1   : in std_logic_vector(31 downto 0);
          i_alu_operand_2   : in std_logic_vector(31 downto 0);
-         i_alu_control     : in std_logic_vector(5 downto 0);
+         i_alu_control     : in std_logic_vector(4 downto 0);
          o_alu_result      : out std_logic_vector(31 downto 0)
       );
    end component alu;
@@ -107,7 +107,7 @@ architecture rtl of core is
          o_alu_mux_2_ctrl        : out std_logic;
          o_pc_ctrl               : out std_logic_vector(1 downto 0);
          o_inst_addr_ctrl        : out std_logic;
-         o_alu_control           : out std_logic_vector(5 downto 0);
+         o_alu_control           : out std_logic_vector(4 downto 0);
          o_reg_file_wr_ctrl      : out std_logic;
          o_load_inst_ctrl        : out std_logic;
          o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
@@ -192,7 +192,7 @@ architecture rtl of core is
    signal alu_operand_1       : std_logic_vector(31 downto 0);
    signal alu_operand_2       : std_logic_vector(31 downto 0);
    signal alu_result          : std_logic_vector(31 downto 0);
-   signal alu_control         : std_logic_vector(5 downto 0);
+   signal alu_control         : std_logic_vector(4 downto 0);
    signal inst_addr_ctrl      : std_logic;
    signal alu_mux_1_ctrl      : std_logic;
    signal rs1_data            : std_logic_vector(31 downto 0);
