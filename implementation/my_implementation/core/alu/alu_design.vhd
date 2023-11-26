@@ -11,7 +11,7 @@ entity alu is
       i_rst             : in std_logic;
       i_alu_operand_1   : in std_logic_vector(31 downto 0);
       i_alu_operand_2   : in std_logic_vector(31 downto 0);
-      i_alu_control     : in std_logic_vector(5 downto 0);
+      i_alu_control     : in std_logic_vector(4 downto 0);
       o_alu_result      : out std_logic_vector(31 downto 0)
    );
 end entity alu;
@@ -43,8 +43,6 @@ begin
                o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) srl
                         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
             when C_SRA | C_SRAI  =>
-               -- o_alu_result <= std_logic_vector(signed(i_alu_operand_1) sra
-               --         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
                o_alu_result <= std_logic_vector(shift_right(signed(i_alu_operand_1), 
                                to_integer(unsigned(i_alu_operand_2(4 downto 0))))); --sra
             when C_SLT | C_SLTI  =>
