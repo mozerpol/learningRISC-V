@@ -22,7 +22,7 @@ entity control is
       o_alu_mux_2_ctrl        : out std_logic;
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_inst_addr_ctrl        : out std_logic;
-      o_alu_control           : out std_logic_vector(5 downto 0);
+      o_alu_control           : out std_logic_vector(4 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
       o_load_inst_ctrl        : out std_logic;
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
@@ -40,12 +40,12 @@ begin
       if (i_rst = '1') then
          o_alu_control     <= (others => '0');
       else
-         case i_opcode(6 downto 2) is
+         case i_opcode(6 downto 0) is
             when C_OPCODE_OP =>
                case i_func3 is
                   when C_FUNC3_ADD_SUB =>
 			            if (i_func7 = C_FUNC7_SUB) then
-                        o_alu_control <= C_SUB ;
+                        o_alu_control <= C_SUB;
 			            else
                      	o_alu_control <= C_ADD;
 			            end if;
@@ -55,7 +55,7 @@ begin
                   when C_FUNC3_XOR        => o_alu_control <= C_XOR;
                   when C_FUNC3_SRL_SRA    =>
                      if (i_func7 = C_FUNC7_SRA ) then
-                        o_alu_control <= C_SRA ;
+                        o_alu_control <= C_SRA;
                      else
                         o_alu_control <= C_SRL;
                      end if;
@@ -101,36 +101,36 @@ begin
          o_alu_mux_1_ctrl     <= C_RS1_DATA;
          o_alu_mux_2_ctrl     <= C_RS2_DATA;
       else
-         -- TODO: CHANGE IF-ELSE TO CASE
-         if (i_opcode(6 downto 2) = C_OPCODE_OP) then
-            o_alu_mux_1_ctrl  <= C_RS1_DATA;
-            o_alu_mux_2_ctrl  <= C_RS2_DATA;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_OPIMM) then
-            o_alu_mux_1_ctrl  <= C_RS1_DATA;
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
-            o_alu_mux_1_ctrl  <= C_RS1_DATA;
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_LUI) then
-            o_alu_mux_1_ctrl  <= C_RS1_DATA; -- Value is not important in this
-            -- case, but needed for correct synthesis
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_AUIPC) then
-            o_alu_mux_1_ctrl  <= C_PC_ADDR;
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_JAL) then
-            o_alu_mux_1_ctrl  <= C_PC_ADDR;
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_JALR) then
-            o_alu_mux_1_ctrl  <= C_RS1_DATA;
-            o_alu_mux_2_ctrl  <= C_IMM;
-         elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
-            o_alu_mux_1_ctrl  <= C_PC_ADDR;
-            o_alu_mux_2_ctrl  <= C_IMM;
-         else
-            o_alu_mux_1_ctrl  <= C_RS1_DATA;
-            o_alu_mux_2_ctrl  <= C_RS2_DATA;
-         end if;
+         case i_opcode(6 downto 0) is
+            when C_OPCODE_OP     =>
+               o_alu_mux_1_ctrl     <= C_RS1_DATA;
+               o_alu_mux_2_ctrl     <= C_RS2_DATA;
+            when C_OPCODE_OPIMM  =>
+               o_alu_mux_1_ctrl     <= C_RS1_DATA;
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when C_OPCODE_STORE  =>
+               o_alu_mux_1_ctrl     <= C_RS1_DATA;
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when C_OPCODE_LUI    =>
+               o_alu_mux_1_ctrl     <= C_RS1_DATA; -- Value is not important in
+               -- this case, but needed for correct synthesis
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when C_OPCODE_AUIPC  =>
+               o_alu_mux_1_ctrl     <= C_PC_ADDR;
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when C_OPCODE_JAL    =>
+               o_alu_mux_1_ctrl     <= C_PC_ADDR;
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when C_OPCODE_JALR   =>
+               o_alu_mux_1_ctrl     <= C_RS1_DATA;
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when C_OPCODE_BRANCH =>
+               o_alu_mux_1_ctrl     <= C_PC_ADDR;
+               o_alu_mux_2_ctrl     <= C_IMM;
+            when others =>
+               o_alu_mux_1_ctrl     <= C_RS1_DATA;
+               o_alu_mux_2_ctrl     <= C_RS2_DATA;
+         end case;
       end if;
    end process p_alu_mux;
 
@@ -140,7 +140,7 @@ begin
          o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
          o_reg_file_wr_ctrl      <= C_READ_ENABLE;
       else
-         case i_opcode(6 downto 2) is
+         case i_opcode(6 downto 0) is
             when C_OPCODE_OPIMM | C_OPCODE_OP =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
@@ -170,9 +170,7 @@ begin
          o_ram_management_ctrl   <= (others => '0');
          o_load_inst_ctrl        <= '0';
       else
-         -- TODO: CHANGE IF-ELSE TO CASE
-         if (i_opcode(6 downto 2) = C_OPCODE_LOAD) then
-            -- o_load_inst_ctrl   <= '1';
+         if (i_opcode(6 downto 0) = C_OPCODE_LOAD) then
             case i_func3 is
                when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
                when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
@@ -181,8 +179,7 @@ begin
                when C_FUNC3_LHU  => o_ram_management_ctrl <= C_LHU;
                when others       => o_ram_management_ctrl <= (others => '0');
             end case;
-         elsif (i_opcode(6 downto 2) = C_OPCODE_STORE) then
-            -- o_load_inst_ctrl   <= '0';
+         elsif (i_opcode(6 downto 0) = C_OPCODE_STORE) then
             case i_func3 is
                when C_FUNC3_SB   => o_ram_management_ctrl <= C_SB;
                when C_FUNC3_SH   => o_ram_management_ctrl <= C_SH;
@@ -191,7 +188,6 @@ begin
             end case;
          else
             o_ram_management_ctrl <= (others => '0');
-            -- o_load_inst_ctrl      <= '0';
          end if;
       end if;
    end process p_ram_management;
@@ -202,16 +198,16 @@ begin
          o_pc_ctrl         <= C_NOP;
          o_inst_addr_ctrl  <= C_INST_ADDR_PC;
       else
-         if (i_opcode(6 downto 0) = C_OPCODE_LOAD & "11") then
+         if (i_opcode(6 downto 0) = C_OPCODE_LOAD) then
             o_pc_ctrl         <= C_INCREMENT_PC;
             o_inst_addr_ctrl  <= C_INST_ADDR_PC;
-         elsif (i_opcode(6 downto 0) = C_OPCODE_JAL & "11") then
+         elsif (i_opcode(6 downto 0) = C_OPCODE_JAL) then
             o_pc_ctrl         <= C_LOAD_ALU_RESULT;
             o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-         elsif (i_opcode(6 downto 0) = C_OPCODE_JALR & "11") then
+         elsif (i_opcode(6 downto 0) = C_OPCODE_JALR) then
             o_pc_ctrl         <= C_LOAD_ALU_RESULT;
             o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-         elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH & "11") then
+         elsif (i_opcode(6 downto 0) = C_OPCODE_BRANCH) then
             if (i_branch_result = '1') then
                o_pc_ctrl         <= C_LOAD_ALU_RESULT;
                o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
@@ -231,7 +227,7 @@ begin
       if (i_rst = '1') then
          o_branch_ctrl <= (others => '0');
       else
-         if (i_opcode(6 downto 2) = C_OPCODE_BRANCH) then
+         if (i_opcode(6 downto 0) = C_OPCODE_BRANCH) then
             case i_func3 is
                when C_FUNC3_BEQ  => o_branch_ctrl <= C_BEQ;
                when C_FUNC3_BNE  => o_branch_ctrl <= C_BNE;
