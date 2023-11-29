@@ -67,8 +67,8 @@ begin
                o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2));
             when C_JALR          =>
                o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2)) and X"FFFFFFFE";
-            when C_PASS_IMM      => ----- TODO: CHANGE NAME OF THIS CONSTANT
-               o_alu_result      <= i_alu_operand_1 + i_alu_operand_2;
+            -- when C_PASS_IMM      => ----- TODO: CHANGE NAME OF THIS CONSTANT
+               -- o_alu_result      <= i_alu_operand_1 + i_alu_operand_2;
             when others => o_alu_result <= (others => '0');
          end case;
       end if;
