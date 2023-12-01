@@ -5,11 +5,14 @@
 library ieee;
 use ieee.std_logic_1164.all;
 library work;
+library main_lib;
+   use main_lib.all;
+   use main_lib.main_pkg.all;
 
 entity byte_enabled_simple_dual_port_ram is
 
 	generic (
-	   ADDR_WIDTH  : natural := 64;
+	   ADDR_WIDTH  : natural := C_RAM_LENGTH;
 		BYTE_WIDTH  : natural := 8;
 	   BYTES       : natural := 4
    );
@@ -56,9 +59,9 @@ begin  -- rtl
 					ram(waddr)(3) <= wdata(31 downto 24);
 				end if;
 			end if;
-			-- q_local <= ram(raddr);
+			 q_local <= ram(raddr);
 		end if;
-		q_local <= ram(raddr);
+		-- q_local <= ram(raddr);
 	end process;
 
 end rtl;
