@@ -5,11 +5,14 @@ library ieee;
 library gpio_lib;
    use gpio_lib.all;
    use gpio_lib.gpio_pkg.all;
+library main_lib;
+   use main_lib.all;
+   use main_lib.main_pkg.all;
 
 entity gpio is
    port (
       i_clk    : in std_logic;
-      i_addr   : in integer range 0 to 63;
+      i_addr   : in integer range 0 to C_RAM_LENGTH-1;
       i_wdata  : in std_logic_vector(31 downto 0);
       o_gpio   : out std_logic_vector(3 downto 0)
 );
@@ -24,7 +27,7 @@ begin
       if (i_clk'event and i_clk = '1') then
          -- The last RAM address (63) is mapped to the GPIO output, if necessary,
          -- get to the GPIO, need to do 63*4 (=255)
-         if (i_addr = 63) then
+         if (i_addr = C_MMIO_ADDR_GPIO) then
             -- Last 8 bits from wdata vector are mapped
             o_gpio(0) <= i_wdata(24);
             o_gpio(1) <= i_wdata(25);
