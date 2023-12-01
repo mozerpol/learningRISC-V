@@ -76,22 +76,22 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 
+set hdl_dir                "../core/reg_file"
+set library_name           "reg_file_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
+
 set hdl_dir                "../core/ram_management"
 set library_name           "ram_management_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_design.vhd
 
 
-set hdl_dir                "../core/reg_file"
-set library_name           "reg_file_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
-vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
-
-
 set hdl_dir                "../core"
 set library_name           "core_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/core_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/core_design.vhd
+
 
 ##################################
 #         PROJECT TREE:
