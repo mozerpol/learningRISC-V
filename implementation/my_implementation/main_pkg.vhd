@@ -5,7 +5,8 @@ library ieee;
 
 package main_pkg is
 
-   -- constant C_NAME : std_logic_vector(N downto M) := "X";
+   constant C_RAM_LENGTH : integer := 64;
+   constant C_MMIO_ADDR_GPIO : integer := 64;
 
 end;
 
