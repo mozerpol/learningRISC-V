@@ -15,6 +15,11 @@ set hdl_dir                "../../alu/"
 set library_name           "alu_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_pkg.vhd
 
+
+set hdl_dir                "../../"
+set library_name           "main_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/main_pkg.vhd
+
 ##################################
 #         PROJECT TREE:
 #
