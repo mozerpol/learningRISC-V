@@ -7,7 +7,9 @@ library ram_management_lib;
    use ram_management_lib.ram_management_pkg.all;
 library alu_lib;
    use alu_lib.alu_pkg.all;
-
+library main_lib;
+   use main_lib.all;
+   use main_lib.main_pkg.all;
 
 entity ram_management is
    port (
@@ -21,8 +23,8 @@ entity ram_management is
       o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
-      o_raddr                 : out integer range 0 to 63;
-      o_waddr                 : out integer range 0 to 63;
+      o_raddr                 : out integer range 0 to C_RAM_LENGTH-1; -- DONT change it works in synthesis
+      o_waddr                 : out integer range 0 to 63; -- C_RAM_LENGTH-1;
       o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
