@@ -20,6 +20,9 @@ architecture tb of main_tb is
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
 
+   -- type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
+   -- alias spy_gpr is <<signal .main_tb.inst_main.inst_core.inst_reg_file.gpr: t_gpr >>;
+
 begin
 
    inst_main : component main
@@ -41,7 +44,7 @@ begin
       rst_tb   <= '1';
       wait for 20 ns;
       rst_tb   <= '0';
-
+      
       wait for 2500 ns;
       stop(2);
    end process p_tb;
