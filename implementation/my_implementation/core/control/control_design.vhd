@@ -217,7 +217,7 @@ begin
             o_pc_ctrl         <= C_LOAD_ALU_RESULT;
             o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
             when C_OPCODE_BRANCH =>
-            if (i_branch_result = '1') then
+            if (i_branch_result = C_TAKEN) then
                o_pc_ctrl         <= C_LOAD_ALU_RESULT;
                o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
             else
