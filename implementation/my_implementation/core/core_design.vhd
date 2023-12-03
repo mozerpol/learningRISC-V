@@ -37,6 +37,9 @@ library ram_management_lib;
 library reg_file_lib;
    use reg_file_lib.all;
    use reg_file_lib.reg_file_pkg.all;
+library main_lib;
+   use main_lib.all;
+   use main_lib.main_pkg.all;
 
 
 entity core is
@@ -47,8 +50,8 @@ entity core is
       o_core_data_write    : out std_logic_vector(31 downto 0);
       o_core_write_enable  : out std_logic;
       o_core_byte_enable   : out std_logic_vector(3 downto 0);
-      o_core_addr_read     : out integer range 0 to 63;
-      o_core_addr_write    : out integer range 0 to 63
+      o_core_addr_read     : out integer range 0 to C_RAM_LENGTH-1;
+      o_core_addr_write    : out integer range 0 to C_RAM_LENGTH-1
    );
 end entity core;
 
@@ -159,8 +162,8 @@ architecture rtl of core is
          o_rd_data               : out std_logic_vector(31 downto 0);
          o_write_enable          : out  std_logic;
          o_byte_enable           : out  std_logic_vector (3 downto 0);
-         o_raddr                 : out  integer range 0 to 63;
-         o_waddr                 : out  integer range 0 to 63;
+         o_raddr                 : out  integer range 0 to C_RAM_LENGTH-1;
+         o_waddr                 : out  integer range 0 to C_RAM_LENGTH-1;
          o_data                  : out  std_logic_vector(31 downto 0)
       );
    end component ram_management;
