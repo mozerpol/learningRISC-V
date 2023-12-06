@@ -1,0 +1,77 @@
+library ieee;
+   use ieee.std_logic_1164.all;
+   use ieee.std_logic_unsigned.all;
+   use ieee.numeric_std.all;
+library alu_lib;
+   use alu_lib.all;
+   use alu_lib.alu_pkg.all;
+
+entity alu is
+   port (
+      i_rst             : in std_logic;
+      i_alu_operand_1   : in std_logic_vector(31 downto 0);
+      i_alu_operand_2   : in std_logic_vector(31 downto 0);
+      i_alu_control     : in std_logic_vector(4 downto 0);
+      o_alu_result      : out std_logic_vector(31 downto 0)
+   );
+end entity alu;
+
+architecture rtl of alu is
+
+begin
+
+   p_alu : process(all)
+   begin
+      if (i_rst) then
+         o_alu_result   <= (others => '0');
+      else
+         case i_alu_control is
+            when C_ADD | C_ADDI  =>
+               o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
+            when C_SUB           =>
+               o_alu_result <= i_alu_operand_1 - i_alu_operand_2;
+            when C_XOR | C_XORI  =>
+               o_alu_result <= i_alu_operand_1 xor i_alu_operand_2;
+            when C_OR  | C_ORI   =>
+               o_alu_result <= i_alu_operand_1 or i_alu_operand_2;
+            when C_AND | C_ANDI  =>
+               o_alu_result <= i_alu_operand_1 and i_alu_operand_2;
+            when C_SLL | C_SLLI  =>
+               o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) sll
+                        to_integer(unsigned(i_alu_operand_2(4 downto 0))));
+            when C_SRL | C_SRLI  =>
+               o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) srl
+                        to_integer(unsigned(i_alu_operand_2(4 downto 0))));
+            when C_SRA | C_SRAI  =>
+               o_alu_result <= std_logic_vector(shift_right(signed(i_alu_operand_1), 
+                               to_integer(unsigned(i_alu_operand_2(4 downto 0))))); --sra
+            when C_SLT | C_SLTI  =>
+				   if (signed(i_alu_operand_1) < signed(i_alu_operand_2)) then
+					   o_alu_result <= (0 => '1', others => '0');
+					else
+						o_alu_result <= (others => '0');
+					end if;
+            when C_SLTU | C_SLTIU =>
+               if (unsigned(i_alu_operand_1) < unsigned(i_alu_operand_2)) then
+                  o_alu_result <= (0 => '1', others => '0');
+               else
+                  o_alu_result <= (others => '0');
+               end if;
+            when C_LUI           =>
+               o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
+               o_alu_result(11 downto 0)  <= (others => '0');
+            when C_AUIPC         =>
+               o_alu_result <= i_alu_operand_2(19 downto 0) & 
+                                             i_alu_operand_1(11 downto 0);
+            when C_JAL           =>
+               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2));
+            when C_JALR          =>
+               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2)) and X"FFFFFFFE";
+            -- when C_PASS_IMM      => ----- TODO: CHANGE NAME OF THIS CONSTANT
+               -- o_alu_result      <= i_alu_operand_1 + i_alu_operand_2;
+            when others => o_alu_result <= (others => '0');
+         end case;
+      end if;
+   end process p_alu;
+
+end architecture rtl;
