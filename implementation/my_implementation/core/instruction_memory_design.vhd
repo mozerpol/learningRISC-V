@@ -4,7 +4,7 @@ library ieee;
    use ieee.numeric_std.all;
 library instruction_memory_lib;
    use instruction_memory_lib.all;
-   use instruction_memory_lib.ROM.all;
+   use instruction_memory_lib.rom.all;
 
 
 entity instruction_memory is

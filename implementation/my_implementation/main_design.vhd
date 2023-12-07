@@ -5,7 +5,7 @@ library ieee;
 library main_lib;
    use main_lib.all;
    use main_lib.main_pkg.all;
-library memory_lib;
+library ram_lib;
 library gpio_lib;
 library core_lib;
    use core_lib.all;

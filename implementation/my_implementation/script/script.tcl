@@ -30,8 +30,8 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
 
 
 set hdl_dir                "../peripherals"
-set library_name           "memory_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/RAM.vhd
+set library_name           "ram_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/ram.vhd
 
 
 set hdl_dir                "../peripherals"
@@ -65,7 +65,7 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_design.vhd
 
 set hdl_dir                "../core"
 set library_name           "instruction_memory_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/ROM.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/rom.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
 
 

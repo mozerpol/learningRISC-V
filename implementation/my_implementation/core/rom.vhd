@@ -5,7 +5,7 @@ library ieee;
 library main_lib;
    use main_lib.main_pkg.all;
    
-package ROM is
+package rom is
 
 
    type t_rom  is array (0 to C_ROM_LENGTH-1) of std_logic_vector(31 downto 0);
@@ -32,6 +32,6 @@ package ROM is
                               );
 end;
 
-package body ROM is
+package body rom is
 
 end package body;
