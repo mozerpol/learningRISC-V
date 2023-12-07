@@ -2,9 +2,9 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library reg_file_lib;
-   use reg_file_lib.all;
-   use reg_file_lib.reg_file_pkg.all;
+library control_lib;
+   use control_lib.all;
+   use control_lib.control_pkg.all;
 
 entity reg_file is
    port (

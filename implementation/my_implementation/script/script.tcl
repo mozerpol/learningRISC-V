@@ -80,7 +80,6 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 set hdl_dir                "../core"
 set library_name           "reg_file_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
 
 set hdl_dir                "../core"

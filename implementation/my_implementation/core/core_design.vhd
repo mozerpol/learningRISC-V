@@ -22,8 +22,6 @@ library program_counter_lib;
    use program_counter_lib.program_counter_pkg.all;
 library ram_management_lib;
 library reg_file_lib;
-   use reg_file_lib.all;
-   use reg_file_lib.reg_file_pkg.all;
 library main_lib;
    use main_lib.all;
    use main_lib.main_pkg.all;
