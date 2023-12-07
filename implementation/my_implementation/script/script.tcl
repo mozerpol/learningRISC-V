@@ -62,7 +62,6 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
 
 set hdl_dir                "../core"
 set library_name           "decoder_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_design.vhd
 
 

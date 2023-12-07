@@ -12,8 +12,6 @@ library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
 library decoder_lib;
-   use decoder_lib.all;
-   use decoder_lib.decoder_pkg.all;
 library instruction_memory_lib;
    use instruction_memory_lib.all;
    use instruction_memory_lib.instruction_memory_pkg.all;

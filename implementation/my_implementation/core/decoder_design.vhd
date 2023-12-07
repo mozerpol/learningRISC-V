@@ -2,9 +2,8 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library decoder_lib;
-   use decoder_lib.all;
-   use decoder_lib.decoder_pkg.all;
+library opcodes;
+   use opcodes.opcodesPkg.all;
 
 entity decoder is
    port (
@@ -35,7 +34,7 @@ begin
          o_func3     <= (others => '0');
          o_func7     <= (others => '0');
       else
-         case i_instruction(6 downto 2) is
+         case i_instruction(6 downto 0) is
             -- U-type
             when C_OPCODE_LUI    |
                  C_OPCODE_AUIPC  =>
