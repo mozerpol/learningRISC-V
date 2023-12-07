@@ -3,6 +3,7 @@ set module        "main"
 
 
 ###### Include external libraries ######
+# s_add_external_libs {} {
 # set hdl_dir               "directory/to/library"
 # set library_name          "library_name"
 # vcom -2008 -quiet -work   $library_name $hdl_dir/file1.vhd
@@ -11,6 +12,11 @@ set module        "main"
 #                         .
 #                         .
 # vcom -2008 -quiet -work   $library_name $hdl_dir/file.vhd
+# }
+
+
+proc s_add_external_libs {} {
+
 
 set hdl_dir                "../peripherals/RAM"
 set library_name           "memory_lib"
@@ -29,59 +35,59 @@ set library_name           "opcodes"
 vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
 
 
-set hdl_dir                "../core/alu"
+set hdl_dir                "../core"
 set library_name           "alu_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_design.vhd
 
 
-set hdl_dir                "../core/alu_mux_1"
+set hdl_dir                "../core"
 set library_name           "alu_mux_1_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhd
 
 
-set hdl_dir                "../core/alu_mux_2"
+set hdl_dir                "../core"
 set library_name           "alu_mux_2_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhd
 
-set hdl_dir                "../core/branch_instructions"
+set hdl_dir                "../core"
 set library_name           "branch_instructions_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
 
 
-set hdl_dir                "../core/control"
+set hdl_dir                "../core"
 set library_name           "control_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/control_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
 
 
-set hdl_dir                "../core/decoder"
+set hdl_dir                "../core"
 set library_name           "decoder_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_design.vhd
 
 
-set hdl_dir                "../core/instruction_memory"
+set hdl_dir                "../core"
 set library_name           "instruction_memory_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
 
 
-set hdl_dir                "../core/program_counter"
+set hdl_dir                "../core"
 set library_name           "program_counter_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 
-set hdl_dir                "../core/reg_file"
+set hdl_dir                "../core"
 set library_name           "reg_file_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
 
-set hdl_dir                "../core/ram_management"
+set hdl_dir                "../core"
 set library_name           "ram_management_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_design.vhd
@@ -91,6 +97,9 @@ set hdl_dir                "../core"
 set library_name           "core_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/core_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/core_design.vhd
+
+
+}
 
 
 ##################################
@@ -221,6 +230,7 @@ s_clear
 s_create_lib_main
 s_map_lib_main
 s_comp_package_main
+s_add_external_libs
 s_comp_design_main
 s_comp_test_main
 s_load_waves
