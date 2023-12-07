@@ -69,7 +69,8 @@ library ieee;
    constant C_SH                 : std_logic_vector(2 downto 0) := "110";
    constant C_SW                 : std_logic_vector(2 downto 0) := "111";
    -- branch_instructions
-   constant C_TAKEN : std_logic := '1';
+   constant C_TAKEN              : std_logic := '1';
+   constant C_NOT_TAKEN          : std_logic := '0';
    constant C_BEQ                : std_logic_vector(2 downto 0) := "000";
    constant C_BNE                : std_logic_vector(2 downto 0) := "001";
    constant C_BLT                : std_logic_vector(2 downto 0) := "010";

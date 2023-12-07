@@ -2,9 +2,9 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library alu_mux_2_lib;
-   use alu_mux_2_lib.all;
-   use alu_mux_2_lib.alu_mux_2_pkg.all;
+library control_lib;
+   use control_lib.all;
+   use control_lib.control_pkg.all;
 
 entity alu_mux_2 is
    port (
