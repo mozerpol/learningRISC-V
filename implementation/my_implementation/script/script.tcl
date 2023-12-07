@@ -29,15 +29,13 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/control_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
 
 
-set hdl_dir                "../peripherals/RAM"
+set hdl_dir                "../peripherals"
 set library_name           "memory_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/memory_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/memory_design.vhd
 
 
-set hdl_dir                "../peripherals/GPIO"
+set hdl_dir                "../peripherals"
 set library_name           "gpio_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_design.vhd
 
 

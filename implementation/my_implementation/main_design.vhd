@@ -6,11 +6,7 @@ library main_lib;
    use main_lib.all;
    use main_lib.main_pkg.all;
 library memory_lib;
-   use memory_lib.all;
-   use memory_lib.memory_pkg.all;
 library gpio_lib;
-   use gpio_lib.all;
-   use gpio_lib.gpio_pkg.all;
 library core_lib;
    use core_lib.all;
 
