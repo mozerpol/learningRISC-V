@@ -43,7 +43,7 @@ library ieee;
    constant C_PASS_IMM : std_logic_vector(4 downto 0) := "11111";
    -- constant C_CSRRSI   : std_logic_vector(4 downto 0) := "000000";
    -- constant C_CSRRCI   : std_logic_vector(4 downto 0) := "000000";
-   -- mux1, mux2
+   -- alu_mux_1, alu_mux_2
    constant C_RS1_DATA           : std_logic := '0';
    constant C_PC_ADDR            : std_logic := '1';
    constant C_RS2_DATA           : std_logic := '0';

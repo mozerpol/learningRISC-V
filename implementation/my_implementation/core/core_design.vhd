@@ -9,8 +9,6 @@ library opcodes;
    use opcodes.opcodesPkg.all;
 library alu_lib;
 library alu_mux_1_lib;
-   use alu_mux_1_lib.all;
-   use alu_mux_1_lib.alu_mux_1_pkg.all;
 library alu_mux_2_lib;
    use alu_mux_2_lib.all;
    use alu_mux_2_lib.alu_mux_2_pkg.all;

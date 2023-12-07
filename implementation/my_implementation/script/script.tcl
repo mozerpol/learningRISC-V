@@ -48,7 +48,6 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/alu_design.vhd
 
 set hdl_dir                "../core"
 set library_name           "alu_mux_1_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhd
 
 
