@@ -18,8 +18,6 @@ library instruction_memory_lib;
    use instruction_memory_lib.all;
    use instruction_memory_lib.instruction_memory_pkg.all;
 library program_counter_lib;
-   use program_counter_lib.all;
-   use program_counter_lib.program_counter_pkg.all;
 library ram_management_lib;
 library reg_file_lib;
 library main_lib;

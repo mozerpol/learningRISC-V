@@ -2,9 +2,9 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library program_counter_lib;
-   use program_counter_lib.all;
-   use program_counter_lib.program_counter_pkg.all;
+library control_lib;
+   use control_lib.all;
+   use control_lib.control_pkg.all;
 
 entity program_counter is
    port (

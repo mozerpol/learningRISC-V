@@ -74,7 +74,6 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
 
 set hdl_dir                "../core"
 set library_name           "program_counter_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 
