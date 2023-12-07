@@ -5,6 +5,9 @@ library ieee;
 
  package control_pkg is
 
+   -- general
+   constant C_READ_ENABLE  : std_logic                    := '0';
+   constant C_WRITE_ENABLE : std_logic                    := '1';
    -- alu
    constant C_LUI      : std_logic_vector(4 downto 0) := "00000";
    constant C_AUIPC    : std_logic_vector(4 downto 0) := "00001";
@@ -53,12 +56,10 @@ library ieee;
    constant C_INST_ADDR_PC       : std_logic := '0';
    constant C_INST_ADDR_ALU      : std_logic := '1';
    -- reg_file
-   constant C_READ_ENABLE        : std_logic := '0';
-   constant C_WRITE_ENABLE       : std_logic := '1';
    constant C_WRITE_RD_DATA      : std_logic_vector(1 downto 0) := "00";
    constant C_WRITE_PC_ADDR      : std_logic_vector(1 downto 0) := "01";
    constant C_WRITE_ALU_RESULT   : std_logic_vector(1 downto 0) := "10";
-   -- memory_management
+   -- memory_management and ram_management
    constant C_LB                 : std_logic_vector(2 downto 0) := "000";
    constant C_LH                 : std_logic_vector(2 downto 0) := "001";
    constant C_LW                 : std_logic_vector(2 downto 0) := "010";
