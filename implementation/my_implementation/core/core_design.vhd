@@ -13,8 +13,6 @@ library control_lib;
    use control_lib.control_pkg.all;
 library decoder_lib;
 library instruction_memory_lib;
-   use instruction_memory_lib.all;
-   use instruction_memory_lib.instruction_memory_pkg.all;
 library program_counter_lib;
 library ram_management_lib;
 library reg_file_lib;
