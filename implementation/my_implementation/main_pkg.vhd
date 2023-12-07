@@ -6,6 +6,7 @@ library ieee;
 package main_pkg is
 
    constant C_RAM_LENGTH : integer := 64;
+   constant C_ROM_LENGTH : integer := 1024;
    constant C_MMIO_ADDR_GPIO : integer := 64;
 
 end;

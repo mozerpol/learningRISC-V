@@ -2,11 +2,13 @@ library ieee;
     use ieee.std_logic_1164.all;
     use IEEE.std_logic_unsigned.all;
     use IEEE.math_real.all;
-
+library main_lib;
+   use main_lib.main_pkg.all;
+   
 package instruction_memory_pkg is
 
 
-   type t_rom  is array (0 to 1023) of std_logic_vector(31 downto 0);
+   type t_rom  is array (0 to C_ROM_LENGTH-1) of std_logic_vector(31 downto 0);
 
    constant C_CODE : t_rom := (
     x"00100093",
