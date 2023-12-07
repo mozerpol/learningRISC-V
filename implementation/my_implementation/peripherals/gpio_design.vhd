@@ -24,7 +24,7 @@ begin
       if (i_clk'event and i_clk = '1') then
          -- The last RAM address (63) is mapped to the GPIO output, if necessary,
          -- get to the GPIO, need to do 63*4 (=255)
-         if (i_addr = C_MMIO_ADDR_GPIO) then
+         if (i_addr = C_MMIO_ADDR_GPIO-1) then
             -- Last 8 bits from wdata vector are mapped
             o_gpio(0) <= i_wdata(24);
             o_gpio(1) <= i_wdata(25);
