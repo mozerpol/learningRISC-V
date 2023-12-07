@@ -13,7 +13,6 @@ library gpio_lib;
    use gpio_lib.gpio_pkg.all;
 library core_lib;
    use core_lib.all;
-   use core_lib.core_pkg.all;
 
 
 entity main is
