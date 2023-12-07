@@ -6,8 +6,8 @@ library ieee;
  package control_pkg is
 
    -- general
-   constant C_READ_ENABLE  : std_logic                    := '0';
-   constant C_WRITE_ENABLE : std_logic                    := '1';
+   constant C_READ_ENABLE  : std_logic := '0';
+   constant C_WRITE_ENABLE : std_logic := '1';
    -- alu
    constant C_LUI      : std_logic_vector(4 downto 0) := "00000";
    constant C_AUIPC    : std_logic_vector(4 downto 0) := "00001";
@@ -43,12 +43,12 @@ library ieee;
    constant C_PASS_IMM : std_logic_vector(4 downto 0) := "11111";
    -- constant C_CSRRSI   : std_logic_vector(4 downto 0) := "000000";
    -- constant C_CSRRCI   : std_logic_vector(4 downto 0) := "000000";
-   -- alu_mux_1, alu_mux_2
+   -- alu_mux_1 and alu_mux_2
    constant C_RS1_DATA           : std_logic := '0';
    constant C_PC_ADDR            : std_logic := '1';
    constant C_RS2_DATA           : std_logic := '0';
    constant C_IMM                : std_logic := '1';
-   -- program counter
+   -- program_counter
    constant C_INCREMENT_PC       : std_logic_vector(1 downto 0) := "00";
    constant C_DECREMENT_PC       : std_logic_vector(1 downto 0) := "01";
    constant C_LOAD_ALU_RESULT    : std_logic_vector(1 downto 0) := "10";
@@ -77,6 +77,7 @@ library ieee;
    constant C_BGE                : std_logic_vector(2 downto 0) := "011";
    constant C_BLTU               : std_logic_vector(2 downto 0) := "100";
    constant C_BGEU               : std_logic_vector(2 downto 0) := "101";
+
  end;
 
  package body control_pkg is

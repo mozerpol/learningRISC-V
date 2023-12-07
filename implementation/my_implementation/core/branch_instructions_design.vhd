@@ -56,7 +56,7 @@ begin
                else
                   o_branch_result <= C_NOT_TAKEN;
                end if;
-            when C_BGEU => 
+            when C_BGEU =>
 				   if (unsigned(i_rs1_data) >= unsigned(i_rs2_data)) then
 					   o_branch_result <= C_TAKEN;
 				   else

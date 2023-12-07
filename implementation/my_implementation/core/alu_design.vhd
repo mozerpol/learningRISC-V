@@ -43,8 +43,8 @@ begin
                o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) srl
                         to_integer(unsigned(i_alu_operand_2(4 downto 0))));
             when C_SRA | C_SRAI  =>
-               o_alu_result <= std_logic_vector(shift_right(signed(i_alu_operand_1), 
-                               to_integer(unsigned(i_alu_operand_2(4 downto 0))))); --sra
+               o_alu_result <= std_logic_vector(shift_right(signed(i_alu_operand_1),
+                               to_integer(unsigned(i_alu_operand_2(4 downto 0)))));
             when C_SLT | C_SLTI  =>
 				   if (signed(i_alu_operand_1) < signed(i_alu_operand_2)) then
 					   o_alu_result <= (0 => '1', others => '0');
@@ -61,14 +61,14 @@ begin
                o_alu_result(31 downto 12) <= i_alu_operand_2(19 downto 0);
                o_alu_result(11 downto 0)  <= (others => '0');
             when C_AUIPC         =>
-               o_alu_result <= i_alu_operand_2(19 downto 0) & 
+               o_alu_result <= i_alu_operand_2(19 downto 0) &
                                              i_alu_operand_1(11 downto 0);
             when C_JAL           =>
-               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2));
+               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) +
+                               signed(i_alu_operand_2));
             when C_JALR          =>
-               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) + signed(i_alu_operand_2)) and X"FFFFFFFE";
-            -- when C_PASS_IMM      => ----- TODO: CHANGE NAME OF THIS CONSTANT
-               -- o_alu_result      <= i_alu_operand_1 + i_alu_operand_2;
+               o_alu_result <= std_logic_vector(signed(i_alu_operand_1) +
+                               signed(i_alu_operand_2)) and X"FFFFFFFE";
             when others => o_alu_result <= (others => '0');
          end case;
       end if;

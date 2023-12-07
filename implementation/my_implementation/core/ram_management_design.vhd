@@ -21,8 +21,8 @@ entity ram_management is
       o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
-      o_raddr                 : out integer range 0 to C_RAM_LENGTH-1; -- DONT change it works in synthesis
-      o_waddr                 : out integer range 0 to 63; -- C_RAM_LENGTH-1;
+      o_raddr                 : out integer range 0 to C_RAM_LENGTH-1;
+      o_waddr                 : out integer range 0 to 63;
       o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
@@ -37,7 +37,7 @@ begin
 
    p_ram_management : process(all)
    -- variables: are 8 bits, because 64 depth of RAM = 64*4 bytes = 255 = 8 bits
-      variable v_address_row     : std_logic_vector(7 downto 0); ---------- Change name of this variable, because it's not addres_row, it's just addres
+      variable v_address_row : std_logic_vector(7 downto 0); ---------- Change name of this variable, because it's not addres_row, it's just addres
    begin
       if (i_rst = '1') then
          o_write_enable    <= C_READ_ENABLE;
@@ -59,10 +59,10 @@ begin
                o_waddr        <= to_integer(unsigned(v_address_row(7 downto 2)));
                if (v_address_row(1 downto 0) = "00") then
                   o_byte_enable        <= "0011";
-                  o_data(15 downto 0) <= i_rs2_data(15 downto 0);
+                  o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
                elsif (v_address_row(1 downto 0) = "10") then
                   o_byte_enable        <= "1100";
-                  o_data(31 downto 16)  <= i_rs2_data(15 downto 0);
+                  o_data(31 downto 16) <= i_rs2_data(15 downto 0);
                end if;
             when C_SB   =>
                o_write_enable <= C_WRITE_ENABLE;
@@ -71,20 +71,18 @@ begin
                   o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
                   o_byte_enable        <= "0001";
                elsif (v_address_row(1 downto 0) = "01") then
-                  o_data(15 downto 8)   <= i_rs2_data(7 downto 0);
+                  o_data(15 downto 8)  <= i_rs2_data(7 downto 0);
                   o_byte_enable        <= "0010";
                elsif (v_address_row(1 downto 0) = "10") then
-                  o_data(23 downto 16)   <= i_rs2_data(7 downto 0);
+                  o_data(23 downto 16) <= i_rs2_data(7 downto 0);
                   o_byte_enable        <= "0100";
                elsif (v_address_row(1 downto 0) = "11") then
-                  o_data(31 downto 24)   <= i_rs2_data(7 downto 0);
+                  o_data(31 downto 24) <= i_rs2_data(7 downto 0);
                   o_byte_enable        <= "1000";
                end if;
             when C_LW | C_LH | C_LHU | C_LB | C_LBU  =>
-             --  if (i_load_inst_ctrl = '1') then -- During load instructions it works without load_inst_ctrl, so maybe remove it
                o_write_enable <= C_READ_ENABLE;
                o_raddr        <= to_integer(unsigned(v_address_row(7 downto 2)));
-              -- end if;
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= (others => '0');
@@ -96,7 +94,7 @@ begin
    end process p_ram_management;
 
    p_reg_file : process(all)
-      variable v_address_row     : std_logic_vector(1 downto 0);
+      variable v_address_row : std_logic_vector(1 downto 0);
    begin
       if (i_rst = '1') then
          o_rd_data         <= (others => '0');

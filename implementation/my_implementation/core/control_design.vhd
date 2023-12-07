@@ -83,11 +83,6 @@ begin
             when C_OPCODE_JAL    => o_alu_control  <= C_JAL;
             when C_OPCODE_JALR   => o_alu_control  <= C_JALR;
             when C_OPCODE_BRANCH => o_alu_control  <= C_ADD;
-               -- if (i_branch_result = '1') then
-                  -- o_alu_control   <= C_PASS_IMM; --------- TODO: CHANGE TO IMM+PC_ADDR
-               -- else
-                  -- o_alu_control <= C_ADD;
-               -- end if;
             when others          => o_alu_control  <= (others => '0');
          end case;
       end if;
@@ -110,8 +105,7 @@ begin
                 o_alu_mux_1_ctrl     <= C_RS1_DATA;
                 o_alu_mux_2_ctrl     <= C_IMM;
             when C_OPCODE_LUI    =>
-               o_alu_mux_1_ctrl     <= C_RS1_DATA; -- Value is not important in
-               -- this case, but needed for correct synthesis
+               o_alu_mux_1_ctrl     <= C_RS1_DATA;
                o_alu_mux_2_ctrl     <= C_IMM;
             when C_OPCODE_AUIPC  =>
                o_alu_mux_1_ctrl     <= C_PC_ADDR;
@@ -206,25 +200,25 @@ begin
       else
          case i_opcode(6 downto 0) is
             when C_OPCODE_LOAD =>
-            o_pc_ctrl         <= C_INCREMENT_PC;
-            o_inst_addr_ctrl  <= C_INST_ADDR_PC;
-            when C_OPCODE_JAL =>
-            o_pc_ctrl         <= C_LOAD_ALU_RESULT;
-            o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-            when C_OPCODE_JALR =>
-            o_pc_ctrl         <= C_LOAD_ALU_RESULT;
-            o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-            when C_OPCODE_BRANCH =>
-            if (i_branch_result = C_TAKEN) then
-               o_pc_ctrl         <= C_LOAD_ALU_RESULT;
-               o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-            else
                o_pc_ctrl         <= C_INCREMENT_PC;
                o_inst_addr_ctrl  <= C_INST_ADDR_PC;
-            end if;
-            when others => 
-            o_pc_ctrl         <= C_INCREMENT_PC;
-            o_inst_addr_ctrl  <= C_INST_ADDR_PC;
+            when C_OPCODE_JAL    =>
+               o_pc_ctrl         <= C_LOAD_ALU_RESULT;
+               o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
+            when C_OPCODE_JALR   =>
+               o_pc_ctrl         <= C_LOAD_ALU_RESULT;
+               o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
+            when C_OPCODE_BRANCH =>
+               if (i_branch_result = C_TAKEN) then
+                  o_pc_ctrl         <= C_LOAD_ALU_RESULT;
+                  o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
+               else
+                  o_pc_ctrl         <= C_INCREMENT_PC;
+                  o_inst_addr_ctrl  <= C_INST_ADDR_PC;
+               end if;
+            when others          =>
+               o_pc_ctrl         <= C_INCREMENT_PC;
+               o_inst_addr_ctrl  <= C_INST_ADDR_PC;
             end case;
       end if;
    end process p_program_counter;
