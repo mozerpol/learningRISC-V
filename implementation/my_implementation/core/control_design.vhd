@@ -7,8 +7,6 @@ library control_lib;
    use control_lib.control_pkg.all;
 library opcodes;
    use opcodes.opcodesPkg.all;
-library alu_lib;
-   use alu_lib.alu_pkg.all;
 
 
 entity control is

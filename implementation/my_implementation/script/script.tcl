@@ -18,6 +18,17 @@ set module        "main"
 proc s_add_external_libs {} {
 
 
+set hdl_dir                "../core"
+set library_name           "opcodes"
+vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
+
+
+set hdl_dir                "../core"
+set library_name           "control_lib"
+vcom -2008 -quiet -work    $library_name $hdl_dir/control_pkg.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
+
+
 set hdl_dir                "../peripherals/RAM"
 set library_name           "memory_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/memory_pkg.vhd
@@ -28,11 +39,6 @@ set hdl_dir                "../peripherals/GPIO"
 set library_name           "gpio_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_design.vhd
-
-
-set hdl_dir                "../core"
-set library_name           "opcodes"
-vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
 
 
 set hdl_dir                "../core"
@@ -56,12 +62,6 @@ set hdl_dir                "../core"
 set library_name           "branch_instructions_lib"
 vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_pkg.vhd
 vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
-
-
-set hdl_dir                "../core"
-set library_name           "control_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/control_pkg.vhd
-vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
 
 
 set hdl_dir                "../core"
