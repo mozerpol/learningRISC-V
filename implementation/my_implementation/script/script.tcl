@@ -31,7 +31,7 @@ vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
 
 set hdl_dir                "../peripherals"
 set library_name           "memory_lib"
-vcom -2008 -quiet -work    $library_name $hdl_dir/memory_design.vhd
+vcom -2008 -quiet -work    $library_name $hdl_dir/RAM.vhd
 
 
 set hdl_dir                "../peripherals"

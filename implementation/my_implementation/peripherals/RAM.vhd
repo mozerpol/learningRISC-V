@@ -4,7 +4,6 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-library work;
 library main_lib;
    use main_lib.all;
    use main_lib.main_pkg.all;
