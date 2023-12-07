@@ -35,22 +35,22 @@ architecture rtl of main is
          o_core_addr_write    : out integer range 0 to C_RAM_LENGTH-1
       );
    end component core;
-   
+
 
    component byte_enabled_simple_dual_port_ram is
 	generic (
 		ADDR_WIDTH : natural := C_RAM_LENGTH;
 		BYTE_WIDTH : natural := 8;
 		BYTES      : natural := 4
-		);
-      port (
+   );
+   port (
 		we, clk : in  std_logic;
 		be      : in  std_logic_vector (BYTES - 1 downto 0);
 		wdata   : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
 		waddr   : in  integer range 0 to ADDR_WIDTH-1;
 		raddr   : in  integer range 0 to ADDR_WIDTH-1;
 		q       : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0)
-      );
+   );
    end component byte_enabled_simple_dual_port_ram;
 
 
@@ -75,11 +75,11 @@ architecture rtl of main is
    signal core_addr_read      : integer range 0 to C_RAM_LENGTH-1;
    signal core_addr_write     : integer range 0 to C_RAM_LENGTH-1;
    -- RAM
-   signal ram_raddr           : integer range 0 to C_RAM_LENGTH-1; -- address width = 6
+   signal ram_raddr           : integer range 0 to C_RAM_LENGTH-1;
    signal ram_waddr           : integer range 0 to C_RAM_LENGTH-1;
    signal ram_we              : std_logic;
-   signal ram_wdata           : std_logic_vector(31 downto 0); -- width = 32
-   signal ram_be              : std_logic_vector (3 downto 0); -- 4 bytes per word
+   signal ram_wdata           : std_logic_vector(31 downto 0); 
+   signal ram_be              : std_logic_vector (3 downto 0);
    signal ram_q               : std_logic_vector(31 downto 0);
    -- GPIO
    signal gpio_addr           : integer range 0 to C_RAM_LENGTH-1;

@@ -3,7 +3,7 @@
 -- and with a control for writing single bytes into the memory word; byte enable
 
 library ieee;
-use ieee.std_logic_1164.all;
+   use ieee.std_logic_1164.all;
 library main_lib;
    use main_lib.all;
    use main_lib.main_pkg.all;
@@ -58,8 +58,10 @@ begin  -- rtl
 					ram(waddr)(3) <= wdata(31 downto 24);
 				end if;
 			end if;
+         -- In case of NOT single cycle implementation below line need to be commented
 			 q_local <= ram(raddr);
 		end if;
+      -- In case of single cycle implementation below line need to be commented
 		-- q_local <= ram(raddr);
 	end process;
 

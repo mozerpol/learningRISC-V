@@ -44,8 +44,8 @@ begin
       rst_tb   <= '1';
       wait for 20 ns;
       rst_tb   <= '0';
-      
-      wait for 2500 ns;
+
+      wait for 2000 ns;
       stop(2);
    end process p_tb;
 
