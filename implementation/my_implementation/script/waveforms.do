@@ -89,7 +89,7 @@ add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_cor
 add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/i_load_inst_ctrl
 add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_core/inst_ram_management/i_data_from_ram
 add wave         -group RAM_MNGT          -radix hex /main_tb/inst_main/inst_core/inst_ram_management/o_rd_data
-add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/p_ram_management/v_address_row
+add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/p_ram_management/v_ram_address
 add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/o_write_enable
 add wave         -group RAM_MNGT          -radix bin /main_tb/inst_main/inst_core/inst_ram_management/o_byte_enable
 add wave         -group RAM_MNGT          -radix dec /main_tb/inst_main/inst_core/inst_ram_management/o_raddr
