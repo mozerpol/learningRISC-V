@@ -22,7 +22,7 @@ entity ram_management is
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
       o_raddr                 : out integer range 0 to C_RAM_LENGTH-1;
-      o_waddr                 : out integer range 0 to 63;
+      o_waddr                 : out integer range 0 to C_RAM_LENGTH-1;
       o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
