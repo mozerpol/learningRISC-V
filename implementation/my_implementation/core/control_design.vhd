@@ -42,11 +42,11 @@ begin
             when C_OPCODE_OP =>
                case i_func3 is
                   when C_FUNC3_ADD_SUB =>
-			            if (i_func7 = C_FUNC7_SUB) then
+                     if (i_func7 = C_FUNC7_SUB) then
                         o_alu_control <= C_SUB;
-			            else
-                     	o_alu_control <= C_ADD;
-			            end if;
+                     else
+                        o_alu_control <= C_ADD;
+                     end if;
                   when C_FUNC3_SLL        => o_alu_control <= C_SLL;
                   when C_FUNC3_SLT        => o_alu_control <= C_SLT;
                   when C_FUNC3_SLTU       => o_alu_control <= C_SLTU;
@@ -133,10 +133,10 @@ begin
          o_reg_file_wr_ctrl      <= C_READ_ENABLE;
       else
          case i_opcode(6 downto 0) is
-            when C_OPCODE_OPIMM =>
+            when C_OPCODE_OPIMM  =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-            when C_OPCODE_OP =>
+            when C_OPCODE_OP     =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_LOAD   =>
@@ -145,16 +145,16 @@ begin
             when C_OPCODE_STORE  =>
                o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
                o_reg_file_wr_ctrl   <= C_READ_ENABLE;
-            when C_OPCODE_LUI =>
+            when C_OPCODE_LUI    =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-            when C_OPCODE_AUIPC =>
+            when C_OPCODE_AUIPC  =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-            when C_OPCODE_JAL =>
+            when C_OPCODE_JAL    =>
                o_reg_file_inst_ctrl <= C_WRITE_PC_ADDR;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
-            when C_OPCODE_JALR  =>
+            when C_OPCODE_JALR   =>
                o_reg_file_inst_ctrl <= C_WRITE_PC_ADDR;
                o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when others          =>
@@ -212,7 +212,7 @@ begin
                if (i_branch_result = C_TAKEN) then
                   o_pc_ctrl         <= C_LOAD_ALU_RESULT;
                   o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-               else
+               elsif (i_branch_result = C_NOT_TAKEN) then
                   o_pc_ctrl         <= C_INCREMENT_PC;
                   o_inst_addr_ctrl  <= C_INST_ADDR_PC;
                end if;
