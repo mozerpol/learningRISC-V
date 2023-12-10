@@ -1,3 +1,6 @@
+# Requirements: installed python and files code.txt, rom.vhd in the same directory with rom_updater.py
+# How to run: python3 rom_updater.py
+
 # Open the code.txt file
 with open("code.txt", "r") as file:
     # Read the contents of the file

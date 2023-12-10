@@ -9,6 +9,13 @@ package rom is
 
    type t_rom  is array (0 to C_ROM_LENGTH-1) of std_logic_vector(31 downto 0);
 
+   -- Instructions can be pasted here manually, or more easily using the
+   -- rom_updater.py script. To do this paste the hex code into the code.txt file
+   -- and run the rom_updater.py script, which will automatically paste the code
+   -- into the rom.vhd file.
+   -- If there are more than 1024 lines of code, be sure to change the value of
+   -- the C_ROM_LENGTH constant in the main_pkg.vhd file. The value must be
+   -- greater than or equal to the number of lines of code.
    constant C_CODE : t_rom := (
       x"123450b7",
       x"67808093",

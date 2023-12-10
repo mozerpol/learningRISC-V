@@ -25,6 +25,11 @@ begin
       if (i_rst = '1') then
          o_instruction  <= (others => '0');
       elsif (i_clk = '1' and i_clk'event) then
+         -- The value of i_instruction_addr can only be a multiple of number 4,
+         -- eg. 4, 8, 12, 16, 20, ...
+         -- For this reason, the two youngest bits are not read. Otherwise, from
+         -- memory that contains the instructions to be executed (C_CODE)
+         -- instructions number 4, 8, 12, 16, etc. will be read.
          o_instruction  <= C_CODE(to_integer(unsigned(i_instruction_addr(11 downto 2))));
       end if;
    end process p_instruction_memory;

@@ -3,7 +3,6 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 
 package opcodesPkg is
-   -- All opcodes are in the documentation in the table on page 104
    ---- U-type ----
    constant C_OPCODE_LUI      : std_logic_vector(6 downto 0) := "0110111";
    constant C_OPCODE_AUIPC    : std_logic_vector(6 downto 0) := "0010111";
@@ -14,8 +13,7 @@ package opcodesPkg is
    constant C_OPCODE_LOAD     : std_logic_vector(6 downto 0) := "0000011";
    -- LOAD = LB, LH, LW, LBU, LHU, LD, LWU
    constant C_OPCODE_OPIMM    : std_logic_vector(6 downto 0) := "0010011";
-   -- OP_IMM = ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI,
-   -- SRAI
+   -- OP_IMM = ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI, SRAI
    ---- B-type ----
    constant C_OPCODE_BRANCH   : std_logic_vector(6 downto 0) := "1100011";
    -- BRANCH = BEQ, BNE, BLT, BGE, BLTU, BGEU
