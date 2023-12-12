@@ -12,7 +12,7 @@ library main_lib;
 entity ram_management is
    port (
       i_rst                   : in std_logic;
-      i_ram_management_ctrl   : in std_logic_vector(2 downto 0);
+      i_ram_management_ctrl   : in std_logic_vector(3 downto 0);
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
@@ -47,7 +47,7 @@ begin
          o_data            <= (others => '0');
          v_ram_address     := (others => '0');
       else
-         v_ram_address     := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
+         v_ram_address     := (i_rs1_data(31 downto 0) + i_imm(31 downto 0));
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
