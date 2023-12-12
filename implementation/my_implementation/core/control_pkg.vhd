@@ -60,14 +60,14 @@ library ieee;
    constant C_WRITE_PC_ADDR      : std_logic_vector(1 downto 0) := "01";
    constant C_WRITE_ALU_RESULT   : std_logic_vector(1 downto 0) := "10";
    -- memory_management and ram_management
-   constant C_LB                 : std_logic_vector(2 downto 0) := "000";
-   constant C_LH                 : std_logic_vector(2 downto 0) := "001";
-   constant C_LW                 : std_logic_vector(2 downto 0) := "010";
-   constant C_LBU                : std_logic_vector(2 downto 0) := "011";
-   constant C_LHU                : std_logic_vector(2 downto 0) := "100";
-   constant C_SB                 : std_logic_vector(2 downto 0) := "101";
-   constant C_SH                 : std_logic_vector(2 downto 0) := "110";
-   constant C_SW                 : std_logic_vector(2 downto 0) := "111";
+   constant C_LB                 : std_logic_vector(3 downto 0) := "0001";
+   constant C_LH                 : std_logic_vector(3 downto 0) := "0010";
+   constant C_LW                 : std_logic_vector(3 downto 0) := "0011";
+   constant C_LBU                : std_logic_vector(3 downto 0) := "0100";
+   constant C_LHU                : std_logic_vector(3 downto 0) := "0101";
+   constant C_SB                 : std_logic_vector(3 downto 0) := "0110";
+   constant C_SH                 : std_logic_vector(3 downto 0) := "0111";
+   constant C_SW                 : std_logic_vector(3 downto 0) := "1000";
    -- branch_instructions
    constant C_TAKEN              : std_logic := '1';
    constant C_NOT_TAKEN          : std_logic := '0';
