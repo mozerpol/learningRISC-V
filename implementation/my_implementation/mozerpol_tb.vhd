@@ -5,27 +5,27 @@ library ieee;
 library std;
    use std.env.all;
 
-entity main_tb is
-end main_tb;
+entity mozerpol_tb is
+end mozerpol_tb;
 
-architecture tb of main_tb is
+architecture tb of mozerpol_tb is
 
-   component main is
+   component mozerpol is
    port (
       i_rst       : in std_logic;
       i_clk       : in std_logic
    );
-   end component main;
+   end component mozerpol;
 
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
 
    -- type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
-   -- alias spy_gpr is <<signal .main_tb.inst_main.inst_core.inst_reg_file.gpr: t_gpr >>;
+   -- alias spy_gpr is <<signal .mozerpol_tb.inst_mozerpol.inst_core.inst_reg_file.gpr: t_gpr >>;
 
 begin
 
-   inst_main : component main
+   inst_mozerpol : component mozerpol
    port map (
       i_rst       => rst_tb,
       i_clk       => clk_tb

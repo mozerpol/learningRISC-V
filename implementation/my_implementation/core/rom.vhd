@@ -1,8 +1,8 @@
 library ieee;
     use ieee.std_logic_1164.all;
     use IEEE.std_logic_unsigned.all;
-library main_lib;
-   use main_lib.main_pkg.all;
+library mozerpol_lib;
+   use mozerpol_lib.mozerpol_pkg.all;
 
 package rom is
 
@@ -14,7 +14,7 @@ package rom is
    -- and run the rom_updater.py script, which will automatically paste the code
    -- into the rom.vhd file.
    -- If there are more than 1024 lines of code, be sure to change the value of
-   -- the C_ROM_LENGTH constant in the main_pkg.vhd file. The value must be
+   -- the C_ROM_LENGTH constant in the mozerpol_pkg.vhd file. The value must be
    -- greater than or equal to the number of lines of code.
    constant C_CODE : t_rom := (
       x"123450b7",

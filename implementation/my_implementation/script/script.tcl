@@ -1,5 +1,5 @@
 ###### Set module name ######
-set module        "main"
+set module        "mozerpol"
 
 
 ###### Include external libraries ######

@@ -2,25 +2,25 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library main_lib;
-   use main_lib.all;
-   use main_lib.main_pkg.all;
+library mozerpol_lib;
+   use mozerpol_lib.all;
+   use mozerpol_lib.mozerpol_pkg.all;
 library ram_lib;
 library gpio_lib;
 library core_lib;
    use core_lib.all;
 
 
-entity main is
+entity mozerpol is
    port (
       i_rst    : in std_logic;
       i_clk    : in std_logic;
       o_gpio   : out std_logic_vector(3 downto 0)
    );
-end entity main;
+end entity mozerpol;
 
 
-architecture rtl of main is
+architecture rtl of mozerpol is
 
 
    component core is

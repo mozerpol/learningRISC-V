@@ -5,9 +5,9 @@ library ieee;
 library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
-library main_lib;
-   use main_lib.all;
-   use main_lib.main_pkg.all;
+library mozerpol_lib;
+   use mozerpol_lib.all;
+   use mozerpol_lib.mozerpol_pkg.all;
 
 entity ram_management is
    port (

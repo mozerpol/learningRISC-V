@@ -16,9 +16,9 @@ library instruction_memory_lib;
 library program_counter_lib;
 library ram_management_lib;
 library reg_file_lib;
-library main_lib;
-   use main_lib.all;
-   use main_lib.main_pkg.all;
+library mozerpol_lib;
+   use mozerpol_lib.all;
+   use mozerpol_lib.mozerpol_pkg.all;
 
 
 entity core is

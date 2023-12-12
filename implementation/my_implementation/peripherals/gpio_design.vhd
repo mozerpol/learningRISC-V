@@ -2,9 +2,9 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library main_lib;
-   use main_lib.all;
-   use main_lib.main_pkg.all;
+library mozerpol_lib;
+   use mozerpol_lib.all;
+   use mozerpol_lib.mozerpol_pkg.all;
 
 entity gpio is
    port (

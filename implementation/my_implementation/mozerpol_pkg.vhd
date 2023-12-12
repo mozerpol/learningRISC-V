@@ -3,7 +3,7 @@ library ieee;
    use IEEE.std_logic_unsigned.all;
    use IEEE.math_real.all;
 
-package main_pkg is
+package mozerpol_pkg is
 
    constant C_RAM_LENGTH      : integer := 64;
    constant C_ROM_LENGTH      : integer := 1024;
@@ -11,6 +11,6 @@ package main_pkg is
 
 end;
 
-package body main_pkg is
+package body mozerpol_pkg is
 
 end package body;
