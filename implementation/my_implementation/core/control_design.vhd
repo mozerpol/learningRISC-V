@@ -21,7 +21,7 @@ entity control is
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_inst_addr_ctrl        : out std_logic;
       o_alu_control           : out std_logic_vector(4 downto 0);
-      o_ram_management_ctrl   : out std_logic_vector(2 downto 0);
+      o_ram_management_ctrl   : out std_logic_vector(3 downto 0);
       o_load_inst_ctrl        : out std_logic;
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
       o_reg_file_wr_ctrl      : out std_logic;
