@@ -22,7 +22,6 @@ entity control is
       o_inst_addr_ctrl        : out std_logic;
       o_alu_control           : out std_logic_vector(4 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(3 downto 0);
-      o_load_inst_ctrl        : out std_logic;
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
       o_reg_file_wr_ctrl      : out std_logic;
       o_branch_ctrl           : out std_logic_vector(2 downto 0)
@@ -168,7 +167,6 @@ begin
    begin
       if (i_rst = '1') then
          o_ram_management_ctrl   <= (others => '0');
-         o_load_inst_ctrl        <= '0';
       else
          if (i_opcode(6 downto 0) = C_OPCODE_LOAD) then
             case i_func3 is

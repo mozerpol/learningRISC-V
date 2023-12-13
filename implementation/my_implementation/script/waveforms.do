@@ -59,7 +59,6 @@ add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/
 add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_inst_addr_ctrl
 add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_alu_control
 add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_ram_management_ctrl
-add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_load_inst_ctrl
 add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_reg_file_inst_ctrl
 add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_reg_file_wr_ctrl
 add wave         -group CONTROL           -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_control/o_branch_ctrl
@@ -86,7 +85,6 @@ add wave         -group RAM_MNGT          -radix bin /mozerpol_tb/inst_mozerpol/
 add wave         -group RAM_MNGT          -radix hex /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/i_rs1_data
 add wave         -group RAM_MNGT          -radix hex /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/i_rs2_data
 add wave         -group RAM_MNGT          -radix hex /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/i_imm
-add wave         -group RAM_MNGT          -radix bin /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/i_load_inst_ctrl
 add wave         -group RAM_MNGT          -radix hex /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/i_data_from_ram
 add wave         -group RAM_MNGT          -radix hex /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/o_rd_data
 add wave         -group RAM_MNGT          -radix dec /mozerpol_tb/inst_mozerpol/inst_core/inst_ram_management/p_ram_management/v_ram_address
