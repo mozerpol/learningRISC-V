@@ -210,7 +210,7 @@ begin
                if (i_branch_result = C_TAKEN) then
                   o_pc_ctrl         <= C_LOAD_ALU_RESULT;
                   o_inst_addr_ctrl  <= C_INST_ADDR_ALU;
-               elsif (i_branch_result = C_NOT_TAKEN) then
+               else -- C_NOT_TAKEN
                   o_pc_ctrl         <= C_INCREMENT_PC;
                   o_inst_addr_ctrl  <= C_INST_ADDR_PC;
                end if;
@@ -236,6 +236,8 @@ begin
                when C_FUNC3_BGEU => o_branch_ctrl <= C_BGEU;
                when others       => o_branch_ctrl <= (others => '0');
             end case;
+         else
+            o_branch_ctrl <= (others => '0');
          end if;
       end if;
    end process p_branch_instructions;
