@@ -10,7 +10,7 @@ library mozerpol_lib;
 
 entity byte_enabled_simple_dual_port_ram is
 
-	generic (
+   generic (
       ADDR_WIDTH  : natural := C_RAM_LENGTH;
       BYTE_WIDTH  : natural := 8;
       BYTES       : natural := 4
@@ -39,6 +39,9 @@ begin  -- rtl
       q(BYTE_WIDTH*(i+1) - 1 downto BYTE_WIDTH*i) <= q_local(i);
    end generate unpack;
 
+   -- For pipelined implementation, comment out the following line
+   q_local <= ram(raddr);
+
    process(clk)
    begin
       if(clk'event and clk = '1') then
@@ -57,11 +60,9 @@ begin  -- rtl
                ram(waddr)(3) <= wdata(31 downto 24);
             end if;
          end if;
-          -- In case of single cycle implementation below line need to be commented
+         -- In case of single cycle implementation, comment out line below
          -- q_local <= ram(raddr);
       end if;
-      -- In case of single cycle implementation below line need to be commented
-      q_local <= ram(raddr);
 	end process;
 
 end rtl;
