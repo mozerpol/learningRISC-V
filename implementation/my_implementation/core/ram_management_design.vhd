@@ -35,7 +35,7 @@ architecture rtl of ram_management is
 begin
 
    p_ram_management : process(all)
-      -- 
+      --
       variable v_ram_address : std_logic_vector(31 downto 0);
    begin
       if (i_rst = '1') then
@@ -53,11 +53,11 @@ begin
                o_byte_enable  <= "1111";
                o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                o_data         <= i_rs2_data;
-               o_raddr           <= 0;
+               o_raddr        <= 0;
             when C_SH   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               o_raddr           <= 0;
+               o_raddr        <= 0;
                if (v_ram_address(1 downto 0) = "00") then
                   o_byte_enable        <= "0011";
                   o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
@@ -73,7 +73,7 @@ begin
             when C_SB   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               o_raddr           <= 0;
+               o_raddr        <= 0;
                if (v_ram_address(1 downto 0) = "00") then
                   o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
                   o_data(15 downto 8)  <= (others => '0');
@@ -81,21 +81,21 @@ begin
                   o_data(31 downto 24) <= (others => '0');
                   o_byte_enable        <= "0001";
                elsif (v_ram_address(1 downto 0) = "01") then
-               o_data(7 downto 0)   <= (others => '0');
+                  o_data(7 downto 0)   <= (others => '0');
                   o_data(15 downto 8)  <= i_rs2_data(7 downto 0);
-                 o_data(23 downto 16) <= (others => '0');
+                  o_data(23 downto 16) <= (others => '0');
                   o_data(31 downto 24) <= (others => '0');
                   o_byte_enable        <= "0010";
                elsif (v_ram_address(1 downto 0) = "10") then
-               o_data(7 downto 0)   <= (others => '0');
-                o_data(15 downto 8)  <= (others => '0');
+                  o_data(7 downto 0)   <= (others => '0');
+                  o_data(15 downto 8)  <= (others => '0');
                   o_data(23 downto 16) <= i_rs2_data(7 downto 0);
                   o_data(31 downto 24) <= (others => '0');
                   o_byte_enable        <= "0100";
                elsif (v_ram_address(1 downto 0) = "11") then
-               o_data(7 downto 0)   <= (others => '0');
-                o_data(15 downto 8)  <= (others => '0');
-                o_data(23 downto 16) <=  (others => '0');
+                  o_data(7 downto 0)   <= (others => '0');
+                  o_data(15 downto 8)  <= (others => '0');
+                  o_data(23 downto 16) <=  (others => '0');
                   o_data(31 downto 24) <= i_rs2_data(7 downto 0);
                   o_byte_enable        <= "1000";
                else
@@ -107,7 +107,7 @@ begin
                o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                o_waddr        <= 0;
                o_byte_enable  <= "0000";
-               o_data            <= (others => '0');
+               o_data         <= (others => '0');
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= "0000";
@@ -129,29 +129,29 @@ begin
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
-            when C_LH =>
+            when C_LH  =>
                if (i_data_from_ram(15) = '1') then
                   o_rd_data(31 downto 16) <= 16x"ffff";
                else
                   o_rd_data(31 downto 16) <= 16x"0000";
                end if;
                if (v_ram_address(1 downto 0) = "00") then
-                  o_rd_data(15 downto 0) <= i_data_from_ram(15 downto 0);
+                  o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
                elsif (v_ram_address(1 downto 0) = "10") then
-                  o_rd_data(15 downto 0) <= i_data_from_ram(31 downto 16);
+                  o_rd_data(15 downto 0)  <= i_data_from_ram(31 downto 16);
                else
-                  o_rd_data(15 downto 0) <= (others => '0');
+                  o_rd_data(15 downto 0)  <= (others => '0');
                end if;
             when C_LHU =>
                o_rd_data(31 downto 16) <= 16x"0000";
                if (v_ram_address(1 downto 0) = "00") then
-                  o_rd_data(15 downto 0) <= i_data_from_ram(15 downto 0);
+                  o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
                elsif (v_ram_address(1 downto 0) = "10") then
-                  o_rd_data(15 downto 0) <= i_data_from_ram(31 downto 16);
+                  o_rd_data(15 downto 0)  <= i_data_from_ram(31 downto 16);
                else
-                  o_rd_data(15 downto 0) <= (others => '0');
+                  o_rd_data(15 downto 0)  <= (others => '0');
                end if;
-            when C_LB =>
+            when C_LB  =>
                if (i_data_from_ram(7) = '1') then
                   o_rd_data(31 downto 8)  <= 24x"ffffff";
                else
@@ -179,9 +179,9 @@ begin
                elsif (v_ram_address(1 downto 0) = "11") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                else
-                  o_rd_data(7 downto 0)   <= (others => '0'); 
+                  o_rd_data(7 downto 0)   <= (others => '0');
                end if;
-            when others => o_rd_data <= (others => '0');
+            when others => o_rd_data   <= (others => '0');
          end case;
       end if;
    end process p_reg_file;
