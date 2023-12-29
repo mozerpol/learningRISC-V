@@ -1,7 +1,7 @@
-JPG extension: <br/>
-![cpu_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/b03e0585-2c04-4fb5-898f-1efffb1884fb)
+JPG file: <br/>
+![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/14ad2330-a608-45d0-8bd3-72d3565f4f60)
 
-SVG extension: <br/>
+SVG file: <br/>
 If there is a problem with opening the file, then: right-click on the image ->
-Save Image As... -> Save to disk <br/>
-![cpu_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/5a53b5b1-6713-4049-8721-40458f556da3)
+Save Image As... -> Save to disk and open in web browser <br/>
+![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/d76ec3aa-a5f9-467b-b6f0-870783f54817)
