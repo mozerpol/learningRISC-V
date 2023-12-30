@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+-- File          : mozerpol_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : It connects all the modules together, such as the core and
+-- peripherals. The ports of this module need to be connected to the physical
+-- pins of the FPGA to ensure the operation of the entire processor.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
