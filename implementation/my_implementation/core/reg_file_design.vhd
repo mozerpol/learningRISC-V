@@ -1,3 +1,17 @@
+--------------------------------------------------------------------------------
+-- File          : reg_file_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Register file which contains 32 general purpose registers 
+-- (GPR). Depending on the i_reg_file_wr_ctrl signal, a decision is made whether
+-- data can be written to the GPR. Depending on the i_reg_file_inst_ctrl signal,
+-- a decision is made from where to save the data (ALU operation result, 
+-- constant or program counter value). Both signals (i_reg_file_wr_ctrl and 
+-- i_reg_file_inst_ctrl ) come from the control module.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;

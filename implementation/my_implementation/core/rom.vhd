@@ -1,3 +1,17 @@
+--------------------------------------------------------------------------------
+-- File          : rom.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : This file must contain the instructions to be executed by the
+-- processor. Instructions from e.g. assembly language can be translated into 
+-- machine code using online compilers (e.g. risc-v venus). On each rising edge 
+-- of the clock signal (i_clk), the appropriate instruction (indicated by 
+-- i_instruction_addr) is passed to the decoder - this happens in the 
+-- instruction_memory module.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
     use ieee.std_logic_1164.all;
     use IEEE.std_logic_unsigned.all;
