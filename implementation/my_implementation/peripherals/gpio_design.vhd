@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+-- File          : gpio_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : The output ports of this module are GPIO, which are connected
+-- to the mozerpol_design module, and there to the physical outputs of the FPGA.
+-- The MMIO mechanism was used here (see Wikipedia) or comments below.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
