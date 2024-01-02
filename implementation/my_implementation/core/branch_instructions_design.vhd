@@ -1,3 +1,16 @@
+--------------------------------------------------------------------------------
+-- File          : branch_instructions_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Compares two data that come from the register file. Based on
+-- the i_branch_ctrl signal, which comes from the control module, a decision is
+-- made about what comparison to perform. The result as o_branch_result is sent
+-- to the control module which, depending on the comparison result, decides what
+-- to do next.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
