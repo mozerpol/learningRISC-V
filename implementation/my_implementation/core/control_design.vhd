@@ -1,3 +1,15 @@
+--------------------------------------------------------------------------------
+-- File          : control_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Control path. This module receives the decoded instruction
+-- from the decoder module and the result of a branch type instruction (if, of 
+-- course, the type of such an instruction is executed). On this basis, it
+-- generates control signals for all modules inside the core.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
