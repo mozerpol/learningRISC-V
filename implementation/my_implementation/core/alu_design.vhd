@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+-- File          : alu_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Arithmetic logic unit. Based on the i_alu_control signal, 
+-- which comes from the control module, a decision is made which 
+-- mathematical operation the ALU should perform. 
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
