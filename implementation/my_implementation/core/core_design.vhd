@@ -1,3 +1,15 @@
+--------------------------------------------------------------------------------
+-- File          : core_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : It integrates all internal modules e.g. ALU, MUX1, MUX2,
+-- program counter, control, etc. connecting them together. This module can be
+-- connected to external modules such as RAM or GPIO (connecting takes place
+-- inside mozerpol_design).
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
