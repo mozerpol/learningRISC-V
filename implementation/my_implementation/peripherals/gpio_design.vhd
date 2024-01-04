@@ -33,8 +33,12 @@ begin
    p_gpio : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
-         -- The last RAM address (63) is mapped to the GPIO output, if necessary,
-         -- get to the GPIO, need to do 63*4 (=255)
+         -- The C_MMIO_ADDR_GPIO constant describes which RAM address is mapped
+         -- and used by the GPIO. In the case of GPIO control, use the command
+         -- to write to RAM (sw, sh, sb) to the C_MMIO_ADDR_GPIO address and the
+         -- data that would be written to RAM is assigned to GPIO. Example of
+         -- assigning zeros to GPIO:
+         -- sb x0, C_MMIO_ADDR_GPIO
          if (i_addr = C_MMIO_ADDR_GPIO-1) then
             -- Last 8 bits from wdata vector are mapped
             o_gpio(0) <= i_wdata(24);
