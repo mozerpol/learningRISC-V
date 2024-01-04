@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+-- File          : decoder_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Decodes the instructions that come from the ROM. The decoded
+-- instruction is passed to the register_file, mux2, ram_management and control
+-- modules.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;

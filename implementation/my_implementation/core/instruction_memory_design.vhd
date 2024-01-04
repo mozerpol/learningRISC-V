@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+-- File          : instruction_memory_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : The module receives an address (i_instruction_addr signal)
+-- that comes from the program_counter module. Based on this address, the
+-- appropriate instruction from the ROM is read.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;

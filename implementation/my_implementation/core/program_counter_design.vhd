@@ -1,3 +1,18 @@
+--------------------------------------------------------------------------------
+-- File          : programc_counter_design.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Manage program counter. The ports of this module are
+-- connected to instruction_memory, register_file and mux1. The i_pc_ctrl and
+-- i_inst_addr_ctrl signals come from the control_design module. These signals
+-- control the value of the program counter and which instruction from the ROM
+-- to read. Changing the value of the o_instruction_addr signal (which is 
+-- connected to the instruction_memory module) allows to select the instruction
+-- to be read.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
