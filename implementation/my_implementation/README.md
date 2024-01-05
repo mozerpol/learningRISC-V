@@ -1,7 +1,7 @@
 JPG file: <br/>
-![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/14ad2330-a608-45d0-8bd3-72d3565f4f60)
+![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/a5ed7c68-6da0-4e57-843a-c85caea127de)
 
 SVG file: <br/>
 If there is a problem with opening the file, then: right-click on the image ->
 Save Image As... -> Save to disk and open in web browser <br/>
-![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/d76ec3aa-a5f9-467b-b6f0-870783f54817)
+![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/40337c5a-141e-4c62-abed-24e6e374abff)
