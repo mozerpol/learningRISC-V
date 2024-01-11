@@ -12,8 +12,8 @@ with open("rom.vhd", "w") as file:
     file.write('library ieee;\n')
     file.write('    use ieee.std_logic_1164.all;\n')
     file.write('    use IEEE.std_logic_unsigned.all;\n')
-    file.write('library main_lib;\n')
-    file.write('   use main_lib.main_pkg.all;\n\n')
+    file.write('library mozerpol_lib;\n')
+    file.write('   use mozerpol_lib.mozerpol_pkg.all;\n\n')
     file.write('package rom is\n\n\n')
     file.write('   type t_rom  is array (0 to C_ROM_LENGTH-1) of std_logic_vector(31 downto 0);\n\n')
     file.write('   constant C_CODE : t_rom := (\n')
@@ -31,5 +31,5 @@ with open("rom.vhd", "w") as file:
 
 # Message
 print("\n\nIf there are more than 1024 lines of code, be sure to change the\n\
-value of the C_ROM_LENGTH constant in the main_pkg.vhd file. The value must be\n\
-greater than or equal to the number of lines of code.\n\n")
+value of the C_ROM_LENGTH constant in the mozerpol_pkg.vhd file. The value must\n\
+be greater than or equal to the number of lines of code.\n\n")
