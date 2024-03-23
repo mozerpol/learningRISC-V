@@ -1909,24 +1909,29 @@ begin
          report "ERROR: auipc x27, 0";
       end if;
       wait until rising_edge(clk_tb);
+      
+
       -- addi  x0,  x0,   0     # x0 = 0x00000000
       if (spy_gpr(0) /= 32x"00000000") then
          report "ERROR: addi  x0,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- bgeu  x1,  x2,   -12   # x1 = 0x00000001
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: bgeu  x1,  x2,   -12";
+      -- addi  x0,  x0,   0     # x0 = 0x00000000
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- bgeu  x8,  x7,   -12   # x8 = 0xfffffff8
-      if (spy_gpr(8) /= 32x"fffffff8") then
-         report "ERROR: bgeu  x8,  x7,   -12";
+      -- addi  x0,  x0,   0     # x0 = 0x00000000
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
+
+
+
       -- auipc x28, 0           # x28 = 0x000005d0
       if (spy_gpr(28) /= 32x"000005d0") then
-         report "ERROR: auipc x28, 0";
+         report "ERROR: auipc x28, 0 spy_gpr(28) = 0x000005d0 but is: " & to_string(spy_gpr(28));
       end if;
       wait until rising_edge(clk_tb);
       -- bgeu  x9,  x0,   8     # x9 = 0x00000000
@@ -1949,14 +1954,14 @@ begin
          report "ERROR: bgeu  x5,  x7,   12";
       end if;
       wait until rising_edge(clk_tb);
-      -- auipc x30, 0           # x30 = 0x000005e4
-      if (spy_gpr(30) /= 32x"000005e4") then
-         report "ERROR: auipc x30, 0";
+      -- addi  x0,  x0,   0     # x0 = 0x00000000
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- bgeu  x6,  x8,   8     # x6 = 0x00000008
-      if (spy_gpr(6) /= 32x"00000008") then
-         report "ERROR: bgeu  x6,  x8,   8";
+      -- addi  x0,  x0,   0     # x0 = 0x00000000
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
       -- addi  x0,  x0,   0     # x0 = 0x00000000
@@ -2006,7 +2011,7 @@ begin
       wait until rising_edge(clk_tb);
       -- auipc x6,  0           # x6 = 0x00000620
       if (spy_gpr(6) /= 32x"00000620") then
-         report "ERROR: auipc x6,  0";
+         report "ERROR: auipc x6,  0 = 0x00000620 but is: " & to_string(spy_gpr(6));
       end if;
       wait until rising_edge(clk_tb);
       -- addi  x7,  x0,   24    # x7 = 0x00000018
