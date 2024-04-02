@@ -6,9 +6,11 @@
 
 
 ##### Add waves: #####
-add wave -expand -group mozerpol_DESIGN       -radix bin /mozerpol_tb/inst_mozerpol/i_rst
-add wave         -group mozerpol_DESIGN       -radix bin /mozerpol_tb/inst_mozerpol/i_clk
-add wave         -group mozerpol_DESIGN       -radix bin /mozerpol_tb/inst_mozerpol/o_gpio
+add wave -expand -group testbench         -radix dec /mozerpol_tb/set_test_point
+
+add wave -expand -group mozerpol_DESIGN   -radix bin /mozerpol_tb/inst_mozerpol/i_rst
+add wave         -group mozerpol_DESIGN   -radix bin /mozerpol_tb/inst_mozerpol/i_clk
+add wave         -group mozerpol_DESIGN   -radix bin /mozerpol_tb/inst_mozerpol/o_gpio
 
 add wave         -group GPIO              -radix dec /mozerpol_tb/inst_mozerpol/inst_gpio/i_addr
 add wave         -group GPIO              -radix hex /mozerpol_tb/inst_mozerpol/inst_gpio/i_wdata
