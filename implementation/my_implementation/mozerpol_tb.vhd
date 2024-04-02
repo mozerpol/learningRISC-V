@@ -2,7 +2,7 @@
 -- File          : mozerpol_tb.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : Test for the entire processor (mozerpol entity in 
+-- Description   : Test for the entire processor (mozerpol entity in
 -- mozerpol_design).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -1689,17 +1689,17 @@ begin
       if (spy_gpr(0) /= 32x"00000000") then
          report "ERROR: beq   x0,  x9,   8";
       end if;
-      wait until rising_edge(clk_tb);     
+      wait until rising_edge(clk_tb);
       -- beq   x0,  x9,   12    # x0 = 0x00000000
       if (spy_gpr(0) /= 32x"00000000") then
          report "ERROR: beq   x0,  x9,   12";
       end if;
-      wait until rising_edge(clk_tb);    
+      wait until rising_edge(clk_tb);
       -- auipc x11, 0           # x11 = 0x00000518
       if (spy_gpr(11) /= 32x"00000518") then
          report "ERROR: auipc x11, 0";
       end if;
-      wait until rising_edge(clk_tb); 
+      wait until rising_edge(clk_tb);
       -- beq   x0,  x9,   -8    # x0 = 0x00000000
       if (spy_gpr(0) /= 32x"00000000") then
          report "ERROR: beq   x0,  x9,   -8";
@@ -1975,7 +1975,7 @@ begin
          report "ERROR: jal   x1,  4";
       end if;
       wait until rising_edge(clk_tb);
-      -- jal   x2,  4           # x2 = 0x00000604  
+      -- jal   x2,  4           # x2 = 0x00000604
       if (spy_gpr(2) /= 32x"00000604") then
          report "ERROR: jal   x2,  4";
       end if;
@@ -1985,17 +1985,17 @@ begin
          report "ERROR: jal   x3,  8";
       end if;
       wait until rising_edge(clk_tb);
-      -- jal   x5,  -4          # x5 = 0x00000610 
+      -- jal   x5,  -4          # x5 = 0x00000610
       if (spy_gpr(5) /= 32x"00000610") then
          report "ERROR: jal   x5,  -4";
       end if;
-      wait until rising_edge(clk_tb);  
-      -- jal   x4,  8           # x4 = 0x0000060c  
+      wait until rising_edge(clk_tb);
+      -- jal   x4,  8           # x4 = 0x0000060c
       if (spy_gpr(4) /= 32x"0000060c") then
          report "ERROR: jal   x4,  8";
       end if;
       wait until rising_edge(clk_tb);
-      -- auipc x6,  0           # x6 = 0x00000610 
+      -- auipc x6,  0           # x6 = 0x00000610
       if (spy_gpr(6) /= 32x"00000610") then
          report "ERROR: auipc x6,  0 = 0x00000610";
          -- report "ERROR: auipc x6,  0 = 0x00000610 but is: " & to_string(spy_gpr(6));
@@ -2070,7 +2070,7 @@ begin
       if (spy_gpr(18) /= 32x"00000648") then
          report "ERROR: jalr  x18, x0,  1612";
       end if;
-      wait until rising_edge(clk_tb);     
+      wait until rising_edge(clk_tb);
       -- auipc x19, 0           # x19 = 0x0000064c
       if (spy_gpr(19) /= 32x"0000064c") then
          report "ERROR: auipc x19, 0";
@@ -2131,7 +2131,7 @@ begin
          report "ERROR: addi  x9,  x9,   0x678";
       end if;
       wait until rising_edge(clk_tb);
-      
+
       wait for 10 ns;
       stop(2);
    end process p_tb;
