@@ -1675,13 +1675,6 @@ begin
          report "ERROR: addi  x9,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      
-      
-          
-      
-      -- CHECK FROM HERE
-      
-      
       -- beq   x3,  x4,   8     # x3 = 0xffffffff
       if (spy_gpr(3) /= 32x"ffffffff") then
          report "ERROR: beq   x3,  x4,   8";
@@ -1712,9 +1705,6 @@ begin
          report "ERROR: beq   x0,  x9,   -8";
       end if;
       wait until rising_edge(clk_tb);
-      
-      
-      
       -- beq   x5,  x7,   8     # x5 = 0x00000004
       if (spy_gpr(5) /= 32x"00000004") then
          report "ERROR: beq   x5,  x7,   8";
@@ -1885,43 +1875,36 @@ begin
          report "ERROR: bltu  x7,  x8,   12";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 1; ------------------------------------- do tego momentu ok
       -- auipc x25, 0           # x25 = 0x000005a8
       if (spy_gpr(25) /= 32x"000005a8") then
          report "ERROR: auipc x25, 0";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 2;
       -- bltu  x1,  x2,   8     # x1 = 0x00000001
       if (spy_gpr(1) /= 32x"00000001") then
          report "ERROR: bltu  x1,  x2,   8";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 3;
       -- bltu  x5,  x7,   16    # x5 = 0x00000004
       if (spy_gpr(5) /= 32x"00000004") then
          report "ERROR: bltu  x5,  x7,   16";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 4;
       -- bltu  x9,  x0,   12    # x9 = 0x00000000
       if (spy_gpr(9) /= 32x"00000000") then
          report "ERROR: bltu  x9,  x0,   12";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 5;
       -- auipc x26, 0           # x26 = 0x000005b8
       if (spy_gpr(26) /= 32x"000005b8") then
          report "ERROR: auipc x26, 0";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 6;
       -- bltu  x4,  x3,   -12   # x4 = 0x000000ff
       if (spy_gpr(4) /= 32x"000000ff") then
          report "ERROR: bltu  x4,  x3,   -12";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 7; ------------------------------------ do tego momentu
       -- auipc x27, 0           # x27 = 0x000005c0
       if (spy_gpr(27) /= 32x"000005c0") then
          report "ERROR: auipc x27, 0";
@@ -1957,7 +1940,6 @@ begin
          report "ERROR: addi  x0,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-            set_test_point <= 8; --------------------- 
       -- auipc x29, 0           # x29 = 0x000005dc
       if (spy_gpr(29) /= 32x"000005dc") then
          report "ERROR: auipc x29, 0";
@@ -1998,12 +1980,12 @@ begin
          report "ERROR: jal   x2,  4";
       end if;
       wait until rising_edge(clk_tb);
-      -- jal   x3,  8           # x3 = 0x00000608  -- 0x008001ef
+      -- jal   x3,  8           # x3 = 0x00000608
       if (spy_gpr(3) /= 32x"00000608") then
          report "ERROR: jal   x3,  8";
       end if;
       wait until rising_edge(clk_tb);
-      -- jal   x5,  -4          # x5 = 0x00000610  -- 0xffdff2ef
+      -- jal   x5,  -4          # x5 = 0x00000610 
       if (spy_gpr(5) /= 32x"00000610") then
          report "ERROR: jal   x5,  -4";
       end if;
@@ -2013,7 +1995,7 @@ begin
          report "ERROR: jal   x4,  8";
       end if;
       wait until rising_edge(clk_tb);
-      -- auipc x6,  0           # x6 = 0x00000610   -- 0x00000317
+      -- auipc x6,  0           # x6 = 0x00000610 
       if (spy_gpr(6) /= 32x"00000610") then
          report "ERROR: auipc x6,  0 = 0x00000610";
          -- report "ERROR: auipc x6,  0 = 0x00000610 but is: " & to_string(spy_gpr(6));
@@ -2131,7 +2113,7 @@ begin
       wait until rising_edge(clk_tb);
       -- lui   x8,  0xABCDE     # x8 = 0xabcde000
       if (spy_gpr(8) /= 32x"abcde000") then
-         report "ERROR: lui   x8,  0xABCDE but is: " & to_string(spy_gpr(8));
+         report "ERROR: lui   x8,  0xABCDE";
       end if;
       wait until rising_edge(clk_tb);
       -- addi  x8,  x8,   0xF1  # x8 = 0xabcde0f1
@@ -2139,7 +2121,6 @@ begin
          report "ERROR: addi  x8,  x8,   0xF1";
       end if;
       wait until rising_edge(clk_tb);
-      set_test_point <= 10;
       -- lui   x9,  0x12345     # x9 = 0x12345000
       if (spy_gpr(9) /= 32x"12345000") then
          report "ERROR: lui   x9,  0x12345";
