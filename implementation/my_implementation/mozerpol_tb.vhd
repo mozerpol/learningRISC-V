@@ -14,6 +14,9 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 library std;
    use std.env.all;
+library mozerpol_lib;
+   use mozerpol_lib.all;
+   use mozerpol_lib.mozerpol_pkg.all;
 
 entity mozerpol_tb is
 end mozerpol_tb;
@@ -32,6 +35,8 @@ architecture tb of mozerpol_tb is
    signal clk_tb  : std_logic;
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
    signal set_test_point : integer := 0;
+   type word_t is array (0 to 3) of std_logic_vector(7 downto 0);
+   type ram_t is array (0 to C_RAM_LENGTH - 1) of word_t;
 
 begin
 
@@ -51,6 +56,7 @@ begin
 
    p_tb : process
       alias spy_gpr is <<signal .mozerpol_tb.inst_mozerpol.inst_core.inst_reg_file.gpr: t_gpr >>;
+      alias spy_ram is <<signal .mozerpol_tb.inst_mozerpol.inst_memory.ram: ram_t >>;
    begin
       rst_tb   <= '1';
       wait for 20 ns;
@@ -2156,10 +2162,78 @@ begin
       --                         SB, SH, SW                         --
       --                                                            --
       ----------------------------------------------------------------
+      -- sb   x9,  0(x0)  # 0x00000000 = 0x00000078
+      if (spy_ram(0)(0) /= x"78") then
+         report "ERROR: sb   x9,  0(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb   x9,  1(x0)   # 0x00000000 = 0x00007878
+      if (spy_ram(0)(1) /= x"78") then
+         report "ERROR: sb   x9,  1(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb   x9,  1(x1)   # 0x00000000 = 0x00787878
+      if (spy_ram(0)(2) /= x"78") then
+         report "ERROR: sb   x9,  1(x1)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sb   x9,  1(x2)   # 0x00000000 = 0x78787878
+      if (spy_ram(0)(3) /= x"78") then
+         report "ERROR: sb   x9,  1(x2)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb   x9,  2(x2)   # 0x00000004 = 0x00000078
+      if (spy_ram(1)(0) /= x"78") then
+         report "ERROR: sb   x9,  2(x2)";
+      end if;
+      wait until rising_edge(clk_tb);       
+      -- sb   x8,  -1(x1)  # 0x00000000 = 0x787878f1
+      if (spy_ram(0)(0) /= x"f1") then
+         report "ERROR: sb   x8,  -1(x1)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sb   x8,  -1(x2)  # 0x00000000 = 0x7878f1f1
+      if (spy_ram(0)(1) /= x"f1") then
+         report "ERROR: sb   x8,  -1(x2)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sb   x8,  -2(x2)  # 0x00000000 = 0x7878f1f1
+      if (spy_ram(0)(0) /= x"f1") then
+         report "ERROR: sb   x8,  -2(x2)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sb   x8,  10(x0)  # 0x00000008 = 0x00f10000
+      if (spy_ram(1)(0) /= x"f1") then
+         report "ERROR: sb   x8,  10(x0)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sb   x8,  16(x1)  # 0x00000010 = 0x0000f100
+      if (spy_ram(4)(1) /= x"f1") then
+         report "ERROR: sb   x8,  16(x1)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sh   x30,  0(x0)  # 0x00000000 = 0x8aef7878
+      if (spy_ram(0)(0) /= x"78") then
+         report "ERROR: sh   x30,  0(x0)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sh   x30,  1(x1)  # 0x00000000 = 0x8aef8aef
+      if (spy_ram(0)(0) /= x"ef") then
+         report "ERROR: sh   x30,  1(x1)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sh   x30,  2(x2)  # 0x00000004 = 0x8aef10e0
+      if (spy_ram(0)(0) /= x"ef") then
+         report "ERROR: sh   x30,  2(x2)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sh   x8,  -1(x1)  # 0x00000000 = 0xf1e08aef
+      if (spy_ram(0)(0) /= x"ef") then
+         report "ERROR: sh   x8,  -1(x1)";
+      end if;
+      wait until rising_edge(clk_tb); 
       
-      
-
-      wait for 10 ns;
+ --     wait for 100 ns;
       stop(2);
    end process p_tb;
 
