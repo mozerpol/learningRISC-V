@@ -23,6 +23,7 @@ add wave         -group RAM               -radix hex /mozerpol_tb/inst_mozerpol/
 add wave         -group RAM               -radix bin /mozerpol_tb/inst_mozerpol/inst_memory/be
 add wave         -group RAM               -radix hex /mozerpol_tb/inst_mozerpol/inst_memory/q
 add wave         -group RAM               -radix hex /mozerpol_tb/inst_mozerpol/inst_memory/ram
+add wave         -group RAM               -radix hex /mozerpol_tb/p_tb/spy_ram
 
 add wave         -group CORE              -radix hex /mozerpol_tb/inst_mozerpol/inst_core/i_core_data_read
 add wave         -group CORE              -radix hex /mozerpol_tb/inst_mozerpol/inst_core/o_core_data_write
