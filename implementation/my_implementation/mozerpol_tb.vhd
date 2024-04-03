@@ -62,7 +62,7 @@ begin
 
       ----------------------------------------------------------------
       --                                                            --
-      -- addi, slti, sltiu, xori, ori, andi, addi, slli, srli, srai --
+      --    addi, slti, sltiu, xori, ori, andi, slli, srli, srai    --
       --                                                            --
       ----------------------------------------------------------------
       -- addi  x1,  x0,   -2048 # x1 = 0xfffff800
@@ -755,6 +755,11 @@ begin
          report "ERROR: srai  x29, x29,  0";
       end if;
       wait until rising_edge(clk_tb);
+      ----------------------------------------------------------------
+      --                                                            --
+      --      ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND      --
+      --                                                            --
+      ----------------------------------------------------------------
       -- add   x30, x0,   x28   # x30 = 0xffffffff
       if (spy_gpr(30) /= 32x"ffffffff") then
          report "ERROR: add   x30, x0,   x28";
@@ -1555,6 +1560,11 @@ begin
          report "ERROR: and   x7,  x7,   x7";
       end if;
       wait until rising_edge(clk_tb);
+      ----------------------------------------------------------------
+      --                                                            --
+      --                         LUI, AUIPC                         --
+      --                                                            --
+      ----------------------------------------------------------------     
       -- auipc x8,  0           # x8 = 0x000004a8
       if (spy_gpr(8) /= 32x"000004a8") then
          report "ERROR: auipc x8,  0";
@@ -1630,6 +1640,11 @@ begin
          report "ERROR: lui   x21, 1";
       end if;
       wait until rising_edge(clk_tb);
+      ----------------------------------------------------------------
+      --                                                            --
+      --              BEQ, BNE, BLT, BGE, BLTU, BGEU                --
+      --                                                            --
+      ----------------------------------------------------------------
       -- addi  x1,  x0,   1     # x1 = 0x00000001
       if (spy_gpr(1) /= 32x"00000001") then
          report "ERROR: addi  x1,  x0,   1";
@@ -1970,6 +1985,11 @@ begin
          report "ERROR: auipc x31, 0";
       end if;
       wait until rising_edge(clk_tb);
+      ----------------------------------------------------------------
+      --                                                            --
+      --                         JAL, JALR                          --
+      --                                                            --
+      ----------------------------------------------------------------
       -- jal   x1,  4           # x1 = 0x00000600
       if (spy_gpr(1) /= 32x"00000600") then
          report "ERROR: jal   x1,  4";
@@ -2131,6 +2151,13 @@ begin
          report "ERROR: addi  x9,  x9,   0x678";
       end if;
       wait until rising_edge(clk_tb);
+      ----------------------------------------------------------------
+      --                                                            --
+      --                         SB, SH, SW                         --
+      --                                                            --
+      ----------------------------------------------------------------
+      
+      
 
       wait for 10 ns;
       stop(2);
