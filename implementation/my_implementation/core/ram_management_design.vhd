@@ -60,20 +60,43 @@ begin
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "1111";
-               o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               --o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
+                 o_waddr <= 0;
+               else
+                 o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               end if;
                o_data         <= i_rs2_data;
                o_raddr        <= 0;
             when C_SH   =>
                o_write_enable <= C_WRITE_ENABLE;
-               o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+              -- o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                o_raddr        <= 0;
+               
+               -- TODO:
+               -- 0. Repeat for all store instructions
+               -- 1. Comment below four lines and unncomment above o_waddr...
+               -- 2. Check result of synthesis
+               -- 3. Uncomment below four lines and comment above o_waddr...
+               -- 4. Check result of synthesis
+               -- 5. Add below four lines above "case i_ram_management_ctrl is"
+               -- 6. Run tests
+               -- 7. Check synthesis results
+               -- 8. Make the best decisiion
+               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
+                 o_waddr <= 0;
+               else
+                 o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               end if;
+               
+               
                if (v_ram_address(1 downto 0) = "00") then
                   o_byte_enable        <= "0011";
                   o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
                   o_data(31 downto 16) <= (others => '0');
                elsif (v_ram_address(1 downto 0) = "10") then
                   o_byte_enable        <= "1100";
-                   o_data(15 downto 0) <= (others => '0');
+                  o_data(15 downto 0)  <= (others => '0');
                   o_data(31 downto 16) <= i_rs2_data(15 downto 0);
                else
                   o_byte_enable        <= "0000";
@@ -128,7 +151,7 @@ begin
    end process p_ram_management;
 
    p_reg_file : process(all)
-      variable v_ram_address : std_logic_vector(31 downto 0);
+      variable v_ram_address : std_logic_vector(31 downto 0); -- Change to v_reg_file_address and add to waveforms
    begin
       if (i_rst = '1') then
          o_rd_data         <= (others => '0');
