@@ -64,7 +64,7 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
-      report "===========GPR===========: " & to_string(spy_gpr(1));
+      -- report "GPR(1): " & to_string(spy_gpr(1));
 
       ----------------------------------------------------------------
       --                                                            --
@@ -2203,7 +2203,7 @@ begin
       end if;
       wait until rising_edge(clk_tb); 
       -- sb   x8,  10(x0)  # 0x00000008 = 0x00f10000
-      if (spy_ram(1)(0) /= x"f1") then
+      if (spy_ram(2)(2) /= x"f1") then
          report "ERROR: sb   x8,  10(x0)";
       end if;
       wait until rising_edge(clk_tb); 
@@ -2213,27 +2213,66 @@ begin
       end if;
       wait until rising_edge(clk_tb); 
       -- sh   x30,  0(x0)  # 0x00000000 = 0x8aef7878
-      if (spy_ram(0)(0) /= x"78") then
+      if (spy_ram(0)(0) /= x"8a" or spy_ram(0)(1) /= x"ef") then
          report "ERROR: sh   x30,  0(x0)";
       end if;
       wait until rising_edge(clk_tb); 
       -- sh   x30,  1(x1)  # 0x00000000 = 0x8aef8aef
-      if (spy_ram(0)(0) /= x"ef") then
+      if (spy_ram(0)(2) /= x"8a" or spy_ram(0)(3) /= x"ef") then
          report "ERROR: sh   x30,  1(x1)";
       end if;
       wait until rising_edge(clk_tb);
       -- sh   x30,  2(x2)  # 0x00000004 = 0x8aef10e0
-      if (spy_ram(0)(0) /= x"ef") then
+      if (spy_ram(1)(0) /= x"8a" or spy_ram(1)(1) /= x"ef") then
          report "ERROR: sh   x30,  2(x2)";
       end if;
       wait until rising_edge(clk_tb); 
       -- sh   x8,  -1(x1)  # 0x00000000 = 0xf1e08aef
-      if (spy_ram(0)(0) /= x"ef") then
+      if (spy_ram(0)(0) /= x"f1" or spy_ram(0)(1) /= x"e0") then
          report "ERROR: sh   x8,  -1(x1)";
       end if;
       wait until rising_edge(clk_tb); 
+      -- sh   x30,  -2(x2) # 0x00000000 = 0x8aef8aef       
+      if (spy_ram(0)(0) /= x"8a" or spy_ram(0)(1) /= x"ef") then
+         report "ERROR: sh   x30,  -2(x2)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sh   x30,  10(x0) # 0x00000008 = 0x93018aef  
+      if (spy_ram(2)(2) /= x"8a" or spy_ram(2)(3) /= x"ef") then
+         report "ERROR: sh   x30,  10(x0)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sh   x30,  16(x2) # 0x00000010 = 0x93f18aef
+      if (spy_ram(4)(2) /= x"8a" or spy_ram(4)(3) /= x"ef") then
+         report "ERROR: sh   x30,  16(x2)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sw   x7,  0(x0)   # 0x00000000 = 0x00fcffff
+      if (spy_ram(0)(0) /= x"00" or spy_ram(0)(1) /= x"fc" or
+      spy_ram(0)(2) /= x"ff" or spy_ram(0)(3) /= x"ff") then
+         report "ERROR: sw   x7,  0(x0)";
+      end if;
+      wait until rising_edge(clk_tb);       
+      -- sw   x7,  2(x2)   # 0x00000004 = 0x00fcffff
+      if (spy_ram(1)(0) /= x"00" or spy_ram(1)(1) /= x"fc" or
+      spy_ram(1)(2) /= x"ff" or spy_ram(1)(3) /= x"ff") then
+         report "ERROR: sw   x7,  2(x2)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sw   x8,  -1(x1)  # 0x00000000 = 0xf1e0cdab
+      if (spy_ram(0)(0) /= x"f1" or spy_ram(0)(1) /= x"e0" or
+      spy_ram(0)(2) /= x"cd" or spy_ram(0)(3) /= x"ab") then
+         report "ERROR: sw   x8,  -1(x1)";
+      end if;
+      wait until rising_edge(clk_tb); 
+      -- sw   x7,  -2(x2)  # 0x00000000 = 0x00fcffff
+      if (spy_ram(0)(0) /= x"00" or spy_ram(0)(1) /= x"fc" or
+      spy_ram(0)(2) /= x"ff" or spy_ram(0)(3) /= x"ff") then
+         report "ERROR: sw   x7,  -2(x2)";
+      end if;
+      wait until rising_edge(clk_tb); 
       
- --     wait for 100 ns;
+      wait for 100 ns;
       stop(2);
    end process p_tb;
 
