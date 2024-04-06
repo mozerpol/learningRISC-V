@@ -2,7 +2,7 @@
 -- File          : ram_management_design.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : 
+-- Description   :
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ begin
                o_write_enable <= C_WRITE_ENABLE;
               -- o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                o_raddr        <= 0;
-               
+
                -- TODO:
                -- 0. Repeat for all store instructions
                -- 1. Comment below four lines and unncomment above o_waddr...
@@ -88,8 +88,8 @@ begin
                else
                  o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                end if;
-               
-               
+
+
                if (v_ram_address(1 downto 0) = "00") then
                   o_byte_enable        <= "0011";
                   o_data(15 downto 0)  <= i_rs2_data(15 downto 0);
