@@ -2311,27 +2311,46 @@ begin
          report "ERROR: lb    x13,  15(x3)";
       end if;
       wait until rising_edge(clk_tb);
-      -- lh    x14,   0(x2)     # x15 = 0xffffffff
+      -- lh    x14,   0(x2)     # x14 = 0xffffffff
       if (spy_gpr(14) /= 32x"ffffffff") then
          report "ERROR: lh    x14,   0(x2)";
       end if;
       wait until rising_edge(clk_tb);
-      -- lh    x15,   10(x0)    # x16 = 0xffffef8a
+      -- lh    x15,   10(x0)    # x15 = 0xffffef8a
       if (spy_gpr(15) /= 32x"ffffef8a") then
          report "ERROR: lh    x15,   10(x0)";
       end if;
       wait until rising_edge(clk_tb);
-      -- lh    x16,   -2(x10)   # x18 = 0xffffffff
+      -- lh    x16,   -2(x10)   # x16 = 0xffffffff
       if (spy_gpr(16) /= 32x"ffffffff") then
          report "ERROR: lh    x16,   -2(x10)";
       end if;
       wait until rising_edge(clk_tb);
-      -- lh    x17,   4(x3)     # x19 = 0xfffffc00
+      -- lh    x17,   4(x3)     # x17 = 0xfffffc00
       if (spy_gpr(17) /= 32x"fffffc00") then
          report "ERROR: lh    x17,   4(x3)";
       end if;
       wait until rising_edge(clk_tb);
-      
+      -- lw    x18,   2(x2)     # x18 = 0xfffffc00
+      if (spy_gpr(18) /= 32x"fffffc00") then
+         report "ERROR: lw    x18,   2(x2)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lw    x19,   0(x10)    # x19 = 0xfffffc00
+      if (spy_gpr(19) /= 32x"fffffc00") then
+         report "ERROR: lw    x19,   0(x10)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lw    x20,   -4(x10)   # x20 = 0xfffffc00
+      if (spy_gpr(20) /= 32x"fffffc00") then
+         report "ERROR: lw    x20,   -4(x10)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lw    x21,   4(x3)     # x21 = 0xfffffc00
+      if (spy_gpr(21) /= 32x"fffffc00") then
+         report "ERROR: lw    x21,   4(x3)";
+      end if;
+      wait until rising_edge(clk_tb);
       
       wait for 100 ns;
       stop(2);
