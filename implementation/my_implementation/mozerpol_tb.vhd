@@ -2271,7 +2271,48 @@ begin
          report "ERROR: sw   x7,  -2(x2)";
       end if;
       wait until rising_edge(clk_tb);
-
+      ----------------------------------------------------------------
+      --                                                            --
+      --                         LB, LH, LW                         --
+      --                                                            --
+      ----------------------------------------------------------------
+      -- lb    x3,   0(x1)      # x0 = 0xfffffffc
+      if (spy_gpr(3) /= 32x"fffffffc") then
+         report "ERROR: lb    x3,   0(x1)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x4,   0(x2)      # x4 = 0xffffffff
+      if (spy_gpr(4) /= 32x"ffffffff") then
+         report "ERROR: lb    x4,   0(x2)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x5,   11(x0)     # x5 = 0xffffffef
+      if (spy_gpr(5) /= 32x"ffffffef") then
+         report "ERROR: lb    x5,   11(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x7,   -1(x2)     # x7 = 0xfffffffc
+      if (spy_gpr(7) /= 32x"fffffffc") then
+         report "ERROR: lb    x7,   -1(x2)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x8,   -2(x10)    # x8 = 0xffffffff
+      if (spy_gpr(8) /= 32x"ffffffff") then
+         report "ERROR: lb    x8,   -2(x10)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x12,  4(x3)      # x12 = 0x00000000
+      if (spy_gpr(12) /= 32x"00000000") then
+         report "ERROR: lb    x12,  4(x3)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x13,  15(x3)     # x13 = 0xffffffef
+      if (spy_gpr(13) /= 32x"ffffffef") then
+         report "ERROR: lb    x13,  15(x3)";
+      end if;
+      wait until rising_edge(clk_tb);
+      
+      
       wait for 100 ns;
       stop(2);
    end process p_tb;
