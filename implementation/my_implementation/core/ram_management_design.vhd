@@ -135,8 +135,24 @@ begin
                   o_byte_enable        <= "0000";
                end if;
             when C_LW | C_LH | C_LHU | C_LB | C_LBU  =>
+               -- TODO:
+               -- 0. Repeat for all store instructions
+               -- 1. Comment below four lines and unncomment above o_waddr...
+               -- 2. Check result of synthesis
+               -- 3. Uncomment below four lines and comment above o_waddr...
+               -- 4. Check result of synthesis
+               -- 5. Add below four lines above "case i_ram_management_ctrl is"
+               -- 6. Run tests
+               -- 7. Check synthesis results
+               -- 8. Make the best decisiion
+               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
+                 o_raddr <= 0;
+               else
+                 o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               end if;
+               
                o_write_enable <= C_READ_ENABLE;
-               o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               --o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                o_waddr        <= 0;
                o_byte_enable  <= "0000";
                o_data         <= (others => '0');
@@ -162,17 +178,22 @@ begin
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
             when C_LH  =>
-               if (i_data_from_ram(15) = '1') then
-                  o_rd_data(31 downto 16) <= 16x"ffff";
-               else
-                  o_rd_data(31 downto 16) <= 16x"0000";
-               end if;
                if (v_ram_address(1 downto 0) = "00") then
+                  if (i_data_from_ram(15) = '1') then
+                     o_rd_data(31 downto 16)  <= 16x"ffff";
+                  else
+                     o_rd_data(31 downto 16)  <= 16x"0000";
+                  end if;
                   o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
                elsif (v_ram_address(1 downto 0) = "10") then
+                  if (i_data_from_ram(31) = '1') then
+                     o_rd_data(31 downto 16)  <= 16x"ffff";
+                  else
+                     o_rd_data(31 downto 16)  <= 16x"0000";
+                  end if;
                   o_rd_data(15 downto 0)  <= i_data_from_ram(31 downto 16);
                else
-                  o_rd_data(15 downto 0)  <= (others => '0');
+                  o_rd_data               <= (others => '0');
                end if;
             when C_LHU =>
                o_rd_data(31 downto 16) <= 16x"0000";
@@ -184,21 +205,36 @@ begin
                   o_rd_data(15 downto 0)  <= (others => '0');
                end if;
             when C_LB  =>
-               if (i_data_from_ram(7) = '1') then
-                  o_rd_data(31 downto 8)  <= 24x"ffffff";
-               else
-                  o_rd_data(31 downto 8)  <= 24x"000000";
-               end if;
                if (v_ram_address(1 downto 0) = "00") then
+                  if (i_data_from_ram(7) = '1') then
+                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                  else
+                     o_rd_data(31 downto 8)  <= 24x"000000";
+                  end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
                elsif (v_ram_address(1 downto 0) = "01") then
+                  if (i_data_from_ram(15) = '1') then
+                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                  else
+                     o_rd_data(31 downto 8)  <= 24x"000000";
+                  end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
                elsif (v_ram_address(1 downto 0) = "10") then
+                  if (i_data_from_ram(23) = '1') then
+                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                  else
+                     o_rd_data(31 downto 8)  <= 24x"000000";
+                  end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
                elsif (v_ram_address(1 downto 0) = "11") then
+                  if (i_data_from_ram(31) = '1') then
+                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                  else
+                     o_rd_data(31 downto 8)  <= 24x"000000";
+                  end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                else
-                  o_rd_data(7 downto 0)   <= (others => '0');
+                  o_rd_data               <= (others => '0');
                end if;
             when C_LBU =>
                o_rd_data(31 downto 8)  <= 24x"000000";
