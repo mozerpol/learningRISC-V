@@ -38,7 +38,9 @@ begin
          -- to write to RAM (sw, sh, sb) to the C_MMIO_ADDR_GPIO address and the
          -- data that would be written to RAM is assigned to GPIO. Example of
          -- assigning zeros to GPIO:
-         -- sb x0, C_MMIO_ADDR_GPIO
+         -- sb x0, C_MMIO_ADDR_GPIO*4-1
+         -- For C_MMIO_ADDR_GPIO = 64 will be:
+         -- sb x0, 255(x0)
          if (i_addr = C_MMIO_ADDR_GPIO-1) then
             -- Last 8 bits from wdata vector are mapped
             o_gpio(0) <= i_wdata(24);
