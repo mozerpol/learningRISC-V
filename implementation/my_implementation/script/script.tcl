@@ -6,84 +6,84 @@ set module        "mozerpol"
 # s_add_external_libs {} {
 #    set hdl_dir               "directory/to/library"
 #    set library_name          "library_name"
-#    vcom -2008 -quiet -work   $library_name $hdl_dir/file1.vhd
-#    vcom -2008 -quiet -work   $library_name $hdl_dir/file2.vhd
+#    vcom -2008 -cover bcest -quiet -work   $library_name $hdl_dir/file1.vhd
+#    vcom -2008 -cover bcest -quiet -work   $library_name $hdl_dir/file2.vhd
 #                            .
 #                            .
 #                            .
-#    vcom -2008 -quiet -work   $library_name $hdl_dir/file.vhd
+#    vcom -2008 -cover bcest -quiet -work   $library_name $hdl_dir/file.vhd
 # }
 
 
 proc s_add_external_libs {} {
    set hdl_dir                "../core"
    set library_name           "opcodes"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/opcodes.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/opcodes.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "control_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/control_pkg.vhd
-   vcom -2008 -quiet -work    $library_name $hdl_dir/control_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/control_pkg.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/control_design.vhd
 
 
    set hdl_dir                "../peripherals"
    set library_name           "ram_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/ram.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/ram.vhd
 
 
    set hdl_dir                "../peripherals"
    set library_name           "gpio_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/gpio_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/gpio_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "alu_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/alu_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/alu_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "alu_mux_1_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "alu_mux_2_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhd
 
    set hdl_dir                "../core"
    set library_name           "branch_instructions_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "decoder_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/decoder_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/decoder_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "instruction_memory_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/rom.vhd
-   vcom -2008 -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/rom.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "program_counter_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "reg_file_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
 
    set hdl_dir                "../core"
    set library_name           "ram_management_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/ram_management_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/ram_management_design.vhd
 
 
    set hdl_dir                "../core"
    set library_name           "core_lib"
-   vcom -2008 -quiet -work    $library_name $hdl_dir/core_design.vhd
+   vcom -2008 -cover bcest -quiet -work    $library_name $hdl_dir/core_design.vhd
 }
 
 
@@ -157,7 +157,7 @@ proc s_comp_package_main {} {
     echo "-> Package"
     if {[file exist $package_name.vhd]} {
        echo "OK"
-       vcom -2008 -quiet -work $lib_name $package_name.vhd
+       vcom -2008 -cover bcest -quiet -work $lib_name $package_name.vhd
     } else {
        echo "File $package_name not found"
     }
@@ -168,7 +168,7 @@ proc s_comp_design_main {} {
     echo "-> Design"
     if {[file exist $design_name.vhd]} {
        echo "OK"
-       vcom -2008 -quiet -work $lib_name $design_name.vhd
+       vcom -2008 -cover bcest -quiet -work $lib_name $design_name.vhd
     } else {
        return "File $design_name not found, stop script"
     }
@@ -189,7 +189,7 @@ proc s_load_waves {} {
     global waveforms
     echo "----> Load waveforms:"
     if {[file exist waveforms.do]} {
-       vsim -voptargs=+acc $waveforms
+       vsim -coverage -voptargs=+acc $waveforms
        # voptargs=+acc - Apply full visibility to all modules, Questa need this, may
        # in Modelsim can delete
        view wave -undock -title wave_TOP
