@@ -27,12 +27,15 @@ architecture tb of mozerpol_tb is
    component mozerpol is
    port (
       i_rst       : in std_logic;
-      i_clk       : in std_logic
+      i_clk       : in std_logic;
+      o_gpio      : out std_logic_vector(3 downto 0)
    );
    end component mozerpol;
 
+
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
+   signal gpio_tb : std_logic_vector(3 downto 0);
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
    signal set_test_point : integer := 0;
    type word_t is array (0 to 3) of std_logic_vector(7 downto 0);
@@ -43,7 +46,8 @@ begin
    inst_mozerpol : component mozerpol
    port map (
       i_rst       => rst_tb,
-      i_clk       => clk_tb
+      i_clk       => clk_tb,
+      o_gpio      => gpio_tb
    );
 
    p_clk : process
@@ -2351,7 +2355,77 @@ begin
          report "ERROR: lw    x21,   4(x3)";
       end if;
       wait until rising_edge(clk_tb);
-      
+      ----------------------------------------------------------------
+      --                                                            --
+      --                            GPIO                            --
+      --                                                            --
+      ----------------------------------------------------------------
+      -- addi  x1,  x0,   1     # x1 = 0x00000001
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: addi  x1,  x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x2,  x0,   2     # x2 = 0x00000002
+      if (spy_gpr(2) /= 32x"00000002") then
+         report "ERROR: addi  x2,  x0,   2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x3,  x0,   4     # x3 = 0x00000004
+      if (spy_gpr(3) /= 32x"00000004") then
+         report "ERROR: addi  x3,  x0,   4";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x4,  x0,   8     # x4 = 0x00000008
+      if (spy_gpr(4) /= 32x"00000008") then
+         report "ERROR: addi  x4,  x0,   8";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x5,  x0,   0xf   # x5 = 0x0000000f
+      if (spy_gpr(5) /= 32x"0000000f") then
+         report "ERROR: addi  x5,  x0,   0xf";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x6,  x0,   251   # x6 = 0x000000fb
+      if (spy_gpr(6) /= 32x"000000fb") then
+         report "ERROR: addi  x6,  x0,   251";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x0,  255(x0)     # gpio = 0000  
+      if (gpio_tb /= "0000") then
+         report "ERROR: sb    x0,  255(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x1,  255(x0)     # gpio = 0001
+      if (gpio_tb /= "0001") then
+         report "ERROR: sb    x1,  255(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x2,  4(x6)       # gpio = 0010 
+      if (gpio_tb /= "0010") then
+         report "ERROR: sb    x2,  4(x6)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x3,  259(x7)     # gpio = 0100 
+      if (gpio_tb /= "0100") then
+         report "ERROR: sb    x3,  259(x7)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x4,  255(x0)     # gpio = 1000 
+      if (gpio_tb /= "1000") then
+         report "ERROR: sb    x4,  255(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x5,  255(x0)     # gpio = 1111
+      if (gpio_tb /= "1111") then
+         report "ERROR: sb    x5,  255(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x0,  255(x0)     # gpio = 0000
+      if (gpio_tb /= "0000") then
+         report "ERROR: sb    x0,  255(x0)";
+      end if;
+      wait until rising_edge(clk_tb);
+
       wait for 100 ns;
       stop(2);
    end process p_tb;
