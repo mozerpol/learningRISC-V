@@ -104,7 +104,24 @@ begin
                end if;
             when C_SB   =>
                o_write_enable <= C_WRITE_ENABLE;
-               o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+              -- o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               
+               -- TODO:
+               -- 0. Repeat for all store instructions
+               -- 1. Comment below four lines and unncomment above o_waddr...
+               -- 2. Check result of synthesis
+               -- 3. Uncomment below four lines and comment above o_waddr...
+               -- 4. Check result of synthesis
+               -- 5. Add below four lines above "case i_ram_management_ctrl is"
+               -- 6. Run tests
+               -- 7. Check synthesis results
+               -- 8. Make the best decisiion
+               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
+                 o_waddr <= 0;
+               else
+                 o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+               end if;
+               
                o_raddr        <= 0;
                if (v_ram_address(1 downto 0) = "00") then
                   o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
