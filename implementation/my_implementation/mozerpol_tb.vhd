@@ -2425,7 +2425,13 @@ begin
          report "ERROR: sb    x0,  255(x0)";
       end if;
       wait until rising_edge(clk_tb);
-
+      ----------------------------------------------------------------
+      --                                                            --
+      -- Special instructions, behavior check in case of invalid    -- 
+      -- opcode etc.                                                --
+      --                                                            --
+      ----------------------------------------------------------------
+      
       wait for 100 ns;
       stop(2);
    end process p_tb;
