@@ -306,6 +306,118 @@ begin
       --------------
       --   SLTIU  --
       --------------
+      -- sltiu x15, x0,   -2048 # x15 = 0x00000001    
+      if (spy_gpr(5) /= 32x"00000001") then
+         report "ERROR: sltiu x15, x0,   -2048 # x15 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x16, x0,   -511  # x16 = 0x00000001    
+      if (spy_gpr(6) /= 32x"00000001") then
+         report "ERROR: sltiu x16, x0,   -511  # x16 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x17, x0,   -2    # x17 = 0x00000001    
+      if (spy_gpr(7) /= 32x"00000001") then
+         report "ERROR: sltiu x17, x0,   -2    # x17 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x18, x0,   0     # x18 = 0x00000000    
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: sltiu x18, x0,   0     # x18 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x19, x0,   1     # x19 = 0x00000001    
+      if (spy_gpr(9) /= 32x"00000001") then
+         report "ERROR: sltiu x19, x0,   1     # x19 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x20, x0,   511   # x20 = 0x00000001    
+      if (spy_gpr(0) /= 32x"00000001") then
+         report "ERROR: sltiu x20, x0,   511   # x20 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x21, x0,   2047  # x21 = 0x00000001    
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x0,   2047  # x21 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x15, x7,   -2048 # x15 = 0x00000001    
+      if (spy_gpr(5) /= 32x"00000001") then
+         report "ERROR: sltiu x15, x7,   -2048 # x15 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x16, x1,   -511  # x16 = 0x00000000    
+      if (spy_gpr(6) /= 32x"00000000") then
+         report "ERROR: sltiu x16, x1,   -511  # x16 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x17, x19,  -2    # x17 = 0x00000001    
+      if (spy_gpr(7) /= 32x"00000001") then
+         report "ERROR: sltiu x17, x19,  -2    # x17 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x18, x18,  0     # x18 = 0x00000000    
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: sltiu x18, x18,  0     # x18 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x19, x17,  1     # x19 = 0x00000000    
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: sltiu x19, x17,  1     # x19 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x20, x6,   511   # x20 = 0x00000000    
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: sltiu x20, x6,   511   # x20 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x21, x15,  2047  # x21 = 0x00000001    
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x15,  2047  # x21 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x21, x21,  2047  # x21 = 0x00000001    
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x21,  2047  # x21 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x21, x21,  -2048 # x21 = 0x00000001    
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x21,  -2048 # x21 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   XORI   --
       --------------
