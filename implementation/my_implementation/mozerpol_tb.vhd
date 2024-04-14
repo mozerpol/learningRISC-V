@@ -421,6 +421,118 @@ begin
       --------------
       --   XORI   --
       --------------
+      -- xori  x22, x0,   -2048 # x22 = 0xfffff800    
+      if (spy_gpr(2) /= 32x"fffff800") then
+         report "ERROR: xori  x22, x0,   -2048 # x22 = 0xfffff800 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x23, x0,   -511  # x23 = 0xfffffe01    
+      if (spy_gpr(3) /= 32x"fffffe01") then
+         report "ERROR: xori  x23, x0,   -511  # x23 = 0xfffffe01 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x24, x0,   -2    # x24 = 0xfffffffe    
+      if (spy_gpr(4) /= 32x"fffffffe") then
+         report "ERROR: xori  x24, x0,   -2    # x24 = 0xfffffffe | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x25, x0,   0     # x25 = 0x00000000    
+      if (spy_gpr(5) /= 32x"00000000") then
+         report "ERROR: xori  x25, x0,   0     # x25 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x26, x0,   1     # x26 = 0x00000001    
+      if (spy_gpr(6) /= 32x"00000001") then
+         report "ERROR: xori  x26, x0,   1     # x26 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x27, x0,   511   # x27 = 0x000001ff    
+      if (spy_gpr(7) /= 32x"000001ff") then
+         report "ERROR: xori  x27, x0,   511   # x27 = 0x000001ff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x0,   2047  # x28 = 0x000007ff    
+      if (spy_gpr(8) /= 32x"000007ff") then
+         report "ERROR: xori  x28, x0,   2047  # x28 = 0x000007ff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x22, x28,  -2048 # x22 = 0xffffffff    
+      if (spy_gpr(2) /= 32x"ffffffff") then
+         report "ERROR: xori  x22, x28,  -2048 # x22 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x23, x27,  -511  # x23 = 0xfffffffe    
+      if (spy_gpr(3) /= 32x"fffffffe") then
+         report "ERROR: xori  x23, x27,  -511  # x23 = 0xfffffffe | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x24, x26,  -2    # x24 = 0xffffffff    
+      if (spy_gpr(4) /= 32x"ffffffff") then
+         report "ERROR: xori  x24, x26,  -2    # x24 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x25, x25,  0     # x25 = 0x00000000    
+      if (spy_gpr(5) /= 32x"00000000") then
+         report "ERROR: xori  x25, x25,  0     # x25 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x26, x24,  1     # x26 = 0xfffffffe    
+      if (spy_gpr(6) /= 32x"fffffffe") then
+         report "ERROR: xori  x26, x24,  1     # x26 = 0xfffffffe | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x27, x23,  511   # x27 = 0xfffffe01    
+      if (spy_gpr(7) /= 32x"fffffe01") then
+         report "ERROR: xori  x27, x23,  511   # x27 = 0xfffffe01 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x22,  2047  # x28 = 0xfffff800    
+      if (spy_gpr(8) /= 32x"fffff800") then
+         report "ERROR: xori  x28, x22,  2047  # x28 = 0xfffff800 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x28,  2047  # x28 = 0xffffffff    
+      if (spy_gpr(8) /= 32x"ffffffff") then
+         report "ERROR: xori  x28, x28,  2047  # x28 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x28,  -2048 # x28 = 0x000007ff    
+      if (spy_gpr(8) /= 32x"000007ff") then
+         report "ERROR: xori  x28, x28,  -2048 # x28 = 0x000007ff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   ORI    --
       --------------
