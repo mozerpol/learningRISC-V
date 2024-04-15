@@ -651,6 +651,118 @@ begin
       --------------
       --   ANDI   --
       --------------
+      -- andi  x5,  x0,   -2048 # x5 = 0x00000000    
+      if (spy_gpr(5) /= 32x"00000000") then
+         report "ERROR: andi  x5,  x0,   -2048 # x5 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x6,  x0,   -511  # x6 = 0x00000000    
+      if (spy_gpr(6) /= 32x"00000000") then
+         report "ERROR: andi  x6,  x0,   -511  # x6 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x7,  x0,   -2    # x7 = 0x00000000    
+      if (spy_gpr(7) /= 32x"00000000") then
+         report "ERROR: andi  x7,  x0,   -2    # x7 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x8,  x0,   0     # x8 = 0x00000000    
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: andi  x8,  x0,   0     # x8 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x9,  x0,   1     # x9 = 0x00000000    
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: andi  x9,  x0,   1     # x9 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x10, x0,   511   # x10 = 0x00000000    
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: andi  x10, x0,   511   # x10 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x0,   2047  # x11 = 0x00000000    
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: andi  x11, x0,   2047  # x11 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x5,  x4,   -2048 # x5 = 0xfffff800    
+      if (spy_gpr(5) /= 32x"fffff800") then
+         report "ERROR: andi  x5,  x4,   -2048 # x5 = 0xfffff800 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x6,  x10,  -511  # x6 = 0x00000000    
+      if (spy_gpr(6) /= 32x"00000000") then
+         report "ERROR: andi  x6,  x10,  -511  # x6 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x7,  x28,  -2    # x7 = 0x000007fe    
+      if (spy_gpr(7) /= 32x"000007fe") then
+         report "ERROR: andi  x7,  x28,  -2    # x7 = 0x000007fe | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x8,  x27,  0     # x8 = 0x00000000    
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: andi  x8,  x27,  0     # x8 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x9,  x7,   1     # x9 = 0x00000000    
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: andi  x9,  x7,   1     # x9 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x10, x6,   511   # x10 = 0x00000000    
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: andi  x10, x6,   511   # x10 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x5,   2047  # x11 = 0x00000000    
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: andi  x11, x5,   2047  # x11 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x11,  2047  # x11 = 0x00000000    
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: andi  x11, x11,  2047  # x11 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x11,  -2048 # x11 = 0x00000000    
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: andi  x11, x11,  -2048 # x11 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   SLLI   --
       --------------
