@@ -1879,6 +1879,118 @@ begin
       --------------
       --   SRA    --
       --------------
+      -- sra   x17, x4,   x6    # x17 = 0x0000e00f    
+      if (spy_gpr(7) /= 32x"0000e00f") then
+         report "ERROR: sra   x17, x4,   x6    # x17 = 0x0000e00f | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x18, x6,   x4    # x18 = 0x00000000    
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: sra   x18, x6,   x4    # x18 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x19, x6,   x8    # x19 = 0x1fd80002    
+      if (spy_gpr(9) /= 32x"1fd80002") then
+         report "ERROR: sra   x19, x6,   x8    # x19 = 0x1fd80002 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x20, x7,   x9    # x20 = 0x00000000    
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: sra   x20, x7,   x9    # x20 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x21, x8,   x19   # x21 = 0x1ffffbe0    
+      if (spy_gpr(1) /= 32x"1ffffbe0") then
+         report "ERROR: sra   x21, x8,   x19   # x21 = 0x1ffffbe0 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x22, x9,   x5    # x22 = 0x00000000    
+      if (spy_gpr(2) /= 32x"00000000") then
+         report "ERROR: sra   x22, x9,   x5    # x22 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x23, x10,  x0    # x23 = 0x00ffffef    
+      if (spy_gpr(3) /= 32x"00ffffef") then
+         report "ERROR: sra   x23, x10,  x0    # x23 = 0x00ffffef | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x17, x6,   x5    # x17 = 0x1fd80002    
+      if (spy_gpr(7) /= 32x"1fd80002") then
+         report "ERROR: sra   x17, x6,   x5    # x17 = 0x1fd80002 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x18, x7,   x11   # x18 = 0x00000000    
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: sra   x18, x7,   x11   # x18 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x19, x8,   x10   # x19 = 0x0000ffff    
+      if (spy_gpr(9) /= 32x"0000ffff") then
+         report "ERROR: sra   x19, x8,   x10   # x19 = 0x0000ffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x20, x9,   x8    # x20 = 0x00000000    
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: sra   x20, x9,   x8    # x20 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x21, x14,  x14   # x21 = 0x003ffbe0    
+      if (spy_gpr(1) /= 32x"003ffbe0") then
+         report "ERROR: sra   x21, x14,  x14   # x21 = 0x003ffbe0 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x22, x15,  x13   # x22 = 0x7f600008    
+      if (spy_gpr(2) /= 32x"7f600008") then
+         report "ERROR: sra   x22, x15,  x13   # x22 = 0x7f600008 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x23, x16,  x3    # x23 = 0x00000000    
+      if (spy_gpr(3) /= 32x"00000000") then
+         report "ERROR: sra   x23, x16,  x3    # x23 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x23, x23,  x23   # x23 = 0x00000000    
+      if (spy_gpr(3) /= 32x"00000000") then
+         report "ERROR: sra   x23, x23,  x23   # x23 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sra   x23, x23,  x23   # x23 = 0x00000000    
+      if (spy_gpr(3) /= 32x"00000000") then
+         report "ERROR: sra   x23, x23,  x23   # x23 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   OR     --
       --------------
