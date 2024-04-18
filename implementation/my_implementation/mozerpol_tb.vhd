@@ -1649,6 +1649,118 @@ begin
       --------------
       --   XOR    --
       --------------
+      -- xor   x3,  x10,  x11   # x3 = 0x001fef82    
+      if (spy_gpr(3) /= 32x"001fef82") then
+         report "ERROR: xor   x3,  x10,  x11   # x3 = 0x001fef82 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x4,  x11,  x10   # x4 = 0x001fef82    
+      if (spy_gpr(4) /= 32x"001fef82") then
+         report "ERROR: xor   x4,  x11,  x10   # x4 = 0x001fef82 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x5,  x14,  x8    # x5 = 0xff000fff    
+      if (spy_gpr(5) /= 32x"ff000fff") then
+         report "ERROR: xor   x5,  x14,  x8    # x5 = 0xff000fff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x6,  x7,   x14   # x6 = 0x80800008    
+      if (spy_gpr(6) /= 32x"80800008") then
+         report "ERROR: xor   x6,  x7,   x14   # x6 = 0x80800008 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x7,  x5,   x8    # x7 = 0xff000000    
+      if (spy_gpr(7) /= 32x"ff000000") then
+         report "ERROR: xor   x7,  x5,   x8    # x7 = 0xff000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x8,  x6,   x0    # x8 = 0x80800008    
+      if (spy_gpr(8) /= 32x"80800008") then
+         report "ERROR: xor   x8,  x6,   x0    # x8 = 0x80800008 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x9,  x0,   x0    # x9 = 0x00000000    
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: xor   x9,  x0,   x0    # x9 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x3,  x6,   x6    # x3 = 0x00000000    
+      if (spy_gpr(3) /= 32x"00000000") then
+         report "ERROR: xor   x3,  x6,   x6    # x3 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x4,  x5,   x11   # x4 = 0x00e00fff    
+      if (spy_gpr(4) /= 32x"00e00fff") then
+         report "ERROR: xor   x4,  x5,   x11   # x4 = 0x00e00fff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x5,  x7,   x10   # x5 = 0x00ffef82    
+      if (spy_gpr(5) /= 32x"00ffef82") then
+         report "ERROR: xor   x5,  x7,   x10   # x5 = 0x00ffef82 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x6,  x11,  x8    # x6 = 0x7f600008    
+      if (spy_gpr(6) /= 32x"7f600008") then
+         report "ERROR: xor   x6,  x11,  x8    # x6 = 0x7f600008 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x7,  x14,  x14   # x7 = 0x00000000    
+      if (spy_gpr(7) /= 32x"00000000") then
+         report "ERROR: xor   x7,  x14,  x14   # x7 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x8,  x10,  x13   # x8 = 0x7fffef82    
+      if (spy_gpr(8) /= 32x"7fffef82") then
+         report "ERROR: xor   x8,  x10,  x13   # x8 = 0x7fffef82 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x9,  x5,   x3    # x9 = 0x00ffef82    
+      if (spy_gpr(9) /= 32x"00ffef82") then
+         report "ERROR: xor   x9,  x5,   x3    # x9 = 0x00ffef82 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x9,  x9,   x9    # x9 = 0x00000000    
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: xor   x9,  x9,   x9    # x9 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xor   x9,  x9,   x9    # x9 = 0x00000000    
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: xor   x9,  x9,   x9    # x9 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   SRL    --
       --------------
