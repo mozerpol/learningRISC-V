@@ -2229,10 +2229,94 @@ begin
       ----------------------------------------------------------------    
   
       --------------
-      --   LUI    --
-      --------------
-      --------------
       --  AUIPC   --
+      --------------
+      -- auipc x8,  0           # x8 = ...    
+      if (spy_gpr(8) /= 32x"8 = ...") then
+         report "ERROR: auipc x8,  0           # x8 = ... | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x9,  0           # x9 = ...    
+      if (spy_gpr(9) /= 32x"9 = ...") then
+         report "ERROR: auipc x9,  0           # x9 = ... | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x10, x9,   x8    # x10 = 0x00000004    
+      if (spy_gpr(0) /= 32x"00000004") then
+         report "ERROR: sub   x10, x9,   x8    # x10 = 0x00000004 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x11, 0           # x11 = ..    
+      if (spy_gpr(1) /= 32x"11 = ..") then
+         report "ERROR: auipc x11, 0           # x11 = .. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x12, 1048575     # x12 = ..    
+      if (spy_gpr(2) /= 32x"12 = ..") then
+         report "ERROR: auipc x12, 1048575     # x12 = .. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x13, x12,  x11   # x13 = 0xfffff004    
+      if (spy_gpr(3) /= 32x"fffff004") then
+         report "ERROR: sub   x13, x12,  x11   # x13 = 0xfffff004 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x14, 0           # x14 = ...    
+      if (spy_gpr(4) /= 32x"14 = ...") then
+         report "ERROR: auipc x14, 0           # x14 = ... | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x15, 2048        # x15 = ...    
+      if (spy_gpr(5) /= 32x"15 = ...") then
+         report "ERROR: auipc x15, 2048        # x15 = ... | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x16, x15, x14    # x16 = 0x00800004    
+      if (spy_gpr(6) /= 32x"00800004") then
+         report "ERROR: sub   x16, x15, x14    # x16 = 0x00800004 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x17, 0           # x17 = ...    
+      if (spy_gpr(7) /= 32x"17 = ...") then
+         report "ERROR: auipc x17, 0           # x17 = ... | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x18, 1           # x18 = ...    
+      if (spy_gpr(8) /= 32x"18 = ...") then
+         report "ERROR: auipc x18, 1           # x18 = ... | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x19, x18, x17    # x19 = 0x00001004    
+      if (spy_gpr(9) /= 32x"00001004") then
+         report "ERROR: sub   x19, x18, x17    # x19 = 0x00001004 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      --------------
+      --   LUI    --
       --------------
       
       ----------------------------------------------------------------
