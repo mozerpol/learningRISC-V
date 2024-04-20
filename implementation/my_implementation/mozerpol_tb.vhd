@@ -2318,7 +2318,55 @@ begin
       --------------
       --   LUI    --
       --------------
-      
+      -- lui   x16, 0           # x16 = 0x00000000    
+      if (spy_gpr(6) /= 32x"00000000") then
+         report "ERROR: lui   x16, 0           # x16 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lui   x17, 1048575     # x17 = 0xfffff000    
+      if (spy_gpr(7) /= 32x"fffff000") then
+         report "ERROR: lui   x17, 1048575     # x17 = 0xfffff000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lui   x18, 524287      # x18 = 0x7ffff000    
+      if (spy_gpr(8) /= 32x"7ffff000") then
+         report "ERROR: lui   x18, 524287      # x18 = 0x7ffff000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lui   x19, 1024        # x19 = 0x00400000    
+      if (spy_gpr(9) /= 32x"00400000") then
+         report "ERROR: lui   x19, 1024        # x19 = 0x00400000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lui   x20, 512         # x20 = 0x00200000    
+      if (spy_gpr(0) /= 32x"00200000") then
+         report "ERROR: lui   x20, 512         # x20 = 0x00200000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lui   x20, 512         # x20 = 0x00200000    
+      if (spy_gpr(0) /= 32x"00200000") then
+         report "ERROR: lui   x20, 512         # x20 = 0x00200000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lui   x21, 1           # x21 = 0x00001000    
+      if (spy_gpr(1) /= 32x"00001000") then
+         report "ERROR: lui   x21, 1           # x21 = 0x00001000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       ----------------------------------------------------------------
       --                                                            --
       --              BEQ, BNE, BLT, BGE, BLTU, BGEU                --
