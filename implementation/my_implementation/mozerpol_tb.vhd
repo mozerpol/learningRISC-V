@@ -2789,6 +2789,125 @@ begin
       --------------
       --   BGE    --
       --------------
+      -- auipc x13, 0           # ... 1.    
+      if (spy_gpr(3) /= 32x"13, 0           # ... 1.") then
+         report "ERROR: auipc x13, 0           # ... 1. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bge   x4,  x3,   loop13# ... 2.    
+      if (spy_gpr(4) /= 32x"3,   loop13# ... 2.") then
+         report "ERROR: bge   x4,  x3,   loop13# ... 2. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x16, 0           # ... 10.    
+      if (spy_gpr(6) /= 32x"16, 0           # ... 10.") then
+         report "ERROR: auipc x16, 0           # ... 10. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x17, x16,  x15   # x17 = 0x000000c8 11.    
+      if (spy_gpr(7) /= 32x"000000c8 11.") then
+         report "ERROR: sub   x17, x16,  x15   # x17 = 0x000000c8 11. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bge   x8,  x7,   loop15# ... 12.    
+      if (spy_gpr(8) /= 32x"7,   loop15# ... 12.") then
+         report "ERROR: bge   x8,  x7,   loop15# ... 12. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000003 13.    
+      if (spy_gpr(1) /= 32x"00000003 13.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000003 13. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bge   x1,  x3,   loop15# ... 14.    
+      if (spy_gpr(1) /= 32x"3,   loop15# ... 14.") then
+         report "ERROR: bge   x1,  x3,   loop15# ... 14. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x14, 0           # ... 3.    
+      if (spy_gpr(4) /= 32x"14, 0           # ... 3.") then
+         report "ERROR: auipc x14, 0           # ... 3. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x15, x14,  x13   # x15 = 0x0000001c 4.    
+      if (spy_gpr(5) /= 32x"0000001c 4.") then
+         report "ERROR: sub   x15, x14,  x13   # x15 = 0x0000001c 4. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bge   x3,  x4,   loop14# ... 5.    
+      if (spy_gpr(3) /= 32x"4,   loop14# ... 5.") then
+         report "ERROR: bge   x3,  x4,   loop14# ... 5. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000001 6.    
+      if (spy_gpr(1) /= 32x"00000001 6.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 6. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bge   x7,  x4,   loop14# ... 7.    
+      if (spy_gpr(7) /= 32x"4,   loop14# ... 7.") then
+         report "ERROR: bge   x7,  x4,   loop14# ... 7. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000002 8.    
+      if (spy_gpr(1) /= 32x"00000002 8.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 8. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bge   x0,  x9,   loop14# ... 9.    
+      if (spy_gpr(0) /= 32x"9,   loop14# ... 9.") then
+         report "ERROR: bge   x0,  x9,   loop14# ... 9. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x18, 0           # ... 15.    
+      if (spy_gpr(8) /= 32x"18, 0           # ... 15.") then
+         report "ERROR: auipc x18, 0           # ... 15. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x12, x18,  x17   # x12 = 0x0000004c 16.    
+      if (spy_gpr(2) /= 32x"0000004c 16.") then
+         report "ERROR: sub   x12, x18,  x17   # x12 = 0x0000004c 16. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x0,   0     # x1 = 0x00000000 17.    
+      if (spy_gpr(1) /= 32x"00000000 17.") then
+         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 17. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   BLTU   --
       --------------
