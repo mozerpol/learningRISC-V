@@ -3132,7 +3132,90 @@ begin
       --------------
       --   JAL    --
       --------------
-
+      -- auipc x12,  0          # ... 1.    
+      if (spy_gpr(2) /= 32x"12,  0          # ... 1.") then
+         report "ERROR: auipc x12,  0          # ... 1. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- jal   x13,  loop22     # ... 2.    
+      if (spy_gpr(3) /= 32x"13,  loop22     # ... 2.") then
+         report "ERROR: jal   x13,  loop22     # ... 2. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000001 6.    
+      if (spy_gpr(1) /= 32x"00000001 6.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 6. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000002 7.    
+      if (spy_gpr(1) /= 32x"00000002 7.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 7. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- jal   x15,  loop24     # ... 8.    
+      if (spy_gpr(5) /= 32x"15,  loop24     # ... 8.") then
+         report "ERROR: jal   x15,  loop24     # ... 8. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000003 3.    
+      if (spy_gpr(1) /= 32x"00000003 3.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000003 3. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000004 4.    
+      if (spy_gpr(1) /= 32x"00000004 4.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000004 4. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- jal   x14,  loop23     # ... 5.    
+      if (spy_gpr(4) /= 32x"14,  loop23     # ... 5.") then
+         report "ERROR: jal   x14,  loop23     # ... 5. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000005 9.    
+      if (spy_gpr(1) /= 32x"00000005 9.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000005 9. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x16, 0           # ...  10.    
+      if (spy_gpr(6) /= 32x"16, 0           # ...  10.") then
+         report "ERROR: auipc x16, 0           # ...  10. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x17, x16,  x15   # x17 = 0x00000010 11.    
+      if (spy_gpr(7) /= 32x"00000010 11.") then
+         report "ERROR: sub   x17, x16,  x15   # x17 = 0x00000010 11. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x0,   0     # x1 = 0x00000000 12.    
+      if (spy_gpr(1) /= 32x"00000000 12.") then
+         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 12. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   JALR   --
       --------------     
