@@ -3594,7 +3594,34 @@ begin
       --------------
       --    LH    --
       --------------
-
+      -- lh    x14, 0(x2)       # x14 = 0xffffffff    
+      if (spy_gpr(4) /= 32x"ffffffff") then
+         report "ERROR: lh    x14, 0(x2)       # x14 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lh    x15, 10(x0)      # x15 = 0xffffef8a    
+      if (spy_gpr(5) /= 32x"ffffef8a") then
+         report "ERROR: lh    x15, 10(x0)      # x15 = 0xffffef8a | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lh    x16, -2(x10)     # x16 = 0xffffffff    
+      if (spy_gpr(6) /= 32x"ffffffff") then
+         report "ERROR: lh    x16, -2(x10)     # x16 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lh    x17, 4(x3)       # x17 = 0xfffffc00    
+      if (spy_gpr(7) /= 32x"fffffc00") then
+         report "ERROR: lh    x17, 4(x3)       # x17 = 0xfffffc00 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --    LW    --
       --------------
