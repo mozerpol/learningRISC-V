@@ -3542,7 +3542,55 @@ begin
       --------------
       --   LB     --
       --------------
-
+      -- lb    x3,  0(x1)       # x3 = 0xfffffffc    
+      if (spy_gpr(3) /= 32x"fffffffc") then
+         report "ERROR: lb    x3,  0(x1)       # x3 = 0xfffffffc | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x4,  0(x2)       # x4 = 0xffffffff    
+      if (spy_gpr(4) /= 32x"ffffffff") then
+         report "ERROR: lb    x4,  0(x2)       # x4 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x5,  11(x0)      # x5 = 0xffffffef    
+      if (spy_gpr(5) /= 32x"ffffffef") then
+         report "ERROR: lb    x5,  11(x0)      # x5 = 0xffffffef | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x7,  -1(x2)      # x7 = 0xfffffffc    
+      if (spy_gpr(7) /= 32x"fffffffc") then
+         report "ERROR: lb    x7,  -1(x2)      # x7 = 0xfffffffc | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x8,  -2(x10)     # x8 = 0xffffffff    
+      if (spy_gpr(8) /= 32x"ffffffff") then
+         report "ERROR: lb    x8,  -2(x10)     # x8 = 0xffffffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x12, 4(x3)       # x12 = 0x00000000    
+      if (spy_gpr(2) /= 32x"00000000") then
+         report "ERROR: lb    x12, 4(x3)       # x12 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lb    x13, 15(x3)      # x13 = 0xffffffef    
+      if (spy_gpr(3) /= 32x"ffffffef") then
+         report "ERROR: lb    x13, 15(x3)      # x13 = 0xffffffef | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --    LH    --
       --------------
