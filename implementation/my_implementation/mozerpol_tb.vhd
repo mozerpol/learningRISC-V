@@ -2911,22 +2911,128 @@ begin
       --------------
       --   BLTU   --
       --------------
+      -- auipc x20, 0           # ... 1.    
+      if (spy_gpr(0) /= 32x"20, 0           # ... 1.") then
+         report "ERROR: auipc x20, 0           # ... 1. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bltu  x8,  x7,   loop16# ... 2.    
+      if (spy_gpr(8) /= 32x"7,   loop16# ... 2.") then
+         report "ERROR: bltu  x8,  x7,   loop16# ... 2. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x23, 0           # ... = 6.    
+      if (spy_gpr(3) /= 32x"23, 0           # ... = 6.") then
+         report "ERROR: auipc x23, 0           # ... = 6. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x24, x23,  x22   # x24 = 0x00000100 7.    
+      if (spy_gpr(4) /= 32x"00000100 7.") then
+         report "ERROR: sub   x24, x23,  x22   # x24 = 0x00000100 7. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bltu  x9,  x0,   loop18# ... 8.    
+      if (spy_gpr(9) /= 32x"0,   loop18# ... 8.") then
+         report "ERROR: bltu  x9,  x0,   loop18# ... 8. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000001 9.    
+      if (spy_gpr(1) /= 32x"00000001 9.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 9. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bltu  x3,  x4,   loop18# ... 10.    
+      if (spy_gpr(3) /= 32x"4,   loop18# ... 10.") then
+         report "ERROR: bltu  x3,  x4,   loop18# ... 10. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1     # x1 = 0x00000002 11.    
+      if (spy_gpr(1) /= 32x"00000002 11.") then
+         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 11. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bltu  x4,  x3,   loop18# ... 12.    
+      if (spy_gpr(4) /= 32x"3,   loop18# ... 12.") then
+         report "ERROR: bltu  x4,  x3,   loop18# ... 12. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x21, 0           # ... = 3.    
+      if (spy_gpr(1) /= 32x"21, 0           # ... = 3.") then
+         report "ERROR: auipc x21, 0           # ... = 3. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x22, x21,  x20   # x22 = 0x00000024 4.    
+      if (spy_gpr(2) /= 32x"00000024 4.") then
+         report "ERROR: sub   x22, x21,  x20   # x22 = 0x00000024 4. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- bltu  x8,  x7,   loop17# ... 5.    
+      if (spy_gpr(8) /= 32x"7,   loop17# ... 5.") then
+         report "ERROR: bltu  x8,  x7,   loop17# ... 5. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- auipc x25, 0           # ...  13.    
+      if (spy_gpr(5) /= 32x"25, 0           # ...  13.") then
+         report "ERROR: auipc x25, 0           # ...  13. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sub   x26, x25,  x24   # x26 = 0x0000004c 14.    
+      if (spy_gpr(6) /= 32x"0000004c 14.") then
+         report "ERROR: sub   x26, x25,  x24   # x26 = 0x0000004c 14. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x0,   0     # x1 = 0x00000000 15.    
+      if (spy_gpr(1) /= 32x"00000000 15.") then
+         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 15. | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       --------------
       --   BGEU   --
       --------------
+
       ----------------------------------------------------------------
       --                                                            --
       --                         JAL, JALR                          --
       --                                                            --
       ----------------------------------------------------------------
-
       --------------
       --   JAL    --
       --------------
+
       --------------
-      --   JALR    --
-      --------------   
-      
+      --   JALR   --
+      --------------     
+
       ----------------------------------------------------------------
       --                                                            --
       --                         SB, SH, SW                         --
@@ -2936,37 +3042,38 @@ begin
       --------------
       --   SB     --
       --------------
+
       --------------
       --   SH     --
       --------------
+
       --------------
       --   SW     --
-      --------------
-      
+      --------------  
+
       ----------------------------------------------------------------
       --                                                            --
       --                         LB, LH, LW                         --
       --                                                            --
       ----------------------------------------------------------------
-
       --------------
       --   LB     --
       --------------
+
       --------------
-      --   LH    --
+      --    LH    --
       --------------
+
       --------------
-      --   LW    --
+      --    LW    --
       --------------
-      
+
       ----------------------------------------------------------------
       --                                                            --
       --                            GPIO                            --
       --                                                            --
       ----------------------------------------------------------------
 
-
-      
       ----------------------------------------------------------------
       --                                                            --
       -- Special instructions, behavior check in case of invalid    -- 
