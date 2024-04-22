@@ -3625,7 +3625,34 @@ begin
       --------------
       --    LW    --
       --------------
-
+      -- lw    x18, 2(x2)       # x18 = 0xfffffc00    
+      if (spy_gpr(8) /= 32x"fffffc00") then
+         report "ERROR: lw    x18, 2(x2)       # x18 = 0xfffffc00 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lw    x19, 0(x10)      # x19 = 0xfffffc00    
+      if (spy_gpr(9) /= 32x"fffffc00") then
+         report "ERROR: lw    x19, 0(x10)      # x19 = 0xfffffc00 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lw    x20, -4(x10)     # x20 = 0xfffffc00    
+      if (spy_gpr(0) /= 32x"fffffc00") then
+         report "ERROR: lw    x20, -4(x10)     # x20 = 0xfffffc00 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lw    x21, 4(x3)       # x21 = 0xfffffc00    
+      if (spy_gpr(1) /= 32x"fffffc00") then
+         report "ERROR: lw    x21, 4(x3)       # x21 = 0xfffffc00 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       ----------------------------------------------------------------
       --                                                            --
       --                            GPIO                            --
