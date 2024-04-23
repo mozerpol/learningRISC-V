@@ -2241,19 +2241,9 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- auipc x11, 0           # x11 = ..    
-      if (spy_gpr(1) /= 32x"11 = ..") then
-         report "ERROR: auipc x11, 0           # x11 = .. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
+      -- auipc x11, 0           # x11 = ...    
       wait until rising_edge(clk_tb);
-      -- auipc x12, 1048575     # x12 = ..    
-      if (spy_gpr(2) /= 32x"12 = ..") then
-         report "ERROR: auipc x12, 1048575     # x12 = .. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
+      -- auipc x12, 1048575     # x12 = ...    
       wait until rising_edge(clk_tb);
       -- sub   x13, x12,  x11   # x13 = 0xfffff004    
       if (spy_gpr(3) /= 32x"fffff004") then
