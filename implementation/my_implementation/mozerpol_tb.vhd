@@ -3312,49 +3312,49 @@ begin
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x0,  63(x0)      # gpio = 0000    
-      if (o_gpio = "0000") then
+      if (gpio_tb = "0000") then
          report "ERROR: sb    x0,  63(x0)      # gpio = 0000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x1,  255(x0)     # gpio = 0001    
-      if (o_gpio = "0001") then
+      if (gpio_tb = "0001") then
          report "ERROR: sb    x1,  255(x0)     # gpio = 0001 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x2,  4(x6)       # gpio = 0010    
-      if (o_gpio = "0010") then
+      if (gpio_tb = "0010") then
          report "ERROR: sb    x2,  4(x6)       # gpio = 0010 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x3,  255(x0)     # gpio = 0100    
-      if (o_gpio = "0100") then
+      if (gpio_tb = "0100") then
          report "ERROR: sb    x3,  255(x0)     # gpio = 0100 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x4,  255(x0)     # gpio = 1000    
-      if (o_gpio = "1000") then
+      if (gpio_tb = "1000") then
          report "ERROR: sb    x4,  255(x0)     # gpio = 1000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x5,  255(x0)     # gpio = 1111    
-      if (o_gpio = "1111") then
+      if (gpio_tb = "1111") then
          report "ERROR: sb    x5,  255(x0)     # gpio = 1111 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
       -- sb    x0,  255(x0)     # gpio = 0000    
-      if (o_gpio = "0000") then
+      if (gpio_tb = "0000") then
          report "ERROR: sb    x0,  255(x0)     # gpio = 0000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
