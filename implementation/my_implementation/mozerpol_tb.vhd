@@ -3153,7 +3153,7 @@ begin
       wait until rising_edge(clk_tb);
       ----------------------------------------------------------------
       --                                                            --
-      --                         LB, LH, LW                         --
+      --                    LB, LH, LW, LBU, LHU                    --
       --                                                            --
       ----------------------------------------------------------------
       --------------
@@ -3270,6 +3270,33 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      --------------
+      --    LBU   --
+      --------------
+      -- addi  x1,  x0,   1     # x1 = 0x00000001 
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: addi  x1,  x0,   1     # x1 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lbu   x2,  1(x0)       # x2  = 0x000000fc 
+      if (spy_gpr(2) /= 32x"000000fc") then
+         report "ERROR: lbu   x2,  1(x0)       # x2  = 0x000000fc | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lbu   x3,  1(x1)       # x3  = 0x000000ff
+      if (spy_gpr(3) /= 32x"000000ff") then
+         report "ERROR: lbu   x3,  1(x1)       # x3  = 0x000000ff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      --------------
+      --    LHU   --
+      --------------
       ----------------------------------------------------------------
       --                                                            --
       --                            GPIO                            --
