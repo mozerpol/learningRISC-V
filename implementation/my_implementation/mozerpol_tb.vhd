@@ -3297,6 +3297,20 @@ begin
       --------------
       --    LHU   --
       --------------
+      -- lhu   x4,  1(x0)       # x4  = 0x0000fc00 
+      if (spy_gpr(4) /= 32x"0000fc00") then
+         report "ERROR: lhu   x4,  4(x0)       # x4  = 0x0000fc00  | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- lhu   x5,  1(x1)       # x5  = 0x0000ffff
+      if (spy_gpr(5) /= 32x"0000ffff") then
+         report "ERROR: lhu   x5,  1(x1)       # x5  = 0x0000ffff | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
       ----------------------------------------------------------------
       --                                                            --
       --                            GPIO                            --
