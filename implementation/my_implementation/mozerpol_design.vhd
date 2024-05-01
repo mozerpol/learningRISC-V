@@ -21,6 +21,7 @@ library gpio_lib;
 library core_lib;
    use core_lib.all;
 
+-- TODO: CHANGE PROCESSOR NAME TO fivepol
 
 entity mozerpol is
    port (
