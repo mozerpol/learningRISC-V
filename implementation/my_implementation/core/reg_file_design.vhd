@@ -59,7 +59,8 @@ begin
                gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
             elsif (i_reg_file_inst_ctrl = C_WRITE_ALU_RESULT) then
                gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
-            elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
+            else
+            --elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
                gpr(to_integer(unsigned(i_rd_addr))) <= i_pc_addr + 4;
             end if;
          end if;
