@@ -56,16 +56,17 @@ begin
          v_ram_address     := (others => '0');
       else
          v_ram_address     := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
-         case i_ram_management_ctrl is
-            when C_SW   =>
-               o_write_enable <= C_WRITE_ENABLE;
-               o_byte_enable  <= "1111";
-               --o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
                  o_waddr <= 0;
                else
                  o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                end if;
+         case i_ram_management_ctrl is
+            when C_SW   =>
+               o_write_enable <= C_WRITE_ENABLE;
+               o_byte_enable  <= "1111";
+               --o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+
                o_data         <= i_rs2_data;
                o_raddr        <= 0;
             when C_SH   =>
@@ -83,11 +84,7 @@ begin
                -- 6. Run tests
                -- 7. Check synthesis results
                -- 8. Make the best decisiion
-               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
-                 o_waddr <= 0;
-               else
-                 o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               end if;
+
 
 
                if (v_ram_address(1 downto 0) = "00") then
@@ -116,11 +113,7 @@ begin
                -- 6. Run tests
                -- 7. Check synthesis results
                -- 8. Make the best decisiion
-               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
-                 o_waddr <= 0;
-               else
-                 o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               end if;
+
                
                o_raddr        <= 0;
                if (v_ram_address(1 downto 0) = "00") then
@@ -170,14 +163,14 @@ begin
                
                o_write_enable <= C_READ_ENABLE;
                --o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               o_waddr        <= 0;
+
                o_byte_enable  <= "0000";
                o_data         <= (others => '0');
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= "0000";
                o_raddr        <= 0;
-               o_waddr        <= 0;
+
                o_data         <= (others => '0');
          end case;
       end if;
