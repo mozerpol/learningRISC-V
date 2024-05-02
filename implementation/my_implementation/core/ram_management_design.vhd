@@ -58,8 +58,10 @@ begin
          v_ram_address     := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
                if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
                  o_waddr <= 0;
+                 o_raddr <= 0;
                else
                  o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+                 o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
                end if;
          case i_ram_management_ctrl is
             when C_SW   =>
@@ -68,11 +70,11 @@ begin
                --o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
 
                o_data         <= i_rs2_data;
-               o_raddr        <= 0;
+            --   o_raddr        <= 0;
             when C_SH   =>
                o_write_enable <= C_WRITE_ENABLE;
               -- o_waddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               o_raddr        <= 0;
+             --  o_raddr        <= 0;
 
                -- TODO:
                -- 0. Repeat for all store instructions
@@ -115,7 +117,7 @@ begin
                -- 8. Make the best decisiion
 
                
-               o_raddr        <= 0;
+          --     o_raddr        <= 0;
                if (v_ram_address(1 downto 0) = "00") then
                   o_data(7 downto 0)   <= i_rs2_data(7 downto 0);
                   o_data(15 downto 8)  <= (others => '0');
@@ -155,21 +157,17 @@ begin
                -- 6. Run tests
                -- 7. Check synthesis results
                -- 8. Make the best decisiion
-               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
-                 o_raddr <= 0;
-               else
-                 o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               end if;
+
                
                o_write_enable <= C_READ_ENABLE;
-               --o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
+             --  o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
 
                o_byte_enable  <= "0000";
                o_data         <= (others => '0');
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= "0000";
-               o_raddr        <= 0;
+            --   o_raddr        <= 0;
 
                o_data         <= (others => '0');
          end case;
