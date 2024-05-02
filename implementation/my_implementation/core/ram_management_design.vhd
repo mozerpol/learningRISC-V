@@ -146,24 +146,7 @@ begin
                   o_data               <= (others => '0');
                   o_byte_enable        <= "0000";
                end if;
-            when C_LW | C_LH | C_LHU | C_LB | C_LBU  =>
-               -- TODO:
-               -- 0. Repeat for all store instructions
-               -- 1. Comment below four lines and unncomment above o_waddr...
-               -- 2. Check result of synthesis
-               -- 3. Uncomment below four lines and comment above o_waddr...
-               -- 4. Check result of synthesis
-               -- 5. Add below four lines above "case i_ram_management_ctrl is"
-               -- 6. Run tests
-               -- 7. Check synthesis results
-               -- 8. Make the best decisiion
 
-               
-               o_write_enable <= C_READ_ENABLE;
-             --  o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-
-               o_byte_enable  <= "0000";
-               o_data         <= (others => '0');
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= "0000";
