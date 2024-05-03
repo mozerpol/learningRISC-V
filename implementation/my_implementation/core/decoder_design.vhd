@@ -51,7 +51,7 @@ begin
                o_rd_addr   <= i_instruction(11 downto 7);
                o_rs1_addr  <= (others => '0');
                o_rs2_addr  <= (others => '0');
-               o_imm       <= 12x"0" & i_instruction(31 downto 12);
+               o_imm       <= "000000000000" & i_instruction(31 downto 12);
                o_opcode    <= i_instruction(6 downto 0);
                o_func3     <= (others => '0');
                o_func7     <= (others => '0');
@@ -79,7 +79,7 @@ begin
             -- I-type
             when C_OPCODE_JALR | C_OPCODE_LOAD | C_OPCODE_OPIMM =>
                if (i_instruction(31) = '1') then
-                  o_imm(31 downto 11)  <= 21x"1fffff";
+                  o_imm(31 downto 11)  <= (others => '1');
                   o_imm(10 downto 0)   <= i_instruction(30 downto 20);
                else
                   o_imm(31 downto 11)  <= (others => '0');
@@ -94,7 +94,7 @@ begin
             -- B-type
             when C_OPCODE_BRANCH  =>
                if (i_instruction(31) = '1') then
-                  o_imm <= X"FFFF" & "1111" & i_instruction(7) &
+                  o_imm <= "1111111111111111" & "1111" & i_instruction(7) &
                            i_instruction(30 downto 25) &
                            i_instruction(11 downto 8) & '0';
                else
@@ -111,7 +111,7 @@ begin
             -- S-type
             when C_OPCODE_STORE  =>
                if (i_instruction(31) = '1') then
-                  o_imm(31 downto 11)  <= 21x"1fffff";
+                  o_imm(31 downto 11)  <= (others => '1');
                   o_imm(10 downto 0)   <= i_instruction(30 downto 25) &
                                           i_instruction(11 downto 7);
                else
