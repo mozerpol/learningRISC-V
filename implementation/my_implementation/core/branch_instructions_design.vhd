@@ -35,7 +35,7 @@ begin
 
    p_branch_instructions : process(i_rst, i_branch_ctrl, i_rs1_data, i_rs2_data)
    begin
-      if (i_rst) then
+      if (i_rst = '1') then
          o_branch_result <= C_NOT_TAKEN;
       else
          case (i_branch_ctrl) is

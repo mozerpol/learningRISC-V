@@ -36,7 +36,7 @@ begin
 
    p_decoder : process(i_rst, i_instruction)
    begin
-      if (i_rst) then
+      if (i_rst = '1') then
          o_rd_addr   <= (others => '0');
          o_rs1_addr  <= (others => '0');
          o_rs2_addr  <= (others => '0');
