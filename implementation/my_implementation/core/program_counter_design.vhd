@@ -58,13 +58,13 @@ begin
       end if;
    end process p_program_counter;
 
-   p_instruction_address : process(i_rst, i_inst_addr_ctrl, i_alu_result, o_pc_addr)
+   p_instruction_address : process(i_rst, i_inst_addr_ctrl, i_alu_result, pc_addr_buff)
    begin
       if (i_rst = '1') then
          o_instruction_addr   <= (others => '0');
       else
          case i_inst_addr_ctrl is
-            when C_INST_ADDR_PC     => o_instruction_addr <= o_pc_addr + 4;
+            when C_INST_ADDR_PC     => o_instruction_addr <= pc_addr_buff + 4;
             when C_INST_ADDR_ALU    => o_instruction_addr <= i_alu_result;
             when others             => o_instruction_addr <= (others => '0');
          end case;
