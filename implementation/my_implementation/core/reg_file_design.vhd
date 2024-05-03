@@ -44,9 +44,9 @@ architecture rtl of reg_file is
 
 begin
 
-   o_rs1_data <= (others => '0') when i_rs1_addr = 5b"00000" else
+   o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
                  gpr(to_integer(unsigned(i_rs1_addr)));
-   o_rs2_data <= (others => '0') when i_rs2_addr = 5b"00000" else
+   o_rs2_data <= (others => '0') when i_rs2_addr = "00000" else
                  gpr(to_integer(unsigned(i_rs2_addr)));
 
    p_reg_file : process(i_rst, i_clk)
