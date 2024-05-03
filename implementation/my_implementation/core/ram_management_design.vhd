@@ -43,7 +43,7 @@ architecture rtl of ram_management is
 
 begin
 
-   p_ram_management : process(all)
+   p_ram_management : process(i_rst, i_rs2_data, i_rs1_data, i_imm, i_ram_management_ctrl)
       variable v_ram_address : std_logic_vector(31 downto 0);
    begin
       if (i_rst = '1') then
@@ -119,7 +119,7 @@ begin
       end if;
    end process p_ram_management;
 
-   p_reg_file : process(all)
+   p_reg_file : process(i_rst, i_ram_management_ctrl, i_data_from_ram, i_imm, i_rs1_data)
       variable v_ram_address : std_logic_vector(31 downto 0); -- Change to v_reg_file_address and add to waveforms
    begin
       if (i_rst = '1') then

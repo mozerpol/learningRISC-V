@@ -32,7 +32,7 @@ architecture rtl of alu_mux_2 is
 
 begin
 
-   p_alu_mux_2 : process(all)
+   p_alu_mux_2 : process(i_rst, i_alu_mux_2_ctrl, i_rs2_data, i_imm)
    begin
       if (i_rst = '1') then
          o_alu_operand_2      <= (others => '0');

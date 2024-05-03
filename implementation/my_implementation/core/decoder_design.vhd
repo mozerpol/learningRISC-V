@@ -34,7 +34,7 @@ architecture rtl of decoder is
 
 begin
 
-   p_decoder : process(all)
+   p_decoder : process(i_rst, i_instruction)
    begin
       if (i_rst) then
          o_rd_addr   <= (others => '0');

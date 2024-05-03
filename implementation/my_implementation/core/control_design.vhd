@@ -44,7 +44,7 @@ architecture rtl of control is
 
 begin
 
-   p_alu : process(all)
+   p_alu : process(i_rst, i_opcode, i_func3, i_func7)
    begin
       if (i_rst = '1') then
          o_alu_control     <= (others => '0');
@@ -99,7 +99,7 @@ begin
       end if;
    end process p_alu;
 
-   p_alu_mux : process (all)
+   p_alu_mux : process (i_rst, i_opcode)
    begin
       if (i_rst = '1') then
          o_alu_mux_1_ctrl     <= C_RS1_DATA;
@@ -137,7 +137,7 @@ begin
       end if;
    end process p_alu_mux;
 
-   p_reg_file : process(all)
+   p_reg_file : process(i_rst, i_opcode)
    begin
       if (i_rst = '1') then
          o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
@@ -175,7 +175,7 @@ begin
       end if;
    end process;
 
-   p_ram_management : process(all)
+   p_ram_management : process(i_rst, i_opcode, i_func3)
    begin
       if (i_rst = '1') then
          o_ram_management_ctrl   <= (others => '0');
@@ -202,7 +202,7 @@ begin
       end if;
    end process p_ram_management;
 
-   p_program_counter : process(all)
+   p_program_counter : process(i_rst, i_opcode, i_branch_result)
    begin
       if (i_rst = '1') then
          o_pc_ctrl         <= C_NOP;
@@ -233,7 +233,7 @@ begin
       end if;
    end process p_program_counter;
 
-   p_branch_instructions : process(all)
+   p_branch_instructions : process(i_rst, i_opcode, i_func3)
    begin
       if (i_rst = '1') then
          o_branch_ctrl <= (others => '0');

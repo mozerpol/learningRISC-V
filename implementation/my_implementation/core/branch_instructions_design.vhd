@@ -33,7 +33,7 @@ architecture rtl of branch_instructions is
 
 begin
 
-   p_branch_instructions : process(all)
+   p_branch_instructions : process(i_rst, i_branch_ctrl, i_rs1_data, i_rs2_data)
    begin
       if (i_rst) then
          o_branch_result <= C_NOT_TAKEN;
