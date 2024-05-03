@@ -54,7 +54,7 @@ begin
       end if;
    end process p_program_counter;
 
-   p_instruction_address : process(all)
+   p_instruction_address : process(i_rst, i_inst_addr_ctrl, i_alu_result, o_pc_addr)
    begin
       if (i_rst = '1') then
          o_instruction_addr   <= (others => '0');
