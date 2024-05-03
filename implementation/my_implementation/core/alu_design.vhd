@@ -31,9 +31,9 @@ architecture rtl of alu is
 
 begin
 
-   p_alu : process(all)
+   p_alu : process(i_rst, i_alu_operand_1, i_alu_operand_2, i_alu_control)
    begin
-      if (i_rst) then
+      if (i_rst = '1') then
          o_alu_result   <= (others => '0');
       else
          case i_alu_control is
