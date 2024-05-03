@@ -6,7 +6,7 @@
 -- connected to instruction_memory, register_file and mux1. The i_pc_ctrl and
 -- i_inst_addr_ctrl signals come from the control_design module. These signals
 -- control the value of the program counter and which instruction from the ROM
--- to read. Changing the value of the o_instruction_addr signal (which is 
+-- to read. Changing the value of the o_instruction_addr signal (which is
 -- connected to the instruction_memory module) allows to select the instruction
 -- to be read.
 --------------------------------------------------------------------------------
@@ -35,21 +35,25 @@ end entity program_counter;
 
 architecture rtl of program_counter is
 
+signal pc_addr_buff : std_logic_vector(31 downto 0);
+
 begin
+
+   o_pc_addr <= pc_addr_buff;
 
    p_program_counter : process(i_rst, i_clk)
    begin
       if (i_rst = '1') then
-         o_pc_addr   <= (others => '0');
+         pc_addr_buff   <= (others => '0');
       elsif (i_clk'event and i_clk = '1') then
          case i_pc_ctrl is
-            when C_INCREMENT_PC     => o_pc_addr <= o_pc_addr + 4;
+            when C_INCREMENT_PC     => pc_addr_buff <= pc_addr_buff + 4;
             -- The instruction that decrements the PC value does not exist in
             -- RISC-V, so the line below can be commented
-            -- when C_DECREMENT_PC     => o_pc_addr <= o_pc_addr - 4;
-            when C_LOAD_ALU_RESULT  => o_pc_addr <= i_alu_result;
-            when C_NOP              => o_pc_addr <= o_pc_addr;
-            when others             => o_pc_addr <= (others => '0');
+            -- when C_DECREMENT_PC     => pc_addr_buff <= pc_addr_buff - 4;
+            when C_LOAD_ALU_RESULT  => pc_addr_buff <= i_alu_result;
+            when C_NOP              => pc_addr_buff <= pc_addr_buff;
+            when others             => pc_addr_buff <= (others => '0');
          end case;
       end if;
    end process p_program_counter;
