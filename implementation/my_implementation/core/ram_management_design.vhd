@@ -133,23 +133,23 @@ begin
             when C_LH  =>
                if (v_ram_address(1 downto 0) = "00") then
                   if (i_data_from_ram(15) = '1') then
-                     o_rd_data(31 downto 16)  <= 16x"ffff";
+                     o_rd_data(31 downto 16)  <= (others => '1');
                   else
-                     o_rd_data(31 downto 16)  <= 16x"0000";
+                     o_rd_data(31 downto 16)  <= (others => '0');
                   end if;
                   o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
                elsif (v_ram_address(1 downto 0) = "10") then
                   if (i_data_from_ram(31) = '1') then
-                     o_rd_data(31 downto 16)  <= 16x"ffff";
+                     o_rd_data(31 downto 16)  <= (others => '1');
                   else
-                     o_rd_data(31 downto 16)  <= 16x"0000";
+                     o_rd_data(31 downto 16)  <= (others => '0');
                   end if;
                   o_rd_data(15 downto 0)  <= i_data_from_ram(31 downto 16);
                else
                   o_rd_data               <= (others => '0');
                end if;
             when C_LHU =>
-               o_rd_data(31 downto 16) <= 16x"0000";
+               o_rd_data(31 downto 16) <= (others => '0');
                if (v_ram_address(1 downto 0) = "00") then
                   o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
                elsif (v_ram_address(1 downto 0) = "10") then
@@ -160,37 +160,37 @@ begin
             when C_LB  =>
                if (v_ram_address(1 downto 0) = "00") then
                   if (i_data_from_ram(7) = '1') then
-                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                     o_rd_data(31 downto 8)  <= (others => '1');
                   else
-                     o_rd_data(31 downto 8)  <= 24x"000000";
+                     o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
                elsif (v_ram_address(1 downto 0) = "01") then
                   if (i_data_from_ram(15) = '1') then
-                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                     o_rd_data(31 downto 8)  <= (others => '1');
                   else
-                     o_rd_data(31 downto 8)  <= 24x"000000";
+                     o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
                elsif (v_ram_address(1 downto 0) = "10") then
                   if (i_data_from_ram(23) = '1') then
-                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                     o_rd_data(31 downto 8)  <= (others => '1');
                   else
-                     o_rd_data(31 downto 8)  <= 24x"000000";
+                     o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
                elsif (v_ram_address(1 downto 0) = "11") then
                   if (i_data_from_ram(31) = '1') then
-                     o_rd_data(31 downto 8)  <= 24x"ffffff";
+                     o_rd_data(31 downto 8)  <= (others => '1');
                   else
-                     o_rd_data(31 downto 8)  <= 24x"000000";
+                     o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                else
                   o_rd_data               <= (others => '0');
                end if;
             when C_LBU =>
-               o_rd_data(31 downto 8)  <= 24x"000000";
+               o_rd_data(31 downto 8)  <= (others => '0');
                if (v_ram_address(1 downto 0) = "00") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
                elsif (v_ram_address(1 downto 0) = "01") then
