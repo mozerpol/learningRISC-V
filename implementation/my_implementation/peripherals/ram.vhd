@@ -4,9 +4,9 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
-library mozerpol_lib;
-   use mozerpol_lib.all;
-   use mozerpol_lib.mozerpol_pkg.all;
+library riscpol_lib;
+   use riscpol_lib.all;
+   use riscpol_lib.riscpol_pkg.all;
 
 entity byte_enabled_simple_dual_port_ram is
 

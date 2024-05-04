@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
--- File          : mozerpol_tb.vhd
+-- File          : riscpol_tb.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : Test for the entire processor (mozerpol entity in
--- mozerpol_design).
+-- Description   : Test for the entire processor (riscpol entity in
+-- riscpol_design).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -14,23 +14,23 @@ library ieee;
    use ieee.std_logic_unsigned.all;
 library std;
    use std.env.all;
-library mozerpol_lib;
-   use mozerpol_lib.all;
-   use mozerpol_lib.mozerpol_pkg.all;
+library riscpol_lib;
+   use riscpol_lib.all;
+   use riscpol_lib.riscpol_pkg.all;
 
-entity mozerpol_tb is
-end mozerpol_tb;
+entity riscpol_tb is
+end riscpol_tb;
 
-architecture tb of mozerpol_tb is
+architecture tb of riscpol_tb is
 
 
-   component mozerpol is
+   component riscpol is
    port (
       i_rst       : in std_logic;
       i_clk       : in std_logic;
       o_gpio      : out std_logic_vector(3 downto 0)
    );
-   end component mozerpol;
+   end component riscpol;
 
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
@@ -42,7 +42,7 @@ architecture tb of mozerpol_tb is
 
 begin
 
-   inst_mozerpol : component mozerpol
+   inst_riscpol : component riscpol
    port map (
       i_rst       => rst_tb,
       i_clk       => clk_tb,
@@ -58,8 +58,8 @@ begin
    end process;
 
    p_tb : process
-      alias spy_gpr is <<signal .mozerpol_tb.inst_mozerpol.inst_core.inst_reg_file.gpr: t_gpr >>;
-      alias spy_ram is <<signal .mozerpol_tb.inst_mozerpol.inst_memory.ram: ram_t >>;
+      alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
+      alias spy_ram is <<signal .riscpol_tb.inst_riscpol.inst_memory.ram: ram_t >>;
    begin
       rst_tb   <= '1';
       wait for 20 ns;
@@ -3414,6 +3414,9 @@ begin
       -- opcode etc.                                                --
       --                                                            --
       ----------------------------------------------------------------
+      -- DODAC TESTY PODCZAS KTORYCH JEST RESET
+      
+
       report "Total errors: " & integer'image(set_test_point);
       wait for 100 ns;
       stop(2);

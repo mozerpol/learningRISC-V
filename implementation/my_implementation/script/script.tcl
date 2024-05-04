@@ -1,5 +1,5 @@
 ###### Set module name ######
-set module        "mozerpol"
+set module        "riscpol"
 
 
 ###### Include external libraries ######

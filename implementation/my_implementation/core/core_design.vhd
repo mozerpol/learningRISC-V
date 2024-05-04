@@ -5,7 +5,7 @@
 -- Description   : It integrates all internal modules e.g. ALU, MUX1, MUX2,
 -- program counter, control, etc. connecting them together. This module can be
 -- connected to external modules such as RAM or GPIO (connecting takes place
--- inside mozerpol_design).
+-- inside riscpol_design).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -28,9 +28,9 @@ library instruction_memory_lib;
 library program_counter_lib;
 library ram_management_lib;
 library reg_file_lib;
-library mozerpol_lib;
-   use mozerpol_lib.all;
-   use mozerpol_lib.mozerpol_pkg.all;
+library riscpol_lib;
+   use riscpol_lib.all;
+   use riscpol_lib.riscpol_pkg.all;
 
 
 entity core is

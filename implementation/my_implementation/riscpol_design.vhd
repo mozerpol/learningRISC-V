@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : mozerpol_design.vhd
+-- File          : riscpol_design.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : It connects all the modules together, such as the core and
@@ -13,26 +13,26 @@ library ieee;
    use ieee.std_logic_1164.all;
    use ieee.std_logic_unsigned.all;
    use ieee.numeric_std.all;
-library mozerpol_lib;
-   use mozerpol_lib.all;
-   use mozerpol_lib.mozerpol_pkg.all;
+library riscpol_lib;
+   use riscpol_lib.all;
+   use riscpol_lib.riscpol_pkg.all;
 library ram_lib;
 library gpio_lib;
 library core_lib;
    use core_lib.all;
 
--- TODO: CHANGE PROCESSOR NAME TO fivepol
+-- TODO: CHANGE PROCESSOR NAME TO riscpol
 
-entity mozerpol is
+entity riscpol is
    port (
       i_rst    : in std_logic;
       i_clk    : in std_logic;
       o_gpio   : out std_logic_vector(3 downto 0)
    );
-end entity mozerpol;
+end entity riscpol;
 
 
-architecture rtl of mozerpol is
+architecture rtl of riscpol is
 
 
    component core is

@@ -1,8 +1,8 @@
 library ieee;
     use ieee.std_logic_1164.all;
     use IEEE.std_logic_unsigned.all;
-library mozerpol_lib;
-   use mozerpol_lib.mozerpol_pkg.all;
+library riscpol_lib;
+   use riscpol_lib.riscpol_pkg.all;
 
 package rom is
 

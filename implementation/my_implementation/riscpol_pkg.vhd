@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : mozerpol_design.vhd
+-- File          : riscpol_pkg.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Package with RAM and ROM size settings and the address that
@@ -13,7 +13,7 @@ library ieee;
    use IEEE.std_logic_unsigned.all;
    use IEEE.math_real.all;
 
-package mozerpol_pkg is
+package riscpol_pkg is
 
    constant C_RAM_LENGTH      : integer := 64;
    constant C_ROM_LENGTH      : integer := 1024;
@@ -21,6 +21,6 @@ package mozerpol_pkg is
 
 end;
 
-package body mozerpol_pkg is
+package body riscpol_pkg is
 
 end package body;
