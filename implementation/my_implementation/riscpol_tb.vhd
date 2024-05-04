@@ -3358,6 +3358,13 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      -- sw    x0,  252(x0)      # gpio = 00000000    
+      if (gpio_tb /= "00000000") then
+         report "ERROR: sw    x0,  252(x0)      # gpio = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);        
       -- sb    x0,  255(x0)      # gpio = 00000000    
       if (gpio_tb /= "00000000") then
          report "ERROR: sb    x0,  255(x0)      # gpio = 00000000 | Test_point: "
@@ -3408,6 +3415,9 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      
+      DODAC TESTY DLA RESZTY GPIO
+      
       ----------------------------------------------------------------
       --                                                            --
       -- Special instructions, behavior check in case of invalid    -- 

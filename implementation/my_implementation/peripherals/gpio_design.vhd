@@ -47,10 +47,10 @@ begin
             o_gpio(1) <= i_wdata(25);
             o_gpio(2) <= i_wdata(26);
             o_gpio(3) <= i_wdata(27);
-            -- o_gpio(4) <= i_wdata(28);
-            -- o_gpio(5) <= i_wdata(29);
-            -- o_gpio(6) <= i_wdata(30);
-            -- o_gpio(7) <= i_wdata(31);
+            o_gpio(4) <= i_wdata(28);
+            o_gpio(5) <= i_wdata(29);
+            o_gpio(6) <= i_wdata(30);
+            o_gpio(7) <= i_wdata(31);
          end if;
       end if;
    end process p_gpio;
