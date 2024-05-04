@@ -22,7 +22,7 @@ entity gpio is
       i_clk    : in std_logic;
       i_addr   : in integer range 0 to C_RAM_LENGTH-1;
       i_wdata  : in std_logic_vector(31 downto 0);
-      o_gpio   : out std_logic_vector(3 downto 0)
+      o_gpio   : out std_logic_vector(7 downto 0)
 );
 end gpio;
 

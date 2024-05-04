@@ -28,13 +28,13 @@ architecture tb of riscpol_tb is
    port (
       i_rst       : in std_logic;
       i_clk       : in std_logic;
-      o_gpio      : out std_logic_vector(3 downto 0)
+      o_gpio      : out std_logic_vector(7 downto 0)
    );
    end component riscpol;
 
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
-   signal gpio_tb : std_logic_vector(3 downto 0);
+   signal gpio_tb : std_logic_vector(7 downto 0);
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
    signal set_test_point : integer := 0;
    type word_t is array (0 to 3) of std_logic_vector(7 downto 0);
@@ -3358,52 +3358,52 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x0,  255(x0)      # gpio = 0000    
-      if (gpio_tb /= "0000") then
-         report "ERROR: sb    x0,  255(x0)      # gpio = 0000 | Test_point: "
+      -- sb    x0,  255(x0)      # gpio = 00000000    
+      if (gpio_tb /= "00000000") then
+         report "ERROR: sb    x0,  255(x0)      # gpio = 00000000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x1,  255(x0)     # gpio = 0001    
-      if (gpio_tb /= "0001") then
-         report "ERROR: sb    x1,  255(x0)     # gpio = 0001 | Test_point: "
+      -- sb    x1,  255(x0)     # gpio = 00000001    
+      if (gpio_tb /= "00000001") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000001 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
          report "GPIO: " & to_string(gpio_tb);
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x2,  4(x6)       # gpio = 0010    
-      if (gpio_tb /= "0010") then
-         report "ERROR: sb    x2,  4(x6)       # gpio = 0010 | Test_point: "
+      -- sb    x2,  4(x6)       # gpio = 00000010    
+      if (gpio_tb /= "00000010") then
+         report "ERROR: sb    x2,  4(x6)       # gpio = 00000010 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x3,  255(x0)     # gpio = 0100    
-      if (gpio_tb /= "0100") then
-         report "ERROR: sb    x3,  255(x0)     # gpio = 0100 | Test_point: "
+      -- sb    x3,  255(x0)     # gpio = 00000100    
+      if (gpio_tb /= "00000100") then
+         report "ERROR: sb    x3,  255(x0)     # gpio = 00000100 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x4,  255(x0)     # gpio = 1000    
-      if (gpio_tb /= "1000") then
-         report "ERROR: sb    x4,  255(x0)     # gpio = 1000 | Test_point: "
+      -- sb    x4,  255(x0)     # gpio = 00001000    
+      if (gpio_tb /= "00001000") then
+         report "ERROR: sb    x4,  255(x0)     # gpio = 00001000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x5,  255(x0)     # gpio = 1111    
-      if (gpio_tb /= "1111") then
-         report "ERROR: sb    x5,  255(x0)     # gpio = 1111 | Test_point: "
+      -- sb    x5,  255(x0)     # gpio = 00001111    
+      if (gpio_tb /= "00001111") then
+         report "ERROR: sb    x5,  255(x0)     # gpio = 00001111 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sb    x0,  255(x0)     # gpio = 0000    
-      if (gpio_tb /= "0000") then
-         report "ERROR: sb    x0,  255(x0)     # gpio = 0000 | Test_point: "
+      -- sb    x0,  255(x0)     # gpio = 00000000    
+      if (gpio_tb /= "00000000") then
+         report "ERROR: sb    x0,  255(x0)     # gpio = 00000000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
