@@ -37,7 +37,7 @@ slti  x14, x9,   2047  # x14 = 0x00000001
 slti  x14, x14,  2047  # x14 = 0x00000001
 slti  x14, x14,  -2048 # x14 = 0x00000000
 ##############
-##   SLTIU  ##
+##  SLTIU   ##
 ##############
 sltiu x15, x0,   -2048 # x15 = 0x00000001
 sltiu x16, x0,   -511  # x16 = 0x00000001
@@ -191,7 +191,7 @@ add   x5,  x5,   x5    # x5 = 0x007ffff8
 ##   SUB    ##
 ##############
 sub   x6,  x0,   x28   # x30 = 0x00000001
-sub   x7,  x0,   x27   # x31 = 0xffe00001
+sub   x7,  x0,   x27   # x31 = 0xffe00001 
 sub   x8,  x0,   x26   # x1 = 0xffffff81
 sub   x9,  x0,   x25   # x2 = 0xffe00001
 sub   x10, x0,   x24   # x3 = 0xfffff001
@@ -369,8 +369,8 @@ and   x7,  x7,   x7    # x7 = 0x00600000
 auipc x8,  0           # x8 = ...
 auipc x9,  0           # x9 = ...
 sub   x10, x9,   x8    # x10 = 0x00000004
-auipc x11, 0           # x11 = ...
-auipc x12, 1048575     # x12 = ...
+auipc x11, 0           # x11 = ..
+auipc x12, 1048575     # x12 = ..
 sub   x13, x12,  x11   # x13 = 0xfffff004
 auipc x14, 0           # x14 = ...
 auipc x15, 2048        # x15 = ...
@@ -404,23 +404,25 @@ addi  x9,  x0,   0     # x9 = 0x00000000
 ##############
 ##   BEQ    ##
 ##############
+loop1:
 addi  x0,  x0,   0     # x0 = 0x00000000 1.
 beq   x3,  x4,   loop1 # ... 2.
 # The next instructions will check the correctness of this instruction
 auipc x10, 0           # ... 3.
 beq   x0,  x9,   loop2 # ... 4.
-# Below is the instruction that will never be executed, so the
-# "wait until rising_edge(clk_tb);" line have been removed
 addi  x1,  x1,   1     # don't check, will never be done
-auipc x11, 0           # ... 5.
-sub   x12, x11,  x10   # x12 = 0x00000024 6.
-beq   x0,  x9,   loop4 # ... 7.
+loop4:
 auipc x13, 0           # ... 8.
 sub   x14, x13,  x11   # x14 = 0xffffffe8 9.
 beq   x5,  x7,   loop6 # ... 10.
 auipc x15, 0           # ... 11.
 sub   x16, x15,  x13   # x16 = 0x0000000c 12.
 beq   x9,  x0,   loop6 # ... 13.
+loop2:
+auipc x11, 0           # ... 5.
+sub   x12, x11,  x10   # x12 = 0x00000024 6.
+beq   x0,  x9,   loop4 # ... 7.
+loop6:
 auipc x17, 0           # ... 14.
 sub   x18, x17,  x15   # x18 = 0x00000018 15.
 addi  x1,  x1,   1     # x1 = 0x00000002 16.
@@ -430,9 +432,7 @@ addi  x1,  x0,   0     # x1 = 0x00000000 17.
 ##############
 auipc x19, 0           # ... 1.
 bne   x3,  x4,   loop7 # ... 2.
-auipc x20, 0           # ... 3.
-sub   x21, x20,  x19   # x21 = 0x00000024 4.
-bne   x5,  x7,   loop8 # ... 5.
+loop8:
 auipc x22, 0           # ... 6.
 sub   x23, x22,  x20   # x23 = 0xffffffe4 7.
 addi  x1,  x1,   1     # x1 = 0x00000001 8.
@@ -440,6 +440,11 @@ bne   x9,  x0,   loop9 # ... 9.
 auipc x24, 0           # ... 10.
 sub   x25, x24,  x22   # x25 = 0x00000010 11.
 bne   x7,  x8,   loop9 # ... 12.
+loop7:
+auipc x20, 0           # ... 3.
+sub   x21, x20,  x19   # x21 = 0x00000024 4.
+bne   x5,  x7,   loop8 # ... 5.
+loop9:
 auipc x26, 0           # ... 13.
 sub   x27, x26,  x24   # x27 = 0x00000018 14.
 addi  x1,  x0,   0     # x1 = 0x00000000 15.
@@ -448,6 +453,13 @@ addi  x1,  x0,   0     # x1 = 0x00000000 15.
 ##############
 auipc x28, 0           # ... 1.
 blt   x3,  x4,   loop10# ... 2.
+loop11:
+auipc x31, 0           # ... 10.
+sub   x10, x31,  x28   # x10 = 0x00000008 11.
+blt   x7,  x8,   loop12# ... 12.
+addi  x1,  x1,   1     # x1 = 0x00000003 13.
+blt   x3,  x1,   loop12# ... 14.
+loop10:
 auipc x29, 0           # ... 3.
 sub   x30, x29,  x28   # x30 = 0x0000001c 4.
 blt   x4,  x3,   loop11# ... 5.
@@ -455,11 +467,7 @@ addi  x1,  x1,   1     # x1 = 0x00000001 6.
 blt   x9,  x0,   loop11# ... 7.
 addi  x1,  x1,   1     # x1 = 0x00000002 8.
 blt   x8,  x7,   loop11# ... 9.
-auipc x31, 0           # ... 10.
-sub   x10, x31,  x28   # x10 = 0x00000008 11.
-blt   x7,  x8,   loop12# ... 12.
-addi  x1,  x1,   1     # x1 = 0x00000003 13.
-blt   x3,  x1,   loop12# ... 14.
+loop12:
 auipc x11, 0           # ... 15.
 sub   x12, x11,  x31   # x12 = 0x00000030 16.
 addi  x1,  x0,   0     # x1 = 0x00000000 17.
@@ -468,6 +476,13 @@ addi  x1,  x0,   0     # x1 = 0x00000000 17.
 ##############
 auipc x13, 0           # ... 1.
 bge   x4,  x3,   loop13# ... 2.
+loop14:
+auipc x16, 0           # ... 10.
+sub   x17, x16,  x14   # x17 = 0x000000c8 11.
+bge   x8,  x7,   loop15# ... 12.
+addi  x1,  x1,   1     # x1 = 0x00000003 13.
+bge   x1,  x3,   loop15# ... 14.
+loop13:
 auipc x14, 0           # ... 3.
 sub   x15, x14,  x13   # x15 = 0x0000001c 4.
 bge   x3,  x4,   loop14# ... 5.
@@ -475,22 +490,16 @@ addi  x1,  x1,   1     # x1 = 0x00000001 6.
 bge   x7,  x4,   loop14# ... 7.
 addi  x1,  x1,   1     # x1 = 0x00000002 8.
 bge   x0,  x9,   loop14# ... 9.
-auipc x16, 0           # ... 10.
-sub   x17, x16,  x14   # x17 = 0xffffffec 11.
-bge   x8,  x7,   loop15# ... 12.
-addi  x1,  x1,   1     # x1 = 0x00000003 13.
-bge   x1,  x3,   loop15# ... 14.
+loop15:
 auipc x18, 0           # ... 15.
-sub   x12, x18,  x17   # x12 = 0x00000030 16.
+sub   x12, x18,  x16   # x12 = 0x00000030 16.
 addi  x1,  x0,   0     # x1 = 0x00000000 17.
 ##############
 ##   BLTU   ##
 ##############
 auipc x20, 0           # ... 1.
 bltu  x8,  x7,   loop16# ... 2.
-auipc x21, 0           # ... = 3.
-sub   x22, x21,  x20   # x22 = 0x00000024 4.
-bltu  x8,  x7,   loop17# ... 5.
+loop17:
 auipc x23, 0           # ... = 6.
 sub   x24, x23,  x21   # x24 = 0xffffffe4 7.
 bltu  x9,  x0,   loop18# ... 8.
@@ -498,6 +507,11 @@ addi  x1,  x1,   1     # x1 = 0x00000001 9.
 bltu  x3,  x4,   loop18# ... 10.
 addi  x1,  x1,   1     # x1 = 0x00000002 11.
 bltu  x4,  x3,   loop18# ... 12.
+loop16:
+auipc x21, 0           # ... = 3.
+sub   x22, x21,  x20   # x22 = 0x00000024 4.
+bltu  x8,  x7,   loop17# ... 5.
+loop18:
 auipc x25, 0           # ...  13.
 sub   x26, x25,  x23   # x26 = 0x00000028 14.
 addi  x1,  x0,   0     # x1 = 0x00000000 15.
@@ -506,16 +520,19 @@ addi  x1,  x0,   0     # x1 = 0x00000000 15.
 ##############
 auipc x27, 0           # ... 1.
 bgeu  x7,  x8,   loop19# ... 2.
-auipc x30, 0           # ... = 3.
-sub   x31, x30,  x27   # x31 = 0x00000024 4.
-bgeu  x7,  x8,   loop20# ... 5.
+loop20:
 auipc x28, 0           # ... = 6.
-sub   x29, x28,  x27   # x29 = 0x00000008 7.
+sub   x29, x28,  x27   # x29 = 0x00000100 7.
 bgeu  x2,  x7,   loop21# ... 8.
 addi  x1,  x1,   1     # x1 = 0x00000001 9.
 bgeu  x4,  x3,   loop21# ... 10.
 addi  x1,  x1,   1     # x1 = 0x00000002 11.
 bgeu  x3,  x4,   loop21# ... 12.
+loop19:
+auipc x30, 0           # ... = 3.
+sub   x31, x30,  x27   # x31 = 0x00000024 4.
+bgeu  x7,  x8,   loop20# ... 5.
+loop21:
 auipc x10,  0          # ...  13.
 sub   x11, x10,  x30   # x11 = 0x0000000c 14.
 addi  x1,  x0,   0     # x1 = 0x00000000 15.
@@ -529,12 +546,15 @@ addi  x1,  x0,   0     # x1 = 0x00000000 15.
 ##############
 auipc x12,  0          # ... 1.
 jal   x13,  loop22     # ... 2.
-addi  x1,  x1,   1     # x1 = 0x00000001 3.
-addi  x1,  x1,   1     # x1 = 0x00000002 4.
-jal   x14,  loop23     # ... 5.
-addi  x1,  x1,   1     # x1 = 0x00000003 6.
-addi  x1,  x1,   1     # x1 = 0x00000004 7.
+loop23:
+addi  x1,  x1,   1     # x1 = 0x00000001 6.
+addi  x1,  x1,   1     # x1 = 0x00000002 7.
 jal   x15,  loop24     # ... 8.
+loop22:
+addi  x1,  x1,   1     # x1 = 0x00000001 3.
+addi  x1,  x1,   1     # x1 = 0x00000004 4.
+jal   x14,  loop23     # ... 5.
+loop24:
 addi  x1,  x1,   1     # x1 = 0x00000005 9.
 auipc x16, 0           # ...  10.
 sub   x17, x16,  x15   # x17 = 0x00000010 11.
@@ -546,11 +566,11 @@ auipc x18, 0           # ... 1.
 jalr  x19, x18,  8     # ... 2.
 addi  x0,  x0,   0     # x0 = 0x00000000 3.
 jalr  x20, x18,  28    # ... 4.
-auipc x21, 0           # ... 5.
-jalr  x22, x21,  -12   # ... 6.
 addi  x0,  x0,   0     # x0 = 0x00000000 7.
 auipc x23, 0           # ... 8.
 jalr  x24, x23,  16    # ... 9.
+auipc x21, 0           # ... 5.
+jalr  x22, x21,  -12   # ... 6.
 addi  x0,  x0,   0     # x9 = 0x00000000 10.
 addi  x0,  x0,   0     # x9 = 0x00000000 11.
 ########################################################
@@ -572,16 +592,16 @@ addi  x9,  x9,   0x678 # x9 = 0x12345678
 ##############
 ##    SB    ##
 ##############
-sb   x9,  0(x0)        # 0x00000000 = 0x00000078
-sb   x9,  1(x0)        # 0x00000000 = 0x00007878
-sb   x9,  1(x1)        # 0x00000000 = 0x00787878
-sb   x9,  1(x2)        # 0x00000000 = 0x78787878
-sb   x9,  2(x2)        # 0x00000004 = 0x00000078
-sb   x8,  -1(x1)       # 0x00000000 = 0x787878f1
-sb   x8,  -1(x2)       # 0x00000000 = 0x7878f1f1
-sb   x8,  -2(x2)       # 0x00000000 = 0x7878f1f1
-sb   x8,  10(x0)       # 0x00000008 = 0x00f10000
-sb   x8,  16(x1)       # 0x00000010 = 0x0000f100
+sb    x9,  0(x0)       # 0x00000000 = 0x00000078
+sb    x9,  1(x0)       # 0x00000000 = 0x00007878
+sb    x9,  1(x1)   	   # 0x00000000 = 0x00787878
+sb    x9,  1(x2)   	   # 0x00000000 = 0x78787878
+sb    x9,  2(x2)   	   # 0x00000004 = 0x00000078
+sb    x8,  -1(x1)  	   # 0x00000000 = 0x787878f1
+sb    x8,  -1(x2)  	   # 0x00000000 = 0x7878f1f1
+sb    x8,  -2(x2)  	   # 0x00000000 = 0x7878f1f1  
+sb    x8,  10(x0)  	   # 0x00000008 = 0x00f10000
+sb    x8,  16(x1)  	   # 0x00000010 = 0x0000f100
 ##############
 ##    SH    ##
 ##############
@@ -589,16 +609,16 @@ sh    x8,  0(x0)  	   # 0x00000000 = 0xf1e07878
 sh    x8,  1(x1)  	   # 0x00000000 = 0xf1e0f1e0
 sh    x8,  2(x2)  	   # 0x00000004 = 0xf1e010e0
 sh    x9,  -1(x1)  	   # 0x00000000 = 0x7856f1e0
-sh    x8,  -2(x2) 	   # 0x00000000 = 0xf1e0f1e0
+sh    x8,  -2(x2) 	   # 0x00000000 = 0xf1e0f1e0     
 sh    x8,  10(x0) 	   # 0x00000008 = 0x9301f1e0
 sh    x8,  16(x2) 	   # 0x00000010 = 0x93f1f1e0
 ##############
 ##    SW    ##
 ##############
-sw   x7,  0(x0)        # 0x00000000 = 0x00fcffff
-sw   x7,  2(x2)        # 0x00000004 = 0x00fcffff
-sw   x8,  -1(x1)       # 0x00000000 = 0xf1e0cdab
-sw   x7,  -2(x2)       # 0x00000000 = 0x00fcffff
+sw    x7,  0(x0)       # 0x00000000 = 0x00fcffff
+sw    x7,  2(x2)       # 0x00000004 = 0x00fcffff
+sw    x8,  -1(x1)      # 0x00000000 = 0xf1e0cdab
+sw    x7,  -2(x2)      # 0x00000000 = 0x00fcffff
 ########################################################
 ##                                                    ##
 ##                LB, LH, LW, LBU, LHU                ##
@@ -631,13 +651,13 @@ lw    x21, 4(x3)       # x21 = 0xfffffc00
 ##############
 ##   LBU    ##
 ##############
-addi  x1,  x0,   1     # x1 = 0x00000001
-lbu   x2,  1(x0)       # x2  = 0x000000fc
+addi  x1,  x0,   1     # x1 = 0x00000001 
+lbu   x2,  1(x0)       # x2  = 0x000000fc 
 lbu   x3,  1(x1)       # x3  = 0x000000ff
 ##############
 ##   LHU    ##
 ##############
-lhu   x4,  1(x0)       # x4  = 0x0000fc00
+lhu   x4,  4(x0)       # x4  = 0x0000fc00
 lhu   x5,  1(x1)       # x5  = 0x0000ffff
 ########################################################
 ##                                                    ##
@@ -651,10 +671,10 @@ addi  x4,  x0,   8     # x4 = 0x00000008
 addi  x5,  x0,   0xf   # x5 = 0x0000000f
 addi  x6,  x0,   251   # x6 = 0x000000fb
 sw    x0,  252(x0)     # gpio = 00000000
-sb    x0,  255(x0)     # gpio = 00000000
-sb    x1,  255(x0)     # gpio = 00000001
-sb    x2,  4(x6)       # gpio = 00000010
-sb    x3,  255(x0)     # gpio = 00000100
-sb    x4,  255(x0)     # gpio = 00001000
-sb    x5,  255(x0)     # gpio = 00001111
-sb    x0,  255(x0)     # gpio = 00000000
+sb    x0,  255(x0)     # gpio = 0000
+sb    x1,  255(x0)     # gpio = 0001
+sb    x2,  4(x6)       # gpio = 0010
+sb    x3,  255(x0)     # gpio = 0100
+sb    x4,  255(x0)     # gpio = 1000
+sb    x5,  255(x0)     # gpio = 1111
+sb    x0,  255(x0)     # gpio = 0000
