@@ -3271,7 +3271,7 @@ begin
       end if;
       wait until rising_edge(clk_tb);
       --------------
-      --    LBU   --
+      --   LBU    --
       --------------
       -- addi  x1,  x0,   1     # x1 = 0x00000001 
       if (spy_gpr(1) /= 32x"00000001") then
@@ -3297,7 +3297,7 @@ begin
       --------------
       --    LHU   --
       --------------
-      -- lhu   x4,  1(x0)       # x4  = 0x0000fc00 
+      -- lhu   x4,  4(x0)       # x4  = 0x0000fc00 
       if (spy_gpr(4) /= 32x"0000fc00") then
          report "ERROR: lhu   x4,  4(x0)       # x4  = 0x0000fc00  | Test_point: "
          & integer'image(set_test_point+1);
@@ -3358,14 +3358,14 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- sw    x0,  252(x0)      # gpio = 00000000    
+      -- sw    x0,  252(x0)     # gpio = 00000000    
       if (gpio_tb /= "00000000") then
          report "ERROR: sw    x0,  252(x0)      # gpio = 00000000 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);        
-      -- sb    x0,  255(x0)      # gpio = 00000000    
+      -- sb    x0,  255(x0)     # gpio = 00000000    
       if (gpio_tb /= "00000000") then
          report "ERROR: sb    x0,  255(x0)      # gpio = 00000000 | Test_point: "
          & integer'image(set_test_point+1);
@@ -3416,7 +3416,7 @@ begin
       end if;
       wait until rising_edge(clk_tb);
       
-      DODAC TESTY DLA RESZTY GPIO
+     -- TODO: DODAC TESTY DLA RESZTY GPIO
       
       ----------------------------------------------------------------
       --                                                            --
@@ -3424,7 +3424,8 @@ begin
       -- opcode etc.                                                --
       --                                                            --
       ----------------------------------------------------------------
-      -- DODAC TESTY PODCZAS KTORYCH JEST RESET
+      -- TODO: DODAC TESTY PODCZAS KTORYCH JEST RESET, POPRAWIC GENERAL TEST
+      -- TODO: I SPRAWDZIC CZY POKRYWAJA SIE Z TYMI W ROM
       
 
       report "Total errors: " & integer'image(set_test_point);
