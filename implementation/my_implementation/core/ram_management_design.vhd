@@ -120,25 +120,25 @@ begin
    end process p_ram_management;
 
    p_reg_file : process(i_rst, i_ram_management_ctrl, i_data_from_ram, i_imm, i_rs1_data)
-      variable v_ram_address : std_logic_vector(31 downto 0); -- Change to v_reg_file_address and add to waveforms
+      variable v_reg_file_address : std_logic_vector(31 downto 0);
    begin
       if (i_rst = '1') then
-         o_rd_data         <= (others => '0');
-         v_ram_address     := (others => '0');
+         o_rd_data          <= (others => '0');
+         v_reg_file_address := (others => '0');
       else
-         v_ram_address     := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
+         v_reg_file_address := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
             when C_LH  =>
-               if (v_ram_address(1 downto 0) = "00") then
+               if (v_reg_file_address(1 downto 0) = "00") then
                   if (i_data_from_ram(15) = '1') then
                      o_rd_data(31 downto 16)  <= (others => '1');
                   else
                      o_rd_data(31 downto 16)  <= (others => '0');
                   end if;
                   o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
-               elsif (v_ram_address(1 downto 0) = "10") then
+               elsif (v_reg_file_address(1 downto 0) = "10") then
                   if (i_data_from_ram(31) = '1') then
                      o_rd_data(31 downto 16)  <= (others => '1');
                   else
@@ -150,36 +150,36 @@ begin
                end if;
             when C_LHU =>
                o_rd_data(31 downto 16) <= (others => '0');
-               if (v_ram_address(1 downto 0) = "00") then
+               if (v_reg_file_address(1 downto 0) = "00") then
                   o_rd_data(15 downto 0)  <= i_data_from_ram(15 downto 0);
-               elsif (v_ram_address(1 downto 0) = "10") then
+               elsif (v_reg_file_address(1 downto 0) = "10") then
                   o_rd_data(15 downto 0)  <= i_data_from_ram(31 downto 16);
                else
                   o_rd_data(15 downto 0)  <= (others => '0');
                end if;
             when C_LB  =>
-               if (v_ram_address(1 downto 0) = "00") then
+               if (v_reg_file_address(1 downto 0) = "00") then
                   if (i_data_from_ram(7) = '1') then
                      o_rd_data(31 downto 8)  <= (others => '1');
                   else
                      o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
-               elsif (v_ram_address(1 downto 0) = "01") then
+               elsif (v_reg_file_address(1 downto 0) = "01") then
                   if (i_data_from_ram(15) = '1') then
                      o_rd_data(31 downto 8)  <= (others => '1');
                   else
                      o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
-               elsif (v_ram_address(1 downto 0) = "10") then
+               elsif (v_reg_file_address(1 downto 0) = "10") then
                   if (i_data_from_ram(23) = '1') then
                      o_rd_data(31 downto 8)  <= (others => '1');
                   else
                      o_rd_data(31 downto 8)  <= (others => '0');
                   end if;
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
-               elsif (v_ram_address(1 downto 0) = "11") then
+               elsif (v_reg_file_address(1 downto 0) = "11") then
                   if (i_data_from_ram(31) = '1') then
                      o_rd_data(31 downto 8)  <= (others => '1');
                   else
@@ -191,13 +191,13 @@ begin
                end if;
             when C_LBU =>
                o_rd_data(31 downto 8)  <= (others => '0');
-               if (v_ram_address(1 downto 0) = "00") then
+               if (v_reg_file_address(1 downto 0) = "00") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(7 downto 0);
-               elsif (v_ram_address(1 downto 0) = "01") then
+               elsif (v_reg_file_address(1 downto 0) = "01") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(15 downto 8);
-               elsif (v_ram_address(1 downto 0) = "10") then
+               elsif (v_reg_file_address(1 downto 0) = "10") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(23 downto 16);
-               elsif (v_ram_address(1 downto 0) = "11") then
+               elsif (v_reg_file_address(1 downto 0) = "11") then
                   o_rd_data(7 downto 0)   <= i_data_from_ram(31 downto 24);
                else
                   o_rd_data(7 downto 0)   <= (others => '0');
