@@ -21,7 +21,7 @@ with open("rom.vhd", "w") as file:
     # Write the content of the code.txt file into the rom.vhd file
     for line in code_data:
         file.write(f'      x"{line.strip()}",\n')
-    
+
     # Write the last line and close the file
     file.write('      others => x"00000000"\n')
     file.write('      );\n')
