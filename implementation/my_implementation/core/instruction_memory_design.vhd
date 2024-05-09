@@ -34,7 +34,7 @@ begin
    p_instruction_memory : process(i_clk, i_rst)
    begin
       if (i_rst = '1') then
-         o_instruction  <= (others => '0');
+         o_instruction  <= C_CODE(0);
       elsif (i_clk = '1' and i_clk'event) then
          -- The value of i_instruction_addr can only be a multiple of number 4,
          -- eg. 4, 8, 12, 16, 20, ...
