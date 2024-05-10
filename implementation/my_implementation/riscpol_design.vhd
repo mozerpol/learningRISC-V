@@ -70,6 +70,7 @@ architecture rtl of riscpol is
          i_clk    : in std_logic;
          i_addr   : in integer range 0 to C_RAM_LENGTH-1;
          i_wdata  : in std_logic_vector(31 downto 0);
+         i_we     : in std_logic;
          o_gpio   : out std_logic_vector(7 downto 0)
       );
    end component gpio;
@@ -117,10 +118,11 @@ begin
        i_clk   => clk,
        i_addr  => core_addr_write,
        i_wdata => core_data_write,
+       i_we    => core_write_enable,
        o_gpio  => o_gpio
     );
 
-   rst <= i_rst;
+   rst <= not(i_rst);
    clk <= i_clk;
 
 end architecture rtl;
