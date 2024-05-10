@@ -62,7 +62,7 @@ begin
    begin
       if (i_rst = '1') then
          o_instruction_addr   <= (others => '0');
-      else
+      else -- TODO maybe uses if-else
          case i_inst_addr_ctrl is
             when C_INST_ADDR_PC     => o_instruction_addr <= pc_addr_buff + 4;
             when C_INST_ADDR_ALU    => o_instruction_addr <= i_alu_result;
