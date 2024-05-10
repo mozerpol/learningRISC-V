@@ -70,7 +70,7 @@ begin
       -- report "GPR(1): " & to_string(spy_gpr(1));
       ----------------------------------------------------------------
       --                                                            --
-      --    addi, slti, sltiu, xori, ori, andi, slli, srli, srai    --
+      --    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI    --
       --                                                            --
       ----------------------------------------------------------------
       --------------
@@ -3528,7 +3528,7 @@ begin
 
 
       report "Total errors: " & integer'image(set_test_point);
-      wait for 100 ns;
+      wait for 1 us;
       stop(2);
    end process p_tb;
 
