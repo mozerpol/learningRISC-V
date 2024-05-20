@@ -19,7 +19,7 @@ library control_lib;
 
 entity alu is
    port (
-      i_rst             : in std_logic;
+
       i_alu_operand_1   : in std_logic_vector(31 downto 0);
       i_alu_operand_2   : in std_logic_vector(31 downto 0);
       i_alu_control     : in std_logic_vector(4 downto 0);
@@ -31,11 +31,9 @@ architecture rtl of alu is
 
 begin
 
-   p_alu : process(i_rst, i_alu_operand_1, i_alu_operand_2, i_alu_control)
+   p_alu : process( i_alu_operand_1, i_alu_operand_2, i_alu_control)
    begin
-      if (i_rst = '1') then
-         o_alu_result   <= (others => '0');
-      else
+
          case i_alu_control is
             when C_ADD | C_ADDI  =>
                o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
@@ -82,7 +80,7 @@ begin
                                signed(i_alu_operand_2)) and X"FFFFFFFE";
             when others => o_alu_result <= (others => '0');
          end case;
-      end if;
+
    end process p_alu;
 
 end architecture rtl;
