@@ -21,7 +21,7 @@ library control_lib;
 
 entity branch_instructions is
    port (
-      i_rst             : in std_logic;
+
       i_branch_ctrl     : in std_logic_vector(2 downto 0);
       i_rs1_data        : in std_logic_vector(31 downto 0);
       i_rs2_data        : in std_logic_vector(31 downto 0);
@@ -33,11 +33,9 @@ architecture rtl of branch_instructions is
 
 begin
 
-   p_branch_instructions : process(i_rst, i_branch_ctrl, i_rs1_data, i_rs2_data)
+   p_branch_instructions : process( i_branch_ctrl, i_rs1_data, i_rs2_data)
    begin
-      if (i_rst = '1') then
-         o_branch_result <= C_NOT_TAKEN;
-      else
+
          case (i_branch_ctrl) is
             when C_BEQ  =>
                if (i_rs1_data = i_rs2_data) then
@@ -77,7 +75,7 @@ begin
 				   end if;
             when others => o_branch_result <= C_NOT_TAKEN;
          end case;
-      end if;
+
    end process p_branch_instructions;
 
 end architecture rtl;
