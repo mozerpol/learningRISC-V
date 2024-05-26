@@ -52,7 +52,7 @@ architecture rtl of core is
 
    component alu is
       port (
-         i_rst                   : in std_logic;
+
          i_alu_operand_1         : in std_logic_vector(31 downto 0);
          i_alu_operand_2         : in std_logic_vector(31 downto 0);
          i_alu_control           : in std_logic_vector(4 downto 0);
@@ -62,7 +62,7 @@ architecture rtl of core is
 
    component alu_mux_1 is
       port (
-         i_rst                   : in std_logic;
+
          i_alu_mux_1_ctrl        : in std_logic;
          i_rs1_data              : in std_logic_vector(31 downto 0);
          i_pc_addr               : in std_logic_vector(31 downto 0);
@@ -72,7 +72,7 @@ architecture rtl of core is
 
    component alu_mux_2 is
       port (
-         i_rst                   : in std_logic;
+
          i_alu_mux_2_ctrl        : in std_logic;
          i_rs2_data              : in std_logic_vector(31 downto 0);
          i_imm                   : in std_logic_vector(31 downto 0);
@@ -82,7 +82,7 @@ architecture rtl of core is
 
    component branch_instructions is
       port (
-         i_rst                   : in std_logic;
+
          i_branch_ctrl           : in std_logic_vector(2 downto 0);
          i_rs1_data              : in std_logic_vector(31 downto 0);
          i_rs2_data              : in std_logic_vector(31 downto 0);
@@ -213,7 +213,7 @@ begin
 
    inst_alu : component alu
    port map (
-      i_rst                   => rst,
+
       i_alu_operand_1         => alu_operand_1,
       i_alu_operand_2         => alu_operand_2,
       i_alu_control           => alu_control,
@@ -222,7 +222,6 @@ begin
 
    inst_alu_mux_1 : component alu_mux_1
    port map (
-      i_rst                   => rst,
       i_alu_mux_1_ctrl        => alu_mux_1_ctrl,
       i_rs1_data              => rs1_data,
       i_pc_addr               => pc_addr,
@@ -231,7 +230,7 @@ begin
 
    inst_alu_mux_2 : component alu_mux_2
    port map (
-      i_rst                   => rst,
+
       i_alu_mux_2_ctrl        => alu_mux_2_ctrl,
       i_rs2_data              => rs2_data,
       i_imm                   => imm,
@@ -240,7 +239,7 @@ begin
 
    inst_branch_instructions : component branch_instructions
    port map (
-      i_rst                   => rst,
+
       i_branch_ctrl           => branch_ctrl,
       i_rs1_data              => rs1_data,
       i_rs2_data              => rs2_data,
