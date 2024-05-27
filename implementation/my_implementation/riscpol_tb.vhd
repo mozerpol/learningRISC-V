@@ -3523,9 +3523,165 @@ begin
       -- opcode etc.                                                --
       --                                                            --
       ----------------------------------------------------------------
-      -- TODO: DODAC TESTY PODCZAS KTORYCH JEST RESET, POPRAWIC GENERAL TEST
-      -- TODO: I SPRAWDZIC CZY POKRYWAJA SIE Z TYMI W ROM
-
+      -- TODO: Change above description
+      -- addi  x1,  x0,   0     # The value x1 is assigned to GPIO
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: addi  x1,  x0,   0  # x1 = 0x00000000";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x2,  x0,   15    # The value x1 is compared to the value of x2
+      if (spy_gpr(2) /= 32x"0000000f") then
+         report "ERROR: addi  x2,  x0,   15  # x2 = 0x0000000f";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x3,  x0,   0     # The value of x3 is compared to the value of x4
+      if (spy_gpr(3) /= 32x"00000000") then
+         report "ERROR: addi  x3,  x0,   0  # x3 = 0x00000000";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x4,  x0,   10    # x4 = 10, in reality this value is too small
+      if (spy_gpr(4) /= 32x"0000000a") then
+         report "ERROR: addi  x4,  x0,   10  # x4 = 0x0000000a";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   1
+      if (spy_gpr(1) /= 32x"00000001") then
+         report "ERROR: addi  x1,  x1,   1   # x1 = 0x00000001";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000001") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
+      -- changes the GPIO state every 12 clock cycles if the GPIO change is 
+      -- correct.
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000010") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000010 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000011") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000011 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000100") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000100 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000101") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000101 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000110") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000110 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000111") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00000111 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001000") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001001") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001010") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001010 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001011") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001011 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;                  
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001100") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001100 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001101") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001101 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001110") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001110 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24;
+      -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00001111") then
+         report "ERROR: sb    x1,  255(x0)     # gpio = 00001111 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
+      -- changes the GPIO state every 12 clock cycles if the GPIO change is 
+      -- correct.
+      -- addi  x1,  x0,   0     # The value x1 is assigned to GPIO
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: addi  x1,  x0,   0  # x1 = 0x00000000";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x3,  x0,   0     # The value x1 is assigned to GPIO
+      if (spy_gpr(3) /= 32x"00000000") then
+         report "ERROR: addi  x3,  x0,   0  # x3 = 0x00000000";
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sb    x0,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000000") then
+         report "ERROR: sb    x0,  255(x0)     # gpio = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      -- TODO: Add test for reset
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;
