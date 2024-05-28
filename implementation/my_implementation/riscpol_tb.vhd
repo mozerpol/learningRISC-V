@@ -52,9 +52,9 @@ begin
    p_clk : process
    begin
       clk_tb   <= '1';
-      wait for 1 ns;
+      wait for C_CLK_PERIOD/2;
       clk_tb   <= '0';
-      wait for 1 ns;
+      wait for C_CLK_PERIOD/2;
    end process;
 
    p_tb : process
