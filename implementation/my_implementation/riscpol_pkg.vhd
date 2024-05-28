@@ -18,6 +18,7 @@ package riscpol_pkg is
    constant C_RAM_LENGTH      : integer := 64;
    constant C_ROM_LENGTH      : integer := 1024;
    constant C_MMIO_ADDR_GPIO  : integer := 64; -- change name to gpio_addr
+   constant C_CLK_PERIOD      : time    := 2 ns;
 
 end;
 
