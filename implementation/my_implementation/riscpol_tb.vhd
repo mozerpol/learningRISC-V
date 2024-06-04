@@ -64,6 +64,12 @@ begin
       rst_tb   <= '1';
       wait for 20 ns;
       rst_tb   <= '0';
+      -- After the reset, three delays are required for the simulation purposes.
+      -- The first delay is to "detec" the nearest rising edge of the clock.
+      -- The second delay is to execute the instruction, but its result is not 
+      -- yet visible from the simulator.
+      -- Thanks to the third delay, the result of execution of the instruction 
+      -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
@@ -3682,11 +3688,18 @@ begin
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
-      --                                                            --
+      -- The first instruction from rom.vhd is always loaded during --
+      -- the reset.                                                 --
       ----------------------------------------------------------------
       rst_tb   <= '1';
       wait for 10 ns;
       rst_tb   <= '0';
+      -- After the reset, three delays are required for the simulation purposes.
+      -- The first delay is to "detec" the nearest rising edge of the clock.
+      -- The second delay is to execute the instruction, but its result is not 
+      -- yet visible from the simulator.
+      -- Thanks to the third delay, the result of execution of the instruction 
+      -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
