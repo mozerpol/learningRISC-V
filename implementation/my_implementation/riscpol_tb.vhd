@@ -3519,11 +3519,9 @@ begin
       wait until rising_edge(clk_tb);
       ----------------------------------------------------------------
       --                                                            --
-      -- Special instructions, behavior check in case of invalid    --
-      -- opcode etc.                                                --
+      --            A simple algorithm to check GPIO                --
       --                                                            --
       ----------------------------------------------------------------
-      -- TODO: Change above description
       -- addi  x1,  x0,   0     # The value x1 is assigned to GPIO
       if (spy_gpr(1) /= 32x"00000000") then
          report "ERROR: addi  x1,  x0,   0  # x1 = 0x00000000";
@@ -3681,7 +3679,11 @@ begin
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
-      -- TODO: Add test for reset
+      ----------------------------------------------------------------
+      --                                                            --
+      --               Check behaviour after reset                  --
+      --                                                            --
+      ----------------------------------------------------------------
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;
