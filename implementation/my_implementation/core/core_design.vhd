@@ -125,7 +125,6 @@ architecture rtl of core is
 
    component reg_file is
       port (
-         i_rst                   : in std_logic;
          i_clk                   : in std_logic;
          i_rs1_addr              : in std_logic_vector(4 downto 0);
          i_rs2_addr              : in std_logic_vector(4 downto 0);
@@ -279,7 +278,6 @@ begin
 
    inst_reg_file : component reg_file
    port map (
-      i_rst                   => rst,
       i_clk                   => clk,
       i_rs1_addr              => rs1_addr,
       i_rs2_addr              => rs2_addr,
