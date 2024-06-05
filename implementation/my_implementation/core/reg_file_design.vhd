@@ -22,7 +22,6 @@ library control_lib;
 
 entity reg_file is
    port (
-      i_rst                : in std_logic;
       i_clk                : in std_logic;
       i_rs1_addr           : in std_logic_vector(4 downto 0);
       i_rs2_addr           : in std_logic_vector(4 downto 0);
@@ -49,11 +48,9 @@ begin
    o_rs2_data <= (others => '0') when i_rs2_addr = "00000" else
                  gpr(to_integer(unsigned(i_rs2_addr)));
 
-   p_reg_file : process(i_rst, i_clk)
+   p_reg_file : process(i_clk)
    begin
-      if (i_rst = '1') then
-         gpr <= (others => (others => '0'));
-      elsif (i_clk'event and i_clk = '1') then
+      if (i_clk'event and i_clk = '1') then
          if (i_reg_file_wr_ctrl = C_WRITE_ENABLE) then
             if (i_reg_file_inst_ctrl = C_WRITE_RD_DATA) then
                gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
