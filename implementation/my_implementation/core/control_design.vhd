@@ -35,7 +35,6 @@ entity control is
       o_alu_control           : out std_logic_vector(4 downto 0);
       o_ram_management_ctrl   : out std_logic_vector(3 downto 0);
       o_reg_file_inst_ctrl    : out std_logic_vector(1 downto 0);
-      o_reg_file_wr_ctrl      : out std_logic;
       o_branch_ctrl           : out std_logic_vector(2 downto 0)
    );
 end entity control;
@@ -141,36 +140,26 @@ begin
    begin
       if (i_rst = '1') then
          o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
-         o_reg_file_wr_ctrl      <= C_READ_ENABLE;
       else
          case i_opcode(6 downto 0) is
             when C_OPCODE_OPIMM  =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_OP     =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_LOAD   =>
                o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_STORE  =>
                o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
-               o_reg_file_wr_ctrl   <= C_READ_ENABLE;
             when C_OPCODE_LUI    =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_AUIPC  =>
                o_reg_file_inst_ctrl <= C_WRITE_ALU_RESULT;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_JAL    =>
                o_reg_file_inst_ctrl <= C_WRITE_PC_ADDR;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when C_OPCODE_JALR   =>
                o_reg_file_inst_ctrl <= C_WRITE_PC_ADDR;
-               o_reg_file_wr_ctrl   <= C_WRITE_ENABLE;
             when others          =>
                o_reg_file_inst_ctrl <= C_WRITE_RD_DATA;
-               o_reg_file_wr_ctrl   <= C_READ_ENABLE;
          end case;
       end if;
    end process;
