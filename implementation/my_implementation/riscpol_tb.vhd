@@ -3692,7 +3692,7 @@ begin
       -- the reset.                                                 --
       ----------------------------------------------------------------
       rst_tb   <= '1';
-      wait for 10 ns;
+      wait for 977 ns;
       rst_tb   <= '0';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
@@ -3709,43 +3709,23 @@ begin
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
-      rst_tb   <= '1';
-      wait for 11 ns;
-      rst_tb   <= '0';
       wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   -2048 # x1 = 0xfffff800
-      if (spy_gpr(1) /= 32x"fffff800") then
-         report "ERROR: addi  x1,  x0,   -2048 # x1 = 0xfffff800 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      rst_tb   <= '1';
-      wait for 12 ns;
-      rst_tb   <= '0';
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   -2048 # x1 = 0xfffff800
-      if (spy_gpr(1) /= 32x"fffff800") then
-         report "ERROR: addi  x1,  x0,   -2048 # x1 = 0xfffff800 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      rst_tb   <= '1';
-      wait for 99 ns;
-      rst_tb   <= '0';
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   -2048 # x1 = 0xfffff800
-      if (spy_gpr(1) /= 32x"fffff800") then
-         report "ERROR: addi  x1,  x0,   -2048 # x1 = 0xfffff800 | Test_point: "
+      -- addi  x2,  x0,   -511  # x2 = 0xfffffe01
+      if (spy_gpr(2) /= 32x"fffffe01") then
+         report "ERROR: addi  x2,  x0,   -511  # x2 = 0xfffffe01 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      -- addi  x3,  x0,   -2    # x3 = 0xfffffffe
+      if (spy_gpr(3) /= 32x"fffffffe") then
+         report "ERROR: addi  x3,  x0,   -2    # x3 = 0xfffffffe | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      
+      -- TODO: fix image with signals, remove reg_file_wr_ctrl 
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;
