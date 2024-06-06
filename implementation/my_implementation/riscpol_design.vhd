@@ -122,7 +122,7 @@ begin
        o_gpio  => o_gpio
     );
 
-   rst <= not(i_rst);
+   rst <= (i_rst);
    clk <= i_clk;
 
 end architecture rtl;

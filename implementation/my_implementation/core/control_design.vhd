@@ -3,7 +3,7 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Control path. This module receives the decoded instruction
--- from the decoder module and the result of a branch type instruction (if, of 
+-- from the decoder module and the result of a branch type instruction (if, of
 -- course, the type of such an instruction is executed). On this basis, it
 -- generates control signals for all modules inside the core.
 --------------------------------------------------------------------------------

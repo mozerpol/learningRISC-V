@@ -705,7 +705,7 @@ sb    x0,  255(x0)     # gpio = 00000000
 addi  x1,  x0,   0     # The value x1 is assigned to GPIO
 addi  x2,  x0,   15    # The value x1 is compared to the value of x2. 15 = 1111
 addi  x3,  x0,   0     # The value of x3 is compared to the value of x4, this
-                       # works as a delay loop. The x3 is incremented if is not 
+                       # works as a delay loop. The x3 is incremented if is not
                        # equal x4
 addi  x4,  x0,   10    # x4 = 10, in reality this value as a delay is too small
 loop2:
@@ -715,8 +715,12 @@ loop1:
 addi  x3,  x3,   1     # Delay loop
 bne   x3,  x4,   loop1 # Is there enough delay?
 addi  x3,  x0,   0     # Yes, reset delay counter
-bne   x1,  x2,   loop2 # Were all the GPIOs on? If not go to loop2; yes, all the 
+bne   x1,  x2,   loop2 # Were all the GPIOs on? If not go to loop2; yes, all the
                        # GPIOs were turn on, reset all counters
 addi  x1,  x0,   0
 addi  x3,  x0,   0
 sb    x0,  255(x0)
+####################################
+##  Check behaviour after reset   ##
+####################################
+# The first instruction from rom.vhd is always loaded during, the reset.

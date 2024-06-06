@@ -66,9 +66,9 @@ begin
       rst_tb   <= '0';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
-      -- The second delay is to execute the instruction, but its result is not 
+      -- The second delay is to execute the instruction, but its result is not
       -- yet visible from the simulator.
-      -- Thanks to the third delay, the result of execution of the instruction 
+      -- Thanks to the third delay, the result of execution of the instruction
       -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
@@ -3565,7 +3565,7 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
-      -- changes the GPIO state every 12 clock cycles if the GPIO change is 
+      -- changes the GPIO state every 12 clock cycles if the GPIO change is
       -- correct.
       -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
       if (gpio_tb /= "00000010") then
@@ -3636,7 +3636,7 @@ begin
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
-      wait for C_CLK_PERIOD*24;                  
+      wait for C_CLK_PERIOD*24;
       -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
       if (gpio_tb /= "00001100") then
          report "ERROR: sb    x1,  255(x0)     # gpio = 00001100 | Test_point: "
@@ -3665,7 +3665,7 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
-      -- changes the GPIO state every 12 clock cycles if the GPIO change is 
+      -- changes the GPIO state every 12 clock cycles if the GPIO change is
       -- correct.
       -- addi  x1,  x0,   0     # The value x1 is assigned to GPIO
       if (spy_gpr(1) /= 32x"00000000") then
@@ -3696,9 +3696,9 @@ begin
       rst_tb   <= '0';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
-      -- The second delay is to execute the instruction, but its result is not 
+      -- The second delay is to execute the instruction, but its result is not
       -- yet visible from the simulator.
-      -- Thanks to the third delay, the result of execution of the instruction 
+      -- Thanks to the third delay, the result of execution of the instruction
       -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
@@ -3724,8 +3724,8 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      
-      -- TODO: fix image with signals, remove reg_file_wr_ctrl 
+
+      -- TODO: fix image with signals, remove reg_file_wr_ctrl
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;

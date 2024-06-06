@@ -3,8 +3,8 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : This module works like a multiplexer. Only passes data to
--- arithmetic logic unit (ALU) that comes from program counter or register file. 
--- Depending on the i_alu_mux_1_ctrl signal that comes from the control module, 
+-- arithmetic logic unit (ALU) that comes from program counter or register file.
+-- Depending on the i_alu_mux_1_ctrl signal that comes from the control module,
 -- the selected value is transferred.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
