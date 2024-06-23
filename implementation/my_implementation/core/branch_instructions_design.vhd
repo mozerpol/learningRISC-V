@@ -21,7 +21,6 @@ library control_lib;
 
 entity branch_instructions is
    port (
-
       i_branch_ctrl     : in std_logic_vector(2 downto 0);
       i_rs1_data        : in std_logic_vector(31 downto 0);
       i_rs2_data        : in std_logic_vector(31 downto 0);
@@ -35,47 +34,45 @@ begin
 
    p_branch_instructions : process( i_branch_ctrl, i_rs1_data, i_rs2_data)
    begin
-
-         case (i_branch_ctrl) is
-            when C_BEQ  =>
-               if (i_rs1_data = i_rs2_data) then
-                  o_branch_result <= C_TAKEN;
-               else
-                  o_branch_result <= C_NOT_TAKEN;
-               end if;
-            when C_BNE  =>
-               if (i_rs1_data /= i_rs2_data) then
-                  o_branch_result <= C_TAKEN;
-               else
-                  o_branch_result <= C_NOT_TAKEN;
-               end if;
-            when C_BLT  =>
-               if (signed(i_rs1_data) < signed(i_rs2_data)) then
-                  o_branch_result <= C_TAKEN;
-               else
-                  o_branch_result <= C_NOT_TAKEN;
-               end if;
-            when C_BGE  =>
-               if (signed(i_rs1_data) >= signed(i_rs2_data)) then
-                  o_branch_result <= C_TAKEN;
-               else
-                  o_branch_result <= C_NOT_TAKEN;
-               end if;
-            when C_BLTU =>
-               if (unsigned(i_rs1_data) < unsigned(i_rs2_data)) then
-                  o_branch_result <= C_TAKEN;
-               else
-                  o_branch_result <= C_NOT_TAKEN;
-               end if;
-            when C_BGEU =>
-				   if (unsigned(i_rs1_data) >= unsigned(i_rs2_data)) then
-					   o_branch_result <= C_TAKEN;
-				   else
-					   o_branch_result <= C_NOT_TAKEN;
-				   end if;
-            when others => o_branch_result <= C_NOT_TAKEN;
-         end case;
-
+      case (i_branch_ctrl) is
+         when C_BEQ  =>
+            if (i_rs1_data = i_rs2_data) then
+               o_branch_result <= C_TAKEN;
+            else
+               o_branch_result <= C_NOT_TAKEN;
+            end if;
+         when C_BNE  =>
+            if (i_rs1_data /= i_rs2_data) then
+               o_branch_result <= C_TAKEN;
+            else
+               o_branch_result <= C_NOT_TAKEN;
+            end if;
+         when C_BLT  =>
+            if (signed(i_rs1_data) < signed(i_rs2_data)) then
+               o_branch_result <= C_TAKEN;
+            else
+               o_branch_result <= C_NOT_TAKEN;
+            end if;
+         when C_BGE  =>
+            if (signed(i_rs1_data) >= signed(i_rs2_data)) then
+               o_branch_result <= C_TAKEN;
+            else
+               o_branch_result <= C_NOT_TAKEN;
+            end if;
+         when C_BLTU =>
+            if (unsigned(i_rs1_data) < unsigned(i_rs2_data)) then
+               o_branch_result <= C_TAKEN;
+            else
+               o_branch_result <= C_NOT_TAKEN;
+            end if;
+         when C_BGEU =>
+            if (unsigned(i_rs1_data) >= unsigned(i_rs2_data)) then
+               o_branch_result <= C_TAKEN;
+            else
+               o_branch_result <= C_NOT_TAKEN;
+            end if;
+         when others => o_branch_result <= C_NOT_TAKEN;
+      end case;
    end process p_branch_instructions;
 
 end architecture rtl;
