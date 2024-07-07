@@ -52,3 +52,14 @@ my_implementation
 |   |___gpio.hex
 ```
 
+### Simulation
+To run simulation in ModelSim on Linux run command: `do script/script.tcl`<br/>
+After running this command in ModelSim the simulation will start, end itself and 
+show all signals on the waveforms. You can add your own signals to the waveforms 
+by modifying the script/waveforms.do file. <br/>
+For Windows systems you can try to modify the script/script.tcl to automate 
+simulation. For other simulators (e.g. Vivado or GHDL) you have to do everything 
+manually, i.e. add all files with the vhd extension, compile them and then run
+tests which are in riscpol_tb.vhd file. <br/>
+The top-level entity is riscpol in riscpol_design.vhd.
+
