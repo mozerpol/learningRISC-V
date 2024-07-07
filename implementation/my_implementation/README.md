@@ -63,3 +63,9 @@ manually, i.e. add all files with the vhd extension, compile them and then run
 tests which are in riscpol_tb.vhd file. <br/>
 The top-level entity is riscpol in riscpol_design.vhd.
 
+### Building
+There is no script to automate the synthesis. You have to do everything 
+manually. Add all files with the vhd extension (without riscpol_tb.vhd, it's for 
+testing purposes only) compile them and then run synthesis. <br/>
+The top-level entity is riscpol in riscpol_design.vhd.
+
