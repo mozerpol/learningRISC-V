@@ -69,3 +69,10 @@ manually. Add all files with the vhd extension (without riscpol_tb.vhd, it's for
 testing purposes only) compile them and then run synthesis. <br/>
 The top-level entity is riscpol in riscpol_design.vhd.
 
+### Target platform
+Resource utilization:
+- Total logic elements: 1560,
+- Total registers: 252,
+- Total memory bits: 10240 (2048 for core, 8192 for RAM),
+- Fmax: 55 MHz.
+
