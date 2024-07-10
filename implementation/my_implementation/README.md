@@ -76,3 +76,15 @@ Resource utilization:
 - Total memory bits: 10240 (2048 for core, 8192 for RAM),
 - Fmax: 55 MHz.
 
+### Running your own program
+File core/rom.vhd contains instructions to be executed, which are represented by 
+32-bit hexadecimal code. Instructions can be manually edited by modifying C_CODE 
+array. In a situation where are a lot of instructions, it's more convenient to 
+paste them into the core/code.txt file, and then run a python script by 
+executing the command: `python3 core/rom_updater.py`, which will modify the 
+C_CODE array. <br/>
+There are two important rules:
+1. The last instruction in the C_CODE array must be: others => x"00000000" 
+2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a 
+C_ROM_LENGTH constant.
+
