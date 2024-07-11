@@ -88,3 +88,10 @@ There are two important rules:
 2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a 
 C_ROM_LENGTH constant.
 
+### Datapath diagram
+JPG: <br/>
+![riscpol_diagram](https://github.com/user-attachments/assets/2670cb64-670f-40ad-b2ff-b576a2e6af79)
+
+SVG: <br/>
+![riscpol_diagram](https://github.com/user-attachments/assets/c0e1d11f-9dae-4926-9ef4-0643a7859d51)
+
