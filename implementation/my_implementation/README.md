@@ -104,3 +104,17 @@ SVG: <br/>
 #### Based on the BNE instruction
 
 #### Based on the SH instruction
+
+### Project status
+1. Implementation of a three-stage processor:
+- [ ] Fetch, decode, execute.
+2. Protocols implementation
+- [ ] 1-Wire,
+- [ ] SPI,
+- [ ] I2C,
+- [ ] UART.
+3. Others
+- [ ] Add 8-bit timer
+- [ ] Add cache
+- [ ] Setup and run Dhrystone
+- [ ] Add script for Vivado and GHDL
