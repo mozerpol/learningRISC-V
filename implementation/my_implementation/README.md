@@ -95,3 +95,12 @@ JPG: <br/>
 SVG: <br/>
 ![riscpol_diagram](https://github.com/user-attachments/assets/c0e1d11f-9dae-4926-9ef4-0643a7859d51)
 
+### How it works, the dataflow
+
+#### Based on the ADD instruction
+
+#### Based on the ADDI instruction
+
+#### Based on the BNE instruction
+
+#### Based on the SH instruction
