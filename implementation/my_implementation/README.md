@@ -90,10 +90,10 @@ C_ROM_LENGTH constant.
 
 ### Datapath diagram
 JPG: <br/>
-![riscpol_diagram](https://github.com/user-attachments/assets/2670cb64-670f-40ad-b2ff-b576a2e6af79)
+![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/a5ed7c68-6da0-4e57-843a-c85caea127de)
 
 SVG: <br/>
-![riscpol_diagram](https://github.com/user-attachments/assets/c0e1d11f-9dae-4926-9ef4-0643a7859d51)
+![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/40337c5a-141e-4c62-abed-24e6e374abff)
 
 ### How it works, the dataflow
 
