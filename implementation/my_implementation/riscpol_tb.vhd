@@ -3,7 +3,8 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Test for the entire processor (riscpol entity in
--- riscpol_design).
+-- riscpol_design). All instructions (in assembly language) from this test are 
+-- in the file tests/general.asm.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
