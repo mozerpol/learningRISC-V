@@ -103,6 +103,7 @@ proc s_add_external_libs {} {
 # Design, testbench must have the VHD extension
 # Waveforms must have the DO extension
 # Script must have the TCL extension
+# The scripts are written for Linux
 #
 #         HOW TO RUN:
 # Go to directory where is script.tcl and run command: do script.tcl
