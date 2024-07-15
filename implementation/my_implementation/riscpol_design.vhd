@@ -2,9 +2,10 @@
 -- File          : riscpol_design.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : It connects all the modules together, such as the core and
--- peripherals. The ports of this module need to be connected to the physical
--- pins of the FPGA to ensure the operation of the entire processor.
+-- Description   : Main module. It connects all the modules together, such as 
+-- the core and peripherals. The input and output ports of this module need to 
+-- be connected to the physical pins of the FPGA to ensure the operation of the 
+-- entire processor.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
