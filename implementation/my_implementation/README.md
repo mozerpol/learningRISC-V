@@ -90,10 +90,10 @@ C_ROM_LENGTH constant.
 
 ### Datapath diagram
 JPG: <br/>
-![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/a5ed7c68-6da0-4e57-843a-c85caea127de)
+![riscpol_diagram](https://github.com/user-attachments/assets/7e2e0ff1-aad6-4877-a740-875f2a9278db)
 
 SVG: <br/>
-![mozerpol_diagram](https://github.com/mozerpol/learningRISC-V/assets/43972902/40337c5a-141e-4c62-abed-24e6e374abff)
+![riscpol_diagram](https://github.com/user-attachments/assets/951243d9-3c8e-47c4-aae9-70087cd6f9de)
 
 ### How it works, the dataflow
 
@@ -114,7 +114,7 @@ SVG: <br/>
 - [ ] I2C,
 - [ ] UART.
 3. Others
-- [ ] Add 8-bit timer
-- [ ] Add cache
-- [ ] Setup and run Dhrystone
-- [ ] Add script for Vivado and GHDL
+- [ ] Add 8-bit timer,
+- [ ] Add cache,
+- [ ] Setup and run Dhrystone,
+- [ ] Add script for Vivado and GHDL.
