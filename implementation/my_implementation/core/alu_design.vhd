@@ -3,8 +3,8 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Arithmetic logic unit. Based on the i_alu_control signal,
--- which comes from the control module, a decision is made which
--- mathematical operation the ALU should perform.
+-- which comes from the control module (control_design.vhd), a decision is made 
+-- which mathematical operation the ALU should perform.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ architecture rtl of alu is
 
 begin
 
-   p_alu : process( i_alu_operand_1, i_alu_operand_2, i_alu_control)
+   p_alu : process(i_alu_operand_1, i_alu_operand_2, i_alu_control)
    begin
       case i_alu_control is
          when C_ADD | C_ADDI  =>
