@@ -1,5 +1,8 @@
 # RISCPOL
-> Simple RISC-V (RV32I) core written in VHDL.
+> Simple RISC-V (RV32I) core written in VHDL. Peripherals:
+> - 8-bit Timer
+> - UART
+> - 8-bit GPIO
 
 ### Overview
 Very simple single-stage RISC-V (RV32I) core for learning purposes (without 
@@ -45,7 +48,7 @@ my_implementation
 |___synthesis
 |   |___riscpol.sdc
 |
-|___tests
+|___code_samples
 |   |___general.asm
 |   |___general.hex
 |   |___gpio.asm
@@ -63,7 +66,7 @@ manually, i.e. add all files with the vhd extension, compile them and then run
 tests which are in riscpol_tb.vhd file. <br/>
 The top-level entity is riscpol in riscpol_design.vhd.
 
-### Building
+### Synthesis
 There is no script to automate the synthesis. You have to do everything 
 manually. Add all files with the vhd extension (without riscpol_tb.vhd, it's for 
 testing purposes only) compile them and then run synthesis. <br/>
