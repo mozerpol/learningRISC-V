@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : reg_file_design.vhd
+-- File          : register_file_design.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Register file which contains 32 general purpose registers
