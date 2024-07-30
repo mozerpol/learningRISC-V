@@ -54,9 +54,18 @@ my_implementation
 |   |___gpio.asm
 |   |___gpio.hex
 ```
+The entire project is in the main *my_implementation* folder. The top design is
+*riscpol_design.vhd* file, and the top-level entity is *riscpol*. It integrates 
+the core and all peripherals, such as GPIO, UART and Timer. <br/> 
+The test for top design is the file *riscpol_tb.vhd*. All instructions used in 
+this test are in the *code_samples* folder in the files *general.asm* and 
+*general.hex*. <br/>
+The main settings such as the size of memory for data or instructions are in the 
+file *riscpol_pkg.vhd*. <br/>
 
 ### Simulation
-To run simulation in ModelSim on Linux run command: `do script/script.tcl`<br/>
+To run simulation in ModelSim on Linux go to folder *script* and run command: 
+`do script.tcl`<br/>
 After running this command in ModelSim the simulation will start, end itself and 
 show all signals on the waveforms. You can add your own signals to the waveforms 
 by modifying the script/waveforms.do file. <br/>
@@ -83,10 +92,10 @@ Resource utilization:
 File core/rom.vhd contains instructions to be executed, which are represented by 
 32-bit hexadecimal code. Instructions can be manually edited by modifying C_CODE 
 array. In a situation where are a lot of instructions, it's more convenient to 
-paste them into the core/code.txt file, and then run a python script by 
-executing the command: `python3 core/rom_updater.py`, which will modify the 
-C_CODE array. <br/>
-There are two important rules:
+paste them into the core/code.txt file, then go to folder *core* and run a 
+python script by executing the command: `python3 rom_updater.py`, which will 
+modify the C_CODE array. <br/>
+There are two important rules for adding own instructions in rom.vhd file:
 1. The last instruction in the C_CODE array must be: others => x"00000000" 
 2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a 
 C_ROM_LENGTH constant.
@@ -97,6 +106,9 @@ JPG: <br/>
 
 SVG: <br/>
 ![riscpol_diagram](https://github.com/user-attachments/assets/f6d05e20-32ca-4529-8e74-41c2b9136173)
+
+The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
+*drawio* available at: https://app.diagrams.net/
 
 ### How it works, the dataflow
 
