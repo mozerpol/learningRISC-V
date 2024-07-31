@@ -73,8 +73,8 @@ proc s_add_external_libs {} {
 
 
    set hdl_dir                "../core"
-   set library_name           "reg_file_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/reg_file_design.vhd
+   set library_name           "register_file_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/register_file_design.vhd
 
    set hdl_dir                "../core"
    set library_name           "ram_management_lib"
