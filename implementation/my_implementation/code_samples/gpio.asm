@@ -1,3 +1,5 @@
+# The machine code for these instructions below is in the file general.hex
+
 ##############
 ##   asdf    ##
 ##############
