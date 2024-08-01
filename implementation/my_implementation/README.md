@@ -55,13 +55,21 @@ my_implementation
 |   |___gpio.hex
 ```
 The entire project is in the main *my_implementation* folder. The top design is
-*riscpol_design.vhd* file, and the top-level entity is *riscpol*. It integrates 
-the core and all peripherals, such as GPIO, UART and Timer. <br/> 
-The test for top design is the file *riscpol_tb.vhd*. All instructions used in 
-this test are in the *code_samples* folder in the files *general.asm* and 
+*riscpol_design.vhd* file, the top-level entity is *riscpol*. It integrates the
+core and all peripherals, such as GPIO, UART and Timer. <br/>
+The test for the top design is the *riscpol_tb.vhd*. All instructions used in
+this test are in the *code_samples* folder in the files *general.asm* and
 *general.hex*. <br/>
-The main settings such as the size of memory for data or instructions are in the 
-file *riscpol_pkg.vhd*. <br/>
+The main settings such as the size of memory for data or instructions are in the
+*riscpol_pkg.vhd*. <br/>
+A data path and a control path is in *core* folder. Additionally, there is a
+python script that helps (but is not necessary) to update the instruction
+memory. How to use it is described below. <br/>
+The *peripherals* folder contains additional modules (e.g. Timer or UART) that
+aren't necessary for the core, but helps a lot during creating own projects.<br/>
+The *script* folder contains a TCL script that automates the simulation for
+ModelSim in Linux. How to run it is described below. It is important to run the
+script in the *script* folder.
 
 ### Simulation
 To run simulation in ModelSim on Linux go to folder *script* and run command: 
@@ -132,4 +140,5 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 - [ ] Add 8-bit timer,
 - [ ] Add cache,
 - [ ] Setup and run Dhrystone,
-- [ ] Add script for Vivado and GHDL.
+- [ ] Add script for Vivado and GHDL,
+- [ ] Change name to single-stage and move part of readme there.
