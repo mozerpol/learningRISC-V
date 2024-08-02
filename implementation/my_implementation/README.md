@@ -69,7 +69,13 @@ The *peripherals* folder contains additional modules (e.g. Timer or UART) that
 aren't necessary for the core, but helps a lot during creating own projects.<br/>
 The *script* folder contains a TCL script that automates the simulation for
 ModelSim in Linux. How to run it is described below. It is important to run the
-script in the *script* folder.
+script in the *script* folder. <br/>
+The *synthesis* folder contains a file with timing constraints. <br/>
+In the *code_samples* folder there are some sample programs. One file contains 
+assembly language instructions (.asm extension), and the other contains the 
+corresponding machine code instructions (.hex extension). The easiest way to 
+translate assembly language into machine code is to use an online risc-v 
+instruction decoder like [rvcodec.js](https://luplab.gitlab.io/rvcodecjs/).
 
 ### Simulation
 To run simulation in ModelSim on Linux go to folder *script* and run command: 
@@ -128,6 +134,8 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 
 #### Based on the SH instruction
 
+### Might help
+
 ### Project status
 1. Implementation of a three-stage processor:
 - [ ] Fetch, decode, execute.
@@ -141,4 +149,6 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 - [ ] Add cache,
 - [ ] Setup and run Dhrystone,
 - [ ] Add script for Vivado and GHDL,
-- [ ] Change name to single-stage and move part of readme there.
+- [ ] Change name to single-stage and move part of readme there,
+- [ ] Describe timign constraints,
+- [ ] Add some helpful articles.
