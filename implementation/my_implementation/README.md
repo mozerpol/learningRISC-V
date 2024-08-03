@@ -125,8 +125,24 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 *drawio* available at: https://app.diagrams.net/
 
 ### How it works, the dataflow
+The processor should start with a reset. This will set all control signals and 
+registers to their default values ​​and load the first instruction for execution.
 
 #### Based on the ADD instruction
+Przykładowa instrukcja: add x3, x2, x1 = 0x001101b3 <br/>
+
+1. Podczas resetu na wyjscie sygnalu instruction w module instruction_memory przypisywana jest pierwsza instrukcja do wykonania z tablicy C_CODE, ktora jest w modoule rom.vhd. <br/>
+instruction = 001101b3
+2. Na pierwsze zbocze narastające po odpuszczeniu sygnału reset instrukcja trafia do modułu decode, a tam dzielona jest na poszczególne składowe w zależności od OPCODE. W każdej instrukcji można wyróżnic skladowe odpowiedzialne za sterowanie (np. OPCODE, który mówi z jaką instrukcją mamy do czynienia) oraz składowe danych, które są zwykłymi liczbami. Dla przykładowej instrukcji: <br/>
+- rd_addr = 3
+- rs1_addr = 1
+- rs2_addr = 2
+- imm = 0
+- opcode = 33
+- func3 = 0
+- func7 = 0
+3. Składowe sterujące z modułu dekoder idą do modułu control, który na ich podstawie zarządza wszystkimi modułami w rdzeniu. Natomiast składowe danych trafiają do register_file, alu_mux_2 oraz ram_management.
+4. W zależności od OPCODE 
 
 #### Based on the ADDI instruction
 
@@ -151,4 +167,5 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 - [ ] Add script for Vivado and GHDL,
 - [ ] Change name to single-stage and move part of readme there,
 - [ ] Describe timign constraints,
-- [ ] Add some helpful articles.
+- [ ] Add some helpful articles,
+- [ ] Add gif (or maybe link to youtube) how to step by step run 
