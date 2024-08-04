@@ -128,12 +128,14 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 The processor should start with a reset. This will set all control signals and 
 registers to their default values ​​and load the first instruction for execution.
 
-#### Based on the ADD instruction
-Przykładowa instrukcja: add x3, x2, x1 = 0x001101b3 <br/>
+**Based on the ADD instruction** <br/>
+Przykładowa instrukcja: add x3, x2, x1 = 0x001101b3, która wykona się w ciągu jednego sygnału zegarowego. <br/>
 
 1. Podczas resetu na wyjscie sygnalu instruction w module instruction_memory przypisywana jest pierwsza instrukcja do wykonania z tablicy C_CODE, ktora jest w modoule rom.vhd. <br/>
 instruction = 001101b3
-2. Na pierwsze zbocze narastające po odpuszczeniu sygnału reset instrukcja trafia do modułu decode, a tam dzielona jest na poszczególne składowe w zależności od OPCODE. W każdej instrukcji można wyróżnic skladowe odpowiedzialne za sterowanie (np. OPCODE, który mówi z jaką instrukcją mamy do czynienia) oraz składowe danych, które są zwykłymi liczbami. Dla przykładowej instrukcji: <br/>
+2. Na pierwsze zbocze narastające po odpuszczeniu sygnału reset instrukcja trafia do modułu decode, a tam dzielona jest na poszczególne składowe w zależności od opcode. W każdej instrukcji można wyróżnic skladowe odpowiedzialne za sterowanie (np. opcode, który mówi z jaką instrukcją mamy do czynienia) oraz składowe danych, które są zwykłymi liczbami. 
+
+Dla przykładowej instrukcji wyjscia z modulu decode: <br/>
 - rd_addr = 3
 - rs1_addr = 1
 - rs2_addr = 2
@@ -141,14 +143,13 @@ instruction = 001101b3
 - opcode = 33
 - func3 = 0
 - func7 = 0
-3. Składowe sterujące z modułu dekoder idą do modułu control, który na ich podstawie zarządza wszystkimi modułami w rdzeniu. Natomiast składowe danych trafiają do register_file, alu_mux_2 oraz ram_management.
-4. W zależności od OPCODE 
-
-#### Based on the ADDI instruction
-
-#### Based on the BNE instruction
-
-#### Based on the SH instruction
+3. Składowe sterujące z modułu decode (takie jak opcode, func3 i func7) idą do modułu control, który na ich podstawie zarządza wszystkimi modułami w rdzeniu:
+- dla opcode 33 (stała C_OPCODE_OP) modul control steruje ALU przekazując za pomocą sygnału alu_control warość 0 (stała C_ADD),
+- sterowany jest moduł alu_mux_1 oraz alu_mux_2 za pomocą sygnałów o_alu_mux_1_ctrl oraz o_alu_mux_2_ctrl, którym przypisywana jest wartość 0 (stałe C_RS1_DATA oraz C_RS2_DATA),
+- sterowany jest moduł register_file za pomocą sygnału reg_file_inst_ctrl, do którego przypisywana jest wartość 0 (stała C_WRITE_ALU_RESULT).
+4. Moduły alu_mux_1 oraz alu_mux_2 są multiplekserami. Odpowiadają za przekazanie odpowiednich danych do ALU. W tym przypadku przekazują w obu przypadkach dane pochodzące z register_file, które mieściły się w rejestrach x1 oraz x2.
+5. Sygnał pochodzący z modułu control (i_alu_control) ma przypisaną wartość 0, z tego powodu ALU dodaje dane, które pochodzą z alu_mux_1 oraz alu_mux_2.
+6. Moduł register_file jest 32-bitowym rejestrem 32 komórek, do kórych można zapisywać oraz odczytywać dane. Odczyt odbywa się asynchronicznie, w zależności od wartości rs1_addr oraz rs2_addr, które pochodzą z modułu decoder. Odczytana wartość przypisywana jest do sygnałów rs1_data oraz rs2_data, które w tym przypadku przekazywane są do alu_mux_1 oraz alu_mux_2, które dalej przekazują dane ALU. Obliczona (w tym przypadku dodawanie) wartość przez ALU trafia jako sygnał alu_result do register_file, który zapisuje je w jednym ze swoich komórek wskazanych przez rd_addr.
 
 ### Might help
 
@@ -168,4 +169,5 @@ instruction = 001101b3
 - [ ] Change name to single-stage and move part of readme there,
 - [ ] Describe timign constraints,
 - [ ] Add some helpful articles,
-- [ ] Add gif (or maybe link to youtube) how to step by step run 
+- [ ] Add gif (or maybe link to youtube) how to step by step run project in
+quartus
