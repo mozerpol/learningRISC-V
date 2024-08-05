@@ -129,13 +129,23 @@ The processor should start with a reset. This will set all control signals and
 registers to their default values ​​and load the first instruction for execution.
 
 **Based on the ADD instruction** <br/>
-Przykładowa instrukcja: add x3, x2, x1 = 0x001101b3, która wykona się w ciągu jednego sygnału zegarowego. <br/>
-
-1. Podczas resetu na wyjscie sygnalu instruction w module instruction_memory przypisywana jest pierwsza instrukcja do wykonania z tablicy C_CODE, ktora jest w modoule rom.vhd. <br/>
-instruction = 001101b3
-2. Na pierwsze zbocze narastające po odpuszczeniu sygnału reset instrukcja trafia do modułu decode, a tam dzielona jest na poszczególne składowe w zależności od opcode. W każdej instrukcji można wyróżnic skladowe odpowiedzialne za sterowanie (np. opcode, który mówi z jaką instrukcją mamy do czynienia) oraz składowe danych, które są zwykłymi liczbami. 
-
-Dla przykładowej instrukcji wyjscia z modulu decode: <br/>
+Example instruction: add x3, x2, x1 = 0x001101b3, which will execute within one
+clock cycle. That is, it will read the instruction from memory, decode it, fetch
+the appropriate data from the register file, add this data, and write it back to 
+the register file.
+1. During the reset, the first instruction to be executed from the *C_CODE* 
+array, which is in the *rom.vhd* file, is assigned to the instruction output 
+signal in the instruction memory module. This is handled by the following code:
+```VHDL
+  if (i_rst = '1') then
+     o_instruction  <= C_CODE(0);
+```
+2. On the first rising clock edge after releasing the reset signal, the 
+instruction goes to the *decoder* module, where it is divided into individual 
+parts depending on the opcode. In each instruction, we can distinguish parts 
+responsible for control (e.g., the opcode, which tells us what instruction we 
+are dealing with) and data parts, which are numbers. For our example 
+instruction, the output from the decode module is:
 - rd_addr = 3
 - rs1_addr = 1
 - rs2_addr = 2
@@ -143,6 +153,19 @@ Dla przykładowej instrukcji wyjscia z modulu decode: <br/>
 - opcode = 33
 - func3 = 0
 - func7 = 0
+
+Code responsible for decoding instruction, case for ADD:
+```VHDL
+ when C_OPCODE_OP  =>
+    o_rd_addr   <= i_instruction(11 downto 7);
+    o_rs1_addr  <= i_instruction(19 downto 15);
+    o_rs2_addr  <= i_instruction(24 downto 20);
+    o_imm       <= (others => '0');
+    o_opcode    <= i_instruction(6 downto 0);
+    o_func3     <= i_instruction(14 downto 12);
+    o_func7     <= i_instruction(31 downto 25);
+```
+
 3. Składowe sterujące z modułu decode (takie jak opcode, func3 i func7) idą do modułu control, który na ich podstawie zarządza wszystkimi modułami w rdzeniu:
 - dla opcode 33 (stała C_OPCODE_OP) modul control steruje ALU przekazując za pomocą sygnału alu_control warość 0 (stała C_ADD),
 - sterowany jest moduł alu_mux_1 oraz alu_mux_2 za pomocą sygnałów o_alu_mux_1_ctrl oraz o_alu_mux_2_ctrl, którym przypisywana jest wartość 0 (stałe C_RS1_DATA oraz C_RS2_DATA),
@@ -170,4 +193,4 @@ Dla przykładowej instrukcji wyjscia z modulu decode: <br/>
 - [ ] Describe timign constraints,
 - [ ] Add some helpful articles,
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
-quartus
+quartus.
