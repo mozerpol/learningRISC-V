@@ -137,8 +137,8 @@ the register file.
 array, which is in the *rom.vhd* file, is assigned to the instruction output 
 signal in the instruction memory module. This is handled by the following code:
 ```VHDL
-  if (i_rst = '1') then
-     o_instruction  <= C_CODE(0);
+if (i_rst = '1') then
+   o_instruction  <= C_CODE(0);
 ```
 2. On the first rising clock edge after releasing the reset signal, the 
 instruction goes to the *decoder* module, where it is divided into individual 
@@ -152,27 +152,98 @@ instruction, the output from the decode module is:
 - imm = 0
 - opcode = 33
 - func3 = 0
-- func7 = 0
-
-Code responsible for decoding instruction, case for ADD:
+- func7 = 0 <br/><br/>Code responsible for decoding instruction, case for ADD:
 ```VHDL
- when C_OPCODE_OP  =>
-    o_rd_addr   <= i_instruction(11 downto 7);
-    o_rs1_addr  <= i_instruction(19 downto 15);
-    o_rs2_addr  <= i_instruction(24 downto 20);
-    o_imm       <= (others => '0');
-    o_opcode    <= i_instruction(6 downto 0);
-    o_func3     <= i_instruction(14 downto 12);
-    o_func7     <= i_instruction(31 downto 25);
+when C_OPCODE_OP  =>
+   o_rd_addr   <= i_instruction(11 downto 7);
+   o_rs1_addr  <= i_instruction(19 downto 15);
+   o_rs2_addr  <= i_instruction(24 downto 20);
+   o_imm       <= (others => '0');
+   o_opcode    <= i_instruction(6 downto 0);
+   o_func3     <= i_instruction(14 downto 12);
+   o_func7     <= i_instruction(31 downto 25);
 ```
 
-3. Składowe sterujące z modułu decode (takie jak opcode, func3 i func7) idą do modułu control, który na ich podstawie zarządza wszystkimi modułami w rdzeniu:
-- dla opcode 33 (stała C_OPCODE_OP) modul control steruje ALU przekazując za pomocą sygnału alu_control warość 0 (stała C_ADD),
-- sterowany jest moduł alu_mux_1 oraz alu_mux_2 za pomocą sygnałów o_alu_mux_1_ctrl oraz o_alu_mux_2_ctrl, którym przypisywana jest wartość 0 (stałe C_RS1_DATA oraz C_RS2_DATA),
-- sterowany jest moduł register_file za pomocą sygnału reg_file_inst_ctrl, do którego przypisywana jest wartość 0 (stała C_WRITE_ALU_RESULT).
-4. Moduły alu_mux_1 oraz alu_mux_2 są multiplekserami. Odpowiadają za przekazanie odpowiednich danych do ALU. W tym przypadku przekazują w obu przypadkach dane pochodzące z register_file, które mieściły się w rejestrach x1 oraz x2.
-5. Sygnał pochodzący z modułu control (i_alu_control) ma przypisaną wartość 0, z tego powodu ALU dodaje dane, które pochodzą z alu_mux_1 oraz alu_mux_2.
-6. Moduł register_file jest 32-bitowym rejestrem 32 komórek, do kórych można zapisywać oraz odczytywać dane. Odczyt odbywa się asynchronicznie, w zależności od wartości rs1_addr oraz rs2_addr, które pochodzą z modułu decoder. Odczytana wartość przypisywana jest do sygnałów rs1_data oraz rs2_data, które w tym przypadku przekazywane są do alu_mux_1 oraz alu_mux_2, które dalej przekazują dane ALU. Obliczona (w tym przypadku dodawanie) wartość przez ALU trafia jako sygnał alu_result do register_file, który zapisuje je w jednym ze swoich komórek wskazanych przez rd_addr.
+3. Signals from the *decoder* module (such as opcode, func3 and func7) go to the 
+*control_module*, which uses them to manage all modules in the core:
+- for opcode value 33 (constant C_OPCODE_OP), the *control* module controls the 
+ALU by passing the value 0 (constant C_ADD) via the *alu_control* signal,
+- the *alu_mux_1* and *alu_mux_2* modules are controlled via the 
+*alu_mux_1_ctrl* and *alu_mux_2_ctrl* signals, which are assigned the value 0 
+(constant C_RS1_DATA and C_RS2_DATA),
+- the *register_file* module is controlled via the *reg_file_inst_ctrl* signal, 
+which is assigned the value 0 (constant C_WRITE_ALU_RESULT). Part of the code 
+from the *control* module, which is responsible for controlling *alu_mux_1* and 
+*alu_mux_2*:
+```VHDL
+p_alu_mux : process (i_rst, i_opcode)
+begin
+   if (i_rst = '1') then
+      o_alu_mux_1_ctrl     <= C_RS1_DATA;
+      o_alu_mux_2_ctrl     <= C_RS2_DATA;
+   else
+      case i_opcode(6 downto 0) is
+         when C_OPCODE_OP     =>
+            o_alu_mux_1_ctrl     <= C_RS1_DATA;
+            o_alu_mux_2_ctrl     <= C_RS2_DATA;
+```
+
+4. The *alu_mux_1* and *alu_mux_2* modules are multiplexers. They are 
+responsible for transferring the appropriate data to the ALU. In this case (ADD 
+instruction), they both transfer data from the *register_file*, which were 
+located in registers x1 and x2. A process from the *alu_mux_1* module that 
+selects the appropriate data to be passed to the ALU:
+```VHDL
+p_alu_mux_1 : process(i_alu_mux_1_ctrl, i_rs1_data, i_pc_addr)
+begin
+   case i_alu_mux_1_ctrl is
+      when C_RS1_DATA   => o_alu_operand_1 <= i_rs1_data;
+      when C_PC_ADDR    => o_alu_operand_1 <= i_pc_addr;
+      when others       => o_alu_operand_1 <= (others => '0');
+   end case;
+end process p_alu_mux_1;
+```
+
+5. The signal (*alu_control*) coming from the *control* module is assigned the 
+value 0, for this reason the ALU adds the data that comes from *alu_mux_1* and 
+*alu_mux_2*.
+```VHDL
+case i_alu_control is
+   when C_ADD | C_ADDI  =>
+      o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
+```
+
+6. The *register_file* module is a 32-bit register of 32 cells, to which data can 
+be written and read. Reading is done asynchronously, depending on the *rs1_addr* 
+and *rs2_addr* values, which come from the decoder module. The read value is 
+assigned to the *rs1_data* and *rs2_data* signals, which in this case are passed 
+to *alu_mux_1* and *alu_mux_2*, which further pass the data to the ALU. The 
+calculated value (in this case addition) by the ALU goes as the *alu_result* 
+signal to *register_file*, which writes it to one of its cells indicated by 
+*rd_addr*.
+Reading and writing process:
+```VHDL
+o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
+              gpr(to_integer(unsigned(i_rs1_addr)));
+o_rs2_data <= (others => '0') when i_rs2_addr = "00000" else
+              gpr(to_integer(unsigned(i_rs2_addr)));
+
+p_reg_file : process(i_clk)
+begin
+   if (i_clk'event and i_clk = '1') then
+      -- Save data from RAM in GPR
+      if (i_reg_file_inst_ctrl = C_WRITE_RD_DATA) then
+         gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
+      -- Save data from ALU in GPR
+      elsif (i_reg_file_inst_ctrl = C_WRITE_ALU_RESULT) then
+         gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
+      else
+      -- Save program counter value in GPR
+         gpr(to_integer(unsigned(i_rd_addr))) <= i_pc_addr + 4;
+      end if;
+   end if;
+end process p_reg_file;
+```
 
 ### Might help
 
