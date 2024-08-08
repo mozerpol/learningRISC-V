@@ -55,45 +55,45 @@ my_implementation
 |   |___gpio.hex
 ```
 The entire project is in the main *my_implementation* folder. The top design is
-*riscpol_design.vhd* file, the top-level entity is *riscpol*. It integrates the
-core and all peripherals, such as GPIO, UART and Timer. <br/>
+*riscpol_design.vhd*, the top-level entity is *riscpol*. It integrates the core
+and all peripherals, such as GPIO, UART and Timer. <br/>
 The test for the top design is the *riscpol_tb.vhd*. All instructions used in
 this test are in the *code_samples* folder in the files *general.asm* and
 *general.hex*. <br/>
-The main settings such as the size of memory for data or instructions are in the
-*riscpol_pkg.vhd*. <br/>
-A data path and a control path is in *core* folder. Additionally, there is a
+The main settings such as the size of data memory or instruction memory are in
+the *riscpol_pkg.vhd*. <br/>
+The data path and the control path is in *core* folder. Additionally, there is a
 python script that helps (but is not necessary) to update the instruction
-memory. How to use it is described below. <br/>
-The *peripherals* folder contains additional modules (e.g. Timer or UART) that
+memory. How to use this script is described below. <br/>
+The *peripherals* folder contains additional modules (e.g. Timer or UART), that
 aren't necessary for the core, but helps a lot during creating own projects.<br/>
 The *script* folder contains a TCL script that automates the simulation for
 ModelSim in Linux. How to run it is described below. It is important to run the
 script in the *script* folder. <br/>
 The *synthesis* folder contains a file with timing constraints. <br/>
-In the *code_samples* folder there are some sample programs. One file contains 
-assembly language instructions (.asm extension), and the other contains the 
-corresponding machine code instructions (.hex extension). The easiest way to 
-translate assembly language into machine code is to use an online risc-v 
-instruction decoder like [rvcodec.js](https://luplab.gitlab.io/rvcodecjs/).
+In the *code_samples* folder are sample programs. One file contains assembly 
+language instructions (.asm extension), and the other contains the corresponding 
+machine code instructions (.hex extension). For me the easiest way to translate 
+assembly language into machine code is to use an online risc-v instruction 
+decoder like [rvcodec.js](https://luplab.gitlab.io/rvcodecjs/).
 
 ### Simulation
 To run simulation in ModelSim on Linux go to folder *script* and run command: 
-`do script.tcl`<br/>
+`do script.tcl` <br/>
 After running this command in ModelSim the simulation will start, end itself and 
 show all signals on the waveforms. You can add your own signals to the waveforms 
-by modifying the script/waveforms.do file. <br/>
-For Windows systems you can try to modify the script/script.tcl to automate 
+by modifying the *script/waveforms.do* file. <br/>
+For Windows systems you can try to modify the *script/script.tcl* to automate 
 simulation. For other simulators (e.g. Vivado or GHDL) you have to do everything 
 manually, i.e. add all files with the vhd extension, compile them and then run
 tests which are in riscpol_tb.vhd file. <br/>
-The top-level entity is riscpol in riscpol_design.vhd.
+The top-level entity is *riscpol* in *riscpol_design.vhd*.
 
 ### Synthesis
 There is no script to automate the synthesis. You have to do everything 
-manually. Add all files with the vhd extension (without riscpol_tb.vhd, it's for 
-testing purposes only) compile them and then run synthesis. <br/>
-The top-level entity is riscpol in riscpol_design.vhd.
+manually. Add all files with the vhd extension (without *riscpol_tb.vhd*, it's 
+for testing purposes only) compile them and then run synthesis. <br/>
+The top-level entity is *riscpol* in *riscpol_design.vhd*.
 
 ### Target platform
 Resource utilization:
@@ -103,16 +103,16 @@ Resource utilization:
 - Fmax: 55 MHz.
 
 ### Running your own program
-File core/rom.vhd contains instructions to be executed, which are represented by 
-32-bit hexadecimal code. Instructions can be manually edited by modifying C_CODE 
-array. In a situation where are a lot of instructions, it's more convenient to 
-paste them into the core/code.txt file, then go to folder *core* and run a 
-python script by executing the command: `python3 rom_updater.py`, which will 
-modify the C_CODE array. <br/>
-There are two important rules for adding own instructions in rom.vhd file:
-1. The last instruction in the C_CODE array must be: others => x"00000000" 
-2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a 
-C_ROM_LENGTH constant.
+File *core/rom.vhd* contains instructions to be executed, which are represented
+by 32-bit hexadecimal code. Instructions can be manually edited by modifying
+*C_CODE* array. In a situation where are a lot of instructions, it's more 
+convenient to paste them into the *core/code.txt* file, then go to folder *core* 
+and run a python script by executing the command: `python3 rom_updater.py`, 
+which will automatically modify the *C_CODE* array. <br/>
+There are two important rules for adding own instructions in *rom.vhd* file:
+1. The last instruction in the *C_CODE* array must be: others => x"00000000" 
+2. The size of the instruction memory is set in the *riscpol_pkg.vhd* file as a 
+*C_ROM_LENGTH* constant.
 
 ### Datapath diagram
 JPG: <br/>
@@ -126,26 +126,28 @@ The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 
 ### How it works, the dataflow
 The processor should start with a reset. This will set all control signals and 
-registers to their default values ​​and load the first instruction for execution.
+registers to their default values and load the first instruction for execution.
 
-**Based on the ADD instruction** <br/>
-Example instruction: add x3, x2, x1 = 0x001101b3, which will execute within one
-clock cycle. That is, it will read the instruction from memory, decode it, fetch
-the appropriate data from the register file, add this data, and write it back to 
-the register file.
+**Explanation based on the ADD instruction** <br/>
+Example instruction: add x3, x2, x1 = 0x001101b3. First the instruction is 
+fetched from the instruction memory, then decoded, the appropriate data is 
+fetched from the register file, data is added, and write back to the register 
+file. Everything will be done in one clock cycle.
 1. During the reset, the first instruction to be executed from the *C_CODE* 
-array, which is in the *rom.vhd* file, is assigned to the instruction output 
-signal in the instruction memory module. This is handled by the following code:
+array is loaded to the *instruction_memory* module. The *C_CODE* array is in the 
+*rom.vhd* file. Loaded instruction is assigned to the output signal 
+(*instruction* signal) in the *instruction_memory* module. This is handled by 
+the following code:
 ```VHDL
 if (i_rst = '1') then
    o_instruction  <= C_CODE(0);
 ```
 2. On the first rising clock edge after releasing the reset signal, the 
 instruction goes to the *decoder* module, where it is divided into individual 
-parts depending on the opcode. In each instruction, we can distinguish parts 
-responsible for control (e.g., the opcode, which tells us what instruction we 
-are dealing with) and data parts, which are numbers. For our example 
-instruction, the output from the decode module is:
+parts depending on the opcode (the opcode tells us what instruction we are 
+dealing with). In each instruction, we can distinguish parts responsible for 
+control (e.g. the opcode, func3, func7) and data parts, which are numbers. For 
+our example instruction, the output from the decode module is:
 - rd_addr = 3
 - rs1_addr = 1
 - rs2_addr = 2
@@ -164,17 +166,36 @@ when C_OPCODE_OP  =>
    o_func7     <= i_instruction(31 downto 25);
 ```
 
-3. Signals from the *decoder* module (such as opcode, func3 and func7) go to the 
-*control_module*, which uses them to manage all modules in the core:
-- for opcode value 33 (constant C_OPCODE_OP), the *control* module controls the 
-ALU by passing the value 0 (constant C_ADD) via the *alu_control* signal,
+3. Signals responsible for data from the *decoder* module (such as *imm*,
+*rd_addr*, *rs1_addr* and *rs2_addr*) go to the *register_file*, *alu_mux_2* and
+*ram_management*. These modules will be described later. <br/>
+Control signals from the *decoder* module (such as *opcode*, *func3* and
+*func7*) go to the *control_module*, which uses them to manage all other modules
+in the core:
+- The ALU is controlled via the *alu_control* signal. In our case, for the
+opcode value 33 (constant C_OPCODE_OP) the value 0 (constant C_ADD) is
+transferred. Thanks to this, ALU knows that in this case it should add two
+operands. Part of the *control* module, which is responsible for controlling 
+*alu* in case of ADD instruction: 
+```VHDL
+if (i_rst = '1') then
+   o_alu_control     <= (others => '0');
+else
+   case i_opcode(6 downto 0) is
+      when C_OPCODE_OP =>
+         case i_func3 is
+            when C_FUNC3_ADD_SUB =>
+               if (i_func7 = C_FUNC7_SUB) then
+                  o_alu_control <= C_SUB;
+               else
+                  o_alu_control <= C_ADD;
+               end if;
+```
 - the *alu_mux_1* and *alu_mux_2* modules are controlled via the 
 *alu_mux_1_ctrl* and *alu_mux_2_ctrl* signals, which are assigned the value 0 
-(constant C_RS1_DATA and C_RS2_DATA),
-- the *register_file* module is controlled via the *reg_file_inst_ctrl* signal, 
-which is assigned the value 0 (constant C_WRITE_ALU_RESULT). Part of the code 
-from the *control* module, which is responsible for controlling *alu_mux_1* and 
-*alu_mux_2*:
+(constant C_RS1_DATA and C_RS2_DATA). The alu_mux_1 and alu_mux_2 modules will
+be described later. Part of the code from the *control* module, which is 
+responsible for controlling *alu_mux_1* and *alu_mux_2*:
 ```VHDL
 p_alu_mux : process (i_rst, i_opcode)
 begin
@@ -187,6 +208,9 @@ begin
             o_alu_mux_1_ctrl     <= C_RS1_DATA;
             o_alu_mux_2_ctrl     <= C_RS2_DATA;
 ```
+- the *register_file* module is controlled via the *reg_file_inst_ctrl* signal, 
+which is assigned the value 0 (constant C_WRITE_ALU_RESULT). The 
+*register_file* will be described later.
 
 4. The *alu_mux_1* and *alu_mux_2* modules are multiplexers. They are 
 responsible for transferring the appropriate data to the ALU. In this case (ADD 
@@ -204,24 +228,24 @@ begin
 end process p_alu_mux_1;
 ```
 
-5. The signal (*alu_control*) coming from the *control* module is assigned the 
-value 0, for this reason the ALU adds the data that comes from *alu_mux_1* and 
-*alu_mux_2*.
+5. The signal (*alu_control*) coming from the *control* module selects the 
+appropriate instruction to be executed in the ALU. In case of ADD the 
+*alu_control* signal has value 0. The part of the ALU code that is responsible 
+for adding two operands:
 ```VHDL
 case i_alu_control is
    when C_ADD | C_ADDI  =>
       o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
 ```
 
-6. The *register_file* module is a 32-bit register of 32 cells, to which data can 
-be written and read. Reading is done asynchronously, depending on the *rs1_addr* 
-and *rs2_addr* values, which come from the decoder module. The read value is 
-assigned to the *rs1_data* and *rs2_data* signals, which in this case are passed 
-to *alu_mux_1* and *alu_mux_2*, which further pass the data to the ALU. The 
-calculated value (in this case addition) by the ALU goes as the *alu_result* 
-signal to *register_file*, which writes it to one of its cells indicated by 
-*rd_addr*.
-Reading and writing process:
+6. The *register_file* module is a 32-bit register of 32 cells, to which data 
+can be written and read. Reading is done asynchronously, depending on the 
+*rs1_addr* and *rs2_addr* values, which come from the decoder module. The read 
+value is assigned to the *rs1_data* and *rs2_data* signals. For the ADD 
+instruction, the *rs1_data* and *rs2_data* signals are passed to the ALU. The 
+calculated value goes as the *alu_result* signal to *register_file* module, 
+which writes it to one of its cells indicated by signal *rd_addr*. Reading and 
+writing process:
 ```VHDL
 o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
               gpr(to_integer(unsigned(i_rs1_addr)));
@@ -244,6 +268,7 @@ begin
    end if;
 end process p_reg_file;
 ```
+7. write sth abut program counter and pointing to the next instruction
 
 ### Might help
 
@@ -264,4 +289,6 @@ end process p_reg_file;
 - [ ] Describe timign constraints,
 - [ ] Add some helpful articles,
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
-quartus.
+quartus,
+- [ ] change vhd to vhdl,
+- [ ] change script to simulation_script
