@@ -1,16 +1,15 @@
-##### Add wave command description: #####
+# Script to automatically add wawveforms for ModelSim during simulation.
+
+# Add wave command description:
 # add wave -expand -group GROUP_NAME -radix system_name /dir_to_signal/signal_name
-# -expand -- expand signal from group after opening window with waveforms
-# -group GROUP_NAME -- group the signals by GROUP_NAME
-# -radix system_name -- show signal in specific format, eg. bitary, octal, etc.
 
 
-##### Add waves: #####
+##### Waveforms: #####
 add wave -expand -group testbench         -radix dec /riscpol_tb/set_test_point
 
-add wave -expand -group riscpol_DESIGN   -radix bin /riscpol_tb/inst_riscpol/i_rst
-add wave         -group riscpol_DESIGN   -radix bin /riscpol_tb/inst_riscpol/i_clk
-add wave         -group riscpol_DESIGN   -radix bin /riscpol_tb/inst_riscpol/o_gpio
+add wave -expand -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_rst
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_clk
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_gpio
 
 add wave         -group GPIO              -radix dec /riscpol_tb/inst_riscpol/inst_gpio/i_addr
 add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_wdata
@@ -109,7 +108,7 @@ add wave         -group REG_FILE          -radix hex /riscpol_tb/inst_riscpol/in
 add wave         -group REG_FILE          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_reg_file/gpr
 
 
-##### Waveform window settings: #####
+# Waveform window settings:
 quietly wave cursor active 1
 configure wave -namecolwidth 194
 configure wave -valuecolwidth 125
