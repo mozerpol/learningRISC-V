@@ -1,8 +1,10 @@
 # RISCPOL
-> Simple RISC-V (RV32I) core written in VHDL. Peripherals:
+> Simple RISC-V (RV32I) core written in VHDL. Features:
 > - 8-bit Timer
 > - UART
 > - 8-bit GPIO
+> - xxMHz clock
+> - Up to XXMIPS throughput at XXMHz
 
 ### Overview
 Very simple single-stage RISC-V (RV32I) core for learning purposes (without 
@@ -41,7 +43,7 @@ my_implementation
 |   |___gpio_design.vhd
 |   |___ram.vhd
 |
-|___script
+|___simulation_script
 |   |___script.tcl
 |   |___waveforms.do
 |
@@ -67,9 +69,9 @@ python script that helps (but is not necessary) to update the instruction
 memory. How to use this script is described below. <br/>
 The *peripherals* folder contains additional modules (e.g. Timer or UART), that
 aren't necessary for the core, but helps a lot during creating own projects.<br/>
-The *script* folder contains a TCL script that automates the simulation for
-ModelSim in Linux. How to run it is described below. It is important to run the
-script in the *script* folder. <br/>
+The *simulation_script* folder contains a TCL script that automates the 
+simulation for ModelSim in Linux. How to run it is described below. It is 
+important to run the script in the *simulation_script* folder. <br/>
 The *synthesis* folder contains a file with timing constraints. <br/>
 In the *code_samples* folder are sample programs. One file contains assembly 
 language instructions (.asm extension), and the other contains the corresponding 
@@ -78,15 +80,15 @@ assembly language into machine code is to use an online risc-v instruction
 decoder like [rvcodec.js](https://luplab.gitlab.io/rvcodecjs/).
 
 ### Simulation
-To run simulation in ModelSim on Linux go to folder *script* and run command: 
-`do script.tcl` <br/>
+To run simulation in ModelSim on Linux go to folder *simulation_script* and run 
+command: `do script.tcl` <br/>
 After running this command in ModelSim the simulation will start, end itself and 
 show all signals on the waveforms. You can add your own signals to the waveforms 
-by modifying the *script/waveforms.do* file. <br/>
-For Windows systems you can try to modify the *script/script.tcl* to automate 
-simulation. For other simulators (e.g. Vivado or GHDL) you have to do everything 
-manually, i.e. add all files with the vhd extension, compile them and then run
-tests which are in riscpol_tb.vhd file. <br/>
+by modifying the *simulation_script/waveforms.do* file. <br/>
+For Windows systems you can try to modify the *simulation_script/script.tcl* to 
+automate simulation. For other simulators (e.g. Vivado or GHDL) you have to do 
+everything manually, i.e. add all files with the vhd extension, compile them and 
+then run tests which are in riscpol_tb.vhd file. <br/>
 The top-level entity is *riscpol* in *riscpol_design.vhd*.
 
 ### Synthesis
@@ -241,11 +243,11 @@ case i_alu_control is
 6. The *register_file* module is a 32-bit register of 32 cells, to which data 
 can be written and read. Reading is done asynchronously, depending on the 
 *rs1_addr* and *rs2_addr* values, which come from the decoder module. The read 
-value is assigned to the *rs1_data* and *rs2_data* signals. For the ADD 
-instruction, the *rs1_data* and *rs2_data* signals are passed to the ALU. The 
-calculated value goes as the *alu_result* signal to *register_file* module, 
-which writes it to one of its cells indicated by signal *rd_addr*. Reading and 
-writing process:
+value is assigned to the *rs1_data* and *rs2_data* output signals. For the ADD 
+instruction, the *rs1_data* and *rs2_data* signals are passed to the ALU. ALU
+add them and send the result back as a *alu_result* to the *register_file* 
+module. After that *register_file* save this value in one of its cells indicated 
+by signal *rd_addr*. Reading and writing process in *register_file*:
 ```VHDL
 o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
               gpr(to_integer(unsigned(i_rs1_addr)));
@@ -268,7 +270,12 @@ begin
    end if;
 end process p_reg_file;
 ```
-7. write sth abut program counter and pointing to the next instruction
+7. All instructions must complete within one clock cycle. During each rising 
+clock edge, the program counter value is incremented by 4. Why 4? This is 
+according to the documentation. Program counter using the output 
+*instruction_addr* signal, which goes to the *instruction_memory* module, to 
+point to the instruction that will be currently executed. By manipulating the 
+program counter value, you can jump to any instruction in memory.
 
 ### Might help
 
@@ -291,4 +298,4 @@ end process p_reg_file;
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
 quartus,
 - [ ] change vhd to vhdl,
-- [ ] change script to simulation_script
+- [x] change script to simulation_script
