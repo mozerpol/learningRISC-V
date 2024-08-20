@@ -245,9 +245,10 @@ can be written and read. Reading is done asynchronously, depending on the
 *rs1_addr* and *rs2_addr* values, which come from the decoder module. The read 
 value is assigned to the *rs1_data* and *rs2_data* output signals. For the ADD 
 instruction, the *rs1_data* and *rs2_data* signals are passed to the ALU. ALU
-add them and send the result back as a *alu_result* to the *register_file* 
-module. After that *register_file* save this value in one of its cells indicated 
-by signal *rd_addr*. Reading and writing process in *register_file*:
+add them and send the result back as a *alu_result*. After that *register_file* 
+save this value in one of its cells indicated by signal *rd_addr*. Data writing 
+is done synchronously - it depends on the clock signal (*clk*).
+Reading and writing process in *register_file*:
 ```VHDL
 o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
               gpr(to_integer(unsigned(i_rs1_addr)));
@@ -272,10 +273,11 @@ end process p_reg_file;
 ```
 7. All instructions must complete within one clock cycle. During each rising 
 clock edge, the program counter value is incremented by 4. Why 4? This is 
-according to the documentation. Program counter using the output 
-*instruction_addr* signal, which goes to the *instruction_memory* module, to 
-point to the instruction that will be currently executed. By manipulating the 
-program counter value, you can jump to any instruction in memory.
+according to the documentation. The program counter uses the *instruction_addr* 
+output signal to point to the instruction that will be currently executed. 
+Signal *instruction_addr* goes to the *instruction_memory* module. By 
+manipulating the program counter value, you can jump to any instruction in
+memory.
 
 ### Might help
 
@@ -293,7 +295,7 @@ program counter value, you can jump to any instruction in memory.
 - [ ] Setup and run Dhrystone,
 - [ ] Add script for Vivado and GHDL,
 - [ ] Change name to single-stage and move part of readme there,
-- [ ] Describe timign constraints,
+- [ ] Describe timing constraints,
 - [ ] Add some helpful articles,
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
 quartus,
