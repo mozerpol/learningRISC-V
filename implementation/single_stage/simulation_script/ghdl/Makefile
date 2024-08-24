@@ -30,7 +30,22 @@ analyze:
 	#ghdl -a --std=08 --work=riscpol_lib 				../../riscpol_pkg.vhd
 
 run_test_and__generate_waves:
-
+#	ghdl -r adder_tb --wave=wave.ghw
 
 display_waveforms:
+#	gtkwave wave.ghw --script=script.tcl
 
+# makefile example:
+# https://github.com/jimtremblay/ghdl-example/blob/master/Makefile
+
+# Some clues:
+# https://www.reddit.com/r/FPGA/comments/z60pa3/gtkwave_generate_script_similar_to_wavedo_as_in/
+
+# maybe this:
+# https://stackoverflow.com/questions/71967887/gtkwave-tcl-script-for-adding-specific-signals
+
+# colors and groups:
+# https://gist.github.com/carlosedp/97188d9b0749c9faf99f8a79df5a3db6
+
+# hwo to install ghdl
+# https://github.com/embedded-explorer/VHDL-Learning
