@@ -12,8 +12,6 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
-   use ieee.std_logic_unsigned.all;
-   use ieee.numeric_std.all;
 library opcodes;
    use opcodes.opcodesPkg.all;
 library alu_lib;
@@ -27,7 +25,7 @@ library decoder_lib;
 library instruction_memory_lib;
 library program_counter_lib;
 library ram_management_lib;
-library register_file_lib;
+library reg_file_lib;
 library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
