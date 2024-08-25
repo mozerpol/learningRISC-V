@@ -12,8 +12,6 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
-   use ieee.std_logic_unsigned.all;
-   use ieee.numeric_std.all;
 library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
