@@ -25,7 +25,7 @@ library decoder_lib;
 library instruction_memory_lib;
 library program_counter_lib;
 library ram_management_lib;
-library reg_file_lib;
+library register_file_lib;
 library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
