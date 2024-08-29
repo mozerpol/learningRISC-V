@@ -16,32 +16,32 @@ pipelining, no interrupts, no branch prediction etc.
 ```
 my_implementation
 |
-|___riscpol_design.vhd
+|___riscpol_design.vhdl
 |___riscpol_diagram.drawio
-|___riscpol_pkg.vhd
-|___riscpol_tb.vhd
+|___riscpol_pkg.vhdl
+|___riscpol_tb.vhdl
 |
 |___core
-|   |___alu_design.vhd
-|   |___alu_mux_1_design.vhd
-|   |___alu_mux_2_design.vhd
-|   |___branch_instructions_design.vhd
+|   |___alu_design.vhdl
+|   |___alu_mux_1_design.vhdl
+|   |___alu_mux_2_design.vhdl
+|   |___branch_instructions_design.vhdl
 |   |___code.txt
-|   |___control_design.vhd
-|   |___control_pkg.vhd
-|   |___core_design.vhd
-|   |___decoder_design.vhd
-|   |___instruction_memory_design.vhd
-|   |___opcodes.vhd
-|   |___program_counter_design.vhd
-|   |___ram_management_design.vhd
-|   |___reg_file_design.vhd
-|   |___rom.vhd
+|   |___control_design.vhdl
+|   |___control_pkg.vhdl
+|   |___core_design.vhdl
+|   |___decoder_design.vhdl
+|   |___instruction_memory_design.vhdl
+|   |___opcodes.vhdl
+|   |___program_counter_design.vhdl
+|   |___ram_management_design.vhdl
+|   |___reg_file_design.vhdl
+|   |___rom.vhdl
 |   |___rom_updater.py
 |
 |___peripherals
-|   |___gpio_design.vhd
-|   |___ram.vhd
+|   |___gpio_design.vhdl
+|   |___ram.vhdl
 |
 |___simulation_script
 |   |___script.tcl
@@ -57,13 +57,13 @@ my_implementation
 |   |___gpio.hex
 ```
 The entire project is in the main *my_implementation* folder. The top design is
-*riscpol_design.vhd*, the top-level entity is *riscpol*. It integrates the core
+*riscpol_design.vhdl*, the top-level entity is *riscpol*. It integrates the core
 and all peripherals, such as GPIO, UART and Timer. <br/>
-The test for the top design is the *riscpol_tb.vhd*. All instructions used in
+The test for the top design is the *riscpol_tb.vhdl*. All instructions used in
 this test are in the *code_samples* folder in the files *general.asm* and
 *general.hex*. <br/>
 The main settings such as the size of data memory or instruction memory are in
-the *riscpol_pkg.vhd*. <br/>
+the *riscpol_pkg.vhdl*. <br/>
 The data path and the control path is in *core* folder. Additionally, there is a
 python script that helps (but is not necessary) to update the instruction
 memory. How to use this script is described below. <br/>
@@ -87,15 +87,15 @@ show all signals on the waveforms. You can add your own signals to the waveforms
 by modifying the *simulation_script/waveforms.do* file. <br/>
 For Windows systems you can try to modify the *simulation_script/script.tcl* to 
 automate simulation. For other simulators (e.g. Vivado or GHDL) you have to do 
-everything manually, i.e. add all files with the vhd extension, compile them and 
-then run tests which are in riscpol_tb.vhd file. <br/>
-The top-level entity is *riscpol* in *riscpol_design.vhd*.
+everything manually, i.e. add all files with the vhdl extension, compile them and 
+then run tests which are in riscpol_tb.vhdl file. <br/>
+The top-level entity is *riscpol* in *riscpol_design.vhdl*.
 
 ### Synthesis
 There is no script to automate the synthesis. You have to do everything 
-manually. Add all files with the vhd extension (without *riscpol_tb.vhd*, it's 
+manually. Add all files with the vhdl extension (without *riscpol_tb.vhdl*, it's 
 for testing purposes only) compile them and then run synthesis. <br/>
-The top-level entity is *riscpol* in *riscpol_design.vhd*.
+The top-level entity is *riscpol* in *riscpol_design.vhdl*.
 
 ### Target platform
 Resource utilization:
@@ -105,15 +105,15 @@ Resource utilization:
 - Fmax: 55 MHz.
 
 ### Running your own program
-File *core/rom.vhd* contains instructions to be executed, which are represented
+File *core/rom.vhdl* contains instructions to be executed, which are represented
 by 32-bit hexadecimal code. Instructions can be manually edited by modifying
 *C_CODE* array. In a situation where are a lot of instructions, it's more 
 convenient to paste them into the *core/code.txt* file, then go to folder *core* 
 and run a python script by executing the command: `python3 rom_updater.py`, 
 which will automatically modify the *C_CODE* array. <br/>
-There are two important rules for adding own instructions in *rom.vhd* file:
+There are two important rules for adding own instructions in *rom.vhdl* file:
 1. The last instruction in the *C_CODE* array must be: others => x"00000000" 
-2. The size of the instruction memory is set in the *riscpol_pkg.vhd* file as a 
+2. The size of the instruction memory is set in the *riscpol_pkg.vhdl* file as a 
 *C_ROM_LENGTH* constant.
 
 ### Datapath diagram
@@ -137,7 +137,7 @@ fetched from the register file, data is added, and write back to the register
 file. Everything will be done in one clock cycle.
 1. During the reset, the first instruction to be executed from the *C_CODE* 
 array is loaded to the *instruction_memory* module. The *C_CODE* array is in the 
-*rom.vhd* file. Loaded instruction is assigned to the output signal 
+*rom.vhdl* file. Loaded instruction is assigned to the output signal 
 (*instruction* signal) in the *instruction_memory* module. This is handled by 
 the following code:
 ```VHDL
@@ -299,5 +299,5 @@ memory.
 - [ ] Add some helpful articles,
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
 quartus,
-- [ ] change vhd to vhdl,
+- [ ] change vhdl to vhdl,
 - [x] change script to simulation_script

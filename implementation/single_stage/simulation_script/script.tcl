@@ -6,84 +6,84 @@ set module        "riscpol"
 # s_add_external_libs {} {
 #    set hdl_dir               "directory/to/library"
 #    set library_name          "library_name"
-#    vcom -2008 -cover bcs -quiet -work   $library_name $hdl_dir/file1.vhd
-#    vcom -2008 -cover bcs -quiet -work   $library_name $hdl_dir/file2.vhd
+#    vcom -2008 -cover bcs -quiet -work   $library_name $hdl_dir/file1.vhdl
+#    vcom -2008 -cover bcs -quiet -work   $library_name $hdl_dir/file2.vhdl
 #                            .
 #                            .
 #                            .
-#    vcom -2008 -cover bcs -quiet -work   $library_name $hdl_dir/file.vhd
+#    vcom -2008 -cover bcs -quiet -work   $library_name $hdl_dir/file.vhdl
 # }
 
 
 proc s_add_external_libs {} {
    set hdl_dir                "../core"
    set library_name           "opcodes"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/opcodes.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/opcodes.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "control_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/control_pkg.vhd
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/control_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/control_pkg.vhdl
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/control_design.vhdl
 
 
    set hdl_dir                "../peripherals"
    set library_name           "ram_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/ram.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/ram.vhdl
 
 
    set hdl_dir                "../peripherals"
    set library_name           "gpio_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/gpio_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/gpio_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "alu_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "alu_mux_1_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "alu_mux_2_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhdl
 
    set hdl_dir                "../core"
    set library_name           "branch_instructions_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "decoder_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/decoder_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/decoder_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "instruction_memory_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/rom.vhd
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/rom.vhdl
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "program_counter_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/program_counter_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/program_counter_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "register_file_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/register_file_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/register_file_design.vhdl
 
    set hdl_dir                "../core"
    set library_name           "ram_management_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/ram_management_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/ram_management_design.vhdl
 
 
    set hdl_dir                "../core"
    set library_name           "core_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/core_design.vhd
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/core_design.vhdl
 }
 
 
@@ -91,16 +91,16 @@ proc s_add_external_libs {} {
 #         PROJECT TREE:
 #
 # |___folder_example_name
-# |   |___design.vhd
-# |   |___testbench.vhd
-# |   |___package.vhd
+# |   |___design.vhdl
+# |   |___testbench.vhdl
+# |   |___package.vhdl
 # |   |
 # |   |___scripts
 # |       |___script.tcl (this file)
 # |       |___waveforms.do
 #
 #         RULES:
-# Design, testbench must have the VHD extension
+# Design, testbench must have the vhdl extension
 # Waveforms must have the DO extension
 # Script must have the TCL extension
 # The scripts are written for Linux
@@ -156,9 +156,9 @@ proc s_comp_package_main {} {
     global package_name lib_name
     echo "----> Compile files:"
     echo "-> Package"
-    if {[file exist $package_name.vhd]} {
+    if {[file exist $package_name.vhdl]} {
        echo "OK"
-       vcom -2008 -cover bcs -quiet -work $lib_name $package_name.vhd
+       vcom -2008 -cover bcs -quiet -work $lib_name $package_name.vhdl
     } else {
        echo "File $package_name not found"
     }
@@ -167,9 +167,9 @@ proc s_comp_package_main {} {
 proc s_comp_design_main {} {
     global design_name lib_name
     echo "-> Design"
-    if {[file exist $design_name.vhd]} {
+    if {[file exist $design_name.vhdl]} {
        echo "OK"
-       vcom -2008 -cover bcs -quiet -work $lib_name $design_name.vhd
+       vcom -2008 -cover bcs -quiet -work $lib_name $design_name.vhdl
     } else {
        return "File $design_name not found, stop script"
     }
@@ -178,9 +178,9 @@ proc s_comp_design_main {} {
 proc s_comp_test_main {} {
     global test_name lib_name
     echo "-> Testbench"
-    if {[file exist $test_name.vhd]} {
+    if {[file exist $test_name.vhdl]} {
        echo "OK"
-       vcom -2008 -quiet -work $lib_name $test_name.vhd
+       vcom -2008 -quiet -work $lib_name $test_name.vhdl
     } else {
        return "File $test_name not found, stop script"
     }
