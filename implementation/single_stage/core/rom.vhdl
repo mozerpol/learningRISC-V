@@ -10,14 +10,15 @@
 -- python3 rom_updater.py
 -- There are two important rules:
 -- 1. The last instruction in the C_CODE array must be: others => x"00000000"
--- 2. The size of the instruction memory is set in the riscpol_pkg.vhdl file as
--- a C_ROM_LENGTH constant.
+-- 2. The size of the instruction memory is set in the riscpol_pkg.vhdl file as a
+-- C_ROM_LENGTH constant.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
 library ieee;
     use ieee.std_logic_1164.all;
+    use IEEE.std_logic_unsigned.all;
 library riscpol_lib;
    use riscpol_lib.riscpol_pkg.all;
 
