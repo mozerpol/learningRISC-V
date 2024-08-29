@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : gpio_design.vhd
+-- File          : gpio_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : The output ports of this module are GPIO, which are connected
@@ -38,7 +38,7 @@ begin
          -- sb x0, 255(x0)
          -- 255, because C_MMIO_ADDR_GPIO*4-1
          -- To see more examples of GPIO usage, check out the tests in the 
-         -- riscpol_tb.vhd file.
+         -- riscpol_tb.vhdl file.
          if (i_we = '1') then
             if (i_addr = C_MMIO_ADDR_GPIO-1) then
                -- Last 8 bits from wdata vector are mapped

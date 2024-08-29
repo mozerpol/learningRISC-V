@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : riscpol_design.vhd
+-- File          : riscpol_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Main module. It connects all the modules together, such as 

@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------------
--- File          : ram_management_design.vhd
+-- File          : ram_management_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : This module is responsible for writing and reading the 
--- appropriate data in RAM (peripherials/ram.vhd) and writing the read data from 
+-- appropriate data in RAM (peripherials/ram.vhdl) and writing the read data from 
 -- RAM to the register file, based on the i_ram_management_ctrl signal from the 
--- control module (control_design.vhd).
+-- control module (control_design.vhdl).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------

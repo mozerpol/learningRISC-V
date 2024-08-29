@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
--- File          : alu_mux_2_design.vhd
+-- File          : alu_mux_2_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : This module works like a multiplexer. Only passes data to
 -- arithmetic logic unit (ALU) that comes from register file 
--- (register_file_design.vhd) or constant value. Depending on the 
+-- (register_file_design.vhdl) or constant value. Depending on the 
 -- i_alu_mux_2_ctrl signal that comes from the control module 
--- (control_design.vhd), the selected value is transferred.
+-- (control_design.vhdl), the selected value is transferred.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------

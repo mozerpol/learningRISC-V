@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
--- File          : control_design.vhd
+-- File          : control_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Control path. This module receives the decoded instruction
--- from the decoder module (decoder_design.vhd) and the result of a branch type 
+-- from the decoder module (decoder_design.vhdl) and the result of a branch type 
 -- instruction (if, of course, the type of such an instruction is executed, from 
--- module branch_instructions_design.vhd). On this basis, it generates control 
--- signals for all modules inside the core (core_design.vhd).
+-- module branch_instructions_design.vhdl). On this basis, it generates control 
+-- signals for all modules inside the core (core_design.vhdl).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------

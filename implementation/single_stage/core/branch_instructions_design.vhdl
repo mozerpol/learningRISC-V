@@ -1,10 +1,10 @@
 --------------------------------------------------------------------------------
--- File          : branch_instructions_design.vhd
+-- File          : branch_instructions_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Compares two data that come from the register file 
--- (register_file.vhd). Based on the i_branch_ctrl signal, which comes from the 
--- control module (control_design.vhd), a decision is made about what comparison 
+-- (register_file.vhdl). Based on the i_branch_ctrl signal, which comes from the 
+-- control module (control_design.vhdl), a decision is made about what comparison 
 -- to perform. The result as o_branch_result is sent to the control module 
 -- which, depending on the comparison result, decides what to do next.
 --------------------------------------------------------------------------------

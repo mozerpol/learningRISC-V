@@ -1,14 +1,14 @@
 --------------------------------------------------------------------------------
--- File          : register_file_design.vhd
+-- File          : register_file_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Register file which contains 32 general purpose registers
--- (GPR). Depending on the i_reg_file_wr_ctrl (control_design.vhd) signal, a 
+-- (GPR). Depending on the i_reg_file_wr_ctrl (control_design.vhdl) signal, a 
 -- decision is made whether data can be written to the GPR. Depending on the 
--- i_reg_file_inst_ctrl signal (control_design.vhd), a decision is made from 
+-- i_reg_file_inst_ctrl signal (control_design.vhdl), a decision is made from 
 -- where to save the data (ALU operation result, constant or program counter 
 -- value). Both signals (i_reg_file_wr_ctrl and i_reg_file_inst_ctrl) come from 
--- the control (control_design.vhd) module.
+-- the control (control_design.vhdl) module.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------

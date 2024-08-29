@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : opcodes.vhd
+-- File          : opcodes.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Package with opcodes and instruction fields

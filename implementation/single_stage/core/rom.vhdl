@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : rom.vhd
+-- File          : rom.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : This file contains instructions to be executed. They can be
@@ -10,8 +10,8 @@
 -- python3 rom_updater.py
 -- There are two important rules:
 -- 1. The last instruction in the C_CODE array must be: others => x"00000000"
--- 2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a
--- C_ROM_LENGTH constant.
+-- 2. The size of the instruction memory is set in the riscpol_pkg.vhdl file as
+-- a C_ROM_LENGTH constant.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------

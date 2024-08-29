@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : core_design.vhd
+-- File          : core_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : It integrates all internal modules e.g. ALU, MUX1, MUX2,

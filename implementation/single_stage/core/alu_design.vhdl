@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
--- File          : alu_design.vhd
+-- File          : alu_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Arithmetic logic unit. Based on the i_alu_control signal,
--- which comes from the control module (control_design.vhd), a decision is made 
+-- which comes from the control module (control_design.vhdl), a decision is made 
 -- which mathematical operation the ALU should perform.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol

@@ -1,4 +1,4 @@
-# Requirements: installed python and files code.txt, rom.vhd in the same directory with rom_updater.py
+# Requirements: installed python and files code.txt, rom.vhdl in the same directory with rom_updater.py
 # How to run: python3 rom_updater.py
 # In code.txt paste instructions to be executed
 
@@ -7,11 +7,11 @@ with open("code.txt", "r") as file:
     # Read the contents of the file
     code_data = file.readlines()
 
-# Open the rom.vhd file
-with open("rom.vhd", "w") as file:
-    # Write the initial lines of the rom.vhd file
+# Open the rom.vhdl file
+with open("rom.vhdl", "w") as file:
+    # Write the initial lines of the rom.vhdl file
     file.write('--------------------------------------------------------------------------------\n')
-    file.write('-- File          : rom.vhd\n')
+    file.write('-- File          : rom.vhdl\n')
     file.write('-- Author        : mozerpol\n')
     file.write('--------------------------------------------------------------------------------\n')
     file.write('-- Description   : This file contains instructions to be executed. They can be\n')
@@ -22,7 +22,7 @@ with open("rom.vhd", "w") as file:
     file.write('-- python3 rom_updater.py\n')
     file.write('-- There are two important rules:\n')
     file.write('-- 1. The last instruction in the C_CODE array must be: others => x"00000000"\n')
-    file.write('-- 2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a\n')
+    file.write('-- 2. The size of the instruction memory is set in the riscpol_pkg.vhdl file as a\n')
     file.write('-- C_ROM_LENGTH constant.\n')
     file.write('--------------------------------------------------------------------------------\n')
     file.write('-- License       : MIT 2022 mozerpol\n')
@@ -36,7 +36,7 @@ with open("rom.vhd", "w") as file:
     file.write('   type t_rom  is array (0 to C_ROM_LENGTH-1) of std_logic_vector(31 downto 0);\n\n')
     file.write('   constant C_CODE : t_rom := (\n')
 
-    # Write the content of the code.txt file into the rom.vhd file
+    # Write the content of the code.txt file into the rom.vhdl file
     for line in code_data:
         file.write(f'      x"{line.strip()}",\n')
 
@@ -49,5 +49,5 @@ with open("rom.vhd", "w") as file:
 
 # Message
 print("\n\nIf there are more than 1024 lines of code, be sure to change the\n\
-value of the C_ROM_LENGTH constant in the riscpol_pkg.vhd file. The value must\n\
+value of the C_ROM_LENGTH constant in the riscpol_pkg.vhdl file. The value must\n\
 be greater than or equal to the number of lines of code.\n\n")

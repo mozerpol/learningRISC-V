@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : riscpol_pkg.vhd
+-- File          : riscpol_pkg.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Package with RAM and ROM size settings and addresses, which 
@@ -15,9 +15,9 @@ library ieee;
 package riscpol_pkg is
 
    constant C_RAM_LENGTH      : integer := 64; -- RAM size in 
-   -- peripherals/ram.vhd file.
+   -- peripherals/ram.vhdl file.
    constant C_ROM_LENGTH      : integer := 1024; -- Instruction memory size that 
-   -- changes the size of C_CODE array in instruction_memory_design.vhd file. 
+   -- changes the size of C_CODE array in instruction_memory_design.vhdl file. 
    -- Must be greater than or equal to the number of instructions and a power of 
    -- number 2.
    constant C_MMIO_ADDR_GPIO  : integer := 64;

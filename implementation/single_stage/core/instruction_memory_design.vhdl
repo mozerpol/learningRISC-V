@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------------
--- File          : instruction_memory_design.vhd
+-- File          : instruction_memory_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : The module receives an address (i_instruction_addr signal)
--- that comes from the program_counter (program_counter_design.vhd) module. 
+-- that comes from the program_counter (program_counter_design.vhdl) module. 
 -- Based on this address, the appropriate instruction from the ROM is read and 
--- sent to the decoder (decoder_design.vhd).
+-- sent to the decoder (decoder_design.vhdl).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -37,12 +37,12 @@ begin
          o_instruction  <= C_CODE(0); -- The first instruction to execute is 
          -- loaded during the reset.
       elsif (i_clk = '1' and i_clk'event) then
-         -- The program counter module (program_counter_design.vhd) controls the 
-         -- order of instructions to be executed using the i_instruction_addr 
-         -- signal coming into this module. The program counter module does not 
-         -- change the i_instruction_addr value by 1, but by 4. So the 
-         -- i_instruction_addr value can only be a multiple of 4, e.g. 0, 4, 8, 
-         -- 12, 16, 20, ...
+         -- The program counter module (program_counter_design.vhdl) controls 
+         -- the order of instructions to be executed using the 
+         -- i_instruction_addr signal coming into this module. The program
+         -- counter module does not  change the i_instruction_addr value by 1,
+         -- but by 4. So the i_instruction_addr value can only be a multiple of
+         -- 4, e.g. 0, 4, 8, 12, 16, 20, ...
          -- 00000 - 0
          -- 00100 - 4
          -- 01000 - 8

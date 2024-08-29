@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------------
--- File          : decoder_design.vhd
+-- File          : decoder_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : Decodes the instructions that come from the ROM (rom.vhd). 
+-- Description   : Decodes the instructions that come from the ROM (rom.vhdl). 
 -- The entire instruction is simply divided into individual parts and passed to 
--- the register_file (reg_file_design.vhd), mux2 (alu_mux_2_design.vhd), 
--- ram_management (ram_management_design.vhd) and control (control_design.vhd) 
+-- the register_file (reg_file_design.vhdl), mux2 (alu_mux_2_design.vhdl), 
+-- ram_management (ram_management_design.vhdl) and control (control_design.vhdl) 
 -- modules.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol

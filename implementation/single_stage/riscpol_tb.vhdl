@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : riscpol_tb.vhd
+-- File          : riscpol_tb.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Test for the entire processor (riscpol entity in
@@ -3689,7 +3689,7 @@ begin
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
-      -- The first instruction from rom.vhd is always loaded during --
+      -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
       rst_tb   <= '1';

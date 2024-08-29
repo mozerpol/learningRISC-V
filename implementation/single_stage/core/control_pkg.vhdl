@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : control_pkg.vhd
+-- File          : control_pkg.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : A package that contains constants for all design files.

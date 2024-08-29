@@ -725,4 +725,4 @@ sb    x0,  255(x0)
 ####################################
 ##  Check behaviour after reset   ##
 ####################################
-# The first instruction from rom.vhd is always loaded during, the reset.
+# The first instruction from rom.vhdl is always loaded during, the reset.

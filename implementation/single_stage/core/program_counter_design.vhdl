@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
--- File          : programc_counter_design.vhd
+-- File          : programc_counter_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Program counter. The ports of this module are connected to
--- instruction memory (instruction_memory_design.vhd), register file 
--- (register_file_design.vhd) and mux1 (alu_mux_1_design.vhd). The i_pc_ctrl and
--- i_inst_addr_ctrl signals come from the control (control_design.vhd) module.
--- These signals control the value of the program counter and which instruction 
--- from the ROM (rom.vhd) to read. Changing the value of the o_instruction_addr 
--- signal (which is connected to the instruction_memory module) allows to select 
--- the instruction to be read.
+-- instruction memory (instruction_memory_design.vhdl), register file 
+-- (register_file_design.vhdl) and mux1 (alu_mux_1_design.vhdl). The i_pc_ctrl
+-- and i_inst_addr_ctrl signals come from the control (control_design.vhdl)
+--  module. These signals control the value of the program counter and which 
+-- instruction from the ROM (rom.vhdl) to read. Changing the value of the 
+-- o_instruction_addr signal (which is connected to the instruction_memory
+-- module) allows to select the instruction to be read.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
