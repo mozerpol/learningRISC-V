@@ -30,11 +30,7 @@ analyze:
 	ghdl -a --std=08 --work=riscpol_lib 				../../riscpol_tb.vhdl
 
 run_test_and_generate_waves:
-	#ghdl -r riscpol_tb --wave=wave.ghw
-	ghdl -e --std=08 --work=alu_lib alu
-	ghdl -e -frelaxed --syn-binding --std=08 --work=riscpol_lib riscpol_tb
-#	ghdl -r --std=08 --work=riscpol_lib riscpol_tb
-	ghdl -r riscpol_tb
+	ghdl -r -frelaxed --syn-binding --std=08 --work=riscpol_lib riscpol_tb --wave=wave.ghw
 
 display_waveforms:
 #	gtkwave wave.ghw --script=script.tcl
