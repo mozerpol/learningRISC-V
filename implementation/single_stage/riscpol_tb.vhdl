@@ -36,10 +36,7 @@ architecture tb of riscpol_tb is
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
    signal gpio_tb : std_logic_vector(7 downto 0);
-   type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
    signal set_test_point : integer := 0;
-   type word_t is array (0 to 3) of std_logic_vector(7 downto 0);
-   type ram_t is array (0 to C_RAM_LENGTH - 1) of word_t;
 
 begin
 
@@ -3725,8 +3722,6 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-
-      -- TODO: fix image with signals, remove reg_file_wr_ctrl
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;
