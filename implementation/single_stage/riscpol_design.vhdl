@@ -50,8 +50,8 @@ architecture rtl of riscpol is
    component byte_enabled_simple_dual_port_ram is
       generic (
          ADDR_WIDTH : natural := C_RAM_LENGTH;
-         BYTE_WIDTH : natural := 8;
-         BYTES      : natural := 4
+         BYTE_WIDTH : natural := C_RAM_BYTE_WIDTH;
+         BYTES      : natural := C_RAM_BYTES
       );
       port (
          we, clk : in  std_logic;
@@ -73,7 +73,6 @@ architecture rtl of riscpol is
          o_gpio   : out std_logic_vector(7 downto 0)
       );
    end component gpio;
-
 
    -- General
    signal rst                 : std_logic;
