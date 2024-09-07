@@ -26,14 +26,13 @@ entity byte_enabled_simple_dual_port_ram is
 end byte_enabled_simple_dual_port_ram;
 
 architecture rtl of byte_enabled_simple_dual_port_ram is
-   --  build up 2D array to hold the memory
-   type word_t is array (0 to BYTES-1) of std_logic_vector(BYTE_WIDTH-1 downto 0);
-   type ram_t is array (0 to ADDR_WIDTH - 1) of word_t;
+
    -- declare the RAM
    signal ram : ram_t;
    signal q_local : word_t;
 
 begin  -- rtl
+
    -- Re-organize the read data from the RAM to match the output
    unpack: for i in 0 to BYTES - 1 generate
       q(BYTE_WIDTH*(i+1) - 1 downto BYTE_WIDTH*i) <= q_local(i);
