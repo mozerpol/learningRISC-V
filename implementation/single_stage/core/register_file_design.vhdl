@@ -20,6 +20,10 @@ library ieee;
 library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
+library riscpol_lib;
+   use riscpol_lib.all;
+   use riscpol_lib.riscpol_pkg.all;
+
 
 entity reg_file is
    port (
@@ -38,7 +42,6 @@ end entity reg_file;
 
 architecture rtl of reg_file is
 
-   type t_gpr is array(0 to 31) of std_logic_vector(31 downto 0);
    signal gpr : t_gpr; -- general puprose register
 
 begin
