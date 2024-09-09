@@ -22,7 +22,8 @@ package opcodesPkg is
    constant C_OPCODE_LOAD     : std_logic_vector(6 downto 0) := "0000011";
    -- LOAD = LB, LH, LW, LBU, LHU, LD, LWU
    constant C_OPCODE_OPIMM    : std_logic_vector(6 downto 0) := "0010011";
-   -- OP_IMM = ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI, SRAI
+   -- OP_IMM = ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI, 
+   -- SRAI
    ---- B-type ----
    constant C_OPCODE_BRANCH   : std_logic_vector(6 downto 0) := "1100011";
    -- BRANCH = BEQ, BNE, BLT, BGE, BLTU, BGEU
