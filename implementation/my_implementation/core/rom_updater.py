@@ -1,5 +1,6 @@
 # Requirements: installed python and files code.txt, rom.vhd in the same directory with rom_updater.py
 # How to run: python3 rom_updater.py
+# In code.txt paste instructions to be executed
 
 # Open the code.txt file
 with open("code.txt", "r") as file:
@@ -9,6 +10,23 @@ with open("code.txt", "r") as file:
 # Open the rom.vhd file
 with open("rom.vhd", "w") as file:
     # Write the initial lines of the rom.vhd file
+    file.write('--------------------------------------------------------------------------------\n')
+    file.write('-- File          : rom.vhd\n')
+    file.write('-- Author        : mozerpol\n')
+    file.write('--------------------------------------------------------------------------------\n')
+    file.write('-- Description   : This file contains instructions to be executed. They can be\n')
+    file.write('-- manually added/edited in an analogous way as shown here by modifying C_CODE\n')
+    file.write('-- array. In a situation where are a lot of instructions, you can paste them\n')
+    file.write('-- into the code.txt file, and then run a script which is written in python,\n')
+    file.write('-- which will paste all instructions into this file by executing the command:\n')
+    file.write('-- python3 rom_updater.py\n')
+    file.write('-- There are two important rules:\n')
+    file.write('-- 1. The last instruction in the C_CODE array must be: others => x"00000000"\n')
+    file.write('-- 2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a\n')
+    file.write('-- C_ROM_LENGTH constant.\n')
+    file.write('--------------------------------------------------------------------------------\n')
+    file.write('-- License       : MIT 2022 mozerpol\n')
+    file.write('--------------------------------------------------------------------------------\n\n')
     file.write('library ieee;\n')
     file.write('    use ieee.std_logic_1164.all;\n')
     file.write('    use IEEE.std_logic_unsigned.all;\n')
