@@ -2,7 +2,10 @@
 -- File          : ram_management_design.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   :
+-- Description   : This module is responsible for writing and reading the 
+-- appropriate data in RAM (peripherials/ram.vhd) and writing the read data from 
+-- RAM to the register file, based on the i_ram_management_ctrl signal from the 
+-- control module (control_design.vhd).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -35,6 +38,7 @@ entity ram_management is
    );
 end entity ram_management;
 
+-- RAM addressing rules:
 -- LW / SW - address must be divisible by 4
 -- LH / SH - address must be divisible by 2
 -- LB / SB
