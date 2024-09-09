@@ -2,7 +2,7 @@
 -- File          : control_pkg.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : Constants for control path.
+-- Description   : A package that contains constants for all design files.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
