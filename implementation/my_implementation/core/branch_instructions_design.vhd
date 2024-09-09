@@ -2,11 +2,11 @@
 -- File          : branch_instructions_design.vhd
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : Compares two data that come from the register file. Based on
--- the i_branch_ctrl signal, which comes from the control module, a decision is
--- made about what comparison to perform. The result as o_branch_result is sent
--- to the control module which, depending on the comparison result, decides what
--- to do next.
+-- Description   : Compares two data that come from the register file 
+-- (register_file.vhd). Based on the i_branch_ctrl signal, which comes from the 
+-- control module (control_design.vhd), a decision is made about what comparison 
+-- to perform. The result as o_branch_result is sent to the control module 
+-- which, depending on the comparison result, decides what to do next.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ architecture rtl of branch_instructions is
 
 begin
 
-   p_branch_instructions : process( i_branch_ctrl, i_rs1_data, i_rs2_data)
+   p_branch_instructions : process(i_branch_ctrl, i_rs1_data, i_rs2_data)
    begin
       case (i_branch_ctrl) is
          when C_BEQ  =>
