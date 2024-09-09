@@ -3,11 +3,12 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Register file which contains 32 general purpose registers
--- (GPR). Depending on the i_reg_file_wr_ctrl signal, a decision is made whether
--- data can be written to the GPR. Depending on the i_reg_file_inst_ctrl signal,
--- a decision is made from where to save the data (ALU operation result,
--- constant or program counter value). Both signals (i_reg_file_wr_ctrl and
--- i_reg_file_inst_ctrl ) come from the control module.
+-- (GPR). Depending on the i_reg_file_wr_ctrl (control_design.vhd) signal, a 
+-- decision is made whether data can be written to the GPR. Depending on the 
+-- i_reg_file_inst_ctrl signal (control_design.vhd), a decision is made from 
+-- where to save the data (ALU operation result, constant or program counter 
+-- value). Both signals (i_reg_file_wr_ctrl and i_reg_file_inst_ctrl) come from 
+-- the control (control_design.vhd) module.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
@@ -42,6 +43,7 @@ architecture rtl of reg_file is
 
 begin
 
+   -- Assigning appropriate data from GPR to the output.
    o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
                  gpr(to_integer(unsigned(i_rs1_addr)));
    o_rs2_data <= (others => '0') when i_rs2_addr = "00000" else
@@ -50,12 +52,15 @@ begin
    p_reg_file : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
+         -- Save data from RAM in GPR
          if (i_reg_file_inst_ctrl = C_WRITE_RD_DATA) then
             gpr(to_integer(unsigned(i_rd_addr))) <= i_rd_data;
+         -- Save data from ALU in GPR
          elsif (i_reg_file_inst_ctrl = C_WRITE_ALU_RESULT) then
             gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
          else
-         --elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
+         -- Save program counter value in GPR
+            -- elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
             gpr(to_integer(unsigned(i_rd_addr))) <= i_pc_addr + 4;
          end if;
       end if;
