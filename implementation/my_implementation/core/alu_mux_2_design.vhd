@@ -3,9 +3,10 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : This module works like a multiplexer. Only passes data to
--- arithmetic logic unit (ALU) that comes from register file or constant value.
--- Depending on the i_alu_mux_1_ctrl signal that comes from the control module,
--- the selected value is transferred.
+-- arithmetic logic unit (ALU) that comes from register file 
+-- (register_file_design.vhd) or constant value. Depending on the 
+-- i_alu_mux_2_ctrl signal that comes from the control module 
+-- (control_design.vhd), the selected value is transferred.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
