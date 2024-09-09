@@ -1,3 +1,21 @@
+--------------------------------------------------------------------------------
+-- File          : rom.vhd
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : This file contains instructions to be executed. They can be
+-- manually added/edited in an analogous way as shown here by modifying C_CODE
+-- array. In a situation where are a lot of instructions, you can paste them
+-- into the code.txt file, and then run a script which is written in python,
+-- which will paste all instructions into this file by executing the command:
+-- python3 rom_updater.py
+-- There are two important rules:
+-- 1. The last instruction in the C_CODE array must be: others => x"00000000"
+-- 2. The size of the instruction memory is set in the riscpol_pkg.vhd file as a
+-- C_ROM_LENGTH constant.
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
+
 library ieee;
     use ieee.std_logic_1164.all;
     use IEEE.std_logic_unsigned.all;
