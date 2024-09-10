@@ -1,7 +1,5 @@
-gtkwave::/Edit/Insert_Comment "A"
-gtkwave::addSignalsFromList top.adder_tb.adder_0.ci
-gtkwave::/Edit/Insert_Comment "B"
-gtkwave::addSignalsFromList top.adder_tb.adder_0.co
-gtkwave::addSignalsFromList top.adder_tb.adder_0.s
+gtkwave::/Edit/Insert_Comment "testbench"
+gtkwave::addSignalsFromList top.riscpol_tb.set_test_point
+gtkwave::/Edit/Insert_Comment "riscpol_DESIGN"
 
 gtkwave::/Time/Zoom/Zoom_Full
