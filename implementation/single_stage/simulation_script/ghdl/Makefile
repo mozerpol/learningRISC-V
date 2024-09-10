@@ -33,7 +33,7 @@ run_test_and_generate_waves:
 	ghdl -r -frelaxed --syn-binding --std=08 --work=riscpol_lib riscpol_tb --wave=wave.ghw
 
 display_waveforms:
-#	gtkwave wave.ghw --script=script.tcl
+	gtkwave wave.ghw --script=waveforms.tcl
 
 # makefile example:
 # https://github.com/jimtremblay/ghdl-example/blob/master/Makefile
