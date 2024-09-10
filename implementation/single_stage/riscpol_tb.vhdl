@@ -3725,7 +3725,7 @@ begin
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;
-      stop(2);
+      stop(0);
    end process p_tb;
 
 end architecture tb;
