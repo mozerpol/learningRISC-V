@@ -295,5 +295,5 @@ memory.
 - [ ] Add some helpful articles,
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
 quartus,
-- [ ] change vhdl to vhdl,
+- [x] change vhdl to vhdl,
 - [x] change script to simulation_script
