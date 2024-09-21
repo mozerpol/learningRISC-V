@@ -1,5 +1,6 @@
 # RISCPOL
-> Simple RISC-V (RV32I) core written in VHDL. Features:
+> Implementation of a simple single-stage pipeline for the RISC-V core (RV32I) 
+written in VHDL. Features include:
 > - 8-bit Timer
 > - UART
 > - 8-bit GPIO
@@ -14,7 +15,7 @@ pipelining, no interrupts, no branch prediction etc.
 
 ### Repository tree
 ```
-my_implementation
+single_stage
 |
 |___riscpol_design.vhdl
 |___riscpol_diagram.drawio
@@ -56,7 +57,7 @@ my_implementation
 |   |___gpio.asm
 |   |___gpio.hex
 ```
-The entire project is in the main *my_implementation* folder. The top design is
+The entire project is in the main *single_stage* folder. The top design is
 *riscpol_design.vhdl*, the top-level entity is *riscpol*. It integrates the core
 and all peripherals, such as GPIO, UART and Timer. <br/>
 The test for the top design is the *riscpol_tb.vhdl*. All instructions used in
@@ -81,17 +82,11 @@ decoder like [rvcodec.js](https://luplab.gitlab.io/rvcodecjs/).
 
 ### Simulation
 I described how to run scripts that will automatically start simulation for
-GHDL, ModelSim or Vivaado in *single_stage/simulation_script/README.md*. Scripts
-are not necessary, but they make life easier. Without scripts you have to do
-everything manually, i.e. add all files with the vhdl extension, compile them
-and then run tests which are in *riscpol_tb.vhdl* file. The top-level entity is
-*riscpol* in *riscpol_design.vhdl*.
+GHDL, ModelSim or Vivado in *single_stage/simulation_script/README.md*.
 
 ### Synthesis
 There is no script to automate the synthesis. You have to do everything
-manually. Add all files with the vhdl extension (without *riscpol_tb.vhdl*, it's
-for testing purposes only) compile them and then run synthesis. <br/>
-The top-level entity is *riscpol* in *riscpol_design.vhdl*.
+manually. The top-level entity is *riscpol* in *riscpol_design.vhdl*.
 
 ### Target platform
 Resource utilization:
@@ -101,16 +96,7 @@ Resource utilization:
 - Fmax: 55 MHz.
 
 ### Running your own program
-File *core/rom.vhdl* contains instructions to be executed, which are represented
-by 32-bit hexadecimal code. Instructions can be manually edited by modifying
-*C_CODE* array. In a situation where are a lot of instructions, it's more
-convenient to paste them into the *core/code.txt* file, then go to folder *core*
-and run a python script by executing the command: `python3 rom_updater.py`,
-which will automatically modify the *C_CODE* array. <br/>
-There are two important rules for adding own instructions in *rom.vhdl* file:
-1. The last instruction in the *C_CODE* array must be: others => x"00000000"
-2. The size of the instruction memory is set in the *riscpol_pkg.vhdl* file as a
-*C_ROM_LENGTH* constant.
+It is described in the main README (on the previous page).
 
 ### Datapath diagram
 JPG: <br/>
@@ -274,26 +260,3 @@ output signal to point to the instruction that will be currently executed.
 Signal *instruction_addr* goes to the *instruction_memory* module. By
 manipulating the program counter value, you can jump to any instruction in
 memory.
-
-### Might help
-
-### Project status
-1. Implementation of a three-stage processor:
-- [ ] Fetch, decode, execute.
-2. Protocols implementation
-- [ ] 1-Wire,
-- [ ] SPI,
-- [ ] I2C,
-- [ ] UART.
-3. Others
-- [ ] Add 8-bit timer,
-- [ ] Add cache,
-- [ ] Setup and run Dhrystone,
-- [ ] Add script for Vivado and GHDL,
-- [ ] Change name to single-stage and move part of readme there,
-- [ ] Describe timing constraints,
-- [ ] Add some helpful articles,
-- [ ] Add gif (or maybe link to youtube) how to step by step run project in
-quartus,
-- [x] change vhdl to vhdl,
-- [x] change script to simulation_script
