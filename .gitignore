@@ -7,8 +7,5 @@
 *transcript
 *vsim.wlf
 *work/
-implementation/my_implementation/core/*/script/opcodes/
-implementation/my_implementation/core/script/opcodes/
-implementation/my_implementation/script/opcodes/
+implementation/my_implementation/single_stage/simulation_script/modelsim/opcodes/
 *.cf
-implementation/single_stage/simulation_script/opcodes/
