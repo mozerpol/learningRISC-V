@@ -9,3 +9,5 @@
 *work/
 implementation/my_implementation/single_stage/simulation_script/modelsim/opcodes/
 *.cf
+simulation_script/ghdl/wave.ghw
+/implementation/my_implementation/single_stage/simulation_script/ghdl/wave.ghw
