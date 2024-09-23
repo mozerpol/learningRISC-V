@@ -1,13 +1,8 @@
 *.wlf
-*_pkg/
 *_lib/
-*.vhd.bak
-*decoder_lib/
 *modelsim.ini
 *transcript
-*vsim.wlf
 *work/
 implementation/my_implementation/single_stage/simulation_script/modelsim/opcodes/
 *.cf
-simulation_script/ghdl/wave.ghw
 /implementation/my_implementation/single_stage/simulation_script/ghdl/wave.ghw
