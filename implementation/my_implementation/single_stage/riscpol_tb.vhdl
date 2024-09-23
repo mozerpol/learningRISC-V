@@ -3,7 +3,7 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Test for the entire processor (riscpol entity in
--- riscpol_design). All instructions (in assembly language) from this test are 
+-- riscpol_design). All instructions (in assembly language) from this test are
 -- in the file tests/general.asm.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -3404,14 +3404,6 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-
-
-
-
-
-
-
-
       -- sb    x0,  255(x0)     # gpio = 00000000
       if (gpio_tb /= "00000000") then
          report "ERROR: sb    x0,  255(x0)      # gpio = 00000000 | Test_point: "
@@ -3455,9 +3447,6 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-
-
-
       -- sb    x7,  255(x0)     # gpio = 00011111
       if (gpio_tb /= "00011111") then
          report "ERROR: sb    x7,  255(x0)     # gpio = 00011111 | Test_point: "
@@ -3722,6 +3711,17 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      -- Below loop is used to wait and check the last instruction from the 
+      -- stack of all previous instructions until the sb x0, 255(x0) instruction.
+      for i in 0 to 886 loop
+         wait until rising_edge(clk_tb);
+      end loop;
+      -- sb    x0,  255(x0)     # Assign the value of x1 to GPIO
+      if (gpio_tb /= "00000000") then
+         report "ERROR: sb    x0,  255(x0)     # gpio = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
 
       report "Total errors: " & integer'image(set_test_point);
       wait for 1 us;
