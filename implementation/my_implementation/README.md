@@ -56,13 +56,15 @@ There are two important rules for adding own instructions in *rom.vhdl* file:
 - [ ] Add cache,
 - [ ] Setup and run Dhrystone,
 - [ ] Add script for Vivado and GHDL,
-- [ ] Change name to single-stage and move part of readme there,
+- [x] Change name to single-stage and move part of readme there,
 - [ ] Describe timing constraints,
 - [ ] Add some helpful articles,
 - [ ] Add gif (or maybe link to youtube) how to step by step run project in
 quartus,
 - [x] change vhdl to vhdl,
-- [x] change script to simulation_script
+- [x] change script to simulation_script,
 - [ ] fix GPIO, it's good to read from them :P
-- [ ] fix tests, maybe after some clock cycles (second reset) can check the last
-instructions
+- [x] fix tests, maybe after some clock cycles (second reset) can check the last
+instructions,
+- [x] clean gitignore,
+- [ ] Add info, that vivado and modelsim have to be in PATH - modify .bashrc
