@@ -1,17 +1,29 @@
 library ieee;
    use ieee.std_logic_1164.all;
+   use ieee.numeric_std.all;
+   use ieee.numeric_std_unsigned.all;
 
-entity timer8 is port(
-   clk : in std_logic
-                     );
-end entity timer8;
+entity counter8 is 
+   generic(
+      G_COUNTER_VALUE : positive := 255
+   ); port(
+      i_clk         : in std_logic;
+      i_rst         : in std_logic;
+      i_ce          : in std_logic;
+      i_ov_counter8 : in std_logic;
+      i_q_counter8  : out std_logic_vector(7 downto 0)
+);
+end entity counter8;
 
-architecture rtl of timer8 is
+architecture rtl of counter8 is
 begin
 
-   process (clk)
+   process (i_clk)
    begin
-      if (clk'event and clk = '1') then
+      if (i_clk'event and i_clk = '1') then
+         if (i_rst = '1') then
+         else
+         end if;
       end if;
    end process;
 
