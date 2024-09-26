@@ -11,26 +11,6 @@ add wave -expand -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_clk
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_gpio
 
-add wave         -group GPIO              -radix dec /riscpol_tb/inst_riscpol/inst_gpio/i_addr
-add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_wdata
-add wave         -group GPIO              -radix bin /riscpol_tb/inst_riscpol/inst_gpio/o_gpio
-
-add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_memory/raddr
-add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_memory/waddr
-add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_memory/we
-add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/wdata
-add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_memory/be
-add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/q
-add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/ram
-add wave         -group RAM               -radix hex /riscpol_tb/p_tb/spy_ram
-
-add wave         -group CORE              -radix hex /riscpol_tb/inst_riscpol/inst_core/i_core_data_read
-add wave         -group CORE              -radix hex /riscpol_tb/inst_riscpol/inst_core/o_core_data_write
-add wave         -group CORE              -radix bin /riscpol_tb/inst_riscpol/inst_core/o_core_write_enable
-add wave         -group CORE              -radix bin /riscpol_tb/inst_riscpol/inst_core/o_core_byte_enable
-add wave         -group CORE              -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_read
-add wave         -group CORE              -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_write
-
 add wave         -group ALU               -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_1
 add wave         -group ALU               -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_2
 add wave         -group ALU               -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_control
@@ -106,6 +86,33 @@ add wave         -group REG_FILE          -radix dec /riscpol_tb/inst_riscpol/in
 add wave         -group REG_FILE          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_reg_file/o_rs2_data
 add wave         -group REG_FILE          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_reg_file/o_rs1_data
 add wave         -group REG_FILE          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_reg_file/gpr
+
+add wave         -group CORE              -radix hex /riscpol_tb/inst_riscpol/inst_core/i_core_data_read
+add wave         -group CORE              -radix hex /riscpol_tb/inst_riscpol/inst_core/o_core_data_write
+add wave         -group CORE              -radix bin /riscpol_tb/inst_riscpol/inst_core/o_core_write_enable
+add wave         -group CORE              -radix bin /riscpol_tb/inst_riscpol/inst_core/o_core_byte_enable
+add wave         -group CORE              -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_read
+add wave         -group CORE              -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_write
+
+add wave         -group GPIO              -radix dec /riscpol_tb/inst_riscpol/inst_gpio/i_addr
+add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_wdata
+add wave         -group GPIO              -radix bin /riscpol_tb/inst_riscpol/inst_gpio/o_gpio
+
+add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/G_COUNTER_VALUE
+add wave         -group CNT_8BIT          -radix bin /riscpol_tb/inst_riscpol/inst_counter8bit/cnt_states
+add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/counter
+add wave         -group CNT_8BIT          -radix hex /riscpol_tb/inst_riscpol/inst_counter8bit/i_addr
+add wave         -group CNT_8BIT          -radix bin /riscpol_tb/inst_riscpol/inst_counter8bit/i_ce
+add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/o_q_counter8
+
+add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_memory/raddr
+add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_memory/waddr
+add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_memory/we
+add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/wdata
+add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_memory/be
+add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/q
+add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/ram
+add wave         -group RAM               -radix hex /riscpol_tb/p_tb/spy_ram
 
 
 # Waveform window settings:
