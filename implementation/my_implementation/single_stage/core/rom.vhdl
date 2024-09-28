@@ -18,6 +18,7 @@
 
 library ieee;
     use ieee.std_logic_1164.all;
+    use IEEE.std_logic_unsigned.all;
 library riscpol_lib;
    use riscpol_lib.riscpol_pkg.all;
 
@@ -566,6 +567,20 @@ package rom is
       x"00000093",
       x"00000193",
       x"0e000fa3",
+      x"00200093",
+      x"00300113",
+      x"00100193",
+      x"00000213",
+      x"0e300da3",
+      x"00120213",
+      x"fe121ee3",
+      x"0e000da3",
+      x"00000213",
+      x"0e300da3",
+      x"00120213",
+      x"fe221ee3",
+      x"0e000da3",
+      x"00000213",
       others => x"00000000"
       );
 end;
