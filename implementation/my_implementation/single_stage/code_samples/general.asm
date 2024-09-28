@@ -722,6 +722,27 @@ bne   x1,  x2,   loop2 # Were all the GPIOs on? If not go to loop2; yes, all the
 addi  x1,  x0,   0
 addi  x3,  x0,   0
 sb    x0,  255(x0)
+###################################
+##       Check Timer8bit         ##
+###################################
+addi  x1,  x0,   0x2   # Delay purposes, short loop
+addi  x2,  x0,   0x3   # Delay purposes, long loop
+addi  x3,  x0,   0x1   # 1 = turn on the timer, 0 = turn off the timer
+addi  x4,  x0,   0x0   # The value of x4 is compared to the value of x1, this
+                       # works as a delay loop.
+sb    x3,  251(x0)     # 1 = turn on the timer
+loop25:
+addi  x4,  x4,   0x1   # Short delay loop
+bne   x4,  x1,   loop25# Is there enough delay?
+sb    x0,  251(x0)     # 0 = turn off the timer
+addi  x4,  x0,   0x0   # Reset delay loop
+sb    x3,  251(x0)     # 1 = turn on the timer
+loop26:
+addi  x4,  x4,   0x1   # Short delay loop
+bne   x4,  x2,   loop26# Is there enough delay?
+sb    x0,  251(x0)     # 0 = turn off the timer
+addi  x4,  x0,   0x0   # Reset delay loop
+
 ####################################
 ##  Check behaviour after reset   ##
 ####################################
