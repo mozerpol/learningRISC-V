@@ -3690,9 +3690,9 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x2,  x0,   0x3   # Delay purposes, long loop
-      if (spy_gpr(2) /= 32x"00000003") then
-         report "ERROR: addi  x2,  x0,   0x3     # x2 = 00000003 | Test_point: "
+      -- addi  x2,  x0,   0x530 # Delay purposes, long loop
+      if (spy_gpr(2) /= 32x"00000530") then
+         report "ERROR: addi  x2,  x0,   0x530   # x2 = 00000530 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
@@ -3711,6 +3711,41 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      -- sb    x3,  251(x0)     # 1 = turn on the timer
+      if (spy_ram(62)(3) /= x"01") then
+         report "ERROR: sb    x3,  251(x0)     # 0x000000f8 = 0x00000001 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;  
+      wait until rising_edge(clk_tb);
+      -- sb    x0,  251(x0)     # 0 = turn off the timer
+      if (spy_ram(62)(3) /= x"00") then
+         report "ERROR: sb    x0,  251(x0)     # 0x000000f8 = 0x00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;  
+      wait until rising_edge(clk_tb);
+      -- addi  x0,  x0,   0x0   # nop
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0x0     # x0 = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x0,  x0,   0x0   # nop
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0x0     # x0 = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x0,  x0,   0x0   # nop
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0x0     # x0 = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);     
       -- sb    x3,  251(x0)     # 1 = turn on the timer
       if (spy_ram(62)(3) /= x"01") then
          report "ERROR: sb    x3,  251(x0)     # 0x000000f8 = 0x00000001 | Test_point: "
@@ -3743,6 +3778,27 @@ begin
          set_test_point <= set_test_point + 1;
       end if; 
       wait until rising_edge(clk_tb);
+      -- addi  x0,  x0,   0x0   # nop
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0x0     # x0 = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);    
+      -- addi  x0,  x0,   0x0   # nop
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0x0     # x0 = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);    
+      -- addi  x0,  x0,   0x0   # nop
+      if (spy_gpr(0) /= 32x"00000000") then
+         report "ERROR: addi  x0,  x0,   0x0     # x0 = 00000000 | Test_point: "
+         & integer'image(set_test_point+1);
+         set_test_point <= set_test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);    
       -- sb    x3,  251(x0)     # 1 = turn on the timer
       if (spy_ram(62)(3) /= x"01") then
          report "ERROR: sb    x3,  251(x0)     # 0x000000f8 = 0x00000001| Test_point: "
@@ -3758,7 +3814,8 @@ begin
       end if; 
       wait until rising_edge(clk_tb);
       -- TODO: Comment ---------------------------------------------------------
-      for i in 0 to 4 loop
+      -- TODO: I think all instructions are not cover with from general.asm
+      for i in 0 to 550 loop
          wait until rising_edge(clk_tb);
       end loop;
       -- sb    x0,  251(x0)     # 0 = turn off the timer
@@ -3776,7 +3833,7 @@ begin
       end if;
       wait until rising_edge(clk_tb);
       
-      
+      wait for 1000 ns;
       
       
       

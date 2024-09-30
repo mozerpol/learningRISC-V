@@ -58,6 +58,9 @@ begin
          o_data            <= (others => '0');
          v_ram_address     := (others => '0');
       else
+      -- TODO: below should be calculated only when instruction STORE is 
+      -- calculated, so may create a function/procedure and then execute it
+      -- inside. Consider exectuing this inside C_SW
          v_ram_address     := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
          if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
             o_waddr     <= 0;
@@ -66,6 +69,7 @@ begin
             o_waddr     <= to_integer(unsigned(v_ram_address(31 downto 2)));
             o_raddr     <= to_integer(unsigned(v_ram_address(31 downto 2)));
          end if;
+         -- Until this comment
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
