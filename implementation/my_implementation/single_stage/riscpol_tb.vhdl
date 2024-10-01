@@ -3690,9 +3690,9 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x2,  x0,   0x530 # Delay purposes, long loop
-      if (spy_gpr(2) /= 32x"00000530") then
-         report "ERROR: addi  x2,  x0,   0x530   # x2 = 00000530 | Test_point: "
+      -- addi  x2,  x0,   0x212   # Delay purposes, long loop
+      if (spy_gpr(2) /= 32x"00000212") then
+         report "ERROR: addi  x2,  x0,   0x212 # x2 = 0x00000212 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
@@ -3806,7 +3806,7 @@ begin
          set_test_point <= set_test_point + 1;
       end if; 
       wait until rising_edge(clk_tb);
-      -- addi  x4,  x4,   0x1   # Short delay loop
+      -- addi  x4,  x4,   0x1   # Long delay loop
       if (spy_gpr(4) /= 32x"00000001") then
          report "ERROR: addi  x4,  x4,   0x1     # x4 = 00000001 | Test_point: "
          & integer'image(set_test_point+1);
@@ -3815,7 +3815,7 @@ begin
       wait until rising_edge(clk_tb);
       -- TODO: Comment ---------------------------------------------------------
       -- TODO: I think all instructions are not cover with from general.asm
-      for i in 0 to 550 loop
+      for i in 0 to 1057 loop
          wait until rising_edge(clk_tb);
       end loop;
       -- sb    x0,  251(x0)     # 0 = turn off the timer
@@ -3831,12 +3831,7 @@ begin
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
       end if;
-      wait until rising_edge(clk_tb);
-      
-      wait for 1000 ns;
-      
-      
-      
+      wait until rising_edge(clk_tb);     
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
