@@ -725,10 +725,10 @@ sb    x0,  255(x0)
 ###################################
 ##       Check Timer8bit         ##
 ###################################
-addi  x1,  x0,   0x2   # Delay purposes, short loop
-addi  x2,  x0,   0x530 # Delay purposes, long loop
-addi  x3,  x0,   0x1   # 1 = turn on the timer, 0 = turn off the timer
-addi  x4,  x0,   0x0   # The value of x4 is compared to the value of x1, this
+addi  x1,  x0,   2     # Delay purposes, short loop
+addi  x2,  x0,   0x212 # Delay purposes, long loop
+addi  x3,  x0,   1     # 1 = turn on the timer, 0 = turn off the timer
+addi  x4,  x0,   0     # The value of x4 is compared to the value of x1, this
                        # works as a delay loop.
 sb    x3,  251(x0)     # 1 = turn on the timer
 sb    x0,  251(x0)     # 0 = turn off the timer
@@ -737,19 +737,19 @@ addi  x0,  x0,   0     # nop
 addi  x0,  x0,   0     # nop
 sb    x3,  251(x0)     # 1 = turn on the timer
 loop25:
-addi  x4,  x4,   0x1   # Short delay loop
+addi  x4,  x4,   1     # Short delay loop
 bne   x4,  x1,   loop25# Is there enough delay?
 sb    x0,  251(x0)     # 0 = turn off the timer
-addi  x4,  x0,   0x0   # Reset delay loop
+addi  x4,  x0,   0     # Reset delay loop
 addi  x0,  x0,   0     # nop
 addi  x0,  x0,   0     # nop
 addi  x0,  x0,   0     # nop
 sb    x3,  251(x0)     # 1 = turn on the timer
 loop26:
-addi  x4,  x4,   0x1   # Short delay loop
+addi  x4,  x4,   1     # Long delay loop
 bne   x4,  x2,   loop26# Is there enough delay?
 sb    x0,  251(x0)     # 0 = turn off the timer
-addi  x4,  x0,   0x0   # Reset delay loop
+addi  x4,  x0,   0     # Reset delay loop
 
 ####################################
 ##  Check behaviour after reset   ##
