@@ -5,4 +5,6 @@
 *work/
 implementation/my_implementation/single_stage/simulation_script/modelsim/opcodes/
 *.cf
-/implementation/my_implementation/single_stage/simulation_script/ghdl/wave.ghw
+wave.ghw
+xvhdl.log
+xvhdl.pb
