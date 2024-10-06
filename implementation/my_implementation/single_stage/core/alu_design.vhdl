@@ -3,7 +3,7 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Arithmetic logic unit. Based on the i_alu_control signal,
--- which comes from the control module (control_design.vhdl), a decision is made 
+-- which comes from the control module (control_design.vhdl), a decision is made
 -- which mathematical operation the ALU should perform.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -12,7 +12,6 @@
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.numeric_std.all;
-   use ieee.numeric_std_unsigned.all;
 library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
@@ -34,9 +33,11 @@ begin
    begin
       case i_alu_control is
          when C_ADD | C_ADDI  =>
-            o_alu_result <= i_alu_operand_1 + i_alu_operand_2;
+            o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) +
+                                                   unsigned(i_alu_operand_2));
          when C_SUB           =>
-            o_alu_result <= i_alu_operand_1 - i_alu_operand_2;
+            o_alu_result <= std_logic_vector(unsigned(i_alu_operand_1) -
+                                                   unsigned(i_alu_operand_2));
          when C_XOR | C_XORI  =>
             o_alu_result <= i_alu_operand_1 xor i_alu_operand_2;
          when C_OR  | C_ORI   =>
