@@ -2,9 +2,9 @@
 -- File          : ram_management_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : This module is responsible for writing and reading the 
--- appropriate data in RAM (peripherials/ram.vhdl) and writing the read data from 
--- RAM to the register file, based on the i_ram_management_ctrl signal from the 
+-- Description   : This module is responsible for writing and reading the
+-- appropriate data in RAM (peripherials/ram.vhdl) and writing the read data from
+-- RAM to the register file, based on the i_ram_management_ctrl signal from the
 -- control module (control_design.vhdl).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -12,7 +12,6 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
-   use ieee.numeric_std_unsigned.all;
    use ieee.numeric_std.all;
 library control_lib;
    use control_lib.all;
@@ -58,7 +57,7 @@ begin
          o_data            <= (others => '0');
          v_ram_address     := (others => '0');
       else
-         v_ram_address     := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
+         v_ram_address     := std_logic_vector(unsigned(i_rs1_data) + unsigned(i_imm));
          -- TODO: describe if-else below
          if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
             o_waddr     <= 0;
@@ -139,7 +138,8 @@ begin
          o_rd_data          <= (others => '0');
          v_reg_file_address := (others => '0');
       else
-         v_reg_file_address := i_rs1_data(31 downto 0) + i_imm(31 downto 0);
+         v_reg_file_address := std_logic_vector(unsigned(i_rs1_data) +
+                                                unsigned(i_imm(31 downto 0)));
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_ram;
