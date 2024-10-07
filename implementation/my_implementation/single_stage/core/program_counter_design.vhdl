@@ -3,11 +3,11 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Program counter. The ports of this module are connected to
--- instruction memory (instruction_memory_design.vhdl), register file 
+-- instruction memory (instruction_memory_design.vhdl), register file
 -- (register_file_design.vhdl) and mux1 (alu_mux_1_design.vhdl). The i_pc_ctrl
 -- and i_inst_addr_ctrl signals come from the control (control_design.vhdl)
---  module. These signals control the value of the program counter and which 
--- instruction from the ROM (rom.vhdl) to read. Changing the value of the 
+--  module. These signals control the value of the program counter and which
+-- instruction from the ROM (rom.vhdl) to read. Changing the value of the
 -- o_instruction_addr signal (which is connected to the instruction_memory
 -- module) allows to select the instruction to be read.
 --------------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
-   use ieee.numeric_std_unsigned.all;
+   use ieee.numeric_std.all;
 library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
@@ -47,7 +47,8 @@ begin
          pc_addr_buff   <= (others => '0');
       elsif (i_clk'event and i_clk = '1') then
          case i_pc_ctrl is
-            when C_INCREMENT_PC     => pc_addr_buff <= pc_addr_buff + 4;
+            when C_INCREMENT_PC     => pc_addr_buff <=
+                                   std_logic_vector(unsigned(pc_addr_buff) + 4);
             -- The instruction that decrements the PC value does not exist in
             -- RISC-V, so the line below can be commented:
             -- when C_DECREMENT_PC     => pc_addr_buff <= pc_addr_buff - 4;
@@ -64,7 +65,8 @@ begin
          o_instruction_addr   <= (others => '0');
       else -- TODO maybe uses if-else
          case i_inst_addr_ctrl is
-            when C_INST_ADDR_PC     => o_instruction_addr <= pc_addr_buff + 4;
+            when C_INST_ADDR_PC     => o_instruction_addr <=
+                                   std_logic_vector(unsigned(pc_addr_buff) + 4);
             when C_INST_ADDR_ALU    => o_instruction_addr <= i_alu_result;
             when others             => o_instruction_addr <= (others => '0');
          end case;
