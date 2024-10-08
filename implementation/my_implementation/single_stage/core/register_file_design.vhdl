@@ -3,11 +3,11 @@
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : Register file which contains 32 general purpose registers
--- (GPR). Depending on the i_reg_file_wr_ctrl (control_design.vhdl) signal, a 
--- decision is made whether data can be written to the GPR. Depending on the 
--- i_reg_file_inst_ctrl signal (control_design.vhdl), a decision is made from 
--- where to save the data (ALU operation result, constant or program counter 
--- value). Both signals (i_reg_file_wr_ctrl and i_reg_file_inst_ctrl) come from 
+-- (GPR). Depending on the i_reg_file_wr_ctrl (control_design.vhdl) signal, a
+-- decision is made whether data can be written to the GPR. Depending on the
+-- i_reg_file_inst_ctrl signal (control_design.vhdl), a decision is made from
+-- where to save the data (ALU operation result, constant or program counter
+-- value). Both signals (i_reg_file_wr_ctrl and i_reg_file_inst_ctrl) come from
 -- the control (control_design.vhdl) module.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -15,7 +15,6 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
-   use ieee.numeric_std_unsigned.all;
    use ieee.numeric_std.all;
 library control_lib;
    use control_lib.all;
@@ -64,7 +63,8 @@ begin
          else
          -- Save program counter value in GPR
             -- elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
-            gpr(to_integer(unsigned(i_rd_addr))) <= i_pc_addr + 4;
+            gpr(to_integer(unsigned(i_rd_addr))) <= 
+                                    std_logic_vector(unsigned(i_pc_addr) + 4);
          end if;
       end if;
    end process p_reg_file;
