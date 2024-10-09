@@ -85,7 +85,7 @@ architecture rtl of riscpol is
          i_rst          : in std_logic;
          i_addr         : in integer range 0 to C_RAM_LENGTH-1;
          i_ce           : in std_logic;
-         o_q_counter8   : out std_logic_vector(7 downto 0)
+         o_q_counter8   : out integer range 0 to G_COUNTER_VALUE - 1
    );
    end component counter8;
 
@@ -101,7 +101,7 @@ architecture rtl of riscpol is
    -- RAM
    signal ram_q               : std_logic_vector(31 downto 0);
    -- Counter
-   signal q_counter8          : std_logic_vector(7 downto 0);
+   signal q_counter8          : integer range 0 to 255 - 1;
 
 begin
 
