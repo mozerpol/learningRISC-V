@@ -79,7 +79,7 @@ architecture rtl of riscpol is
    
    component counter8 is
       generic(
-         G_COUNTER_VALUE : positive := 255
+         G_COUNTER_VALUE : positive := 256
       ); port(
          i_clk          : in std_logic;
          i_rst          : in std_logic;
@@ -139,7 +139,7 @@ begin
     
     inst_counter8bit : component counter8
     generic map(
-      G_COUNTER_VALUE => 255
+      G_COUNTER_VALUE => 256
     )
     port map (
        i_clk         => clk,
