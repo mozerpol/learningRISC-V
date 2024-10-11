@@ -8,7 +8,7 @@ library riscpol_lib;
 
 entity counter8 is
    generic(
-      G_COUNTER_VALUE : positive := 255
+      G_COUNTER_VALUE : positive := 256
    ); port(
       i_clk          : in std_logic;
       i_rst          : in std_logic;
@@ -20,15 +20,36 @@ end entity counter8;
 
 architecture rtl of counter8 is
 
+   signal ce_latch : std_logic;
+
 begin
+
+   process (i_clk)
+   begin
+      if (i_clk'event and i_clk = '1') then
+         if (i_rst = '1') then
+            ce_latch <= '0';
+         else
+            if (i_addr = C_MMIO_ADDR_CNT_8_BIT - 1) then
+               if (i_ce = '1') then
+                  ce_latch <= '1';
+               else
+                  ce_latch <= '0';
+               end if;
+            end if;
+         end if;
+      end if;
+   end process;
 
    process (i_clk)
       variable cnt : integer range 0 to G_COUNTER_VALUE - 1;
    begin
       if (i_clk'event and i_clk = '1') then
-         if (i_addr = C_MMIO_ADDR_CNT_8_BIT-1) then
-            if (i_ce = '1') then
-               if (i_rst = '1') then
+         if (i_rst = '1') then
+            cnt := 0;
+         else
+            if (ce_latch = '1') then
+               if (cnt = G_COUNTER_VALUE - 1) then
                   cnt := 0;
                else
                   cnt := cnt + 1;
