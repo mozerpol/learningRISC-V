@@ -54,6 +54,8 @@ begin
                else
                   cnt := cnt + 1;
                end if;
+            else
+               cnt := 0;
             end if;
          end if;
          o_q_counter8 <= cnt;
