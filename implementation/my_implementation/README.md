@@ -52,14 +52,14 @@ There are two important rules for adding own instructions in *rom.vhdl* file:
 - [ ] I2C,
 - [ ] UART.
 3. Others
-- [ ] Add 8-bit timer,
-- [ ] Add cache,
-- [ ] Setup and run Dhrystone,
-- [ ] Add script for Vivado and GHDL,
-- [x] Change name to single-stage and move part of readme there,
-- [ ] Describe timing constraints,
-- [ ] Add some helpful articles,
-- [ ] Add gif (or maybe link to youtube) how to step by step run project in
+- [ ] add 8-bit timer,
+- [ ] add cache,
+- [ ] setup and run Dhrystone,
+- [ ] add script for Vivado and GHDL,
+- [x] change name to single-stage and move part of readme there,
+- [ ] describe timing constraints,
+- [ ] add some helpful articles,
+- [ ] add gif (or maybe link to youtube) how to step by step run project in
 quartus,
 - [x] change vhdl to vhdl,
 - [x] change script to simulation_script,
@@ -67,4 +67,9 @@ quartus,
 - [x] fix tests, maybe after some clock cycles (second reset) can check the last
 instructions,
 - [x] clean gitignore,
-- [ ] Add info, that vivado and modelsim have to be in PATH - modify .bashrc
+- [ ] add info, that vivado and modelsim have to be in PATH - modify .bashrc,
+- [ ] in single_stage directory should be only files like flowchart, readme,
+    License, etc.,
+- [ ] fix signal names,
+- [ ] fix flowchart,
+- [ ] change to negative reset
