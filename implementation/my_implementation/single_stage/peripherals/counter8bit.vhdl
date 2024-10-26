@@ -19,7 +19,8 @@ entity counter8 is
 end entity counter8;
 
 architecture rtl of counter8 is
-
+-- TODO: all peripherials should have the same input names, such as ce <- chip
+-- enable, not ce and we. Additionaly only gpio_design has _design suffix.
    signal ce_latch : std_logic;
 
 begin
