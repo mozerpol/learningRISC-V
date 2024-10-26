@@ -28,6 +28,8 @@ end gpio;
 architecture rtl of gpio is
 
 begin
+-- TODO: all peripherials should have the same input names, such as ce <- chip
+-- enable, not ce and we. Additionaly only gpio_design has _design suffix.
 
    p_gpio : process(i_clk)
    begin
