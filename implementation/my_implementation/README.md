@@ -72,4 +72,6 @@ instructions,
     License, etc.,
 - [ ] fix signal names,
 - [ ] fix flowchart,
-- [ ] change to negative reset
+- [ ] change to negative reset,
+- [ ] add a sample system memory map table like here: 
+    https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
