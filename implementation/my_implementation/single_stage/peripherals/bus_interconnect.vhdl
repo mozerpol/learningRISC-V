@@ -57,9 +57,9 @@ begin
     -- TODO: check below, it doesn't make any sense that I'm reading state
     -- during i_waddr...
     o_data <= 24x"000000" & i_data_gpio                          when 
-                                   i_waddr = C_MMIO_ADDR_GPIO - 1      else
+                                   i_raddr = C_MMIO_ADDR_GPIO - 1      else
               std_logic_vector(to_unsigned(i_data_counter8, 32)) when 
-                                   i_waddr = C_MMIO_ADDR_CNT_8_BIT - 1 else
+                                   i_raddr = C_MMIO_ADDR_CNT_8_BIT - 1 else
                                    i_data_ram;
               
 
