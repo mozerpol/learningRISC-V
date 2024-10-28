@@ -71,12 +71,13 @@ architecture rtl of riscpol is
          BYTES                : natural := C_RAM_BYTES
       );
       port (
-         we, clk              : in  std_logic;
-         be                   : in  std_logic_vector (BYTES - 1 downto 0);
-         wdata                : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
-         waddr                : in  integer range 0 to ADDR_WIDTH-1;
-         raddr                : in  integer range 0 to ADDR_WIDTH-1;
-         q                    : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0)
+         i_clk                : in  std_logic;
+         i_we                 : in  std_logic;
+         i_be                 : in  std_logic_vector (BYTES - 1 downto 0);
+         i_wdata              : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
+         i_waddr              : in  integer range 0 to ADDR_WIDTH - 1;
+         i_raddr              : in  integer range 0 to ADDR_WIDTH - 1;
+         o_ram_data           : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0)
       );
    end component byte_enabled_simple_dual_port_ram;
 
@@ -156,13 +157,13 @@ begin
 
    inst_memory : component byte_enabled_simple_dual_port_ram -- TODO: inst_memory means all type of memories, should be inst_ram
    port map (
-      clk                  => clk,
-      raddr                => s_core_addr_read,
-      waddr                => s_core_addr_write,
-      we                   => s_mmio_we_ram,
-      wdata                => s_core_data_write,
-      be                   => s_core_byte_enable,
-      q                    => s_ram_q
+      i_clk                  => clk,
+      i_raddr                => s_core_addr_read,
+      i_waddr                => s_core_addr_write,
+      i_we                   => s_mmio_we_ram,
+      i_wdata                => s_core_data_write,
+      i_be                   => s_core_byte_enable,
+      o_ram_data           => s_ram_q
    );
 
    inst_gpio : component gpio
