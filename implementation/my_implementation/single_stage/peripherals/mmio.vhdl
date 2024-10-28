@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- File          : bus_interconnect.vhdl
+-- File          : mmio.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   :
@@ -16,7 +16,7 @@ library riscpol_lib;
 library counter8bit_lib;
 library ram_lib;
 
-entity bus_interconnect is
+entity mmio is
    port (
       i_write_enable : in std_logic;
       i_waddr        : in integer range 0 to C_RAM_LENGTH-1;
@@ -31,9 +31,9 @@ entity bus_interconnect is
       i_data_ram      : in std_logic_vector(31 downto 0)
       
 );
-end bus_interconnect;
+end mmio;
 
-architecture rtl of bus_interconnect is
+architecture rtl of mmio is
 
 begin
 -- TODO: all peripherials should have the same input names, such as ce <- chip
