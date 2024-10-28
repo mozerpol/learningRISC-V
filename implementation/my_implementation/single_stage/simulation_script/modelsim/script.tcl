@@ -40,8 +40,8 @@ proc s_add_external_libs {} {
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/gpio_design.vhdl
    
    set hdl_dir                "../../peripherals"
-   set library_name           "bus_interconnect_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/bus_interconnect.vhdl
+   set library_name           "mmio_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/mmio.vhdl
 
    set hdl_dir                "../../core"
    set library_name           "alu_lib"

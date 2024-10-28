@@ -18,7 +18,7 @@ library riscpol_lib;
 library ram_lib;
 library gpio_lib;
 library counter8bit_lib;
-library bus_interconnect_lib;
+library mmio_lib;
 library core_lib;
    use core_lib.all;
 
@@ -48,7 +48,7 @@ architecture rtl of riscpol is
       );
    end component core;
 
-   component bus_interconnect is
+   component mmio is
       port (
          i_write_enable       : in std_logic;
          i_waddr              : in integer range 0 to C_RAM_LENGTH-1;
@@ -62,7 +62,7 @@ architecture rtl of riscpol is
          i_data_counter8      : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
          i_data_ram           : in std_logic_vector(31 downto 0)
    );
-   end component bus_interconnect;
+   end component mmio;
 
    component byte_enabled_simple_dual_port_ram is
       generic (
@@ -140,7 +140,7 @@ begin
       o_core_addr_write    => s_core_addr_write
    );
 
-   inst_bus_interconnect : component bus_interconnect
+   inst_mmio : component mmio
    port map (
       i_write_enable       => s_core_write_enable,
       i_waddr              => s_core_addr_write,

@@ -3706,7 +3706,9 @@ begin
          set_test_point <= set_test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
+      -- TODO: check internal signals/states for timer
       -- sb    x3,  251(x0)     # 1 = turn on the timer
+      -- Check o_q_counter8 value
       if (spy_ram(62)(3) /= x"01") then
          report "ERROR: sb    x3,  251(x0)     # 0x000000f8 = 0x00000001 | Test_point: "
          & integer'image(set_test_point+1);
