@@ -99,9 +99,9 @@ architecture rtl of riscpol is
       ); port(
          i_clk                : in std_logic;
          i_rst                : in std_logic;
-         i_addr               : in integer range 0 to C_RAM_LENGTH-1;
-         i_ce                 : in std_logic;
-         o_q_counter8         : out integer range 0 to G_COUNTER_VALUE - 1
+         i_cnt8_addr               : in integer range 0 to C_RAM_LENGTH-1;
+         i_cnt8_ce                 : in std_logic;
+         o_cnt8_q         : out integer range 0 to G_COUNTER_VALUE - 1
    );
    end component counter8;
 
@@ -123,7 +123,7 @@ architecture rtl of riscpol is
    signal s_ram_q             : std_logic_vector(31 downto 0);
    -- Counter
    -- TODO: counter or maybe cnt8 shoudl be prefix
-   signal s_q_counter8        : integer range 0 to 256 - 1; -- Try with constant
+   signal s_cnt8_q        : integer range 0 to 256 - 1; -- Try with constant
    -- GPIO
    signal q_gpio              : std_logic_vector(7 downto 0);
 
@@ -151,7 +151,7 @@ begin
       o_mmio_we_cnt8bit         => s_mmio_we_cnt8bit,
       o_mmio_data               => s_mmio_data,
       i_mmio_data_gpio          => q_gpio,
-      i_mmio_data_counter8      => s_q_counter8,
+      i_mmio_data_counter8      => s_cnt8_q,
       i_mmio_data_ram           => s_ram_q
    );
 
@@ -182,9 +182,9 @@ begin
    port map (
       i_clk                => clk,
       i_rst                => rst,
-      i_addr               => s_core_addr_write,
-      i_ce                 => s_mmio_we_cnt8bit,
-      o_q_counter8         => s_q_counter8
+      i_cnt8_addr               => s_core_addr_write,
+      i_cnt8_ce                 => s_mmio_we_cnt8bit,
+      o_cnt8_q         => s_cnt8_q
    );
 
    o_gpio   <= q_gpio;

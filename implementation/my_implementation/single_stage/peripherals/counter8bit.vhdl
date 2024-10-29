@@ -12,16 +12,16 @@ entity counter8 is
    ); port(
       i_clk          : in std_logic;
       i_rst          : in std_logic;
-      i_addr         : in integer range 0 to C_RAM_LENGTH - 1;
-      i_ce           : in std_logic;
-      o_q_counter8   : out integer range 0 to G_COUNTER_VALUE - 1
+      i_cnt8_addr         : in integer range 0 to C_RAM_LENGTH - 1;
+      i_cnt8_ce           : in std_logic; -- change to i_we
+      o_cnt8_q   : out integer range 0 to G_COUNTER_VALUE - 1 -- change to o_cnt8_q
    );
 end entity counter8;
 
 architecture rtl of counter8 is
 -- TODO: all peripherials should have the same input names, such as ce <- chip
 -- enable, not ce and we. Additionaly only gpio_design has _design suffix.
-   signal ce_latch : std_logic;
+   signal s_ce_latch : std_logic;
 
 begin
 
@@ -29,13 +29,13 @@ begin
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst = '1') then
-            ce_latch <= '0';
+            s_ce_latch <= '0';
          else
-            if (i_addr = C_MMIO_ADDR_CNT_8_BIT - 1) then
-               if (i_ce = '1') then
-                  ce_latch <= '1';
+            if (i_cnt8_addr = C_MMIO_ADDR_CNT_8_BIT - 1) then
+               if (i_cnt8_ce = '1') then
+                  s_ce_latch <= '1';
                else
-                  ce_latch <= '0';
+                  s_ce_latch <= '0';
                end if;
             end if;
          end if;
@@ -43,23 +43,23 @@ begin
    end process;
 
    process (i_clk)
-      variable cnt : integer range 0 to G_COUNTER_VALUE - 1;
+      variable v_cnt : integer range 0 to G_COUNTER_VALUE - 1;
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst = '1') then
-            cnt := 0;
+            v_cnt := 0;
          else
-            if (ce_latch = '1') then
-               if (cnt = G_COUNTER_VALUE - 1) then
-                  cnt := 0;
+            if (s_ce_latch = '1') then
+               if (v_cnt = G_COUNTER_VALUE - 1) then
+                  v_cnt := 0;
                else
-                  cnt := cnt + 1;
+                  v_cnt := v_cnt + 1;
                end if;
             else
-               cnt := 0;
+               v_cnt := 0;
             end if;
          end if;
-         o_q_counter8 <= cnt;
+         o_cnt8_q <= v_cnt;
       end if;
    end process;
 
