@@ -72,11 +72,11 @@ architecture rtl of riscpol is
       );
       port (
          i_clk                : in  std_logic;
-         i_we                 : in  std_logic;
-         i_be                 : in  std_logic_vector (BYTES - 1 downto 0);
-         i_wdata              : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
-         i_waddr              : in  integer range 0 to ADDR_WIDTH - 1;
-         i_raddr              : in  integer range 0 to ADDR_WIDTH - 1;
+         i_ram_we                 : in  std_logic;
+         i_ram_be                 : in  std_logic_vector (BYTES - 1 downto 0);
+         i_ram_wdata              : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
+         i_ram_waddr              : in  integer range 0 to ADDR_WIDTH - 1;
+         i_ram_raddr              : in  integer range 0 to ADDR_WIDTH - 1;
          o_ram_data           : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0)
       );
    end component byte_enabled_simple_dual_port_ram;
@@ -158,11 +158,11 @@ begin
    inst_memory : component byte_enabled_simple_dual_port_ram -- TODO: inst_memory means all type of memories, should be inst_ram
    port map (
       i_clk                  => clk,
-      i_raddr                => s_core_addr_read,
-      i_waddr                => s_core_addr_write,
-      i_we                   => s_mmio_we_ram,
-      i_wdata                => s_core_data_write,
-      i_be                   => s_core_byte_enable,
+      i_ram_raddr                => s_core_addr_read,
+      i_ram_waddr                => s_core_addr_write,
+      i_ram_we                   => s_mmio_we_ram,
+      i_ram_wdata                => s_core_data_write,
+      i_ram_be                   => s_core_byte_enable,
       o_ram_data           => s_ram_q
    );
 
