@@ -17,11 +17,11 @@ library riscpol_lib;
 
 entity gpio is
    port (
-      i_clk    : in std_logic;
-      i_gpio_addr   : in integer range 0 to C_RAM_LENGTH-1;
-      i_gpio_wdata  : in std_logic_vector(31 downto 0);
-      i_gpio_we     : in std_logic;
-      o_gpio_q   : out std_logic_vector(7 downto 0)
+      i_clk          : in std_logic;
+      i_gpio_addr    : in integer range 0 to C_RAM_LENGTH-1;
+      i_gpio_wdata   : in std_logic_vector(31 downto 0);
+      i_gpio_we      : in std_logic;
+      o_gpio_q       : out std_logic_vector(7 downto 0)
 );
 end gpio;
 

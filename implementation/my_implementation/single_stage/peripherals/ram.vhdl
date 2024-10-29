@@ -30,7 +30,7 @@ end byte_enabled_simple_dual_port_ram;
 architecture rtl of byte_enabled_simple_dual_port_ram is
 
    -- declare the RAM
-   signal ram : ram_t;
+   signal ram     : ram_t;
    signal q_local : word_t;
 
 begin  -- rtl

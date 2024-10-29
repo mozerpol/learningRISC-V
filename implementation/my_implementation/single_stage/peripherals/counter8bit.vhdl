@@ -10,11 +10,11 @@ entity counter8 is
    generic(
       G_COUNTER_VALUE : positive := 256
    ); port(
-      i_clk          : in std_logic;
-      i_rst          : in std_logic;
-      i_cnt8_addr         : in integer range 0 to C_RAM_LENGTH - 1;
-      i_cnt8_ce           : in std_logic; -- change to i_we
-      o_cnt8_q   : out integer range 0 to G_COUNTER_VALUE - 1 -- change to o_cnt8_q
+      i_clk       : in std_logic;
+      i_rst       : in std_logic;
+      i_cnt8_addr : in integer range 0 to C_RAM_LENGTH - 1;
+      i_cnt8_ce   : in std_logic; -- change to i_we
+      o_cnt8_q    : out integer range 0 to G_COUNTER_VALUE - 1 -- change to o_cnt8_q
    );
 end entity counter8;
 

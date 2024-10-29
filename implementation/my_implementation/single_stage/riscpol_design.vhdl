@@ -50,17 +50,16 @@ architecture rtl of riscpol is
 
    component mmio is
       port (
-         i_mmio_write_enable       : in std_logic;
-         i_mmio_waddr              : in integer range 0 to C_RAM_LENGTH-1;
-         i_mmio_raddr              : in integer range 0 to C_RAM_LENGTH-1;
-         o_mmio_we_ram             : out std_logic;
-         o_mmio_we_gpio            : out std_logic;
-         o_mmio_we_cnt8bit         : out std_logic;
-         o_mmio_data               : out std_logic_vector(31 downto 0);
-         i_mmio_data_gpio          : in std_logic_vector(7 downto 0); -- TODO: Change names, 
-         -- shuld be i_cnt8_data, i_ram_data,...
-         i_mmio_data_counter8      : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
-         i_mmio_data_ram           : in std_logic_vector(31 downto 0)
+         i_mmio_write_enable  : in std_logic;
+         i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
+         i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
+         i_mmio_data_gpio     : in std_logic_vector(7 downto 0);
+         i_mmio_data_counter8 : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
+         i_mmio_data_ram      : in std_logic_vector(31 downto 0);
+         o_mmio_we_ram        : out std_logic;
+         o_mmio_we_gpio       : out std_logic;
+         o_mmio_we_cnt8bit    : out std_logic;
+         o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
 
@@ -72,11 +71,11 @@ architecture rtl of riscpol is
       );
       port (
          i_clk                : in  std_logic;
-         i_ram_we                 : in  std_logic;
-         i_ram_be                 : in  std_logic_vector (BYTES - 1 downto 0);
-         i_ram_wdata              : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
-         i_ram_waddr              : in  integer range 0 to ADDR_WIDTH - 1;
-         i_ram_raddr              : in  integer range 0 to ADDR_WIDTH - 1;
+         i_ram_we             : in  std_logic;
+         i_ram_be             : in  std_logic_vector (BYTES - 1 downto 0);
+         i_ram_wdata          : in  std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0);
+         i_ram_waddr          : in  integer range 0 to ADDR_WIDTH - 1;
+         i_ram_raddr          : in  integer range 0 to ADDR_WIDTH - 1;
          o_ram_data           : out std_logic_vector(BYTES*BYTE_WIDTH-1 downto 0)
       );
    end component byte_enabled_simple_dual_port_ram;
@@ -85,10 +84,10 @@ architecture rtl of riscpol is
    component gpio is
       port (
          i_clk                : in std_logic;
-         i_gpio_addr               : in integer range 0 to C_RAM_LENGTH-1;
-         i_gpio_wdata              : in std_logic_vector(31 downto 0);
-         i_gpio_we                 : in std_logic;
-         o_gpio_q               : out std_logic_vector(7 downto 0)
+         i_gpio_addr          : in integer range 0 to C_RAM_LENGTH-1;
+         i_gpio_wdata         : in std_logic_vector(31 downto 0);
+         i_gpio_we            : in std_logic;
+         o_gpio_q             : out std_logic_vector(7 downto 0)
       );
    end component gpio;
    
@@ -99,9 +98,9 @@ architecture rtl of riscpol is
       ); port(
          i_clk                : in std_logic;
          i_rst                : in std_logic;
-         i_cnt8_addr               : in integer range 0 to C_RAM_LENGTH-1;
-         i_cnt8_ce                 : in std_logic;
-         o_cnt8_q         : out integer range 0 to G_COUNTER_VALUE - 1
+         i_cnt8_addr          : in integer range 0 to C_RAM_LENGTH-1;
+         i_cnt8_ce            : in std_logic;
+         o_cnt8_q             : out integer range 0 to G_COUNTER_VALUE - 1
    );
    end component counter8;
 
@@ -122,8 +121,7 @@ architecture rtl of riscpol is
    -- RAM
    signal s_ram_q             : std_logic_vector(31 downto 0);
    -- Counter
-   -- TODO: counter or maybe cnt8 shoudl be prefix
-   signal s_cnt8_q        : integer range 0 to 256 - 1; -- Try with constant
+   signal s_cnt8_q            : integer range 0 to 256 - 1; -- Try with constant
    -- GPIO
    signal q_gpio              : std_logic_vector(7 downto 0);
 
@@ -134,8 +132,8 @@ begin
       i_rst                => rst,
       i_clk                => clk,
       i_core_data_read     => s_mmio_data,
-      o_core_data_write    => s_core_data_write, -- shoudl be s_core_data_write
-      o_core_write_enable  => s_core_write_enable, -- same as above s_core_write_enable
+      o_core_data_write    => s_core_data_write,
+      o_core_write_enable  => s_core_write_enable,
       o_core_byte_enable   => s_core_byte_enable,
       o_core_addr_read     => s_core_addr_read,
       o_core_addr_write    => s_core_addr_write
@@ -143,36 +141,36 @@ begin
 
    inst_mmio : component mmio
    port map (
-      i_mmio_write_enable       => s_core_write_enable,
-      i_mmio_waddr              => s_core_addr_write,
-      i_mmio_raddr              => s_core_addr_read,
-      o_mmio_we_ram             => s_mmio_we_ram,
-      o_mmio_we_gpio            => s_mmio_we_gpio,
-      o_mmio_we_cnt8bit         => s_mmio_we_cnt8bit,
-      o_mmio_data               => s_mmio_data,
-      i_mmio_data_gpio          => q_gpio,
-      i_mmio_data_counter8      => s_cnt8_q,
-      i_mmio_data_ram           => s_ram_q
+      i_mmio_write_enable  => s_core_write_enable,
+      i_mmio_waddr         => s_core_addr_write,
+      i_mmio_raddr         => s_core_addr_read,
+      o_mmio_we_ram        => s_mmio_we_ram,
+      o_mmio_we_gpio       => s_mmio_we_gpio,
+      o_mmio_we_cnt8bit    => s_mmio_we_cnt8bit,
+      o_mmio_data          => s_mmio_data,
+      i_mmio_data_gpio     => q_gpio,
+      i_mmio_data_counter8 => s_cnt8_q,
+      i_mmio_data_ram      => s_ram_q
    );
 
    inst_memory : component byte_enabled_simple_dual_port_ram -- TODO: inst_memory means all type of memories, should be inst_ram
    port map (
-      i_clk                  => clk,
-      i_ram_raddr                => s_core_addr_read,
-      i_ram_waddr                => s_core_addr_write,
-      i_ram_we                   => s_mmio_we_ram,
-      i_ram_wdata                => s_core_data_write,
-      i_ram_be                   => s_core_byte_enable,
+      i_clk                => clk,
+      i_ram_raddr          => s_core_addr_read,
+      i_ram_waddr          => s_core_addr_write,
+      i_ram_we             => s_mmio_we_ram,
+      i_ram_wdata          => s_core_data_write,
+      i_ram_be             => s_core_byte_enable,
       o_ram_data           => s_ram_q
    );
 
    inst_gpio : component gpio
    port map (
       i_clk                => clk,
-      i_gpio_addr               => s_core_addr_write,
-      i_gpio_wdata              => s_core_data_write,
-      i_gpio_we                 => s_mmio_we_gpio,
-      o_gpio_q               => q_gpio
+      i_gpio_addr          => s_core_addr_write,
+      i_gpio_wdata         => s_core_data_write,
+      i_gpio_we            => s_mmio_we_gpio,
+      o_gpio_q             => q_gpio
    );
     
    inst_counter8bit : component counter8
@@ -182,9 +180,9 @@ begin
    port map (
       i_clk                => clk,
       i_rst                => rst,
-      i_cnt8_addr               => s_core_addr_write,
-      i_cnt8_ce                 => s_mmio_we_cnt8bit,
-      o_cnt8_q         => s_cnt8_q
+      i_cnt8_addr          => s_core_addr_write,
+      i_cnt8_ce            => s_mmio_we_cnt8bit,
+      o_cnt8_q             => s_cnt8_q
    );
 
    o_gpio   <= q_gpio;
