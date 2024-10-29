@@ -85,10 +85,10 @@ architecture rtl of riscpol is
    component gpio is
       port (
          i_clk                : in std_logic;
-         i_addr               : in integer range 0 to C_RAM_LENGTH-1;
-         i_wdata              : in std_logic_vector(31 downto 0);
-         i_we                 : in std_logic;
-         o_gpio               : out std_logic_vector(7 downto 0)
+         i_gpio_addr               : in integer range 0 to C_RAM_LENGTH-1;
+         i_gpio_wdata              : in std_logic_vector(31 downto 0);
+         i_gpio_we                 : in std_logic;
+         o_gpio_q               : out std_logic_vector(7 downto 0)
       );
    end component gpio;
    
@@ -169,10 +169,10 @@ begin
    inst_gpio : component gpio
    port map (
       i_clk                => clk,
-      i_addr               => s_core_addr_write,
-      i_wdata              => s_core_data_write,
-      i_we                 => s_mmio_we_gpio,
-      o_gpio               => q_gpio
+      i_gpio_addr               => s_core_addr_write,
+      i_gpio_wdata              => s_core_data_write,
+      i_gpio_we                 => s_mmio_we_gpio,
+      o_gpio_q               => q_gpio
    );
     
    inst_counter8bit : component counter8
