@@ -50,17 +50,17 @@ architecture rtl of riscpol is
 
    component mmio is
       port (
-         i_write_enable       : in std_logic;
-         i_waddr              : in integer range 0 to C_RAM_LENGTH-1;
-         i_raddr              : in integer range 0 to C_RAM_LENGTH-1;
-         o_we_ram             : out std_logic;
-         o_we_gpio            : out std_logic;
-         o_we_cnt8bit         : out std_logic;
-         o_data               : out std_logic_vector(31 downto 0);
-         i_data_gpio          : in std_logic_vector(7 downto 0); -- TODO: Change names, 
+         i_mmio_write_enable       : in std_logic;
+         i_mmio_waddr              : in integer range 0 to C_RAM_LENGTH-1;
+         i_mmio_raddr              : in integer range 0 to C_RAM_LENGTH-1;
+         o_mmio_we_ram             : out std_logic;
+         o_mmio_we_gpio            : out std_logic;
+         o_mmio_we_cnt8bit         : out std_logic;
+         o_mmio_data               : out std_logic_vector(31 downto 0);
+         i_mmio_data_gpio          : in std_logic_vector(7 downto 0); -- TODO: Change names, 
          -- shuld be i_cnt8_data, i_ram_data,...
-         i_data_counter8      : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
-         i_data_ram           : in std_logic_vector(31 downto 0)
+         i_mmio_data_counter8      : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
+         i_mmio_data_ram           : in std_logic_vector(31 downto 0)
    );
    end component mmio;
 
@@ -143,16 +143,16 @@ begin
 
    inst_mmio : component mmio
    port map (
-      i_write_enable       => s_core_write_enable,
-      i_waddr              => s_core_addr_write,
-      i_raddr              => s_core_addr_read,
-      o_we_ram             => s_mmio_we_ram,
-      o_we_gpio            => s_mmio_we_gpio,
-      o_we_cnt8bit         => s_mmio_we_cnt8bit,
-      o_data               => s_mmio_data,
-      i_data_gpio          => q_gpio,
-      i_data_counter8      => s_q_counter8,
-      i_data_ram           => s_ram_q
+      i_mmio_write_enable       => s_core_write_enable,
+      i_mmio_waddr              => s_core_addr_write,
+      i_mmio_raddr              => s_core_addr_read,
+      o_mmio_we_ram             => s_mmio_we_ram,
+      o_mmio_we_gpio            => s_mmio_we_gpio,
+      o_mmio_we_cnt8bit         => s_mmio_we_cnt8bit,
+      o_mmio_data               => s_mmio_data,
+      i_mmio_data_gpio          => q_gpio,
+      i_mmio_data_counter8      => s_q_counter8,
+      i_mmio_data_ram           => s_ram_q
    );
 
    inst_memory : component byte_enabled_simple_dual_port_ram -- TODO: inst_memory means all type of memories, should be inst_ram

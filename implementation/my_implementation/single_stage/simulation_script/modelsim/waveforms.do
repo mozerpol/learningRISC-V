@@ -94,16 +94,16 @@ add wave         -group CORE              -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group CORE              -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_read
 add wave         -group CORE              -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_write
 
-add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_data_counter8 
-add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_data_gpio 
-add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_data_ram 
-add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_raddr 
-add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_waddr 
-add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/i_write_enable 
-add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_data 
-add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/o_we_cnt8bit 
-add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_we_gpio 
-add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_we_ram 
+add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_counter8 
+add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_gpio 
+add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_ram 
+add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_raddr 
+add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_waddr 
+add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_write_enable 
+add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_data 
+add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_cnt8bit 
+add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_gpio 
+add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram 
 
 add wave         -group GPIO              -radix dec /riscpol_tb/inst_riscpol/inst_gpio/i_addr
 add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_wdata
