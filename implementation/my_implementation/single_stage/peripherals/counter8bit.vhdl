@@ -13,7 +13,7 @@ entity counter8 is
       i_clk       : in std_logic;
       i_rst       : in std_logic;
       i_cnt8_addr : in integer range 0 to C_RAM_LENGTH - 1;
-      i_cnt8_ce   : in std_logic; -- change to i_we
+      i_cnt8_we   : in std_logic; -- change to i_we
       o_cnt8_q    : out integer range 0 to G_COUNTER_VALUE - 1 -- change to o_cnt8_q
    );
 end entity counter8;
@@ -32,7 +32,7 @@ begin
             s_ce_latch <= '0';
          else
             if (i_cnt8_addr = C_MMIO_ADDR_CNT_8_BIT - 1) then
-               if (i_cnt8_ce = '1') then
+               if (i_cnt8_we = '1') then
                   s_ce_latch <= '1';
                else
                   s_ce_latch <= '0';

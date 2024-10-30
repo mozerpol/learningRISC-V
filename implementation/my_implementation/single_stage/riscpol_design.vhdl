@@ -99,7 +99,7 @@ architecture rtl of riscpol is
          i_clk                : in std_logic;
          i_rst                : in std_logic;
          i_cnt8_addr          : in integer range 0 to C_RAM_LENGTH-1;
-         i_cnt8_ce            : in std_logic;
+         i_cnt8_we            : in std_logic;
          o_cnt8_q             : out integer range 0 to G_COUNTER_VALUE - 1
    );
    end component counter8;
@@ -181,7 +181,7 @@ begin
       i_clk                => clk,
       i_rst                => rst,
       i_cnt8_addr          => s_core_addr_write,
-      i_cnt8_ce            => s_mmio_we_cnt8bit,
+      i_cnt8_we            => s_mmio_we_cnt8bit,
       o_cnt8_q             => s_cnt8_q
    );
 
