@@ -57,7 +57,7 @@ begin
 
    p_tb : process
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
-      alias spy_ram is <<signal .riscpol_tb.inst_riscpol.inst_memory.ram: ram_t >>;
+      alias spy_ram is <<signal .riscpol_tb.inst_riscpol.inst_ram.ram: ram_t >>;
    begin
       rst_tb   <= '1';
       wait for 20 ns;

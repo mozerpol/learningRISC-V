@@ -153,7 +153,7 @@ begin
       i_mmio_data_ram      => s_ram_q
    );
 
-   inst_memory : component byte_enabled_simple_dual_port_ram -- TODO: inst_memory means all type of memories, should be inst_ram
+   inst_ram : component byte_enabled_simple_dual_port_ram
    port map (
       i_clk                => clk,
       i_ram_raddr          => s_core_addr_read,

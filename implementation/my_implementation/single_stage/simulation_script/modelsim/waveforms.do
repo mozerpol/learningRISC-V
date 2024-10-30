@@ -115,13 +115,13 @@ add wave         -group CNT_8BIT          -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/line__45/v_cnt 
 add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/o_cnt8_q
 
-add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_memory/i_ram_raddr
-add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_memory/i_ram_waddr
-add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_memory/i_ram_we
-add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/i_ram_wdata
-add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_memory/i_ram_be
-add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/o_ram_data
-add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_memory/ram
+add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_ram/i_ram_raddr
+add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_ram/i_ram_waddr
+add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_ram/i_ram_we
+add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_ram/i_ram_wdata
+add wave         -group RAM               -radix bin /riscpol_tb/inst_riscpol/inst_ram/i_ram_be
+add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_ram/o_ram_data
+add wave         -group RAM               -radix hex /riscpol_tb/inst_riscpol/inst_ram/ram
 add wave         -group RAM               -radix hex /riscpol_tb/p_tb/spy_ram
 
 # Waveform window settings:
