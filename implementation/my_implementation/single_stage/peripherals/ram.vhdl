@@ -1,7 +1,13 @@
--- Quartus Prime VHDL Template
--- Simple Dual-Port RAM with different read/write addresses and single read/write clock
--- and with a control for writing single bytes into the memory word; byte enable
--- TODO: Add description, just frame like in other files
+--------------------------------------------------------------------------------
+-- File          : ram.vhdl
+-- Author        : mozerpol
+--------------------------------------------------------------------------------
+-- Description   : Quartus Prime VHDL Template
+-- Simple Dual-Port RAM with different read/write addresses and single read/write
+-- clock and with a control for writing single bytes into the memory word;
+--------------------------------------------------------------------------------
+-- License       : MIT 2022 mozerpol
+--------------------------------------------------------------------------------
 
 library ieee;
    use ieee.std_logic_1164.all;
@@ -47,7 +53,6 @@ begin  -- rtl
    begin
       if(i_clk'event and i_clk = '1') then
          if(i_ram_we = '1') then
-            -- edit this code if using other than four bytes per word
             if(i_ram_be(0) = '1') then
                ram(i_ram_waddr)(0) <= i_ram_wdata(7 downto 0);
             end if;

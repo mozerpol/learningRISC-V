@@ -34,26 +34,7 @@ end mmio;
 architecture rtl of mmio is
 
 begin
--- TODO: all peripherials should have the same input names, such as ce <- chip
--- enable, not ce and we. Additionaly only gpio_design has _design suffix.
 
-
--- TODO: Change all processes, can't work in process, because sensitiviti list,
--- it update only when i_raddr has changed
---   process (i_raddr)
-  -- begin
-    --  case (i_raddr) is
-      --   when C_MMIO_ADDR_GPIO - 1 =>
-        --    o_data <= 24x"000000" & i_data_gpio;
-         --when C_MMIO_ADDR_CNT_8_BIT - 1 =>
-           -- o_data <= std_logic_vector(to_unsigned(i_data_counter8, 32));
-         --when others =>
-           -- o_data <= i_data_ram;
-      --end case;
-   --end process;
-
-    -- TODO: check below, it doesn't make any sense that I'm reading state
-    -- during i_waddr...
     o_mmio_data <=   24x"000000" & i_mmio_data_gpio                          when 
                               i_mmio_raddr = C_MMIO_ADDR_GPIO - 1       else
                      std_logic_vector(to_unsigned(i_mmio_data_counter8, 32)) when 
