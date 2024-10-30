@@ -8,3 +8,9 @@ implementation/my_implementation/single_stage/simulation_script/modelsim/opcodes
 wave.ghw
 xvhdl.log
 xvhdl.pb
+implementation/my_implementation/single_stage/synthesis/db/
+implementation/my_implementation/single_stage/synthesis/incremental_db/
+implementation/my_implementation/single_stage/synthesis/output_files/
+implementation/my_implementation/single_stage/synthesis/riscpol.qpf
+implementation/my_implementation/single_stage/synthesis/riscpol.qsf
+implementation/my_implementation/single_stage/synthesis/riscpol.qws
