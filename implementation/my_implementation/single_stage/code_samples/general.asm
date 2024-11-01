@@ -710,14 +710,14 @@ addi  x3,  x0,   0     # The value of x3 is compared to the value of x4, this
                        # works as a delay loop. The x3 is incremented if is not
                        # equal x4
 addi  x4,  x0,   10    # x4 = 10, in reality this value as a delay is too small
-loop2:
+loop26:
 addi  x1,  x1,   1
 sb    x1,  255(x0)     # Assign the value of x1 to GPIO
-loop1:
+loop25:
 addi  x3,  x3,   1     # Delay loop
-bne   x3,  x4,   loop1 # Is there enough delay?
+bne   x3,  x4,   loop25# Is there enough delay?
 addi  x3,  x0,   0     # Yes, reset delay counter
-bne   x1,  x2,   loop2 # Were all the GPIOs on? If not go to loop2; yes, all the
+bne   x1,  x2,   loop26# Were all the GPIOs on? If not go to loop26; yes, all the
                        # GPIOs were turn on, reset all counters
 addi  x1,  x0,   0
 addi  x3,  x0,   0
@@ -746,9 +746,9 @@ addi  x0,  x0,   0     # nop
 addi  x0,  x0,   0     # nop
 # Check the timer for 212 clock cycles
 sb    x3,  251(x0)     # 1 = turn on the timer
-loop26:
+loop27:
 addi  x4,  x4,   1     # Long delay loop
-bne   x4,  x2,   loop26# Is there enough delay?
+bne   x4,  x2,   loop27# Is there enough delay?
 sb    x0,  251(x0)     # 0 = turn off the timer
 addi  x4,  x0,   0     # Reset delay loop
 
