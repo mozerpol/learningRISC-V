@@ -53,8 +53,8 @@ architecture rtl of riscpol is
          i_mmio_write_enable  : in std_logic;
          i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
-         i_mmio_data_gpio     : in std_logic_vector(7 downto 0);
-         i_mmio_data_counter8 : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
+         i_mmio_q_gpio        : in std_logic_vector(7 downto 0);
+         i_mmio_q_cnt8        : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
@@ -120,10 +120,10 @@ architecture rtl of riscpol is
    signal s_core_addr_write   : integer range 0 to C_RAM_LENGTH-1;
    -- RAM
    signal s_ram_q             : std_logic_vector(31 downto 0);
-   -- Counter
+   -- Counter 8bit
    signal s_cnt8_q            : integer range 0 to 256 - 1; -- Try with constant
    -- GPIO
-   signal q_gpio              : std_logic_vector(7 downto 0);
+   signal s_q_gpio            : std_logic_vector(7 downto 0);
 
 begin
 
@@ -144,13 +144,13 @@ begin
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
+      i_mmio_q_gpio        => s_q_gpio,
+      i_mmio_q_cnt8        => s_cnt8_q,
+      i_mmio_data_ram      => s_ram_q,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_we_cnt8bit    => s_mmio_we_cnt8bit,
-      o_mmio_data          => s_mmio_data,
-      i_mmio_data_gpio     => q_gpio,
-      i_mmio_data_counter8 => s_cnt8_q,
-      i_mmio_data_ram      => s_ram_q
+      o_mmio_data          => s_mmio_data
    );
 
    inst_ram : component byte_enabled_simple_dual_port_ram
@@ -170,7 +170,7 @@ begin
       i_gpio_addr          => s_core_addr_write,
       i_gpio_wdata         => s_core_data_write,
       i_gpio_we            => s_mmio_we_gpio,
-      o_gpio_q             => q_gpio
+      o_gpio_q             => s_q_gpio
    );
     
    inst_counter8bit : component counter8
@@ -185,7 +185,7 @@ begin
       o_cnt8_q             => s_cnt8_q
    );
 
-   o_gpio   <= q_gpio;
+   o_gpio   <= s_q_gpio;
    rst      <= (i_rst);
    clk      <= i_clk;
 
