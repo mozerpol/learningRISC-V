@@ -18,8 +18,12 @@ library riscpol_lib;
 entity gpio is
    port (
       i_clk          : in std_logic;
-      i_gpio_addr    : in integer range 0 to C_RAM_LENGTH-1;
-      i_gpio_wdata   : in std_logic_vector(31 downto 0);
+      i_gpio_addr    : in integer range 0 to C_RAM_LENGTH-1; -- TODO: remove it,
+      -- MMIO is for control
+      i_gpio_wdata   : in std_logic_vector(31 downto 0); -- Why 32 bits if we're
+      -- using only 8? Maybe it shoudl depend on constant and be generated
+      -- in for loop, I mean o_gpio_q(constant_number) should be generated. Look
+      -- to ram.vhdl as generate example.
       i_gpio_we      : in std_logic;
       o_gpio_q       : out std_logic_vector(7 downto 0)
 );

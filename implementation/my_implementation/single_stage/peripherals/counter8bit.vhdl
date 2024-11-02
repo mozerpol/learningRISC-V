@@ -5,14 +5,15 @@ library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
 
-
+-- TODO: Add one bit signal with data, I want to possibility of reseting counter
 entity counter8 is
-   generic(
+   generic( -- TODO: Remove generic and move G_CNT_VALUE to constant
       G_COUNTER_VALUE : positive := 256
    ); port(
       i_clk       : in std_logic;
       i_rst       : in std_logic;
-      i_cnt8_addr : in integer range 0 to C_RAM_LENGTH - 1;
+      i_cnt8_addr : in integer range 0 to C_RAM_LENGTH - 1; -- TODO: mmio is
+      -- responsible for tahat, get rid of this
       i_cnt8_we   : in std_logic;
       o_cnt8_q    : out integer range 0 to G_COUNTER_VALUE - 1
    );

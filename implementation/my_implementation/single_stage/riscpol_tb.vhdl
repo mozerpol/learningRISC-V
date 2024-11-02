@@ -72,6 +72,13 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       -- report "GPR(1): " & to_string(spy_gpr(1));
+      -- TODO: Move all tests to functions, for example u can create function
+      -- check_general_purpose_register( 
+      --    vaule1 => assembly_instruction
+      --    value2 => generarl_purpose_register
+      --    value3 => desired_value );
+      -- Thanks to this are 4 lines of code not 7 and it's easier to add a new
+      -- lines of code, modify and maybe to read.  
       ----------------------------------------------------------------
       --                                                            --
       --    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI    --
@@ -3709,12 +3716,17 @@ begin
       -- TODO: check internal signals/states for timer
       -- sb    x3,  251(x0)     # 1 = turn on the timer
       -- Check o_q_counter8 value
+      
+      
       if (spy_ram(62)(3) /= x"01") then
          report "ERROR: sb    x3,  251(x0)     # 0x000000f8 = 0x00000001 | Test_point: "
          & integer'image(set_test_point+1);
          set_test_point <= set_test_point + 1;
-      end if;  
+      end if;
       wait until rising_edge(clk_tb);
+      
+      
+      
       -- sb    x0,  251(x0)     # 0 = turn off the timer
       if (spy_ram(62)(3) /= x"00") then
          report "ERROR: sb    x0,  251(x0)     # 0x000000f8 = 0x00000000 | Test_point: "

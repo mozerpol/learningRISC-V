@@ -42,6 +42,12 @@ begin
                      i_mmio_data_ram;
               
 
+   -- TODO: based on that MMIO should work make:
+   -- Remove in every peripherial "if (i_gpio_addr = C_MMIO_ADDR_GPIO-1) then" 
+   -- etc.
+   -- Add to counter data signal, it's one bit input, which veify if we want to
+   -- reset counter or not.  
+   
    process (i_mmio_write_enable, i_mmio_waddr)
    begin
       if (i_mmio_write_enable = '1') then
