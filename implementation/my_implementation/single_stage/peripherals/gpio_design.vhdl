@@ -18,8 +18,6 @@ library riscpol_lib;
 entity gpio is
    port (
       i_clk          : in std_logic;
-      i_gpio_addr    : in integer range 0 to C_RAM_LENGTH-1; -- TODO: remove it,
-      -- MMIO is for control
       i_gpio_wdata   : in std_logic_vector(31 downto 0); -- Why 32 bits if we're
       -- using only 8? Maybe it shoudl depend on constant and be generated
       -- in for loop, I mean o_gpio_q(constant_number) should be generated. Look
@@ -44,17 +42,15 @@ begin
          -- To see more examples of GPIO usage, check out the tests in the 
          -- riscpol_tb.vhdl file.
          if (i_gpio_we = '1') then
-            if (i_gpio_addr = C_MMIO_ADDR_GPIO-1) then
-               -- Last 8 bits from wdata vector are mapped
-               o_gpio_q(0) <= i_gpio_wdata(24);
-               o_gpio_q(1) <= i_gpio_wdata(25);
-               o_gpio_q(2) <= i_gpio_wdata(26);
-               o_gpio_q(3) <= i_gpio_wdata(27);
-               o_gpio_q(4) <= i_gpio_wdata(28);
-               o_gpio_q(5) <= i_gpio_wdata(29);
-               o_gpio_q(6) <= i_gpio_wdata(30);
-               o_gpio_q(7) <= i_gpio_wdata(31);
-            end if;
+            -- Last 8 bits from wdata vector are mapped
+            o_gpio_q(0) <= i_gpio_wdata(24);
+            o_gpio_q(1) <= i_gpio_wdata(25);
+            o_gpio_q(2) <= i_gpio_wdata(26);
+            o_gpio_q(3) <= i_gpio_wdata(27);
+            o_gpio_q(4) <= i_gpio_wdata(28);
+            o_gpio_q(5) <= i_gpio_wdata(29);
+            o_gpio_q(6) <= i_gpio_wdata(30);
+            o_gpio_q(7) <= i_gpio_wdata(31);
          end if;
       end if;
    end process p_gpio;
