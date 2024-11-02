@@ -12,8 +12,6 @@ entity counter8 is
    ); port(
       i_clk       : in std_logic;
       i_rst       : in std_logic;
-      i_cnt8_addr : in integer range 0 to C_RAM_LENGTH - 1; -- TODO: mmio is
-      -- responsible for tahat, get rid of this
       i_cnt8_we   : in std_logic;
       o_cnt8_q    : out integer range 0 to G_COUNTER_VALUE - 1
    );
@@ -31,12 +29,10 @@ begin
          if (i_rst = '1') then
             s_ce_latch <= '0';
          else
-            if (i_cnt8_addr = C_MMIO_ADDR_CNT_8_BIT - 1) then
-               if (i_cnt8_we = '1') then
-                  s_ce_latch <= '1';
-               else
-                  s_ce_latch <= '0';
-               end if;
+            if (i_cnt8_we = '1') then
+               s_ce_latch <= '1';
+            else
+               s_ce_latch <= '0';
             end if;
          end if;
       end if;
@@ -56,7 +52,7 @@ begin
                   v_cnt := v_cnt + 1;
                end if;
             else
-               v_cnt := 0;
+               v_cnt := v_cnt;
             end if;
          end if;
          o_cnt8_q <= v_cnt;
