@@ -51,8 +51,6 @@ begin
                else
                   v_cnt := v_cnt + 1;
                end if;
-            else
-               v_cnt := v_cnt;
             end if;
          end if;
          o_cnt8_q <= v_cnt;
