@@ -96,8 +96,8 @@ architecture rtl of riscpol is
          G_COUNTER_VALUE      : positive := 256
       ); port(
          i_clk                : in std_logic;
-         i_rst                : in std_logic;
          i_cnt8_we            : in std_logic;
+         i_cnt8_set_reset     : in std_logic;
          o_cnt8_q             : out integer range 0 to G_COUNTER_VALUE - 1
    );
    end component counter8;
@@ -176,8 +176,8 @@ begin
    )
    port map (
       i_clk                => clk,
-      i_rst                => rst,
       i_cnt8_we            => s_mmio_we_cnt8bit,
+      i_cnt8_set_reset     => s_core_data_write(24),
       o_cnt8_q             => s_cnt8_q
    );
 
