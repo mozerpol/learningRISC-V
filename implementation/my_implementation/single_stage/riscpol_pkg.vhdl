@@ -30,6 +30,9 @@ package riscpol_pkg is
    constant C_MMIO_ADDR_GPIO  : integer := 64;   -- At what address is access to
    -- GPIO. To know more about MMIO take a look at Wikipedia.
    constant C_MMIO_ADDR_CNT_8_BIT : integer := 63;   --
+   
+   constant C_COUNTER_8BIT_VALUE : integer := 256;   -- Up to what value should 
+   -- the counter 8 bit count?
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);

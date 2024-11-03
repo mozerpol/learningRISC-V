@@ -22,7 +22,7 @@ entity mmio is
       i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
       i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
       i_mmio_q_gpio        : in std_logic_vector(7 downto 0);
-      i_mmio_q_cnt8        : in integer range 0 to 255; --G_COUNTER_VALUE - 1;
+      i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1; --G_COUNTER_VALUE - 1;
       i_mmio_data_ram      : in std_logic_vector(31 downto 0);
       o_mmio_we_ram        : out std_logic;
       o_mmio_we_gpio       : out std_logic;

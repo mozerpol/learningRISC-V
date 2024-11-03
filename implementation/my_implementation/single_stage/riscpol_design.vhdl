@@ -54,7 +54,7 @@ architecture rtl of riscpol is
          i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_q_gpio        : in std_logic_vector(7 downto 0);
-         i_mmio_q_cnt8        : in integer range 0 to 255;--G_COUNTER_VALUE - 1;
+         i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;--G_COUNTER_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
@@ -92,13 +92,11 @@ architecture rtl of riscpol is
    
    
    component counter8 is
-      generic(
-         G_COUNTER_VALUE      : positive := 256
-      ); port(
+      port(
          i_clk                : in std_logic;
          i_cnt8_we            : in std_logic;
          i_cnt8_set_reset     : in std_logic;
-         o_cnt8_q             : out integer range 0 to G_COUNTER_VALUE - 1
+         o_cnt8_q             : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
    );
    end component counter8;
 
@@ -171,9 +169,6 @@ begin
    );
     
    inst_counter8bit : component counter8
-   generic map(
-      G_COUNTER_VALUE      => 256
-   )
    port map (
       i_clk                => clk,
       i_cnt8_we            => s_mmio_we_cnt8bit,

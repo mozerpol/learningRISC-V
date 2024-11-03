@@ -7,13 +7,11 @@ library riscpol_lib;
 
 -- TODO: Add one bit signal with data, I want to possibility of reseting counter
 entity counter8 is
-   generic( -- TODO: Remove generic and move G_CNT_VALUE to constant
-      G_COUNTER_VALUE : positive := 256
-   ); port(
+ port(
       i_clk             : in std_logic;
       i_cnt8_we         : in std_logic;
       i_cnt8_set_reset  : in std_logic;
-      o_cnt8_q          : out integer range 0 to G_COUNTER_VALUE - 1
+      o_cnt8_q          : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
    );
 end entity counter8;
 
@@ -35,11 +33,11 @@ begin
    end process;
 
    process (i_clk)
-      variable v_cnt : integer range 0 to G_COUNTER_VALUE - 1;
+      variable v_cnt : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
    begin
       if (i_clk'event and i_clk = '1') then
          if (s_ce_latch = '1') then
-            if (v_cnt = G_COUNTER_VALUE - 1) then
+            if (v_cnt = C_COUNTER_8BIT_VALUE - 1) then
                v_cnt := 0;
             else
                v_cnt := v_cnt + 1;
