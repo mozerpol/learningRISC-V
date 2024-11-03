@@ -10,10 +10,10 @@ entity counter8 is
    generic( -- TODO: Remove generic and move G_CNT_VALUE to constant
       G_COUNTER_VALUE : positive := 256
    ); port(
-      i_clk       : in std_logic;
-      i_rst       : in std_logic;
-      i_cnt8_we   : in std_logic;
-      o_cnt8_q    : out integer range 0 to G_COUNTER_VALUE - 1
+      i_clk             : in std_logic;
+      i_cnt8_we         : in std_logic;
+      i_cnt8_set_reset  : in std_logic;
+      o_cnt8_q          : out integer range 0 to G_COUNTER_VALUE - 1
    );
 end entity counter8;
 
@@ -26,14 +26,10 @@ begin
    process (i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
-         if (i_rst = '1') then
+         if (i_cnt8_we = '1' and i_cnt8_set_reset = '1') then
+            s_ce_latch <= '1';
+         elsif (i_cnt8_we = '1' and i_cnt8_set_reset = '0') then
             s_ce_latch <= '0';
-         else
-            if (i_cnt8_we = '1') then
-               s_ce_latch <= '1';
-            else
-               s_ce_latch <= '0';
-            end if;
          end if;
       end if;
    end process;
@@ -42,16 +38,14 @@ begin
       variable v_cnt : integer range 0 to G_COUNTER_VALUE - 1;
    begin
       if (i_clk'event and i_clk = '1') then
-         if (i_rst = '1') then
-            v_cnt := 0;
-         else
-            if (s_ce_latch = '1') then
-               if (v_cnt = G_COUNTER_VALUE - 1) then
-                  v_cnt := 0;
-               else
-                  v_cnt := v_cnt + 1;
-               end if;
+         if (s_ce_latch = '1') then
+            if (v_cnt = G_COUNTER_VALUE - 1) then
+               v_cnt := 0;
+            else
+               v_cnt := v_cnt + 1;
             end if;
+         else
+            v_cnt := 0;
          end if;
          o_cnt8_q <= v_cnt;
       end if;
