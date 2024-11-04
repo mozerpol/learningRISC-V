@@ -23,7 +23,7 @@ entity gpio is
       -- in for loop, I mean o_gpio_q(constant_number) should be generated. Look
       -- to ram.vhdl as generate example.
       i_gpio_we      : in std_logic;
-      o_gpio_q       : out std_logic_vector(7 downto 0)
+      o_gpio_q       : out std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
 );
 end gpio;
 
@@ -42,15 +42,10 @@ begin
          -- To see more examples of GPIO usage, check out the tests in the 
          -- riscpol_tb.vhdl file.
          if (i_gpio_we = '1') then
-            -- Last 8 bits from wdata vector are mapped
-            o_gpio_q(0) <= i_gpio_wdata(24);
-            o_gpio_q(1) <= i_gpio_wdata(25);
-            o_gpio_q(2) <= i_gpio_wdata(26);
-            o_gpio_q(3) <= i_gpio_wdata(27);
-            o_gpio_q(4) <= i_gpio_wdata(28);
-            o_gpio_q(5) <= i_gpio_wdata(29);
-            o_gpio_q(6) <= i_gpio_wdata(30);
-            o_gpio_q(7) <= i_gpio_wdata(31);
+            -- Last C_NUMBER_OF_GPIO-1 bits from wdata vector are mapped
+            for i in 0 to C_NUMBER_OF_GPIO - 1 loop
+               o_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
+            end loop;
          end if;
       end if;
    end process p_gpio;
