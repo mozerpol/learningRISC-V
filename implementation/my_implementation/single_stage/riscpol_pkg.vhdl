@@ -33,6 +33,8 @@ package riscpol_pkg is
    
    constant C_COUNTER_8BIT_VALUE : integer := 256;   -- Up to what value should 
    -- the counter 8 bit count?
+   
+   constant C_NUMBER_OF_GPIO : integer := 8;   -- 
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
