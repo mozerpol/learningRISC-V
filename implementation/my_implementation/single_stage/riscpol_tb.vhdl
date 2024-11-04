@@ -29,14 +29,34 @@ architecture tb of riscpol_tb is
    port (
       i_rst       : in std_logic;
       i_clk       : in std_logic;
-      o_gpio      : out std_logic_vector(7 downto 0)
+      o_gpio      : out std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
    );
    end component riscpol;
 
    signal rst_tb  : std_logic;
    signal clk_tb  : std_logic;
-   signal gpio_tb : std_logic_vector(7 downto 0);
+   signal gpio_tb : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point : integer := 0;
+   
+   -- The procedure prints out information without additional text like time or
+   -- iteration.
+   procedure echo (arg : in string := "") is
+   begin
+      std.textio.write(std.textio.output, arg & LF);
+   end procedure echo;
+   
+   -- Procedure to check the value of general purpose register
+   procedure check_gpr( constant gpr            : in std_logic_vector(31 downto 0);
+                        constant desired_value  : in std_logic_vector(31 downto 0);
+                        constant instruction    : in string;
+                        signal test_point       : out integer) is
+   begin
+      if (gpr /= desired_value) then
+         echo("ERROR: " & instruction);
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+      end if;
+   end procedure;
 
 begin
 
@@ -87,6 +107,15 @@ begin
       --------------
       --   ADDI   --
       --------------
+      
+
+      
+      check_gpr(
+         gpr            => spy_gpr(1), 
+         desired_value  => 32x"fffff801", 
+         instruction    => "addi  x1,  x0,   -2048", 
+         test_point     => set_test_point );
+      
       -- addi  x1,  x0,   -2048 # x1 = 0xfffff800
       if (spy_gpr(1) /= 32x"fffff800") then
          report "ERROR: addi  x1,  x0,   -2048 # x1 = 0xfffff800 | Test_point: "
