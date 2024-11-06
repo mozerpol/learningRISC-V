@@ -33,10 +33,10 @@ architecture tb of riscpol_tb is
    );
    end component riscpol;
 
-   signal rst_tb  : std_logic;
-   signal clk_tb  : std_logic;
-   signal gpio_tb : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
-   signal set_test_point : integer := 0;
+   signal rst_tb           : std_logic;
+   signal clk_tb           : std_logic;
+   signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
+   signal set_test_point   : integer := 0;
    
    -- The procedure prints out information without additional text like time or
    -- iteration.
@@ -46,8 +46,7 @@ architecture tb of riscpol_tb is
    end procedure echo;
    
    -- Procedure to check the value of general purpose register
-   procedure check_gpr( 
-                        constant instruction    : in string;
+   procedure check_gpr( constant instruction    : in string;
                         constant gpr            : in std_logic_vector(31 downto 0);
                         constant desired_value  : in std_logic_vector(31 downto 0);
                         signal test_point       : out integer) is
@@ -61,7 +60,47 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
       
    end procedure;
+   
+   -- TODO: Describe
+   procedure check_ram( constant instruction          : in string;
+                        constant ram_byte             : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte   : in std_logic_vector(7 downto 0);
+                        signal test_point             : out integer ) is
+   begin
 
+      if (ram_byte /= desired_value_byte) then
+          echo("ERROR: " & instruction);
+          echo("Test_point: " & integer'image(test_point+1));
+          test_point <= test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      
+   end procedure;
+   
+   -- TODO: Describe
+   procedure check_ram( constant instruction          : in string;
+                        constant ram_byte_0           : in std_logic_vector(7 downto 0);
+                        constant ram_byte_1           : in std_logic_vector(7 downto 0);
+                        constant ram_byte_2           : in std_logic_vector(7 downto 0);
+                        constant ram_byte_3           : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_0 : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_1 : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_2 : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_3 : in std_logic_vector(7 downto 0);
+                        signal test_point             : out integer ) is
+   begin
+
+      if (ram_byte_0 /= desired_value_byte_0 or 
+          ram_byte_1 /= desired_value_byte_1 or
+          ram_byte_2 /= desired_value_byte_2 or 
+          ram_byte_3 /= desired_value_byte_3) then
+            echo("ERROR: " & instruction);
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      
+   end procedure;
 
 begin
 
@@ -1891,93 +1930,58 @@ begin
       --                         SB, SH, SW                         --
       --                                                            --
       ----------------------------------------------------------------
-      -- addi  x1,  x0,   1     # x1 = 0x00000001
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x0,   1     # x1 = 0x00000001 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x2,  x0,   2     # x2 = 0x00000002
-      if (spy_gpr(2) /= 32x"00000002") then
-         report "ERROR: addi  x2,  x0,   2     # x2 = 0x00000002 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x3,  x0,   0     # x3 = 0x00000000
-      if (spy_gpr(3) /= 32x"00000000") then
-         report "ERROR: addi  x3,  x0,   0     # x3 = 0x00000000 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x4,  x0,   1234  # x4 = 0x000004d2
-      if (spy_gpr(4) /= 32x"000004d2") then
-         report "ERROR: addi  x4,  x0,   1234  # x4 = 0x000004d2 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x5,  x0,   0xAB  # x5 = 0x000000ab
-      if (spy_gpr(5) /= 32x"000000ab") then
-         report "ERROR: addi  x5,  x0,   0xAB  # x5 = 0x000000ab | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x6,  x0,   0xCD  # x6 = 0x000000cd
-      if (spy_gpr(6) /= 32x"000000cd") then
-         report "ERROR: addi  x6,  x0,   0xCD  # x6 = 0x000000cd | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x7,  x0,   -1024 # x7 = 0xfffffc00
-      if (spy_gpr(7) /= 32x"fffffc00") then
-         report "ERROR: addi  x7,  x0,   -1024 # x7 = 0xfffffc00 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- lui   x8,  0xABCDE     # x8 = 0xabcde000
-      if (spy_gpr(8) /= 32x"abcde000") then
-         report "ERROR: lui   x8,  0xABCDE     # x8 = 0xabcde000 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x8,  x8,   0xF1  # x8 = 0xabcde0f1
-      if (spy_gpr(8) /= 32x"abcde0f1") then
-         report "ERROR: addi  x8,  x8,   0xF1  # x8 = 0xabcde0f1 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- lui   x9,  0x12345     # x9 = 0x12345000
-      if (spy_gpr(9) /= 32x"12345000") then
-         report "ERROR: lui   x9,  0x12345     # x9 = 0x12345000 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x9,  x9,   0x678 # x9 = 0x12345678
-      if (spy_gpr(9) /= 32x"12345678") then
-         report "ERROR: addi  x9,  x9,   0x678 # x9 = 0x12345678 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      check_gpr( instruction    => "addi  x1,  x0,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   2",
+                 gpr            => spy_gpr(2), 
+                 desired_value  => 32x"00000002", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   0",
+                 gpr            => spy_gpr(3), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   1234",
+                 gpr            => spy_gpr(4), 
+                 desired_value  => 32x"000004d2", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x5,  x0,   AB",
+                 gpr            => spy_gpr(5), 
+                 desired_value  => 32x"000000ab", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x6,  x0,   CD",
+                 gpr            => spy_gpr(6), 
+                 desired_value  => 32x"000000cd", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x7,  x0,   -1024",
+                 gpr            => spy_gpr(7), 
+                 desired_value  => 32x"fffffc00", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lui   x8,  ABCDE",
+                 gpr            => spy_gpr(8), 
+                 desired_value  => 32x"abcde000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x8,  x8,   F1",
+                 gpr            => spy_gpr(8), 
+                 desired_value  => 32x"abcde0f1", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lui   x9,  12345",
+                 gpr            => spy_gpr(9), 
+                 desired_value  => 32x"12345000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x9,  x9,   678",
+                 gpr            => spy_gpr(9), 
+                 desired_value  => 32x"12345678", 
+                 test_point     => set_test_point );
       --------------
       --   SB     --
       --------------
-      -- sb   x9,  0(x0)  # 0x00000000 = 0x00000078
-      if (spy_ram(0)(0) /= x"78") then
-         report "ERROR: sb    x9,  0(x0)       # 0x00000000 = 0x00000078 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+
+      check_ram( instruction        => "sb   x9,  0(x0)",
+                 ram_byte           => spy_ram(0)(0),
+                 desired_value_byte => x"78",
+                 test_point         => set_test_point );
       -- sb   x9,  1(x0)   # 0x00000000 = 0x00007878
       if (spy_ram(0)(1) /= x"78") then
          report "ERROR: sb    x9,  1(x0)       # 0x00000000 = 0x00007878 | Test_point: "
@@ -2096,14 +2100,16 @@ begin
       --------------
       --   SW     --
       --------------
-      -- sw   x7,  0(x0)   # 0x00000000 = 0x00fcffff
-      if (spy_ram(0)(0) /= x"00" or spy_ram(0)(1) /= x"fc" or
-      spy_ram(0)(2) /= x"ff" or spy_ram(0)(3) /= x"ff") then
-         report "ERROR: sw    x7,  0(x0)       # 0x00000000 = 0x00fcffff | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      check_ram( instruction           => "sw   x7,  0(x0)",
+                 ram_byte_0            => spy_ram(0)(0),
+                 ram_byte_1            => spy_ram(0)(1),
+                 ram_byte_2            => spy_ram(0)(2),
+                 ram_byte_3            => spy_ram(0)(3),
+                 desired_value_byte_0  => x"00",
+                 desired_value_byte_1  => x"fc",
+                 desired_value_byte_2  => x"ff",
+                 desired_value_byte_3  => x"ff",
+                 test_point            => set_test_point );
       -- sw   x7,  2(x2)   # 0x00000004 = 0x00fcffff
       if (spy_ram(1)(0) /= x"00" or spy_ram(1)(1) /= x"fc" or
       spy_ram(1)(2) /= x"ff" or spy_ram(1)(3) /= x"ff") then
