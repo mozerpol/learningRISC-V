@@ -33,51 +33,70 @@ architecture tb of riscpol_tb is
    );
    end component riscpol;
 
+   -----------------------------------------------------------------------------
+   -- SIGNALS AND CONSTANTS
+   -----------------------------------------------------------------------------
    signal rst_tb           : std_logic;
    signal clk_tb           : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
    
-   -- The procedure prints out information without additional text like time or
-   -- iteration.
+   -----------------------------------------------------------------------------
+   -- PROCEDURES DEDICATED TO TEST
+   -----------------------------------------------------------------------------
+   -- The procedure prints out information in simulator without additional text
+   -- like time or iteration.
    procedure echo (arg : in string := "") is
    begin
       std.textio.write(std.textio.output, arg & LF);
    end procedure echo;
    
-   -- Procedure to check the value of general purpose register
+   -- Check the value of general purpose register
    procedure check_gpr( constant instruction    : in string;
                         constant gpr            : in std_logic_vector(31 downto 0);
                         constant desired_value  : in std_logic_vector(31 downto 0);
                         signal test_point       : out integer) is
    begin
-
       if (gpr /= desired_value) then
          echo("ERROR: " & instruction);
          echo("Test_point: " & integer'image(test_point+1));
          test_point <= test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      
    end procedure;
    
-   -- TODO: Describe
+   -- Check the value of one byte in RAM - used to verify SB instruction
    procedure check_ram( constant instruction          : in string;
                         constant ram_byte             : in std_logic_vector(7 downto 0);
                         constant desired_value_byte   : in std_logic_vector(7 downto 0);
                         signal test_point             : out integer ) is
    begin
-
       if (ram_byte /= desired_value_byte) then
           echo("ERROR: " & instruction);
           echo("Test_point: " & integer'image(test_point+1));
           test_point <= test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      
    end procedure;
    
-   -- TODO: Describe
+   -- Check the value of two bytes in RAM - used to verify SH instruction
+   procedure check_ram( constant instruction          : in string;
+                        constant ram_byte_0           : in std_logic_vector(7 downto 0);
+                        constant ram_byte_1           : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_0 : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_1 : in std_logic_vector(7 downto 0);
+                        signal test_point             : out integer ) is
+   begin
+      if (ram_byte_0 /= desired_value_byte_0 or 
+          ram_byte_1 /= desired_value_byte_1) then
+            echo("ERROR: " & instruction);
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+   end procedure;
+   
+   -- Check the value of three bytes in RAM - used to verify SW instruction
    procedure check_ram( constant instruction          : in string;
                         constant ram_byte_0           : in std_logic_vector(7 downto 0);
                         constant ram_byte_1           : in std_logic_vector(7 downto 0);
@@ -89,7 +108,6 @@ architecture tb of riscpol_tb is
                         constant desired_value_byte_3 : in std_logic_vector(7 downto 0);
                         signal test_point             : out integer ) is
    begin
-
       if (ram_byte_0 /= desired_value_byte_0 or 
           ram_byte_1 /= desired_value_byte_1 or
           ram_byte_2 /= desired_value_byte_2 or 
@@ -99,26 +117,6 @@ architecture tb of riscpol_tb is
             test_point <= test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-      
-   end procedure;
-   
-   -- TODO: Describe
-   procedure check_ram( constant instruction          : in string;
-                        constant ram_byte_0           : in std_logic_vector(7 downto 0);
-                        constant ram_byte_1           : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_0 : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_1 : in std_logic_vector(7 downto 0);
-                        signal test_point             : out integer ) is
-   begin
-
-      if (ram_byte_0 /= desired_value_byte_0 or 
-          ram_byte_1 /= desired_value_byte_1) then
-            echo("ERROR: " & instruction);
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      
    end procedure;
    
 
