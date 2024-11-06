@@ -101,6 +101,26 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
       
    end procedure;
+   
+   -- TODO: Describe
+   procedure check_ram( constant instruction          : in string;
+                        constant ram_byte_0           : in std_logic_vector(7 downto 0);
+                        constant ram_byte_1           : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_0 : in std_logic_vector(7 downto 0);
+                        constant desired_value_byte_1 : in std_logic_vector(7 downto 0);
+                        signal test_point             : out integer ) is
+   begin
+
+      if (ram_byte_0 /= desired_value_byte_0 or 
+          ram_byte_1 /= desired_value_byte_1) then
+            echo("ERROR: " & instruction);
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+      
+   end procedure;
+   
 
 begin
 
@@ -1977,7 +1997,6 @@ begin
       --------------
       --   SB     --
       --------------
-
       check_ram( instruction        => "sb   x9,  0(x0)",
                  ram_byte           => spy_ram(0)(0),
                  desired_value_byte => x"78",
@@ -2048,13 +2067,12 @@ begin
       --------------
       --   SH     --
       --------------
-      -- sh    x8,  0(x0)  	   # 0x00000000 = 0xf1e07878
-      if (spy_ram(0)(0) /= x"f1" or spy_ram(0)(1) /= x"e0") then
-         report "ERROR: sh    x8,  0(x0)       # 0x00000000 = 0xf1e07878 | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      check_ram( instruction           => "sh    x8,  0(x0)",
+                 ram_byte_0            => spy_ram(0)(0),
+                 ram_byte_1            => spy_ram(0)(1),
+                 desired_value_byte_0  => x"f1",
+                 desired_value_byte_1  => x"e0",
+                 test_point            => set_test_point );
       -- sh    x8,  1(x1)  	   # 0x00000000 = 0xf1e0f1e0
       if (spy_ram(0)(2) /= x"f1" or spy_ram(0)(3) /= x"e0") then
          report "ERROR: sh    x8,  1(x1)       # 0x00000000 = 0xf1e0f1e0 | Test_point: "
