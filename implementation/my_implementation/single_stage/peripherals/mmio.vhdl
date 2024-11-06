@@ -21,7 +21,7 @@ entity mmio is
       i_mmio_write_enable  : in std_logic;
       i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
       i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
-      i_mmio_q_gpio        : in std_logic_vector(7 downto 0);
+      i_mmio_q_gpio        : in std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
       i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1; --G_COUNTER_VALUE - 1;
       i_mmio_data_ram      : in std_logic_vector(31 downto 0);
       o_mmio_we_ram        : out std_logic;
@@ -35,7 +35,7 @@ architecture rtl of mmio is
 
 begin
 
-    o_mmio_data <=   24x"000000" & i_mmio_q_gpio                          when 
+    o_mmio_data <=   16x"0000" & i_mmio_q_gpio                          when 
                               i_mmio_raddr = C_MMIO_ADDR_GPIO - 1      else
                      std_logic_vector(to_unsigned(i_mmio_q_cnt8, 32))     when 
                               i_mmio_raddr = C_MMIO_ADDR_CNT_8_BIT - 1 else
