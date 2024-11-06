@@ -1545,49 +1545,39 @@ begin
       wait until rising_edge(clk_tb);
       -- auipc x22, 0           # ... 6.
       wait until rising_edge(clk_tb);
-      -- sub   x23, x22,  x20   # x23 = 0xffffffe4 7.
-      if (spy_gpr(23) /= 32x"ffffffe4") then
-         report "ERROR: sub   x23, x22,  x20   # x23 = 0xffffffe4 7. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000001 8.
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 8. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 7.
+      check_gpr( instruction    => "sub   x23, x22,  x20",
+                 gpr            => spy_gpr(23), 
+                 desired_value  => 32x"ffffffe4", 
+                 test_point     => set_test_point );
+      -- 8.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
       -- bne   x9,  x0,   loop9 # ... 9.
       wait until rising_edge(clk_tb);
       -- auipc x24, 0           # ... 10.
-      wait until rising_edge(clk_tb);
-      -- sub   x25, x24,  x22   # x25 = 0x00000010 11.
-      if (spy_gpr(25) /= 32x"00000010") then
-         report "ERROR: sub   x25, x24,  x22   # x25 = 0x00000010 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);      
+      -- 11.
+      check_gpr( instruction    => "sub   x25, x24,  x22",
+                 gpr            => spy_gpr(25), 
+                 desired_value  => 32x"00000010", 
+                 test_point     => set_test_point );
       -- bne   x7,  x8,   loop9 # ... 12.
       wait until rising_edge(clk_tb);
       -- auipc x26, 0           # ... 13.
       wait until rising_edge(clk_tb);
-      -- sub   x27, x26,  x24   # x27 = 0x00000018 14.
-      if (spy_gpr(27) /= 32x"00000018") then
-         report "ERROR: sub   x27, x26,  x24   # x27 = 0x00000018 14. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   0     # x1 = 0x00000000 15.
-      if (spy_gpr(1) /= 32x"00000000") then
-         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 15. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 14.
+      check_gpr( instruction    => "sub   x27, x26,  x24",
+                 gpr            => spy_gpr(27), 
+                 desired_value  => 32x"00000018", 
+                 test_point     => set_test_point );
+      -- 15.
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       --------------
       --   BLT    --
       --------------
@@ -1597,69 +1587,55 @@ begin
       wait until rising_edge(clk_tb);
       -- auipc x29, 0           # ... 3.
       wait until rising_edge(clk_tb);
-      -- sub   x30, x29,  x28   # x30 = 0x0000001c 4.
-      if (spy_gpr(30) /= 32x"0000001c") then
-         report "ERROR: sub   x30, x29,  x28   # x30 = 0x0000001c 4. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 4.
+      check_gpr( instruction    => "sub   x30, x29,  x28",
+                 gpr            => spy_gpr(30), 
+                 desired_value  => 32x"0000001c", 
+                 test_point     => set_test_point );
       -- blt   x4,  x3,   loop11# ... 5.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000001 6.
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 6. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 6.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );   
       -- blt   x9,  x0,   loop11# ... 7.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000002 8.
-      if (spy_gpr(1) /= 32x"00000002") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 8. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 8.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000002", 
+                 test_point     => set_test_point );
       -- blt   x8,  x7,   loop11# ... 9.
       wait until rising_edge(clk_tb);
       -- auipc x31, 0           # ... 10.
       wait until rising_edge(clk_tb);
-      -- sub   x10, x31,  x28   # x10 = 0x00000008 11.
-      if (spy_gpr(10) /= 32x"00000008") then
-         report "ERROR: sub   x10, x31,  x28   # x10 = 0x00000008 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 11.
+      check_gpr( instruction    => "sub   x10, x31,  x28",
+                 gpr            => spy_gpr(10), 
+                 desired_value  => 32x"00000008", 
+                 test_point     => set_test_point );
       -- blt   x7,  x8,   loop12# ... 12.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000003 13.
-      if (spy_gpr(1) /= 32x"00000003") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000003 13. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 13.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000003", 
+                 test_point     => set_test_point );  
       -- blt   x3,  x1,   loop12# ... 14.
       wait until rising_edge(clk_tb);
       -- auipc x11, 0           # ... 15.
       wait until rising_edge(clk_tb);
-      -- sub   x12, x11,  x31   # x12 = 0x00000030 16.
-      if (spy_gpr(12) /= 32x"00000030") then
-         report "ERROR: sub   x12, x11,  x31   # x12 = 0x00000030 16. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   0     # x1 = 0x00000000 17.
-      if (spy_gpr(1) /= 32x"00000000") then
-         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 17. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 16.
+      check_gpr( instruction    => "sub   x12, x11,  x31",
+                 gpr            => spy_gpr(12), 
+                 desired_value  => 32x"00000030", 
+                 test_point     => set_test_point );
+      -- 17.
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       --------------
       --   BGE    --
       --------------
@@ -1669,69 +1645,55 @@ begin
       wait until rising_edge(clk_tb);
       -- auipc x14, 0           # ... 3.
       wait until rising_edge(clk_tb);
-      -- sub   x15, x14,  x13   # x15 = 0x0000001c 4.
-      if (spy_gpr(15) /= 32x"0000001c") then
-         report "ERROR: sub   x15, x14,  x13   # x15 = 0x0000001c 4. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 4.
+      check_gpr( instruction    => "sub   x15, x14,  x13",
+                 gpr            => spy_gpr(15), 
+                 desired_value  => 32x"0000001c", 
+                 test_point     => set_test_point );     
       -- bge   x3,  x4,   loop14# ... 5.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000001 6.
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 6. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 6.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
       -- bge   x7,  x4,   loop14# ... 7.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000002 8.
-      if (spy_gpr(1) /= 32x"00000002") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 8. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 8.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000002", 
+                 test_point     => set_test_point );
       -- bge   x0,  x9,   loop14# ... 9.
       wait until rising_edge(clk_tb);
       -- auipc x16, 0           # ... 10.
       wait until rising_edge(clk_tb);
-      -- sub   x17, x16,  x14   # x17 = 0xffffffec 11.
-      if (spy_gpr(17) /= 32x"ffffffec") then
-         report "ERROR: sub   x17, x16,  x14   # x17 = 0xffffffec 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 11.
+      check_gpr( instruction    => "sub   x17, x16,  x14",
+                 gpr            => spy_gpr(17), 
+                 desired_value  => 32x"ffffffec", 
+                 test_point     => set_test_point );    
       -- bge   x8,  x7,   loop15# ... 12.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000003 13.
-      if (spy_gpr(1) /= 32x"00000003") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000003 13. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 13.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000003", 
+                 test_point     => set_test_point );
       -- bge   x1,  x3,   loop15# ... 14.
       wait until rising_edge(clk_tb);
       -- auipc x18, 0           # ... 15.
       wait until rising_edge(clk_tb);
-      -- sub   x12, x18,  x17   # x12 = 0x00000030 16.
-      if (spy_gpr(12) /= 32x"00000030") then
-         report "ERROR: sub   x12, x18,  x16   # x12 = 0x00000030 16. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   0     # x1 = 0x00000000 17.
-      if (spy_gpr(1) /= 32x"00000000") then
-         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 17. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 16.
+      check_gpr( instruction    => "sub   x12, x18,  x17",
+                 gpr            => spy_gpr(12), 
+                 desired_value  => 32x"00000030", 
+                 test_point     => set_test_point );      
+      -- 17.
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       --------------
       --   BLTU   --
       --------------
@@ -1741,60 +1703,48 @@ begin
       wait until rising_edge(clk_tb);
       -- auipc x21, 0           # ... = 3.
       wait until rising_edge(clk_tb);
-      -- sub   x22, x21,  x20   # x22 = 0x00000024 4.
-      if (spy_gpr(22) /= 32x"00000024") then
-         report "ERROR: sub   x22, x21,  x20   # x22 = 0x00000024 4. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 4.
+      check_gpr( instruction    => "sub   x22, x21,  x20",
+                 gpr            => spy_gpr(22), 
+                 desired_value  => 32x"00000024", 
+                 test_point     => set_test_point );
       -- bltu  x8,  x7,   loop17# ... 5.
       wait until rising_edge(clk_tb);
       -- auipc x23, 0           # ... = 6.
       wait until rising_edge(clk_tb);
-      -- sub   x24, x23,  x21   # x24 = 0xffffffe4 7.
-      if (spy_gpr(24) /= 32x"ffffffe4") then
-         report "ERROR: sub   x24, x23,  x21   # x24 = 0xffffffe4 7. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 7.
+      check_gpr( instruction    => "sub   x24, x23,  x21",
+                 gpr            => spy_gpr(24), 
+                 desired_value  => 32x"ffffffe4", 
+                 test_point     => set_test_point );
       -- bltu  x9,  x0,   loop18# ... 8.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000001 9.
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 9. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 9.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
       -- bltu  x3,  x4,   loop18# ... 10.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000002 11.
-      if (spy_gpr(1) /= 32x"00000002") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 11.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000002", 
+                 test_point     => set_test_point );      
       -- bltu  x4,  x3,   loop18# ... 12.
       wait until rising_edge(clk_tb);
       -- auipc x25, 0           # ...  13.
       wait until rising_edge(clk_tb);
-      -- sub   x26, x25,  x23   # x26 = 0x00000028 14.
-      if (spy_gpr(26) /= 32x"00000028") then
-         report "ERROR: sub   x26, x25,  x23   # x26 = 0x00000028 14. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   0     # x1 = 0x00000000 15.
-      if (spy_gpr(1) /= 32x"00000000") then
-         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 15. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 14.
+      check_gpr( instruction    => "sub   x26, x25,  x23",
+                 gpr            => spy_gpr(26), 
+                 desired_value  => 32x"00000028", 
+                 test_point     => set_test_point );            
+      -- 15.
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       --------------
       --   BGEU   --
       --------------
@@ -1804,60 +1754,48 @@ begin
       wait until rising_edge(clk_tb);
       -- auipc x30, 0           # ... = 3.
       wait until rising_edge(clk_tb);
-      -- sub   x31, x30,  x27   # x31 = 0x00000024 4.
-      if (spy_gpr(31) /= 32x"00000024") then
-         report "ERROR: sub   x31, x30,  x27   # x31 = 0x00000024 4. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 4.
+      check_gpr( instruction    => "sub   x31, x30,  x27",
+                 gpr            => spy_gpr(31), 
+                 desired_value  => 32x"00000024", 
+                 test_point     => set_test_point );      
       -- bgeu  x7,  x8,   loop20# ... 5.
       wait until rising_edge(clk_tb);
       -- auipc x28, 0           # ... = 6.
       wait until rising_edge(clk_tb);
-      -- sub   x29, x28,  x27   # x29 = 0x00000008 7.
-      if (spy_gpr(29) /= 32x"00000008") then
-         report "ERROR: sub   x29, x28,  x27   # x29 = 0x00000008 7. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 7.
+      check_gpr( instruction    => "sub   x29, x28,  x27",
+                 gpr            => spy_gpr(29), 
+                 desired_value  => 32x"00000008", 
+                 test_point     => set_test_point );
       -- bgeu  x2,  x7,   loop21# ... 8.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000001 9.
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 9. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 9.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
       -- bgeu  x4,  x3,   loop21# ... 10.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000002 11.
-      if (spy_gpr(1) /= 32x"00000002") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 11.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000002", 
+                 test_point     => set_test_point );
       -- bgeu  x3,  x4,   loop21# ... 12.
       wait until rising_edge(clk_tb);
       -- auipc x10,  0          # ...  13.
       wait until rising_edge(clk_tb);
-      -- sub   x11, x10,  x30   # x11 = 0x0000000c 14.
-      if (spy_gpr(11) /= 32x"0000000c") then
-         report "ERROR: sub   x11, x10,  x30   # x11 = 0x0000000c 14. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   0     # x1 = 0x00000000 15.
-      if (spy_gpr(1) /= 32x"00000000") then
-         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 15. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 14.
+      check_gpr( instruction    => "sub   x11, x10,  x30",
+                 gpr            => spy_gpr(11), 
+                 desired_value  => 32x"0000000c", 
+                 test_point     => set_test_point );
+      -- 15.
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
       --                         JAL, JALR                          --
@@ -1870,61 +1808,47 @@ begin
       wait until rising_edge(clk_tb);
       -- jal   x13,  loop22     # ... 2.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000001 3.
-      if (spy_gpr(1) /= 32x"00000001") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000001 3. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000002 4.
-      if (spy_gpr(1) /= 32x"00000002") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000002 4. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 3.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
+      -- 4.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000002", 
+                 test_point     => set_test_point );
       -- jal   x14,  loop23     # ... 5.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000003 6.
-      if (spy_gpr(1) /= 32x"00000003") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000003 6. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000004 7.
-      if (spy_gpr(1) /= 32x"00000004") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000004 7. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 3.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000003", 
+                 test_point     => set_test_point );
+      -- 4.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000004", 
+                 test_point     => set_test_point );
       -- jal   x15,  loop24     # ... 8.
       wait until rising_edge(clk_tb);
-      -- addi  x1,  x1,   1     # x1 = 0x00000005 9.
-      if (spy_gpr(1) /= 32x"00000005") then
-         report "ERROR: addi  x1,  x1,   1     # x1 = 0x00000005 9. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 9.
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000005", 
+                 test_point     => set_test_point );
       -- auipc x16, 0           # ...  10.
       wait until rising_edge(clk_tb);
-      -- sub   x17, x16,  x15   # x17 = 0x00000010 11.
-      if (spy_gpr(17) /= 32x"00000010") then
-         report "ERROR: sub   x17, x16,  x15   # x17 = 0x00000010 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x1,  x0,   0     # x1 = 0x00000000 12.
-      if (spy_gpr(1) /= 32x"00000000") then
-         report "ERROR: addi  x1,  x0,   0     # x1 = 0x00000000 12. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 11.
+      check_gpr( instruction    => "sub   x17, x16,  x15",
+                 gpr            => spy_gpr(17), 
+                 desired_value  => 32x"00000010", 
+                 test_point     => set_test_point );
+      -- 12.
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       --------------
       --   JALR   --
       --------------
@@ -1932,44 +1856,36 @@ begin
       wait until rising_edge(clk_tb);
       -- jalr  x19, x18,  8     # ... 2.
       wait until rising_edge(clk_tb);
-      -- addi  x0,  x0,   0     # x0 = 0x00000000 3.
-      if (spy_gpr(0) /= 32x"00000000") then
-         report "ERROR: addi  x0,  x0,   0     # x0 = 0x00000000 3. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 3.
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       -- jalr  x20, x18,  28    # ... 4.
       wait until rising_edge(clk_tb);
       -- auipc x21, 0           # ... 5.
       wait until rising_edge(clk_tb);
       -- jalr  x22, x21,  -12   # ... 6.
       wait until rising_edge(clk_tb);
-      -- addi  x0,  x0,   0     # x0 = 0x00000000 7.
-      if (spy_gpr(0) /= 32x"00000000") then
-         report "ERROR: addi  x0,  x0,   0     # x0 = 0x00000000 7. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 7.
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       -- auipc x23, 0           # ... 8.
       wait until rising_edge(clk_tb);
       -- jalr  x24, x23,  16    # ... 9.
       wait until rising_edge(clk_tb);
-      -- addi  x0,  x0,   0     # x9 = 0x00000000 10.
-      if (spy_gpr(0) /= 32x"00000000") then
-         report "ERROR: addi  x0,  x0,   0     # x9 = 0x00000000 10. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x0,  x0,   0     # x9 = 0x00000000 11.
-      if (spy_gpr(0) /= 32x"00000000") then
-         report "ERROR: addi  x0,  x0,   0     # x9 = 0x00000000 11. | Test_point: "
-         & integer'image(set_test_point+1);
-         set_test_point <= set_test_point + 1;
-      end if;
-      wait until rising_edge(clk_tb);
+      -- 10.
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      -- 11.
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
       --                         SB, SH, SW                         --
