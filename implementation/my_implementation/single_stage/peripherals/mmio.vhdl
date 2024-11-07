@@ -35,7 +35,7 @@ architecture rtl of mmio is
 
 begin
 
-    o_mmio_data <=   16x"0000" & i_mmio_q_gpio                          when 
+    o_mmio_data <=   24x"0000" & i_mmio_q_gpio                          when 
                               i_mmio_raddr = C_MMIO_ADDR_GPIO - 1      else
                      std_logic_vector(to_unsigned(i_mmio_q_cnt8, 32))     when 
                               i_mmio_raddr = C_MMIO_ADDR_CNT_8_BIT - 1 else
