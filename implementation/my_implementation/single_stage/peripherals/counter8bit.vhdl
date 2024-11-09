@@ -13,7 +13,7 @@ entity counter8 is
       i_cnt8_set_reset  : in std_logic;
       o_cnt8_q          : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
    );
-end entity counter8;
+end entity counter8; -- TODO: change to counter8bit
 
 architecture rtl of counter8 is
 
@@ -21,6 +21,7 @@ architecture rtl of counter8 is
 
 begin
 
+   -- TODO: make in one process
    process (i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
