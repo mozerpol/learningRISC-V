@@ -54,7 +54,7 @@ architecture rtl of riscpol is
          i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_q_gpio        : in std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
-         i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;--G_COUNTER_VALUE - 1;
+         i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
@@ -123,7 +123,7 @@ architecture rtl of riscpol is
 
 begin
 
-   inst_core : component core
+   inst_core        : component core
    port map (
       i_rst                => rst,
       i_clk                => clk,
@@ -134,8 +134,8 @@ begin
       o_core_addr_read     => s_core_addr_read,
       o_core_addr_write    => s_core_addr_write
    );
-
-   inst_mmio : component mmio
+   
+   inst_mmio        : component mmio
    port map (
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
@@ -148,8 +148,8 @@ begin
       o_mmio_we_cnt8bit    => s_mmio_we_cnt8bit,
       o_mmio_data          => s_mmio_data
    );
-
-   inst_ram : component byte_enabled_simple_dual_port_ram
+   
+   inst_ram         : component byte_enabled_simple_dual_port_ram
    port map (
       i_clk                => clk,
       i_ram_raddr          => s_core_addr_read,
@@ -159,8 +159,8 @@ begin
       i_ram_be             => s_core_byte_enable,
       o_ram_data           => s_ram_q
    );
-
-   inst_gpio : component gpio
+   
+   inst_gpio        : component gpio
    port map (
       i_clk                => clk,
       i_gpio_wdata         => s_core_data_write,
