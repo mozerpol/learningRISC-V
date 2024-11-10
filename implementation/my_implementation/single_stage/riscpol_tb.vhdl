@@ -59,6 +59,8 @@ architecture tb of riscpol_tb is
    begin
       if (gpr /= desired_value) then
          echo("ERROR: " & instruction);
+         echo("desired_value: " & to_string(desired_value)); 
+         echo("gpr value: " & to_string(gpr));
          echo("Test_point: " & integer'image(test_point+1));
          test_point <= test_point + 1;
       end if;
@@ -130,7 +132,7 @@ architecture tb of riscpol_tb is
          test_point <= test_point + 1;
          echo("instruction: " & instruction);
          echo("desired_value: " & to_string(desired_value)); 
-         echo("gpio_tb val: " & to_string(gpio_tb));
+         echo("gpio_tb value: " & to_string(gpio_tb));
       end if;
       wait until rising_edge(clk_tb);
    end procedure;
@@ -2554,6 +2556,30 @@ begin
                  test_point     => set_test_point );
       -- TODO: Add test where turn on timer, turn off and check value, just
       -- write a simple test in asm lang
+      check_cnt8bit(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt8bit,
+                 desired_value  => 0,
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x0,  x0,   0x0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x0,  x0,   0x0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x0,  x0,   0x0",
+                 gpr            => spy_gpr(0), 
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_cnt8bit(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt8bit,
+                 desired_value  => 3,
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lw    x5,  251(x0)",
+                 gpr            => spy_gpr(5),
+                 desired_value  => 32x"00000003", 
+                 test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
