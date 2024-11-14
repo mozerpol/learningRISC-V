@@ -100,10 +100,7 @@ It is described in the main README (on the previous page).
 
 ### Datapath diagram
 JPG: <br/>
-![riscpol_diagram](https://github.com/user-attachments/assets/fad0b6aa-71c2-47c7-8cac-3e4552ad8efd)
-
-SVG: <br/>
-![riscpol_diagram](https://github.com/user-attachments/assets/f6d05e20-32ca-4529-8e74-41c2b9136173)
+![riscpol_diagram](https://github.com/user-attachments/assets/e467cdb3-a597-4aa0-b038-0879f96e79f5)
 
 The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 *drawio* available at: https://app.diagrams.net/
