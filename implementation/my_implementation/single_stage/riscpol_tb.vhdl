@@ -29,7 +29,7 @@ architecture tb of riscpol_tb is
    port (
       i_rst       : in std_logic;
       i_clk       : in std_logic;
-      o_gpio      : out std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
+      o_gpio      : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
    );
    end component riscpol;
 
@@ -180,7 +180,7 @@ begin
    begin
       rst_tb   <= '1';
       wait for 20 ns;
-      rst_tb   <= '0';
+      rst_tb   <= '0';     
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
       -- The second delay is to execute the instruction, but its result is not
