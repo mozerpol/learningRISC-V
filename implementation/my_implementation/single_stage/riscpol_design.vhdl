@@ -27,7 +27,7 @@ entity riscpol is
    port (
       i_rst                   : in std_logic;
       i_clk                   : in std_logic;
-      o_gpio                  : out std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
+      o_gpio                  : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
    );
 end entity riscpol;
 
@@ -53,7 +53,7 @@ architecture rtl of riscpol is
          i_mmio_write_enable  : in std_logic;
          i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
-         i_mmio_q_gpio        : in std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
+         i_mmio_q_gpio        : in std_logic_vector(31 downto 0);
          i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
@@ -86,7 +86,7 @@ architecture rtl of riscpol is
          i_clk                : in std_logic;
          i_gpio_wdata         : in std_logic_vector(31 downto 0);
          i_gpio_we            : in std_logic;
-         o_gpio_q             : out std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
+         o_gpio_q             : inout std_logic_vector(31 downto 0)
       );
    end component gpio;
    
@@ -119,7 +119,7 @@ architecture rtl of riscpol is
    -- Counter 8bit
    signal s_cnt8_q            : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
    -- GPIO
-   signal s_q_gpio            : std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
+   signal s_q_gpio            : std_logic_vector(31 downto 0);
 
 begin
 
@@ -176,7 +176,22 @@ begin
       o_cnt8_q             => s_cnt8_q
    );
 
-   o_gpio   <= s_q_gpio;
+
+   -- o_gpio <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
+   -- TODO: describe it
+     o_gpio <= (others => 'Z') when s_core_addr_read = 63 else s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
+
+
+   --process (i_clk)
+   --begin
+    --if (i_clk = '1' and i_clk'event) then
+  --   o_gpio   <= s_q_gpio when s_mmio_we_gpio = '1' else (others => 'Z');
+   -- end if;
+   --end process;
+   
+   -- o_gpio <= (others => 'Z');
+   --s_q_gpio <= o_gpio when s_mmio_we_gpio = '1' else (others => '0');
+  -- o_gpio <= s_q_gpio;
    rst      <= (i_rst);
    clk      <= i_clk;
 
