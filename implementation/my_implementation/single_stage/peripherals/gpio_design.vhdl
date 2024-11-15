@@ -23,7 +23,7 @@ entity gpio is
       -- in for loop, I mean o_gpio_q(constant_number) should be generated. Look
       -- to ram.vhdl as generate example.
       i_gpio_we      : in std_logic;
-      o_gpio_q       : out std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
+      o_gpio_q       : out std_logic_vector(31 downto 0)
 );
 end gpio;
 
@@ -46,6 +46,8 @@ begin
             for i in 0 to C_NUMBER_OF_GPIO - 1 loop
                o_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
             end loop;
+            -- TODO: describe below line
+            o_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0');
          end if;
       end if;
    end process p_gpio;
