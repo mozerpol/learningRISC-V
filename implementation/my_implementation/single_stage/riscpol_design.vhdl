@@ -10,6 +10,7 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
+
 library ieee;
    use ieee.std_logic_1164.all;
 library riscpol_lib;
@@ -48,6 +49,7 @@ architecture rtl of riscpol is
       );
    end component core;
 
+
    component mmio is
       port (
          i_mmio_write_enable  : in std_logic;
@@ -62,6 +64,7 @@ architecture rtl of riscpol is
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
+
 
    component byte_enabled_simple_dual_port_ram is
       generic (
@@ -100,6 +103,7 @@ architecture rtl of riscpol is
    );
    end component counter8;
 
+
    -- General
    signal rst                 : std_logic;
    signal clk                 : std_logic;
@@ -121,7 +125,9 @@ architecture rtl of riscpol is
    -- GPIO
    signal s_q_gpio            : std_logic_vector(31 downto 0);
 
+
 begin
+
 
    inst_core        : component core
    port map (
@@ -177,22 +183,11 @@ begin
    );
 
 
-   -- o_gpio <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
    -- TODO: describe it
-     o_gpio <= (others => 'Z') when s_core_addr_read = 63 else s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
-
-
-   --process (i_clk)
-   --begin
-    --if (i_clk = '1' and i_clk'event) then
-  --   o_gpio   <= s_q_gpio when s_mmio_we_gpio = '1' else (others => 'Z');
-   -- end if;
-   --end process;
-   
-   -- o_gpio <= (others => 'Z');
-   --s_q_gpio <= o_gpio when s_mmio_we_gpio = '1' else (others => '0');
-  -- o_gpio <= s_q_gpio;
+   o_gpio   <= (others => 'Z') when s_core_addr_read = 63 else 
+                s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
    rst      <= (i_rst);
    clk      <= i_clk;
+
 
 end architecture rtl;

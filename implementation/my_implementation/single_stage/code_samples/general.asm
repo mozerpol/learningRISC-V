@@ -702,7 +702,7 @@ sb    x13, 255(x0)     # gpio = 00011000
 sb    x14, 255(x0)     # gpio = 10011001
 sb    x0,  255(x0)     # gpio = 00000000
 ###################################
-##   Check the four GPIO bits    ##
+##       Check the GPIOs        ##
 ###################################
 addi  x1,  x0,   0     # The value x1 is assigned to GPIO
 addi  x2,  x0,   15    # The value x1 is compared to the value of x2. 15 = 1111

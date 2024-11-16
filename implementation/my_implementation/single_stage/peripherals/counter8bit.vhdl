@@ -5,7 +5,7 @@ library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
 
--- TODO: Add one bit signal with data, I want to possibility of reseting counter
+
 entity counter8 is
  port(
       i_clk             : in std_logic;
@@ -17,7 +17,9 @@ end entity counter8; -- TODO: change to counter8bit
 
 architecture rtl of counter8 is
 
+
    signal s_ce_latch : std_logic;
+
 
 begin
 
@@ -49,5 +51,6 @@ begin
          o_cnt8_q <= v_cnt;
       end if;
    end process;
+
 
 end architecture;

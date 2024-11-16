@@ -157,12 +157,14 @@ architecture tb of riscpol_tb is
 
 begin
 
+
    inst_riscpol : component riscpol
    port map (
       i_rst       => rst_tb,
       i_clk       => clk_tb,
       o_gpio      => gpio_tb
    );
+
 
    p_clk : process
    begin
@@ -171,6 +173,7 @@ begin
       clk_tb   <= '0';
       wait for C_CLK_PERIOD/2;
    end process;
+
 
    p_tb : process
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
@@ -2623,5 +2626,6 @@ begin
       wait for 1 us;
       stop(0);
    end process p_tb;
+
 
 end architecture tb;

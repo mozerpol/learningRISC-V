@@ -9,11 +9,13 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
+
 library ieee;
    use ieee.std_logic_1164.all;
 library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
+
 
 entity gpio is
    port (
@@ -27,9 +29,12 @@ entity gpio is
 );
 end gpio;
 
+
 architecture rtl of gpio is
 
+
 begin
+
 
    p_gpio : process(i_clk)
    begin
@@ -51,5 +56,6 @@ begin
          end if;
       end if;
    end process p_gpio;
+
 
 end rtl;
