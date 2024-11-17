@@ -10,8 +10,11 @@ add wave -expand -group testbench         -radix dec /riscpol_tb/set_test_point
 add wave -expand -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_rst
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_clk
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_gpio
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_gpio
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/inst_riscpol/s_q_gpio
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix dec /riscpol_tb/inst_riscpol/s_core_addr_read
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix dec /riscpol_tb/inst_riscpol/s_mmio_re_gpio
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix dec /riscpol_tb/inst_riscpol/s_mmio_we_gpio
 
 add wave         -group ALU               -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_1
 add wave         -group ALU               -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_2
@@ -105,15 +108,17 @@ add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_data 
 add wave         -group MMIO              -radix dec /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_cnt8bit 
 add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_gpio 
+add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_re_gpio 
 add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram 
 
 add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_wdata
 add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_we
+add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_re
 add wave         -group GPIO              -radix bin /riscpol_tb/inst_riscpol/inst_gpio/o_gpio_q
 
 add wave         -group CNT_8BIT          -radix bin /riscpol_tb/inst_riscpol/inst_counter8bit/i_cnt8_we
 add wave         -group CNT_8BIT          -radix bin /riscpol_tb/inst_riscpol/inst_counter8bit/i_cnt8_set_reset
-add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/line__36/v_cnt
+add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/line__38/v_cnt
 add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/o_cnt8_q
 add wave         -group CNT_8BIT          -radix dec /riscpol_tb/inst_riscpol/inst_counter8bit/s_ce_latch
 
