@@ -19,12 +19,14 @@ library riscpol_lib;
 
 entity gpio is
    port (
+      i_rst          : in std_logic;
       i_clk          : in std_logic;
       i_gpio_wdata   : in std_logic_vector(31 downto 0); -- Why 32 bits if we're
       -- using only 8? Maybe it shoudl depend on constant and be generated
       -- in for loop, I mean o_gpio_q(constant_number) should be generated. Look
       -- to ram.vhdl as generate example.
       i_gpio_we      : in std_logic;
+      i_gpio_re      : in std_logic;
       o_gpio_q       : out std_logic_vector(31 downto 0)
 );
 end gpio;
@@ -33,12 +35,24 @@ end gpio;
 architecture rtl of gpio is
 
 
+    signal reg_gpio_q : std_logic_vector(31 downto 0);
+
 begin
 
+   --o_mmio_re_gpio <= '1' when i_mmio_raddr = C_MMIO_ADDR_GPIO - 1 else '0';
+   
+   o_gpio_q <= (others => 'Z') when i_gpio_re = '1' else 
+                reg_gpio_q when i_gpio_we = '1' else reg_gpio_q;
+ 
+ 
+  --  o_gpio_q <= reg_gpio_q;
 
    p_gpio : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
+       if (i_rst = '1') then
+        reg_gpio_q <= (others => 'Z');
+       else
          -- The C_MMIO_ADDR_GPIO constant describes which RAM address is mapped
          -- and used by the GPIO. To control GPIO, use the sw, sh, sb commands.
          -- Example of assigning zeros to GPIO:
@@ -49,11 +63,11 @@ begin
          if (i_gpio_we = '1') then
             -- Last C_NUMBER_OF_GPIO-1 bits from wdata vector are mapped
             for i in 0 to C_NUMBER_OF_GPIO - 1 loop
-               o_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
+               reg_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
             end loop;
-            -- TODO: describe below line
-            o_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0');
+            reg_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0'); -- TODO: describe line
          end if;
+       end if;
       end if;
    end process p_gpio;
 
