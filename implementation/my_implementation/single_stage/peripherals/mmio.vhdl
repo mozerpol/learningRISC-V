@@ -28,6 +28,7 @@ entity mmio is
       i_mmio_data_ram      : in std_logic_vector(31 downto 0);
       o_mmio_we_ram        : out std_logic;
       o_mmio_we_gpio       : out std_logic;
+      o_mmio_re_gpio       : out std_logic;
       o_mmio_we_cnt8bit    : out std_logic;
       o_mmio_data          : out std_logic_vector(31 downto 0)
 );
@@ -45,6 +46,7 @@ begin
       std_logic_vector(to_unsigned(i_mmio_q_cnt8, 32)) when C_MMIO_ADDR_CNT_8_BIT - 1,
       i_mmio_data_ram when others;
 
+   o_mmio_re_gpio <= '1' when i_mmio_raddr = C_MMIO_ADDR_GPIO - 1 else '0';
    
    process (i_mmio_write_enable, i_mmio_waddr)
    begin
