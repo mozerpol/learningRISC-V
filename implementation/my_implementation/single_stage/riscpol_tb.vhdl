@@ -29,7 +29,7 @@ architecture tb of riscpol_tb is
    port (
       i_rst       : in std_logic;
       i_clk       : in std_logic;
-      o_gpio      : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
+      io_gpio     : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
    );
    end component riscpol;
 
@@ -162,7 +162,7 @@ begin
    port map (
       i_rst       => rst_tb,
       i_clk       => clk_tb,
-      o_gpio      => gpio_tb
+      io_gpio     => gpio_tb
    );
 
 
@@ -192,7 +192,7 @@ begin
       -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);  
       ----------------------------------------------------------------
       --                                                            --
       --    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI    --
