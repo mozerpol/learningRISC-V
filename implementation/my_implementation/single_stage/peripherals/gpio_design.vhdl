@@ -39,13 +39,9 @@ architecture rtl of gpio is
 
 begin
 
-   --o_mmio_re_gpio <= '1' when i_mmio_raddr = C_MMIO_ADDR_GPIO - 1 else '0';
    
    o_gpio_q <= (others => 'Z') when i_gpio_re = '1' else 
                 reg_gpio_q when i_gpio_we = '1' else reg_gpio_q;
- 
- 
-  --  o_gpio_q <= reg_gpio_q;
 
    p_gpio : process(i_clk)
    begin
