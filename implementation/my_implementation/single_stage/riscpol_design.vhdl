@@ -28,8 +28,7 @@ entity riscpol is
    port (
       i_rst                   : in std_logic;
       i_clk                   : in std_logic;
-      o_gpio                  : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
-      i_gpio                  : in std_logic
+      io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
    );
 end entity riscpol;
 
@@ -92,7 +91,7 @@ architecture rtl of riscpol is
          i_clk                : in std_logic;
          i_gpio_wdata         : in std_logic_vector(31 downto 0);
          i_gpio_we            : in std_logic;
-      i_gpio_re      : in std_logic;
+         i_gpio_re            : in std_logic;
          o_gpio_q             : out std_logic_vector(31 downto 0)
       );
    end component gpio;
@@ -151,7 +150,7 @@ begin
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
-      i_mmio_q_gpio        => "0000000000000000000000000000000" & o_gpio(0), --s_q_gpio,
+      i_mmio_q_gpio        => "0000000000000000000000000000000" & io_gpio(0),
       i_mmio_q_cnt8        => s_cnt8_q,
       i_mmio_data_ram      => s_ram_q,
       o_mmio_we_ram        => s_mmio_we_ram,
@@ -191,7 +190,7 @@ begin
    );
 
 
-   o_gpio   <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
+   io_gpio  <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
    rst      <= not(i_rst);
    clk      <= i_clk;
 
