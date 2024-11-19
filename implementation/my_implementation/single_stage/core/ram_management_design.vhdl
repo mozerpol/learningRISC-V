@@ -22,7 +22,7 @@ library riscpol_lib;
 
 entity ram_management is
    port (
-      i_rst                   : in std_logic;
+      i_rst_n                 : in std_logic;
       i_ram_management_ctrl   : in std_logic_vector(3 downto 0);
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
@@ -47,10 +47,10 @@ architecture rtl of ram_management is
 
 begin
 
-   p_ram_management : process(i_rst, i_rs2_data, i_rs1_data, i_imm, i_ram_management_ctrl)
+   p_ram_management : process(i_rst_n, i_rs2_data, i_rs1_data, i_imm, i_ram_management_ctrl)
       variable v_ram_address : std_logic_vector(31 downto 0);
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_write_enable    <= C_READ_ENABLE;
          o_byte_enable     <= (others => '0');
          o_raddr           <= 0;
@@ -132,10 +132,10 @@ begin
       end if;
    end process p_ram_management;
 
-   p_reg_file : process(i_rst, i_ram_management_ctrl, i_data_from_ram, i_imm, i_rs1_data)
+   p_reg_file : process(i_rst_n, i_ram_management_ctrl, i_data_from_ram, i_imm, i_rs1_data)
       variable v_reg_file_address : std_logic_vector(31 downto 0);
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_rd_data          <= (others => '0');
          v_reg_file_address := (others => '0');
       else

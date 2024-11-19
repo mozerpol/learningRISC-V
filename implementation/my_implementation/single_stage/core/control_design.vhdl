@@ -22,7 +22,7 @@ library opcodes;
 
 entity control is
    port (
-      i_rst                   : in std_logic;
+      i_rst_n                 : in std_logic;
       i_opcode                : in std_logic_vector(6 downto 0);
       i_func3                 : in std_logic_vector(2 downto 0);
       i_func7                 : in std_logic_vector(6 downto 0);
@@ -42,9 +42,9 @@ architecture rtl of control is
 
 begin
 
-   p_alu : process(i_rst, i_opcode, i_func3, i_func7)
+   p_alu : process(i_rst_n, i_opcode, i_func3, i_func7)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_alu_control     <= (others => '0');
       else
          case i_opcode(6 downto 0) is
@@ -97,9 +97,9 @@ begin
       end if;
    end process p_alu;
 
-   p_alu_mux : process (i_rst, i_opcode)
+   p_alu_mux : process (i_rst_n, i_opcode)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_alu_mux_1_ctrl     <= C_RS1_DATA;
          o_alu_mux_2_ctrl     <= C_RS2_DATA;
       else
@@ -135,9 +135,9 @@ begin
       end if;
    end process p_alu_mux;
 
-   p_reg_file : process(i_rst, i_opcode)
+   p_reg_file : process(i_rst_n, i_opcode)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_reg_file_inst_ctrl    <= C_WRITE_RD_DATA;
       else
          case i_opcode(6 downto 0) is
@@ -163,9 +163,9 @@ begin
       end if;
    end process;
 
-   p_ram_management : process(i_rst, i_opcode, i_func3)
+   p_ram_management : process(i_rst_n, i_opcode, i_func3)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_ram_management_ctrl   <= (others => '0');
       else
          if (i_opcode(6 downto 0) = C_OPCODE_LOAD) then
@@ -190,9 +190,9 @@ begin
       end if;
    end process p_ram_management;
 
-   p_program_counter : process(i_rst, i_opcode, i_branch_result)
+   p_program_counter : process(i_rst_n, i_opcode, i_branch_result)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_pc_ctrl         <= C_NOP;
          o_inst_addr_ctrl  <= C_INST_ADDR_PC;
       else
@@ -221,9 +221,9 @@ begin
       end if;
    end process p_program_counter;
 
-   p_branch_instructions : process(i_rst, i_opcode, i_func3)
+   p_branch_instructions : process(i_rst_n, i_opcode, i_func3)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_branch_ctrl <= (others => '0');
       else
          if (i_opcode(6 downto 0) = C_OPCODE_BRANCH) then

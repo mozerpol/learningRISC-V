@@ -33,7 +33,7 @@ library riscpol_lib;
 
 entity core is
    port (
-      i_rst                      : in std_logic;
+      i_rst_n                    : in std_logic;
       i_clk                      : in std_logic;
       i_core_data_read           : in std_logic_vector(31 downto 0);
       o_core_data_write          : out std_logic_vector(31 downto 0);
@@ -86,7 +86,7 @@ architecture rtl of core is
 
    component control is
       port (
-         i_rst                   : in std_logic;
+         i_rst_n                 : in std_logic;
          i_opcode                : in std_logic_vector(6 downto 0);
          i_func3                 : in std_logic_vector(2 downto 0);
          i_func7                 : in std_logic_vector(6 downto 0);
@@ -132,7 +132,7 @@ architecture rtl of core is
 
    component ram_management is
       port (
-         i_rst                   : in std_logic;
+         i_rst_n                 : in std_logic;
          i_ram_management_ctrl   : in std_logic_vector(3 downto 0);
          i_rs1_data              : in std_logic_vector(31 downto 0);
          i_rs2_data              : in std_logic_vector(31 downto 0);
@@ -149,7 +149,7 @@ architecture rtl of core is
 
    component program_counter is
       port (
-         i_rst                   : in std_logic;
+         i_rst_n                 : in std_logic;
          i_clk                   : in std_logic;
          i_alu_result            : in std_logic_vector(31 downto 0);
          i_inst_addr_ctrl        : in std_logic;
@@ -161,7 +161,7 @@ architecture rtl of core is
 
    component instruction_memory is
       port (
-         i_rst                   : in std_logic;
+         i_rst_n                 : in std_logic;
          i_clk                   : in std_logic;
          i_instruction_addr      : in std_logic_vector(31 downto 0);
          o_instruction           : out std_logic_vector(31 downto 0)
@@ -169,7 +169,7 @@ architecture rtl of core is
    end component;
 
 
-   signal rst                    : std_logic;
+   signal rst_n                  : std_logic;
    signal clk                    : std_logic;
    signal alu_operand_1          : std_logic_vector(31 downto 0);
    signal alu_operand_2          : std_logic_vector(31 downto 0);
@@ -234,7 +234,7 @@ begin
 
    inst_control : component control
    port map (
-      i_rst                   => rst,
+      i_rst_n                 => rst_n,
       i_opcode                => opcode,
       i_func3                 => func3,
       i_func7                 => func7,
@@ -277,7 +277,7 @@ begin
 
    inst_ram_management : component ram_management
    port map (
-      i_rst                   => rst,
+      i_rst_n                 => rst_n,
       i_ram_management_ctrl   => ram_management_ctrl,
       i_rs1_data              => rs1_data,
       i_rs2_data              => rs2_data,
@@ -293,7 +293,7 @@ begin
 
    inst_program_counter : component program_counter
    port map (
-      i_rst                   => rst,
+      i_rst_n                 => rst_n,
       i_clk                   => clk,
       i_alu_result            => alu_result,
       i_pc_ctrl               => pc_ctrl,
@@ -304,13 +304,13 @@ begin
 
    inst_instruction_memory : component instruction_memory
    port map (
-      i_rst                   => rst,
+      i_rst_n                 => rst_n,
       i_clk                   => clk,
       i_instruction_addr      => instruction_addr,
       o_instruction           => instruction
    );
 
-   rst            <= i_rst;
+   rst_n          <= i_rst_n;
    clk            <= i_clk;
    data_from_ram  <= i_core_data_read;
 

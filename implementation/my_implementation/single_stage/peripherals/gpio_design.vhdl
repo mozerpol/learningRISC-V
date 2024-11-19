@@ -19,7 +19,7 @@ library riscpol_lib;
 
 entity gpio is
    port (
-      i_rst          : in std_logic;
+      i_rst_n        : in std_logic;
       i_clk          : in std_logic;
       i_gpio_wdata   : in std_logic_vector(31 downto 0); -- Why 32 bits if we're
       -- using only 8? Maybe it shoudl depend on constant and be generated
@@ -46,7 +46,7 @@ begin
    p_gpio : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
-       if (i_rst = '1') then
+       if (i_rst_n = '0') then
         reg_gpio_q <= (others => 'Z');
        else
          -- The C_MMIO_ADDR_GPIO constant describes which RAM address is mapped

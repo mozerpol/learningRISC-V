@@ -23,7 +23,7 @@ library control_lib;
 
 entity program_counter is
    port (
-      i_rst                : in std_logic;
+      i_rst_n              : in std_logic;
       i_clk                : in std_logic;
       i_alu_result         : in std_logic_vector(31 downto 0);
       i_pc_ctrl            : in std_logic_vector(1 downto 0);
@@ -41,9 +41,9 @@ begin
 
    o_pc_addr <= pc_addr_buff;
 
-   p_program_counter : process(i_rst, i_clk)
+   p_program_counter : process(i_rst_n, i_clk)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          pc_addr_buff   <= (others => '0');
       elsif (i_clk'event and i_clk = '1') then
          case i_pc_ctrl is
@@ -59,9 +59,9 @@ begin
       end if;
    end process p_program_counter;
 
-   p_instruction_address : process(i_rst, i_inst_addr_ctrl, i_alu_result, pc_addr_buff)
+   p_instruction_address : process(i_rst_n, i_inst_addr_ctrl, i_alu_result, pc_addr_buff)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_instruction_addr   <= (others => '0');
       else -- TODO maybe uses if-else
          case i_inst_addr_ctrl is

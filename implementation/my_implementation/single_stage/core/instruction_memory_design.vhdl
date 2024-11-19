@@ -20,7 +20,7 @@ library instruction_memory_lib;
 
 entity instruction_memory is
    port (
-      i_rst                : in std_logic;
+      i_rst_n              : in std_logic;
       i_clk                : in std_logic;
       i_instruction_addr   : in std_logic_vector(31 downto 0);
       o_instruction        : out std_logic_vector(31 downto 0)
@@ -31,9 +31,9 @@ architecture rtl of instruction_memory is
 
 begin
 
-   p_instruction_memory : process(i_clk, i_rst)
+   p_instruction_memory : process(i_clk, i_rst_n)
    begin
-      if (i_rst = '1') then
+      if (i_rst_n = '0') then
          o_instruction  <= C_CODE(0); -- The first instruction to execute is 
          -- loaded during the reset.
       elsif (i_clk = '1' and i_clk'event) then

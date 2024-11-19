@@ -26,7 +26,7 @@ library core_lib;
 
 entity riscpol is
    port (
-      i_rst                   : in std_logic;
+      i_rst_n                 : in std_logic;
       i_clk                   : in std_logic;
       io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
    );
@@ -38,7 +38,7 @@ architecture rtl of riscpol is
 
    component core is
       port (
-         i_rst                : in std_logic;
+         i_rst_n              : in std_logic;
          i_clk                : in std_logic;
          i_core_data_read     : in std_logic_vector(31 downto 0);
          o_core_data_write    : out std_logic_vector(31 downto 0);
@@ -87,7 +87,7 @@ architecture rtl of riscpol is
 
    component gpio is
       port (
-         i_rst                : in std_logic;
+         i_rst_n              : in std_logic;
          i_clk                : in std_logic;
          i_gpio_wdata         : in std_logic_vector(31 downto 0);
          i_gpio_we            : in std_logic;
@@ -108,7 +108,7 @@ architecture rtl of riscpol is
 
 
    -- General
-   signal rst                 : std_logic;
+   signal rst_n               : std_logic;
    signal clk                 : std_logic;
    -- MMIO
    signal s_mmio_we_ram       : std_logic;
@@ -135,7 +135,7 @@ begin
 
    inst_core        : component core
    port map (
-      i_rst                => rst,
+      i_rst_n              => rst_n,
       i_clk                => clk,
       i_core_data_read     => s_mmio_data,
       o_core_data_write    => s_core_data_write,
@@ -173,7 +173,7 @@ begin
    
    inst_gpio        : component gpio
    port map (
-    i_rst => rst,
+      i_rst_n              => rst_n,
       i_clk                => clk,
       i_gpio_wdata         => s_core_data_write,
       i_gpio_we            => s_mmio_we_gpio,
@@ -191,7 +191,7 @@ begin
 
 
    io_gpio  <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
-   rst      <= not(i_rst);
+   rst_n    <= (i_rst_n);
    clk      <= i_clk;
 
 

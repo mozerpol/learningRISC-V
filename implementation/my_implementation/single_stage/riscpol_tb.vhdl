@@ -27,7 +27,7 @@ architecture tb of riscpol_tb is
 
    component riscpol is
    port (
-      i_rst       : in std_logic;
+      i_rst_n     : in std_logic;
       i_clk       : in std_logic;
       io_gpio     : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
    );
@@ -36,7 +36,7 @@ architecture tb of riscpol_tb is
    -----------------------------------------------------------------------------
    -- SIGNALS AND CONSTANTS
    -----------------------------------------------------------------------------
-   signal rst_tb           : std_logic;
+   signal rst_n_tb         : std_logic;
    signal clk_tb           : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
@@ -160,7 +160,7 @@ begin
 
    inst_riscpol : component riscpol
    port map (
-      i_rst       => rst_tb,
+      i_rst_n     => rst_n_tb,
       i_clk       => clk_tb,
       io_gpio     => gpio_tb
    );
@@ -181,9 +181,9 @@ begin
       alias spy_cnt8bit is <<signal .riscpol_tb.inst_riscpol.inst_counter8bit.o_cnt8_q: 
                                   integer range 0 to C_COUNTER_8BIT_VALUE - 1>>;
    begin
-      rst_tb   <= '1';
+      rst_n_tb   <= '0';
       wait for 20 ns;
-      rst_tb   <= '0';     
+      rst_n_tb   <= '1';     
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
       -- The second delay is to execute the instruction, but its result is not
@@ -2589,9 +2589,9 @@ begin
       -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
-      rst_tb   <= '1';
+      rst_n_tb   <= '0';
       wait for 977 ns;
-      rst_tb   <= '0';
+      rst_n_tb   <= '1';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
       -- The second delay is to execute the instruction, but its result is not
