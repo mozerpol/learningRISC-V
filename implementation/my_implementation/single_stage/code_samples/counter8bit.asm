@@ -1,3 +1,5 @@
+# The machine code for these instructions below is in the file counter8bit.hex
+
 addi  x1,  x0,   2     # Delay purposes, short loop
 addi  x2,  x0,   0x212 # Delay purposes, long loop
 addi  x3,  x0,   1     # 1 = turn on the timer, 0 = turn off and reset the timer
