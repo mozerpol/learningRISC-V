@@ -41,29 +41,29 @@ begin
 
    
    o_gpio_q <= (others => 'Z') when i_gpio_re = '1' else 
-                reg_gpio_q when i_gpio_we = '1' else reg_gpio_q;
+               reg_gpio_q when i_gpio_we = '1' else reg_gpio_q;
 
    p_gpio : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
-       if (i_rst_n = '0') then
-        reg_gpio_q <= (others => 'Z');
-       else
-         -- The C_MMIO_ADDR_GPIO constant describes which RAM address is mapped
-         -- and used by the GPIO. To control GPIO, use the sw, sh, sb commands.
-         -- Example of assigning zeros to GPIO:
-         -- sb x0, 255(x0)
-         -- 255, because C_MMIO_ADDR_GPIO*4-1
-         -- To see more examples of GPIO usage, check out the tests in the 
-         -- riscpol_tb.vhdl file.
-         if (i_gpio_we = '1') then
-            -- Last C_NUMBER_OF_GPIO-1 bits from wdata vector are mapped
-            for i in 0 to C_NUMBER_OF_GPIO - 1 loop
-               reg_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
-            end loop;
-            reg_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0'); -- TODO: describe line
+         if (i_rst_n = '0') then
+            reg_gpio_q <= (others => 'Z');
+         else
+            -- The C_MMIO_ADDR_GPIO constant describes which RAM address is mapped
+            -- and used by the GPIO. To control GPIO, use the sw, sh, sb commands.
+            -- Example of assigning zeros to GPIO:
+            -- sb x0, 255(x0)
+            -- 255, because C_MMIO_ADDR_GPIO*4-1
+            -- To see more examples of GPIO usage, check out the tests in the 
+            -- riscpol_tb.vhdl file.
+            if (i_gpio_we = '1') then
+               -- Last C_NUMBER_OF_GPIO-1 bits from wdata vector are mapped
+               for i in 0 to C_NUMBER_OF_GPIO - 1 loop
+                  reg_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
+               end loop;
+               reg_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0'); -- TODO: describe line
+            end if;
          end if;
-       end if;
       end if;
    end process p_gpio;
 
