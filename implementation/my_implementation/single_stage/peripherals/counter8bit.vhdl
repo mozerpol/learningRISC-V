@@ -8,6 +8,7 @@ library riscpol_lib;
 
 entity counter8 is
  port(
+      i_rst_n           : in std_logic;
       i_clk             : in std_logic;
       i_cnt8_we         : in std_logic;
       i_cnt8_set_reset  : in std_logic;
@@ -24,21 +25,21 @@ architecture rtl of counter8 is
 begin
 
    -- TODO: make in one process
-   process (i_clk)
-   begin
-      if (i_clk'event and i_clk = '1') then
-         if (i_cnt8_we = '1' and i_cnt8_set_reset = '1') then
-            s_ce_latch <= '1';
-         elsif (i_cnt8_we = '1' and i_cnt8_set_reset = '0') then
-            s_ce_latch <= '0';
-         end if;
-      end if;
-   end process;
-
-   process (i_clk)
+   process (i_clk, i_rst_n)
       variable v_cnt : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
    begin
       if (i_clk'event and i_clk = '1') then
+         if (i_rst_n = '0') then
+            s_ce_latch <= '0';
+            v_cnt := 0;
+         else
+            if (i_cnt8_we = '1' and i_cnt8_set_reset = '1') then
+               s_ce_latch <= '1';
+            elsif (i_cnt8_we = '1' and i_cnt8_set_reset = '0') then
+               s_ce_latch <= '0';
+            end if;
+         end if;
+        
          if (s_ce_latch = '1') then
             if (v_cnt = C_COUNTER_8BIT_VALUE - 1) then
                v_cnt := 0;
@@ -47,10 +48,10 @@ begin
             end if;
          else
             v_cnt := 0;
-         end if;
+         end if;        
          o_cnt8_q <= v_cnt;
       end if;
-   end process;
-
+   end process;        
+        
 
 end architecture;

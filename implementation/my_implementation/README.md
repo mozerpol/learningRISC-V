@@ -63,7 +63,7 @@ There are two important rules for adding own instructions in *rom.vhdl* file:
 quartus,
 - [x] change vhdl to vhdl,
 - [x] change script to simulation_script,
-- [ ] fix GPIO, it's good to read from them :P
+- [x] fix GPIO, it's good to read from them :P
 - [x] fix tests, maybe after some clock cycles (second reset) can check the last
 instructions,
 - [x] clean gitignore,
@@ -72,6 +72,6 @@ instructions,
     License, etc.,
 - [ ] fix signal names,
 - [ ] fix flowchart,
-- [ ] change to negative reset,
+- [x] change to negative reset,
 - [ ] add a sample system memory map table like here: 
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
