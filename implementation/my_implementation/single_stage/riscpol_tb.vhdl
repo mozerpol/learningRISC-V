@@ -123,10 +123,10 @@ architecture tb of riscpol_tb is
    
    -- Check the value of GPIO
    procedure check_gpio(constant instruction    : in string;
-                        constant desired_value  : in std_logic_vector(31 downto 0);
+                        constant desired_value  : in std_logic_vector(7 downto 0);
                         signal test_point       : out integer) is
    begin
-      if (gpio_tb /= desired_value) then
+      if (to_integer(gpio_tb) /= to_integer(desired_value)) then
          echo("ERROR GPIO: " & instruction);
          echo("Test_point: " & integer'image(test_point+1));
          test_point <= test_point + 1;
@@ -181,6 +181,8 @@ begin
       alias spy_cnt8bit is <<signal .riscpol_tb.inst_riscpol.inst_counter8bit.o_cnt8_q: 
                                   integer range 0 to C_COUNTER_8BIT_VALUE - 1>>;
    begin
+    -- TODO: describe gpio_tb <= 'z'
+      gpio_tb(0) <= 'Z';
       rst_n_tb   <= '0';
       wait for 20 ns;
       rst_n_tb   <= '1';     
@@ -2325,49 +2327,49 @@ begin
                  desired_value  => 32x"00000099", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 32b"00000000", 
+                 desired_value  => 8b"00000000",
                  test_point     => set_test_point );            
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000001", 
+                 desired_value  => 8b"00000001", 
                  test_point     => set_test_point ); 
       check_gpio(instruction    => "sb    x2,  4(x6)",
-                 desired_value  => 32b"00000010", 
+                 desired_value  => 8b"00000010", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x3,  255(x0)",
-                 desired_value  => 32b"00000100", 
+                 desired_value  => 8b"00000100", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x4,  255(x0)",
-                 desired_value  => 32b"00001000", 
+                 desired_value  => 8b"00001000", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x5,  255(x0)",
-                 desired_value  => 32b"00001111", 
+                 desired_value  => 8b"00001111", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x7,  255(x0)",
-                 desired_value  => 32b"00011111", 
+                 desired_value  => 8b"00011111", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x8,  255(x0)",
-                 desired_value  => 32b"00101111", 
+                 desired_value  => 8b"00101111", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x9,  255(x0)",
-                 desired_value  => 32b"01001111", 
+                 desired_value  => 8b"01001111", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x10, 255(x0)",
-                 desired_value  => 32b"10001111", 
+                 desired_value  => 8b"10001111", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x11, 255(x0)",
-                 desired_value  => 32b"11111111", 
+                 desired_value  => 8b"11111111", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x12, 255(x0)",
-                 desired_value  => 32b"10000001", 
+                 desired_value  => 8b"10000001", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x13, 255(x0)",
-                 desired_value  => 32b"00011000", 
+                 desired_value  => 8b"00011000", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x14, 255(x0)",
-                 desired_value  => 32b"10011001", 
+                 desired_value  => 8b"10011001", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 32b"00000000", 
+                 desired_value  => 8b"00000000", 
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
@@ -2395,64 +2397,64 @@ begin
                  desired_value  => 32x"00000001", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000001", 
+                 desired_value  => 8b"00000001", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
       -- changes the GPIO state every 12 clock cycles.
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000010", 
+                 desired_value  => 8b"00000010", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000011", 
+                 desired_value  => 8b"00000011", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000100", 
+                 desired_value  => 8b"00000100", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000101", 
+                 desired_value  => 8b"00000101", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000110", 
+                 desired_value  => 8b"00000110", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00000111", 
+                 desired_value  => 8b"00000111", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001000", 
+                 desired_value  => 8b"00001000", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001001", 
+                 desired_value  => 8b"00001001", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001010", 
+                 desired_value  => 8b"00001010", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001011", 
+                 desired_value  => 8b"00001011", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001100", 
+                 desired_value  => 8b"00001100", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001101", 
+                 desired_value  => 8b"00001101", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001110", 
+                 desired_value  => 8b"00001110", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24;
       check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 32b"00001111", 
+                 desired_value  => 8b"00001111", 
                  test_point     => set_test_point );
       wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
       -- changes the GPIO state every 12 clock cycles.
@@ -2465,7 +2467,35 @@ begin
                  desired_value  => 32x"00000000", 
                  test_point     => set_test_point );
       check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 32b"00000000", 
+                 desired_value  => 8b"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   15",
+                 gpr            => spy_gpr(2), 
+                 desired_value  => 32x"0000000f", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   1",
+                 gpr            => spy_gpr(3), 
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
+      -- TODO: describe below
+      wait for C_CLK_PERIOD*25;
+      wait until rising_edge(clk_tb);
+      gpio_tb(0) <= '1';
+      -- lw    x1,  255(x0)
+      wait until rising_edge(clk_tb);
+      gpio_tb(0) <= 'Z';
+      -- bne   x1,  x3    -4
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      check_gpr( instruction    => "lw    x1,  255(x0)",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000001", 
+                 test_point     => set_test_point );
+      gpio_tb(0) <= 'Z';
+      -- beq   x1,  x0    loop27
+      wait until rising_edge(clk_tb);
+      check_gpio(instruction    => "sb    x2,  255(x0)",
+                 desired_value  => 8b"00001111", 
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
@@ -2619,11 +2649,10 @@ begin
          wait until rising_edge(clk_tb);
       end loop;
       check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 32b"00000000", 
-                 test_point     => set_test_point );
-
+                 desired_value  => 8b"00000000", 
+                 test_point     => set_test_point );             
       echo("Total errors: " & integer'image(set_test_point));
-      wait for 1 us;
+      wait for 100 ns;
       stop(0);
    end process p_tb;
 
