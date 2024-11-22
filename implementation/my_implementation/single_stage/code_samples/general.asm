@@ -702,9 +702,9 @@ sb    x13, 255(x0)     # gpio = 00011000
 sb    x14, 255(x0)     # gpio = 10011001
 sb    x0,  255(x0)     # gpio = 00000000
 ###################################
-##       Check the GPIOs        ##
+##       Check the GPIOs         ##
 ###################################
-addi  x1,  x0,   0     # The value x1 is assigned to GPIO
+addi  x1,  x0,   0     # The value x1 is assigned to the GPIO output
 addi  x2,  x0,   15    # The value x1 is compared to the value of x2. 15 = 1111
 addi  x3,  x0,   0     # The value of x3 is compared to the value of x4, this
                        # works as a delay loop. The x3 is incremented if is not
@@ -715,13 +715,26 @@ addi  x1,  x1,   1
 sb    x1,  255(x0)     # Assign the value of x1 to GPIO
 loop25:
 addi  x3,  x3,   1     # Delay loop
-bne   x3,  x4,   loop25# Is there enough delay?
-addi  x3,  x0,   0     # Yes, reset delay counter
-bne   x1,  x2,   loop26# Were all the GPIOs on? If not go to loop26; yes, all the
+bne   x3,  x4,   loop25# Is there enough delay? No: go to loop25
+addi  x3,  x0,   0     # Yes: reset delay counter
+bne   x1,  x2,   loop26# Were all the GPIOs on? No: go to loop26. Yes: all the
                        # GPIOs were turn on, reset all counters
 addi  x1,  x0,   0
 addi  x3,  x0,   0
-sb    x0,  255(x0)
+sb    x0,  255(x0)     # Turn off GPIOs
+
+addi  x2,  x0,   15     # Simulate GPIO output
+addi  x3,  x0,   1
+# Wait until input GPIO = 0, the lw command loads the value from GPIO into x1,
+# and the bne command compares x1 with x0. Inside loop27 there must be an
+# assignment gpio_tb(0) = 1
+loop27:
+lw    x1,  255(x0)
+# gpio_tb(0) <= '1';
+beq   x1,  x0    loop27
+
+# Set high state on three output GPIOs
+sb    x2,  255(x0)
 ###################################
 ##      Check Counter8bit        ##
 ###################################
@@ -746,9 +759,9 @@ addi  x0,  x0,   0     # nop
 addi  x0,  x0,   0     # nop
 # Check the timer for 212 clock cycles
 sb    x3,  251(x0)     # 1 = turn on the timer
-loop27:
+loop28:
 addi  x4,  x4,   1     # Long delay loop
-bne   x4,  x2,   loop27# Is there enough delay?
+bne   x4,  x2,   loop28# Is there enough delay?
 sb    x0,  251(x0)     # 0 = turn off the timer
 addi  x4,  x0,   0     # Reset delay loop
 # Read the counter value and save it in the x5 register
