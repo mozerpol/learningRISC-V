@@ -103,6 +103,7 @@ architecture rtl of riscpol is
          i_clk                : in std_logic;
          i_cnt8_we            : in std_logic;
          i_cnt8_set_reset     : in std_logic;
+         o_cnt8_overflow      : out std_logic;
          o_cnt8_q             : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
    );
    end component counter8;
@@ -127,6 +128,7 @@ architecture rtl of riscpol is
    signal s_ram_q             : std_logic_vector(31 downto 0);
    -- Counter 8bit
    signal s_cnt8_q            : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
+   signal s_cnt8_overflow     : std_logic;
    -- GPIO
    signal s_q_gpio            : std_logic_vector(31 downto 0);
 
@@ -188,6 +190,7 @@ begin
       i_clk                => clk,
       i_cnt8_we            => s_mmio_we_cnt8bit,
       i_cnt8_set_reset     => s_core_data_write(24),
+      o_cnt8_overflow      => s_cnt8_overflow,
       o_cnt8_q             => s_cnt8_q
    );
 
