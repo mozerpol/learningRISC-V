@@ -30,7 +30,7 @@ begin
 
    -- TODO: make in one process
    process (i_clk, i_rst_n)
-      variable v_cnt : integer range 0 to G_COUNTER_8BIT_VALUE - 1;
+      variable v_cnt : integer range 0 to G_COUNTER_8BIT_VALUE;
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
@@ -46,7 +46,7 @@ begin
          end if;
         
          if (s_ce_latch = '1') then
-            if (v_cnt = G_COUNTER_8BIT_VALUE - 1) then
+            if (v_cnt = G_COUNTER_8BIT_VALUE) then
                v_cnt := 0;
                o_cnt8_overflow <= '1';
             else
