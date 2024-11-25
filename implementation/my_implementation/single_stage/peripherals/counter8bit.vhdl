@@ -17,10 +17,11 @@ entity counter8 is
    );
 end entity counter8; -- TODO: change to counter8bit
 
+
 architecture rtl of counter8 is
 
 
-signal s_ce_latch : std_logic;
+   signal s_ce_latch : std_logic;
 
 
 begin
@@ -57,6 +58,6 @@ begin
       end if;
       o_cnt8_q <= v_cnt;
    end process;        
-        
+
 
 end architecture;

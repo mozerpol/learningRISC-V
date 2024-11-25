@@ -35,7 +35,7 @@ end gpio;
 architecture rtl of gpio is
 
 
-    signal reg_gpio_q : std_logic_vector(31 downto 0);
+   signal reg_gpio_q : std_logic_vector(31 downto 0);
 
 begin
 
