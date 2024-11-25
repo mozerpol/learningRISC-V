@@ -29,7 +29,9 @@ architecture tb of riscpol_tb is
    port (
       i_rst_n     : in std_logic;
       i_clk       : in std_logic;
-      io_gpio     : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0)
+      io_gpio     : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
+      i_rx        : in std_logic;
+      o_tx        : out std_logic
    );
    end component riscpol;
 
@@ -38,6 +40,8 @@ architecture tb of riscpol_tb is
    -----------------------------------------------------------------------------
    signal rst_n_tb         : std_logic;
    signal clk_tb           : std_logic;
+   signal rx_tb            : std_logic;
+   signal tx_tb            : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
    
@@ -162,7 +166,9 @@ begin
    port map (
       i_rst_n     => rst_n_tb,
       i_clk       => clk_tb,
-      io_gpio     => gpio_tb
+      io_gpio     => gpio_tb,
+      i_rx        => rx_tb,
+      o_tx        => tx_tb
    );
 
 
@@ -183,6 +189,7 @@ begin
    begin
     -- TODO: describe gpio_tb <= 'z'
       gpio_tb(0) <= 'Z';
+      rx_tb      <= '0';
       rst_n_tb   <= '0';
       wait for 20 ns;
       rst_n_tb   <= '1';     

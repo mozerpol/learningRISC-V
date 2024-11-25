@@ -20,6 +20,7 @@ library ram_lib;
 library gpio_lib;
 library counter8bit_lib;
 library mmio_lib;
+library uart_lib;
 library core_lib;
    use core_lib.all;
 
@@ -28,7 +29,9 @@ entity riscpol is
    port (
       i_rst_n                 : in std_logic;
       i_clk                   : in std_logic;
-      io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0)
+      io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
+      i_rx                    : in std_logic;
+      o_tx                    : out std_logic
    );
 end entity riscpol;
 
@@ -113,15 +116,15 @@ architecture rtl of riscpol is
    
    
    component uart is 
-   generic(
-      G_BAUD            : positive := C_BAUD;
-      G_FREQUENCY_MHZ   : positive := C_FREQUENCY_MHZ
-   ); port (
-      i_rst_n           : in std_logic;
-      i_clk             : in std_logic;
-      i_rx              : in std_logic;
-      o_tx              : out std_logic
-);
+      generic(
+         G_BAUD            : positive := C_BAUD;
+         G_FREQUENCY_MHZ   : positive := C_FREQUENCY_MHZ
+      ); port (
+         i_rst_n           : in std_logic;
+         i_clk             : in std_logic;
+         i_uart_rx         : in std_logic;
+         o_uart_tx         : out std_logic
+   );
    end component uart;
 
 
@@ -148,8 +151,8 @@ architecture rtl of riscpol is
    -- GPIO
    signal s_q_gpio            : std_logic_vector(31 downto 0);
    -- UART
-   signal s_rx                : std_logic;
-   signal s_tx                : std_logic;
+   signal s_uart_rx           : std_logic;
+   signal s_uart_tx           : std_logic;
 
 
 begin
@@ -217,12 +220,13 @@ begin
    port map (
       i_rst_n              => rst_n,
       i_clk                => clk,
-      i_rx                 => s_rx,
-      o_tx                 => s_tx
+      i_uart_rx            => s_uart_rx,
+      o_uart_tx            => s_uart_tx
    );
 
 
    io_gpio  <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
+   o_tx     <= s_uart_tx;
    rst_n    <= (i_rst_n);
    clk      <= i_clk;
 
