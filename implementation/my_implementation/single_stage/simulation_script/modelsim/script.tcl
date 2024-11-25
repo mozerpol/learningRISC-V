@@ -42,6 +42,10 @@ proc s_add_external_libs {} {
    set hdl_dir                "../../peripherals"
    set library_name           "mmio_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/mmio.vhdl
+   
+   set hdl_dir                "../../peripherals"
+   set library_name           "uart_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/uart.vhdl
 
    set hdl_dir                "../../core"
    set library_name           "alu_lib"
