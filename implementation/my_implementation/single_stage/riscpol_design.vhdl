@@ -98,6 +98,9 @@ architecture rtl of riscpol is
    
    
    component counter8 is
+      generic(
+         G_COUNTER_8BIT_VALUE : positive := C_COUNTER_8BIT_VALUE - 1 
+      );
       port(
          i_rst_n              : in std_logic;
          i_clk                : in std_logic;
@@ -109,11 +112,16 @@ architecture rtl of riscpol is
    end component counter8;
    
    
-   component uart is
-      port(
-         i_rst_n              : in std_logic;
-         i_clk                : in std_logic
-   );
+   component uart is 
+   generic(
+      G_BAUD            : positive := C_BAUD;
+      G_FREQUENCY_MHZ   : positive := C_FREQUENCY_MHZ
+   ); port (
+      i_rst_n           : in std_logic;
+      i_clk             : in std_logic;
+      i_rx              : in std_logic;
+      o_tx              : out std_logic
+);
    end component uart;
 
 
@@ -139,6 +147,9 @@ architecture rtl of riscpol is
    signal s_cnt8_overflow     : std_logic;
    -- GPIO
    signal s_q_gpio            : std_logic_vector(31 downto 0);
+   -- UART
+   signal s_rx                : std_logic;
+   signal s_tx                : std_logic;
 
 
 begin
@@ -205,7 +216,9 @@ begin
    inst_uart : component uart
    port map (
       i_rst_n              => rst_n,
-      i_clk                => clk
+      i_clk                => clk,
+      i_rx                 => s_rx,
+      o_tx                 => s_tx
    );
 
 

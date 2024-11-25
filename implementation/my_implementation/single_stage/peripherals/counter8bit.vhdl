@@ -7,14 +7,16 @@ library riscpol_lib;
 
 
 entity counter8 is
- port(
+   generic(
+      G_COUNTER_8BIT_VALUE : positive := C_COUNTER_8BIT_VALUE - 1 
+   ); port(
       i_rst_n           : in std_logic;
       i_clk             : in std_logic;
       i_cnt8_we         : in std_logic;
       i_cnt8_set_reset  : in std_logic;
       o_cnt8_overflow   : out std_logic;
       o_cnt8_q          : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
-   );
+);
 end entity counter8; -- TODO: change to counter8bit
 
 
@@ -28,7 +30,7 @@ begin
 
    -- TODO: make in one process
    process (i_clk, i_rst_n)
-      variable v_cnt : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
+      variable v_cnt : integer range 0 to G_COUNTER_8BIT_VALUE - 1;
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
@@ -44,7 +46,7 @@ begin
          end if;
         
          if (s_ce_latch = '1') then
-            if (v_cnt = C_COUNTER_8BIT_VALUE - 1) then
+            if (v_cnt = G_COUNTER_8BIT_VALUE - 1) then
                v_cnt := 0;
                o_cnt8_overflow <= '1';
             else
