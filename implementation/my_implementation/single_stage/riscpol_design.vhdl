@@ -107,6 +107,14 @@ architecture rtl of riscpol is
          o_cnt8_q             : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
    );
    end component counter8;
+   
+   
+   component uart is
+      port(
+         i_rst_n              : in std_logic;
+         i_clk                : in std_logic
+   );
+   end component uart;
 
 
    -- General
@@ -192,6 +200,12 @@ begin
       i_cnt8_set_reset     => s_core_data_write(24),
       o_cnt8_overflow      => s_cnt8_overflow,
       o_cnt8_q             => s_cnt8_q
+   );
+   
+   inst_uart : component uart
+   port map (
+      i_rst_n              => rst_n,
+      i_clk                => clk
    );
 
 
