@@ -35,6 +35,9 @@ package riscpol_pkg is
    -- the counter 8 bit count?
    
    constant C_NUMBER_OF_GPIO : integer := 8;   -- 
+   
+   constant C_FREQUENCY_MHZ : positive := 50;   -- 
+   constant C_BAUD : positive := 9600;   -- 
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
