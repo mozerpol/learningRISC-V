@@ -17,7 +17,7 @@ entity counter8 is
       o_cnt8_overflow   : out std_logic;
       o_cnt8_q          : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
 );
-end entity counter8; -- TODO: change to counter8bit
+end entity counter8; -- TODO: change to counter1, it's not 8 bit
 
 
 architecture rtl of counter8 is
