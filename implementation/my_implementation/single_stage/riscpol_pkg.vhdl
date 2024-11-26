@@ -31,13 +31,13 @@ package riscpol_pkg is
    -- GPIO. To know more about MMIO take a look at Wikipedia.
    constant C_MMIO_ADDR_CNT_8_BIT : integer := 63;   --
    
-   constant C_COUNTER_8BIT_VALUE : integer := 256;   -- Up to what value should 
+   constant C_COUNTER_8BIT_VALUE : integer := 512;   -- Up to what value should 
    -- the counter 8 bit count?
    
    constant C_NUMBER_OF_GPIO : integer := 8;   -- 
    
-   constant C_FREQUENCY_MHZ : positive := 50;   -- 
-   constant C_BAUD : positive := 9600;   -- 
+   constant C_FREQUENCY_MHZ : positive := 40_000_000;   -- 
+   constant C_BAUD : positive := 115200;   -- 
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
