@@ -120,10 +120,13 @@ architecture rtl of riscpol is
          G_BAUD            : positive := C_BAUD;
          G_FREQUENCY_MHZ   : positive := C_FREQUENCY_MHZ
       ); port (
-         i_rst_n           : in std_logic;
-         i_clk             : in std_logic;
-         i_uart_rx         : in std_logic;
-         o_uart_tx         : out std_logic
+      i_rst_n              : in std_logic;
+      i_clk                : in std_logic;
+      i_uart_data_to_send  : in std_logic_vector(31 downto 0);
+      i_uart_rx            : in std_logic;
+      i_uart_we            : in std_logic;
+      o_uart_received_data : out std_logic_vector(31 downto 0);
+      o_uart_tx            : out std_logic
    );
    end component uart;
 
@@ -153,6 +156,9 @@ architecture rtl of riscpol is
    -- UART
    signal s_uart_rx           : std_logic;
    signal s_uart_tx           : std_logic;
+   signal s_uart_data_to_send : std_logic_vector(31 downto 0);
+   signal s_uart_we           : std_logic;
+   signal s_uart_received_data: std_logic_vector(31 downto 0);
 
 
 begin
@@ -220,10 +226,12 @@ begin
    port map (
       i_rst_n              => rst_n,
       i_clk                => clk,
+      i_uart_data_to_send  => s_uart_data_to_send,
       i_uart_rx            => s_uart_rx,
+      i_uart_we            => s_uart_we,
+      o_uart_received_data => s_uart_received_data,
       o_uart_tx            => s_uart_tx
    );
-
 
    io_gpio  <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
    o_tx     <= s_uart_tx;
