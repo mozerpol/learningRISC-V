@@ -61,10 +61,12 @@ architecture rtl of riscpol is
          i_mmio_q_gpio        : in std_logic_vector(31 downto 0);
          i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
+         i_mmio_data_uart     : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
          o_mmio_re_gpio       : out std_logic;
          o_mmio_we_cnt8bit    : out std_logic;
+         o_mmio_we_uart       : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -140,6 +142,8 @@ architecture rtl of riscpol is
    signal s_mmio_re_gpio      : std_logic;
    signal s_mmio_we_cnt8bit   : std_logic;
    signal s_mmio_data         : std_logic_vector(31 downto 0);
+   signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
+   signal s_mmio_we_uart      : std_logic;
    -- Core
    signal s_core_data_write   : std_logic_vector(31 downto 0);
    signal s_core_write_enable : std_logic;
@@ -184,10 +188,12 @@ begin
       i_mmio_q_gpio        => "0000000000000000000000000000000" & io_gpio(0),
       i_mmio_q_cnt8        => s_cnt8_q,
       i_mmio_data_ram      => s_ram_q,
+      i_mmio_data_uart     => s_uart_received_data,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_re_gpio       => s_mmio_re_gpio,
       o_mmio_we_cnt8bit    => s_mmio_we_cnt8bit,
+      o_mmio_we_uart       => s_mmio_we_uart,
       o_mmio_data          => s_mmio_data
    );
    
