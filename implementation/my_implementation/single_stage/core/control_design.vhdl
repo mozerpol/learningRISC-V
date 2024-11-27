@@ -214,6 +214,9 @@ begin
                   o_pc_ctrl         <= C_INCREMENT_PC;
                   o_inst_addr_ctrl  <= C_INST_ADDR_PC;
                end if;
+            when C_OPCODE_ZEROS  =>
+                  o_inst_addr_ctrl  <= C_INST_ADDR_PC; 
+                  o_pc_ctrl         <= C_NOP;
             when others          =>
                o_pc_ctrl         <= C_INCREMENT_PC;
                o_inst_addr_ctrl  <= C_INST_ADDR_PC;

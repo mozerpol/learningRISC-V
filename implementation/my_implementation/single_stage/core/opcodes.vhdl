@@ -32,6 +32,7 @@ package opcodesPkg is
    ---- R-type ----
    constant C_OPCODE_OP       : std_logic_vector(6 downto 0) := "0110011";
    -- OP = ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+   constant C_OPCODE_ZEROS    : std_logic_vector(6 downto 0) := "0000000";
 
    --''''''''''''''''''''''--
    --      FUNC3 LOAD      --
