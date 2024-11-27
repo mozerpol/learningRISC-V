@@ -43,22 +43,22 @@ begin
             elsif (i_cnt8_we = '1' and i_cnt8_set_reset = '0') then
                s_ce_latch <= '0';
             end if;
-         end if;
         
-         if (s_ce_latch = '1') then
-            if (v_cnt = G_COUNTER_8BIT_VALUE) then
-               v_cnt := 0;
-               o_cnt8_overflow <= '1';
+            if (s_ce_latch = '1') then
+               if (v_cnt = G_COUNTER_8BIT_VALUE) then
+                  v_cnt := 0;
+                  o_cnt8_overflow <= '1';
+               else
+                  v_cnt := v_cnt + 1;
+                  o_cnt8_overflow <= '0';
+               end if;
             else
-               v_cnt := v_cnt + 1;
+               v_cnt := 0;
                o_cnt8_overflow <= '0';
             end if;
-         else
-            v_cnt := 0;
-            o_cnt8_overflow <= '0';
          end if;
+         o_cnt8_q <= v_cnt;
       end if;
-      o_cnt8_q <= v_cnt;
    end process;        
 
 
