@@ -44,7 +44,7 @@ architecture tb of riscpol_tb is
    signal tx_tb            : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
-   
+   constant C_WAIT_TIME    : time := real(C_FREQUENCY_MHZ)*(1.0/real(C_BAUD)) * ns;
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -157,6 +157,33 @@ architecture tb of riscpol_tb is
       end if;
       wait until rising_edge(clk_tb);
    end procedure;
+   
+   
+   -- Check uart
+   procedure check_uart( constant instruction    : in string;
+                         constant desired_value  : in std_logic_vector(7 downto 0);
+                         signal test_point       : out integer) is
+             constant C_WAIT_TIME    : time := 
+                                  real(C_FREQUENCY_MHZ)*(1.0/real(C_BAUD)) * ns;
+   begin
+      -- Check stop bit
+      if (tx_tb /= desired_value(0)) then
+         echo("ERROR: " & instruction);
+         test_point <= test_point + 1;
+      end if;
+      wait for C_WAIT_TIME;
+      -- Check data bits
+      if (tx_tb /= desired_value(1)) then
+         echo("ERROR: " & instruction);
+         test_point <= test_point + 1;
+      end if;
+      wait for C_WAIT_TIME;
+      if (tx_tb /= desired_value(2)) then
+         echo("ERROR: " & instruction);
+         test_point <= test_point + 1;
+      end if;
+      wait for C_WAIT_TIME;
+   end procedure;
 
 
 begin
@@ -185,8 +212,9 @@ begin
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
       alias spy_ram is <<signal .riscpol_tb.inst_riscpol.inst_ram.ram: ram_t >>;
       alias spy_cnt8bit is <<signal .riscpol_tb.inst_riscpol.inst_counter8bit.o_cnt8_q: 
-                                  integer range 0 to C_COUNTER_8BIT_VALUE - 1>>;
+                                  integer range 0 to C_COUNTER_8BIT_VALUE - 1>>;                                
    begin
+   
     -- TODO: describe gpio_tb <= 'z'
       gpio_tb(0) <= 'Z';
       rx_tb      <= '0';
@@ -2620,12 +2648,23 @@ begin
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"00000003", 
                  test_point     => set_test_point );
+      --------------------------UART--------------------------------------------
+      wait until rising_edge(clk_tb);
+      check_gpr( instruction    => "addi  x1,  x0,   0xAA",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_uart( instruction   => "sw    x1,  247(x0)",
+                  desired_value => 8b"00000000",
+                  test_point    => set_test_point );
+      
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
       -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
+      wait for 100 us;
       rst_n_tb   <= '0';
       wait for 977 ns;
       rst_n_tb   <= '1';
