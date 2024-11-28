@@ -52,17 +52,17 @@ architecture rtl of uart is
    signal s_cnt8_set_reset : std_logic;
    signal s_cnt8_overflow  : std_logic;
    signal s_cnt8_q         : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
-   type t_uart_state       is (start, stop, data, idle);
+   type t_uart_state       is (START, STOP, DATA, IDLE);
    signal uart_state       : t_uart_state;
    signal uart_buff_send   : std_logic_vector(31 downto 0);
-   signal sent_data_cnt    : integer range 0 to 6;
+   signal sent_data_cnt    : integer range 0 to 8;
 
 begin
--- (1/C_BAUD)*C_FREQUENCY_MHZ
+
 
    inst_counter : component counter8
    generic map (
-      G_COUNTER_8BIT_VALUE => 347 --G_FREQUENCY_MHZ*(1/G_BAUD)
+      G_COUNTER_8BIT_VALUE => positive(real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)))
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -77,34 +77,34 @@ begin
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
-            uart_state        <= idle;
+            uart_state        <= IDLE;
             s_cnt8_we         <= '0';
             uart_buff_send    <= (others => '0');
             sent_data_cnt     <= 0;
          else
             case (uart_state) is
 
-               when idle =>
+               when IDLE =>
 
                   o_uart_tx         <= '1';
                   if (i_uart_we = '1') then
-                     uart_state        <= start;
+                     uart_state        <= START;
                      uart_buff_send    <= i_uart_wdata;
                   end if;
 
-               when start =>
+               when START =>
 
                   o_uart_tx         <= '0';
-                  uart_state        <= data;
+                  uart_state        <= DATA;
                   s_cnt8_we         <= '1';
                   s_cnt8_set_reset  <= '1';
 
-               when data =>
+               when DATA =>
 
                   if (s_cnt8_overflow = '1') then
-                     if (sent_data_cnt = 6) then
+                     if (sent_data_cnt = 8) then
                         o_uart_tx         <= '1';
-                        uart_state        <= stop;
+                        uart_state        <= STOP;
                         sent_data_cnt     <= 0;
                      else
                         sent_data_cnt    <= sent_data_cnt + 1;
@@ -112,10 +112,10 @@ begin
                      end if;
                   end if;
 
-               when stop =>
+               when STOP =>
 
                   if (s_cnt8_overflow = '1') then
-                     uart_state        <= idle;
+                     uart_state        <= IDLE;
                      s_cnt8_set_reset  <= '0';
                   end if;
 
