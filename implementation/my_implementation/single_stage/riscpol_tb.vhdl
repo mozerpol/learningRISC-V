@@ -44,7 +44,7 @@ architecture tb of riscpol_tb is
    signal tx_tb            : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
-   constant C_WAIT_TIME    : time := real(C_FREQUENCY_MHZ)*(1.0/real(C_BAUD)) * ns;
+   constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ architecture tb of riscpol_tb is
                         signal test_point       : out integer) is
    begin
       if (gpr /= desired_value) then
-         echo("ERROR: " & instruction);
+         echo("ERROR GPR: " & instruction);
          echo("desired_value: " & to_string(desired_value)); 
          echo("gpr value: " & to_string(gpr));
          echo("Test_point: " & integer'image(test_point+1));
@@ -78,7 +78,7 @@ architecture tb of riscpol_tb is
                         signal test_point             : out integer ) is
    begin
       if (ram_byte /= desired_value_byte) then
-          echo("ERROR: " & instruction);
+          echo("ERROR RAM: " & instruction);
           echo("Test_point: " & integer'image(test_point+1));
           test_point <= test_point + 1;
       end if;
@@ -95,7 +95,7 @@ architecture tb of riscpol_tb is
    begin
       if (ram_byte_0 /= desired_value_byte_0 or 
           ram_byte_1 /= desired_value_byte_1) then
-            echo("ERROR: " & instruction);
+            echo("ERROR RAM: " & instruction);
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
       end if;
@@ -118,7 +118,7 @@ architecture tb of riscpol_tb is
           ram_byte_1 /= desired_value_byte_1 or
           ram_byte_2 /= desired_value_byte_2 or 
           ram_byte_3 /= desired_value_byte_3) then
-            echo("ERROR: " & instruction);
+            echo("ERROR RAM: " & instruction);
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
       end if;
@@ -149,40 +149,31 @@ architecture tb of riscpol_tb is
                             signal test_point       : out integer) is
    begin
       if (cnt_val /= desired_value) then
-         echo("ERROR: " & instruction);
+         echo("ERROR COUNTER: " & instruction);
          echo("Desired value:" & integer'image(desired_value));
          echo("Counter value:" & integer'image(cnt_val));
          echo("Test_point: " & integer'image(test_point+1));
          test_point <= test_point + 1;
       end if;
       wait until rising_edge(clk_tb);
-   end procedure;
-   
-   
-   -- Check uart
+   end procedure;  
+    
+   -- Check UART
    procedure check_uart( constant instruction    : in string;
                          constant desired_value  : in std_logic_vector(7 downto 0);
                          signal test_point       : out integer) is
-             constant C_WAIT_TIME    : time := 
-                                  real(C_FREQUENCY_MHZ)*(1.0/real(C_BAUD)) * ns;
+      constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
-      -- Check stop bit
-      if (tx_tb /= desired_value(0)) then
-         echo("ERROR: " & instruction);
-         test_point <= test_point + 1;
-      end if;
-      wait for C_WAIT_TIME;
-      -- Check data bits
-      if (tx_tb /= desired_value(1)) then
-         echo("ERROR: " & instruction);
-         test_point <= test_point + 1;
-      end if;
-      wait for C_WAIT_TIME;
-      if (tx_tb /= desired_value(2)) then
-         echo("ERROR: " & instruction);
-         test_point <= test_point + 1;
-      end if;
-      wait for C_WAIT_TIME;
+      wait for C_WAIT_TIME/2;
+      for i in desired_value'range loop
+         if (desired_value(i) = std_logic(tx_tb)) then
+            echo("ERROR UART: " & instruction);
+            echo("The bit does not match the expected value.");
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+         end if;
+         wait for C_WAIT_TIME;
+      end loop;
    end procedure;
 
 
@@ -2650,9 +2641,9 @@ begin
                  test_point     => set_test_point );
       --------------------------UART--------------------------------------------
       wait until rising_edge(clk_tb);
-      check_gpr( instruction    => "addi  x1,  x0,   0xAA",
+      check_gpr( instruction    => "addi  x1,  x0,   0xff",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000000", 
+                 desired_value  => 32x"000000ff", 
                  test_point     => set_test_point );
       check_uart( instruction   => "sw    x1,  247(x0)",
                   desired_value => 8b"00000000",
