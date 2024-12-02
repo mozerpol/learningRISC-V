@@ -160,19 +160,38 @@ architecture tb of riscpol_tb is
     
    -- Check UART
    procedure check_uart( constant instruction    : in string;
-                         constant desired_value  : in std_logic_vector(7 downto 0);
+                         constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
       wait for C_WAIT_TIME/2;
-      for i in desired_value'range loop
-         if (desired_value(i) = std_logic(tx_tb)) then
+      for j in 0 to 3 loop
+         -- Check start bit
+         if (std_logic(tx_tb) /= '0') then
             echo("ERROR UART: " & instruction);
             echo("The bit does not match the expected value.");
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
          end if;
-         wait for C_WAIT_TIME;
+         wait for C_WAIT_TIME/2;
+         -- Check data bits
+         for i in 0 to 7 loop
+            if (desired_value(i*j+i) /= std_logic(tx_tb)) then
+               echo("ERROR UART: " & instruction);
+               echo("The bit does not match the expected value.");
+               echo("Test_point: " & integer'image(test_point+1));
+               test_point <= test_point + 1;
+               wait for C_WAIT_TIME/2;
+            end if;
+         end loop;
+         -- Check stop bit
+         if (std_logic(tx_tb) /= '1') then
+            echo("ERROR UART: " & instruction);
+            echo("The bit does not match the expected value.");
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+         end if;
+         wait for C_WAIT_TIME/2;
       end loop;
    end procedure;
 
@@ -2641,13 +2660,50 @@ begin
                  test_point     => set_test_point );
       --------------------------UART--------------------------------------------
       wait until rising_edge(clk_tb);
-      check_gpr( instruction    => "addi  x1,  x0,   0xff",
+      
+      check_gpr( instruction    => "lui   x1,  2441",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"00989000", 
+                 test_point     => set_test_point );         
+      check_gpr( instruction    => "addi  x1,  x1,   1664",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"000000ff", 
+                 desired_value  => 32x"00989680", 
                  test_point     => set_test_point );
-      check_uart( instruction   => "sw    x1,  247(x0)",
-                  desired_value => 8b"00000000",
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lui   x4,  0x41505",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"41505000", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "ori   x4,  x4,   0x544",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"41505544", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x5,  x0,   0xD",
+                 gpr            => spy_gpr(5),
+                 desired_value  => 32x"0000000d", 
+                 test_point     => set_test_point );
+      wait for 6 us;
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );  
+      check_uart( instruction   => "sw    x4,  247(x0)",
+                  desired_value => 32x"41505544",
                   test_point    => set_test_point );
+                  
+                  -- TODO: dokonczyc pisanie testow jeszcze dla:
+-- lui   x6,  0xf         # Short loop purposes
+-- loop2:
+-- addi  x6,  x6,   -1
+-- bne   x6,  x0,   loop2 # Is there enough delay? No: go to loop2
+-- sw    x5,  247(x0)     # Send data by UART, a new line sign
+
+-- TODO: general.asm oraz hex nie ma tych testow z uart_test, wiec je dodac
+-- code.txt konczyl sie na linii 571(wlacznie) przed dodatniem testow, teraz sa
+-- dodane.
       
       ----------------------------------------------------------------
       --                                                            --
