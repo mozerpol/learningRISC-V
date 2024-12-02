@@ -143,7 +143,7 @@ add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/inst_uart/i_uart_we
 add wave         -group UART              -radix hex /riscpol_tb/inst_riscpol/inst_uart/o_uart_data
 add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/inst_uart/o_uart_tx
-add wave         -group UART              -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_state
+add wave         -group UART              -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_tx_state
 add wave         -group UART              -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_buff_send
 add wave         -group UART              -radix dec /riscpol_tb/inst_riscpol/inst_uart/sent_data_cnt
 add wave         -group UART -group COUNTER        -radix dec /riscpol_tb/inst_riscpol/inst_uart/inst_counter/G_COUNTER_8BIT_VALUE 
