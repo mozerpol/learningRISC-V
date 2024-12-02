@@ -23,7 +23,7 @@ entity uart is
    ); port (
       i_rst_n              : in std_logic;
       i_clk                : in std_logic;
-      i_uart_wdata         : in std_logic_vector(31 downto 0); -- TODO: should be 7 downto 0, because can send only 6 bits
+      i_uart_wdata         : in std_logic_vector(31 downto 0); -- TODO: make buffer and send the rest of 24 bits
       i_uart_rx            : in std_logic;
       i_uart_we            : in std_logic;
       o_uart_data          : out std_logic_vector(31 downto 0);
@@ -52,10 +52,11 @@ architecture rtl of uart is
    signal s_cnt8_set_reset : std_logic;
    signal s_cnt8_overflow  : std_logic;
    signal s_cnt8_q         : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
-   type t_uart_state       is (START, STOP, DATA, IDLE);
-   signal uart_state       : t_uart_state;
+   type t_uart_tx_state    is (START, STOP, DATA, IDLE);
+   signal uart_tx_state    : t_uart_tx_state;
    signal uart_buff_send   : std_logic_vector(31 downto 0);
    signal sent_data_cnt    : integer range 0 to 8;
+   signal send_bytes_cnt   : integer range 0 to 3;
 
 begin
 
@@ -77,25 +78,26 @@ begin
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
-            uart_state        <= IDLE;
+            uart_tx_state     <= IDLE;
             s_cnt8_we         <= '0';
             uart_buff_send    <= (others => '0');
             sent_data_cnt     <= 0;
+            send_bytes_cnt    <= 0;
          else
-            case (uart_state) is
+            case (uart_tx_state) is
 
                when IDLE =>
 
                   o_uart_tx         <= '1';
                   if (i_uart_we = '1') then
-                     uart_state        <= START;
+                     uart_tx_state     <= START;
                      uart_buff_send    <= i_uart_wdata;
                   end if;
 
                when START =>
 
                   o_uart_tx         <= '0';
-                  uart_state        <= DATA;
+                  uart_tx_state     <= DATA;
                   s_cnt8_we         <= '1';
                   s_cnt8_set_reset  <= '1';
 
@@ -104,7 +106,7 @@ begin
                   if (s_cnt8_overflow = '1') then
                      if (sent_data_cnt = 8) then
                         o_uart_tx         <= '1';
-                        uart_state        <= STOP;
+                        uart_tx_state     <= STOP;
                         sent_data_cnt     <= 0;
                      else
                         sent_data_cnt    <= sent_data_cnt + 1;
@@ -115,8 +117,17 @@ begin
                when STOP =>
 
                   if (s_cnt8_overflow = '1') then
-                     uart_state        <= IDLE;
-                     s_cnt8_set_reset  <= '0';
+                     if (send_bytes_cnt = 3) then
+                        send_bytes_cnt    <= 0;
+                        uart_tx_state     <= IDLE;
+                        s_cnt8_set_reset  <= '0';
+                     else
+                        send_bytes_cnt    <= send_bytes_cnt + 1;
+                        uart_tx_state     <= DATA;
+                        o_uart_tx         <= '0';
+                        uart_buff_send    <= uart_buff_send(7 downto 0) & 
+                                             uart_buff_send(31 downto 8);
+                     end if;
                   end if;
 
                when others =>
