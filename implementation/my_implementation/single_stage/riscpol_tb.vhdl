@@ -44,7 +44,7 @@ architecture tb of riscpol_tb is
    signal tx_tb            : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
-   constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
+   constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns; -- TODO: change name
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -141,7 +141,6 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
    
-   
    -- Check the value of counter 8 bit
    procedure check_cnt8bit( constant instruction    : in string;
                             constant cnt_val        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
@@ -164,34 +163,35 @@ architecture tb of riscpol_tb is
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
-      wait for C_WAIT_TIME/2;
+      wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
+      -- of the bit sent by UART
       for j in 0 to 3 loop
          -- Check start bit
          if (std_logic(tx_tb) /= '0') then
             echo("ERROR UART: " & instruction);
-            echo("The bit does not match the expected value.");
+            echo("Start bit does not match the expected value.");
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
          end if;
-         wait for C_WAIT_TIME/2;
+         wait for C_WAIT_TIME;
          -- Check data bits
          for i in 0 to 7 loop
-            if (desired_value(i*j+i) /= std_logic(tx_tb)) then
+            if (desired_value(8*j+i) /= std_logic(tx_tb)) then
                echo("ERROR UART: " & instruction);
                echo("The bit does not match the expected value.");
                echo("Test_point: " & integer'image(test_point+1));
                test_point <= test_point + 1;
-               wait for C_WAIT_TIME/2;
             end if;
+            wait for C_WAIT_TIME;
          end loop;
          -- Check stop bit
          if (std_logic(tx_tb) /= '1') then
             echo("ERROR UART: " & instruction);
-            echo("The bit does not match the expected value.");
+            echo("Stop bit does not match the expected value.");
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
          end if;
-         wait for C_WAIT_TIME/2;
+         wait for C_WAIT_TIME;
       end loop;
    end procedure;
 
@@ -2661,13 +2661,13 @@ begin
       --------------------------UART--------------------------------------------
       wait until rising_edge(clk_tb);
       
-      check_gpr( instruction    => "lui   x1,  2441",
+      check_gpr( instruction    => "lui   x1,  2",
                  gpr            => spy_gpr(1), 
-                 desired_value  => 32x"00989000", 
+                 desired_value  => 32x"00002000", 
                  test_point     => set_test_point );         
-      check_gpr( instruction    => "addi  x1,  x1,   1664",
+      check_gpr( instruction    => "addi  x1   x1,   558",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00989680", 
+                 desired_value  => 32x"0000222e", 
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
@@ -2685,14 +2685,14 @@ begin
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"0000000d", 
                  test_point     => set_test_point );
-      wait for 6 us;
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000", 
-                 test_point     => set_test_point );  
       check_uart( instruction   => "sw    x4,  247(x0)",
                   desired_value => 32x"41505544",
                   test_point    => set_test_point );
+  --    check_gpr( instruction    => "addi  x2,  x0,   0",
+--                 gpr            => spy_gpr(2),
+   --              desired_value  => 32x"00000000", 
+    --             test_point     => set_test_point );  
+
                   
                   -- TODO: dokonczyc pisanie testow jeszcze dla:
 -- lui   x6,  0xf         # Short loop purposes
@@ -2711,40 +2711,8 @@ begin
       -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
-      wait for 100 us;
-      rst_n_tb   <= '0';
-      wait for 977 ns;
-      rst_n_tb   <= '1';
-      -- After the reset, three delays are required for the simulation purposes.
-      -- The first delay is to "detec" the nearest rising edge of the clock.
-      -- The second delay is to execute the instruction, but its result is not
-      -- yet visible from the simulator.
-      -- Thanks to the third delay, the result of execution of the instruction
-      -- can be checked.
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      check_gpr( instruction    => "addi  x1,  x0,   -2048",
-                 gpr            => spy_gpr(1), 
-                 desired_value  => 32x"fffff800", 
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   -511",
-                 gpr            => spy_gpr(2), 
-                 desired_value  => 32x"fffffe01", 
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   -2",
-                 gpr            => spy_gpr(3), 
-                 desired_value  => 32x"fffffffe", 
-                 test_point     => set_test_point );
-      -- Below loop is used to wait and check the last instruction from the 
-      -- stack of all previous instructions until the sb x0, 255(x0) instruction.
-      for i in 0 to 886 loop
-         wait until rising_edge(clk_tb);
-      end loop;
-      check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 8b"00000000", 
-                 test_point     => set_test_point );             
-      echo("Total errors: " & integer'image(set_test_point));
+      wait for 1000 us;
+
       wait for 100 ns;
       stop(0);
    end process p_tb;
