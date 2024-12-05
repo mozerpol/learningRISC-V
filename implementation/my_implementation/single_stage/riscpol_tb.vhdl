@@ -2699,20 +2699,67 @@ begin
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000", 
                  test_point     => set_test_point );  
+                 
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );  
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );  
+      check_gpr( instruction    => "addi  x0,  x0,   0",
+                 gpr            => spy_gpr(0),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );
+      check_uart( instruction   => "sw    x5,  247(x0)",
+                  desired_value => 32x"0000000d",
+                  test_point    => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );  
 
-
--- TODO: general.asm oraz hex nie ma tych testow z uart_test, wiec je dodac
--- code.txt konczyl sie na linii 571(wlacznie) przed dodatniem testow, teraz sa
--- dodane.
-      
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
       -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
-      wait for 1000 us;
-
+      wait for 100 us;
+      rst_n_tb   <= '0';
+      wait for 977 ns;
+      rst_n_tb   <= '1';
+      -- After the reset, three delays are required for the simulation purposes.
+      -- The first delay is to "detec" the nearest rising edge of the clock.
+      -- The second delay is to execute the instruction, but its result is not
+      -- yet visible from the simulator.
+      -- Thanks to the third delay, the result of execution of the instruction
+      -- can be checked.
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      check_gpr( instruction    => "addi  x1,  x0,   -2048",
+                 gpr            => spy_gpr(1), 
+                 desired_value  => 32x"fffff800", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   -511",
+                 gpr            => spy_gpr(2), 
+                 desired_value  => 32x"fffffe01", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   -2",
+                 gpr            => spy_gpr(3), 
+                 desired_value  => 32x"fffffffe", 
+                 test_point     => set_test_point );
+      -- Below loop is used to wait and check the last instruction from the 
+      -- stack of all previous instructions until the sb x0, 255(x0) instruction.
+      for i in 0 to 886 loop
+         wait until rising_edge(clk_tb);
+      end loop;
+      check_gpio(instruction    => "sb    x0,  255(x0)",
+                 desired_value  => 8b"00000000", 
+                 test_point     => set_test_point );             
+      echo("Total errors: " & integer'image(set_test_point));
       wait for 100 ns;
       stop(0);
    end process p_tb;
