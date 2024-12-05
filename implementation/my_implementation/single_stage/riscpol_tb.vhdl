@@ -162,6 +162,8 @@ architecture tb of riscpol_tb is
                          constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
+      alias foo is << signal .riscpol_tb.inst_riscpol.inst_uart.inst_counter.
+                              o_cnt8_overflow : std_logic >>;
    begin
       wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
       -- of the bit sent by UART
@@ -191,7 +193,12 @@ architecture tb of riscpol_tb is
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
          end if;
-         wait for C_WAIT_TIME;
+         if (j = 3) then -- Wait until the end of UART data sending (because 
+            -- there was delay C_WAIT_TIME/2 at the beginning).
+            wait until rising_edge(foo);
+         else
+            wait for C_WAIT_TIME;
+         end if;
       end loop;
    end procedure;
 
@@ -2665,9 +2672,9 @@ begin
                  gpr            => spy_gpr(1), 
                  desired_value  => 32x"00002000", 
                  test_point     => set_test_point );         
-      check_gpr( instruction    => "addi  x1   x1,   558",
+      check_gpr( instruction    => "addi  x1   x1,   0x1FC",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"0000222e", 
+                 desired_value  => 32x"000021fc", 
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
@@ -2688,18 +2695,11 @@ begin
       check_uart( instruction   => "sw    x4,  247(x0)",
                   desired_value => 32x"41505544",
                   test_point    => set_test_point );
-  --    check_gpr( instruction    => "addi  x2,  x0,   0",
---                 gpr            => spy_gpr(2),
-   --              desired_value  => 32x"00000000", 
-    --             test_point     => set_test_point );  
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000", 
+                 test_point     => set_test_point );  
 
-                  
-                  -- TODO: dokonczyc pisanie testow jeszcze dla:
--- lui   x6,  0xf         # Short loop purposes
--- loop2:
--- addi  x6,  x6,   -1
--- bne   x6,  x0,   loop2 # Is there enough delay? No: go to loop2
--- sw    x5,  247(x0)     # Send data by UART, a new line sign
 
 -- TODO: general.asm oraz hex nie ma tych testow z uart_test, wiec je dodac
 -- code.txt konczyl sie na linii 571(wlacznie) przed dodatniem testow, teraz sa
