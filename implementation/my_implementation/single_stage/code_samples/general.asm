@@ -772,6 +772,29 @@ addi  x0,  x0,   0     # nop
 lw    x5,  251(x0)     # Read the counter value and save it in the x5 register
 sb    x0,  251(x0)     # 0 = turn off the timer
 
+###################################
+##         Check UART tx         ##
+###################################
+lui   x1,  0x2
+addi  x1   x1,   0x1FC # Loop purposes, x1 = 8700, 0x21FC
+addi  x2,  x0,   0     # Loop purposes
+lui   x4,  0x41505     # Load upper 20 bits
+ori   x4,  x4,   0x544 # Load lower 12 bits, x4 = 0x41505544, ascii = DUPA
+addi  x5,  x0,   0xD   # New line sign
+sw    x4,  247(x0)     # Send data by UART from x4 reg, ascii = DUPA
+loop29:
+addi  x2,  x2,   1     # Increment x2
+bne   x1,  x2,   loop29# Is there enough delay? No: go to loop29
+addi  x2,  x0,   0     # Reset x2
+nop
+nop
+nop
+sw    x5,  247(x0)     # Send data by UART, a new line sign
+loop30:
+addi  x2,  x2,   1     # Increment x2
+bne   x1,  x2,   loop30 # Is there enough delay? No: go to loop30
+addi  x2,  x0,   0     # Reset x2
+
 ####################################
 ##  Check behaviour after reset   ##
 ####################################
