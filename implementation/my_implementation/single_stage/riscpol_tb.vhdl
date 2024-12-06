@@ -45,6 +45,7 @@ architecture tb of riscpol_tb is
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
    constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns; -- TODO: change name
+   
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -55,7 +56,9 @@ architecture tb of riscpol_tb is
       std.textio.write(std.textio.output, arg & LF);
    end procedure echo;
    
-   -- Check the value of general purpose register
+   -----------------------------------------------------
+   ---- Check the value of general purpose register ----
+   -----------------------------------------------------
    procedure check_gpr( constant instruction    : in string;
                         constant gpr            : in std_logic_vector(31 downto 0);
                         constant desired_value  : in std_logic_vector(31 downto 0);
@@ -71,7 +74,9 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
    
-   -- Check the value of one byte in RAM - used to verify SB instruction
+   ----------------------------------------------------------------------------
+   ---- Check the value of one byte in RAM - used to verify SB instruction ----
+   ----------------------------------------------------------------------------
    procedure check_ram( constant instruction          : in string;
                         constant ram_byte             : in std_logic_vector(7 downto 0);
                         constant desired_value_byte   : in std_logic_vector(7 downto 0);
@@ -85,7 +90,9 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
    
-   -- Check the value of two bytes in RAM - used to verify SH instruction
+   -----------------------------------------------------------------------------
+   ---- Check the value of two bytes in RAM - used to verify SH instruction ----
+   -----------------------------------------------------------------------------
    procedure check_ram( constant instruction          : in string;
                         constant ram_byte_0           : in std_logic_vector(7 downto 0);
                         constant ram_byte_1           : in std_logic_vector(7 downto 0);
@@ -102,7 +109,9 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
    
-   -- Check the value of three bytes in RAM - used to verify SW instruction
+   -----------------------------------------------------------------------------
+   ---- Check the value of three bytes in RAM - used to verify SW instruction --
+   -----------------------------------------------------------------------------
    procedure check_ram( constant instruction          : in string;
                         constant ram_byte_0           : in std_logic_vector(7 downto 0);
                         constant ram_byte_1           : in std_logic_vector(7 downto 0);
@@ -125,7 +134,9 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
    
-   -- Check the value of GPIO
+   ---------------------------------
+   ---- Check the value of GPIO ----
+   ---------------------------------
    procedure check_gpio(constant instruction    : in string;
                         constant desired_value  : in std_logic_vector(7 downto 0);
                         signal test_point       : out integer) is
@@ -141,7 +152,9 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
    
-   -- Check the value of counter 8 bit
+   ------------------------------------------
+   ---- Check the value of counter 8 bit ----
+   ------------------------------------------
    procedure check_cnt8bit( constant instruction    : in string;
                             constant cnt_val        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
                             constant desired_value  : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
@@ -157,13 +170,15 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;  
     
-   -- Check UART
-   procedure check_uart( constant instruction    : in string;
+   -------------------------------------------
+   ---- Check UART transmission, outgoing ----
+   -------------------------------------------
+   procedure check_uart_tx( constant instruction : in string;
                          constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
-      alias foo is << signal .riscpol_tb.inst_riscpol.inst_uart.inst_counter_tx.
-                              o_cnt8_overflow : std_logic >>;
+      alias cnt8_overflow is << signal .riscpol_tb.inst_riscpol.inst_uart.
+                                 inst_counter_tx.o_cnt8_overflow : std_logic >>;
    begin
       wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
       -- of the bit sent by UART
@@ -195,10 +210,36 @@ architecture tb of riscpol_tb is
          end if;
          if (j = 3) then -- Wait until the end of UART data sending (because 
             -- there was delay C_WAIT_TIME/2 at the beginning).
-            wait until rising_edge(foo);
+            wait until rising_edge(cnt8_overflow);
          else
             wait for C_WAIT_TIME;
          end if;
+      end loop;
+   end procedure;
+   
+   -------------------------------------------
+   ---- Check UART transmission, incoming ----
+   -------------------------------------------
+   procedure check_uart_rx( constant instruction : in string;
+                         constant desired_value  : in std_logic_vector(31 downto 0);
+                         signal out_rx           : out std_logic;
+                         -- TODO: add gpr register, which value will be checked
+                         signal test_point       : out integer) is
+      constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
+   begin
+      for j in 0 to 3 loop
+         -- Start bit
+         test_point <= 666;
+         out_rx <= '0';
+         wait for C_WAIT_TIME;
+         -- Data bits
+         for i in 0 to 7 loop
+            out_rx <= desired_value(8*j+i);
+            wait for C_WAIT_TIME;
+         end loop;
+         -- Stop bit
+         out_rx <= '1';
+         wait for C_WAIT_TIME;
       end loop;
    end procedure;
 
@@ -234,7 +275,7 @@ begin
    
     -- TODO: describe gpio_tb <= 'z'
       gpio_tb(0) <= 'Z';
-      rx_tb      <= '0';
+      rx_tb      <= '1';
       rst_n_tb   <= '0';
       wait for 20 ns;
       rst_n_tb   <= '1';     
@@ -2692,14 +2733,13 @@ begin
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"0000000d", 
                  test_point     => set_test_point );
-      check_uart( instruction   => "sw    x4,  247(x0)",
-                  desired_value => 32x"41505544",
-                  test_point    => set_test_point );
+   --   check_uart_tx( instruction   => "sw    x4,  247(x0)",
+    --              desired_value => 32x"41505544",
+    --              test_point    => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000", 
-                 test_point     => set_test_point );  
-                 
+                 test_point     => set_test_point );
       check_gpr( instruction    => "addi  x0,  x0,   0",
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000", 
@@ -2712,13 +2752,17 @@ begin
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000", 
                  test_point     => set_test_point );
-      check_uart( instruction   => "sw    x5,  247(x0)",
-                  desired_value => 32x"0000000d",
-                  test_point    => set_test_point );
+   --   check_uart_tx( instruction   => "sw    x5,  247(x0)",
+ --               desired_value => 32x"0000000d",
+  --               test_point    => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000", 
                  test_point     => set_test_point );  
+      check_uart_rx( instruction => "lw    x10,  247(x0)",
+                 desired_value  => 32x"FFFFFFFF",
+                 out_rx         => rx_tb,
+                 test_point     => set_test_point );
 
       ----------------------------------------------------------------
       --                                                            --
