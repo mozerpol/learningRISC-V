@@ -162,7 +162,7 @@ architecture tb of riscpol_tb is
                          constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
-      alias foo is << signal .riscpol_tb.inst_riscpol.inst_uart.inst_counter.
+      alias foo is << signal .riscpol_tb.inst_riscpol.inst_uart.inst_counter_tx.
                               o_cnt8_overflow : std_logic >>;
    begin
       wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
