@@ -48,7 +48,7 @@ architecture rtl of uart is
    );
    end component counter8;
 
-   
+
    -- General
    type t_uart_states         is (START, STOP, DATA, IDLE);
    -- Transmit purposes
@@ -67,7 +67,8 @@ architecture rtl of uart is
    signal s_cnt8_set_reset_rx : std_logic;
    signal s_cnt8_overflow_rx  : std_logic;
    signal uart_buff_rx        : std_logic_vector(31 downto 0);
-   
+   signal bit_cnt_rx          : integer range 0 to 8;
+   signal byte_cnt_rx         : integer range 0 to 3;
 
 begin
 
@@ -148,16 +149,17 @@ begin
                      -- All 32 bits must be sent, so shift the buffer and send
                      -- the next byte, until byte_cnt_tx = 3.
                      else
+
                         byte_cnt_tx       <= byte_cnt_tx + 1;
                         uart_state_tx     <= DATA;
                         o_uart_tx         <= '0';
-                        uart_buff_tx      <= uart_buff_tx(7 downto 0) & 
+                        uart_buff_tx      <= uart_buff_tx(7 downto 0) &
                                              uart_buff_tx(31 downto 8);
                      end if;
                   end if;
 
                when others =>
-               
+
                   uart_state_tx     <= IDLE;
                   s_cnt8_we_tx      <= '0';
                   uart_buff_tx      <= (others => '0');
@@ -171,24 +173,46 @@ begin
 
 
    p_rx : process (i_clk)
+      variable rx_start_counter  : integer range 0 to positive((
+                                 real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)))/2.0);
+      constant C_MAX_VALUE       : integer := positive((
+                                 real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)))/2.0);
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
             uart_state_rx     <= IDLE;
          else
-            case (uart_state_tx) is
+            case (uart_state_rx) is
 
                when IDLE   =>
 
-                  if (i_uart_re = '1') then
-
+                  if (i_uart_rx = '0') then
+                     if (rx_start_counter = C_MAX_VALUE) then
+                        rx_start_counter     := 0;
+                        uart_state_rx        <= DATA;
+                        s_cnt8_we_rx         <= '1';
+                        s_cnt8_set_reset_rx  <= '1';
+                     else
+                        rx_start_counter  := rx_start_counter + 1;
+                     end if;
+                  else
+                     rx_start_counter  := 0;
                   end if;
 
                when START  =>
 
-               
+
                when DATA   =>
 
+                  if (s_cnt8_overflow_rx = '1') then
+                     if (bit_cnt_rx = 8) then
+                        uart_state_rx     <= STOP;
+                        bit_cnt_rx        <= 0;
+                     else
+                        bit_cnt_rx        <= bit_cnt_tx + 1;
+                        uart_buff_rx(0)      <= i_uart_rx;
+                     end if;
+                  end if;
 
                when STOP   =>
 
