@@ -70,6 +70,7 @@ architecture rtl of uart is
    signal bit_cnt_rx          : integer range 0 to 8;
    signal byte_cnt_rx         : integer range 0 to 3;
 
+
 begin
 
 
@@ -149,7 +150,6 @@ begin
                      -- All 32 bits must be sent, so shift the buffer and send
                      -- the next byte, until byte_cnt_tx = 3.
                      else
-
                         byte_cnt_tx       <= byte_cnt_tx + 1;
                         uart_state_tx     <= DATA;
                         o_uart_tx         <= '0';
@@ -180,7 +180,13 @@ begin
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
-            uart_state_rx     <= IDLE;
+            uart_state_rx        <= IDLE;
+            uart_buff_rx         <= (others => '0');
+            rx_start_counter     := 0;
+            s_cnt8_we_rx         <= '0';
+            s_cnt8_set_reset_rx  <= '0';
+            bit_cnt_rx           <= 0;
+            o_uart_data          <= (others => '0');
          else
             case (uart_state_rx) is
 
@@ -192,6 +198,7 @@ begin
                         uart_state_rx        <= DATA;
                         s_cnt8_we_rx         <= '1';
                         s_cnt8_set_reset_rx  <= '1';
+                        uart_buff_rx         <= (others => '0');
                      else
                         rx_start_counter  := rx_start_counter + 1;
                      end if;
@@ -201,7 +208,6 @@ begin
 
                when START  =>
 
-
                when DATA   =>
 
                   if (s_cnt8_overflow_rx = '1') then
@@ -209,16 +215,21 @@ begin
                         uart_state_rx     <= STOP;
                         bit_cnt_rx        <= 0;
                      else
-                        bit_cnt_rx        <= bit_cnt_tx + 1;
-                        uart_buff_rx(0)      <= i_uart_rx;
+                        bit_cnt_rx        <= bit_cnt_rx + 1;
+                        uart_buff_rx      <= i_uart_rx & uart_buff_rx(31 downto 1);
                      end if;
                   end if;
 
                when STOP   =>
 
+                  if (s_cnt8_overflow_rx = '1') then
+                     s_cnt8_we_rx         <= '0';
+                     s_cnt8_set_reset_rx  <= '0';
+                     uart_state_rx        <= IDLE;
+                     o_uart_data          <= uart_buff_rx;
+                  end if;
 
                when others =>
-
 
             end case;
          end if;
