@@ -222,12 +222,13 @@ architecture tb of riscpol_tb is
    -------------------------------------------
    procedure check_uart_rx( constant instruction : in string;
                          constant desired_value  : in std_logic_vector(31 downto 0);
+                         constant number_bytes_to_send : in integer;
                          signal out_rx           : out std_logic;
                          -- TODO: add gpr register, which value will be checked
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
-      for j in 0 to 3 loop
+      for j in 0 to number_bytes_to_send-1 loop
          -- Start bit
          test_point <= 666;
          out_rx <= '0';
@@ -2760,7 +2761,8 @@ begin
                  desired_value  => 32x"00000000", 
                  test_point     => set_test_point );  
       check_uart_rx( instruction => "lw    x10,  247(x0)",
-                 desired_value  => 32x"FFFFFFFF",
+                 desired_value  => 32x"AABBCCDD",
+                 number_bytes_to_send => 4,
                  out_rx         => rx_tb,
                  test_point     => set_test_point );
 
