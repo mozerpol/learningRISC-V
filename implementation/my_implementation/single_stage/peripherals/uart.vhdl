@@ -200,7 +200,7 @@ begin
                         s_cnt8_set_reset_rx  <= '1';
                         uart_buff_rx         <= (others => '0');
                      else
-                        rx_start_counter  := rx_start_counter + 1;
+                        rx_start_counter     := rx_start_counter + 1;
                      end if;
                   else
                      rx_start_counter  := 0;
@@ -212,21 +212,23 @@ begin
 
                   if (s_cnt8_overflow_rx = '1') then
                      if (bit_cnt_rx = 8) then
-                        uart_state_rx     <= STOP;
-                        bit_cnt_rx        <= 0;
+                        uart_state_rx        <= STOP;
+                        bit_cnt_rx           <= 0;
                      else
-                        bit_cnt_rx        <= bit_cnt_rx + 1;
-                        uart_buff_rx      <= i_uart_rx & uart_buff_rx(31 downto 1);
+                        bit_cnt_rx           <= bit_cnt_rx + 1;
+                        uart_buff_rx         <= i_uart_rx & uart_buff_rx(31 downto 1);
                      end if;
                   end if;
 
                when STOP   =>
 
-                  if (s_cnt8_overflow_rx = '1') then
-                     s_cnt8_we_rx         <= '0';
-                     s_cnt8_set_reset_rx  <= '0';
-                     uart_state_rx        <= IDLE;
-                     o_uart_data          <= uart_buff_rx;
+                  if (rx_start_counter = C_MAX_VALUE) then
+                     uart_state_rx           <= IDLE;
+                     o_uart_data(7 downto 0) <= uart_buff_rx(31 downto 24);
+                     s_cnt8_set_reset_rx     <= '0';
+                     rx_start_counter        := 0;
+                  else
+                     rx_start_counter        := rx_start_counter + 1;
                   end if;
 
                when others =>
