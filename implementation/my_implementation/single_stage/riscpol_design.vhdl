@@ -185,7 +185,7 @@ begin
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
-      i_mmio_q_gpio        => "0000000000000000000000000000000" & io_gpio(0),
+      i_mmio_q_gpio        => "0000000000000000000000000000000" & io_gpio(0), -- TODO: wtf???
       i_mmio_q_cnt8        => s_cnt8_q,
       i_mmio_data_ram      => s_ram_q,
       i_mmio_data_uart     => s_uart_data,
