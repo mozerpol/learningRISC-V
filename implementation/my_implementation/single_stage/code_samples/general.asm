@@ -795,6 +795,18 @@ addi  x2,  x2,   1     # Increment x2
 bne   x1,  x2,   loop30 # Is there enough delay? No: go to loop30
 addi  x2,  x0,   0     # Reset x2
 
+###################################
+##         Check UART rx         ##
+###################################
+lui   x1,  1
+addi  x1,  x1,   -800  # Delay purposes, 0xce0 = 3296
+addi  x2,  x0,   0
+loop31:
+addi  x2,  x2,   1     # Increment x2
+bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
+addi  x2,  x0,   0     # Reset counter
+lw    x10, 247(x0)     # Save incoming data on UART in x10 reg
+
 ####################################
 ##  Check behaviour after reset   ##
 ####################################
