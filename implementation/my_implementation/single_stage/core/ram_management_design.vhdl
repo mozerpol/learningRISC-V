@@ -115,8 +115,10 @@ begin
                   o_byte_enable        <= "0000";
                end if;
             when C_LB | C_LH | C_LW | C_LBU | C_LHU =>
+               o_data         <= (others => '0');
                o_write_enable <= C_READ_ENABLE;
                o_waddr        <= 0;
+               o_byte_enable  <= (others => '0');
                if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
                   o_raddr        <= 0;
                else
