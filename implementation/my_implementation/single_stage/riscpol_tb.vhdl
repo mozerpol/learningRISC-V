@@ -275,6 +275,7 @@ begin
       gpio_tb(0) <= 'Z';
       rx_tb      <= '1';
       rst_n_tb   <= '0';
+      -- wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
       wait for 20 ns;
       rst_n_tb   <= '1';
       -- After the reset, three delays are required for the simulation purposes.
