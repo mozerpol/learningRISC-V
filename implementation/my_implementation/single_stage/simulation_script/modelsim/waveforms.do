@@ -74,6 +74,7 @@ add wave         -group INSTRUCTION_MEM   -radix hex /riscpol_tb/inst_riscpol/in
 add wave         -group PC                -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/i_alu_result
 add wave         -group PC                -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/i_pc_ctrl
 add wave         -group PC                -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/i_inst_addr_ctrl
+add wave         -group PC                -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/pc_addr_buff
 add wave         -group PC                -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/o_pc_addr
 add wave         -group PC                -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/o_instruction_addr
 
