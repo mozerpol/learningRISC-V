@@ -59,299 +59,706 @@ begin
       wait until rising_edge(clk_tb);
       report "===========GPR===========: " & to_string(spy_gpr(1));
 
-      ------------------
-      --    I-type    --
-      ------------------
-      -- addi  x1,  x0,   -1    # x1 = 0xffffffff
-      if (spy_gpr(1) /= 32x"ffffffff") then
-         report "ERROR: addi  x1, x0, -1";
+      ----------------------------------------------------------------
+      --                                                            --
+      -- addi, slti, sltiu, xori, ori, andi, addi, slli, srli, srai --
+      --                                                            --
+      ----------------------------------------------------------------
+      -- addi  x1,  x0,   -2048 # x1 = 0xfffff800
+      if (spy_gpr(1) /= 32x"fffff800") then
+         report "ERROR: addi  x1,  x0,   -2048";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x2,  x0,   -2    # x2 = 0xfffffffe
-      if (spy_gpr(2) /= 32x"fffffffe") then
-         report "ERROR: addi x2, x0, -2";
+      -- addi  x2,  x0,   -511  # x2 = 0xfffffe01
+      if (spy_gpr(2) /= 32x"fffffe01") then
+         report "ERROR: addi  x2,  x0,   -511";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x3,  x0,   -1    # x3 = 0xffffffff
-      if (spy_gpr(3) /= 32x"ffffffff") then
-         report "ERROR: addi x3, x0, -1";
+      -- addi  x3,  x0,   -2    # x3 = 0xfffffffe
+      if (spy_gpr(3) /= 32x"fffffffe") then
+         report "ERROR: addi  x3,  x0,   -2";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x3,  x3,   2     # x3 = 0x00000001
-      if (spy_gpr(3) /= 32x"00000001") then
-         report "ERROR: addi x3, x3, 2";
+      -- addi  x4,  x0,   0     # x4 = 0x00000000
+      if (spy_gpr(4) /= 32x"00000000") then
+         report "ERROR: addi  x4,  x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x4,  x0,   2047  # x4 = 0x000007ff
-      if (spy_gpr(4) /= 32x"000007ff") then
-         report "ERROR: x4, x0, 2047";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x5,  x0,   -2048 # x5 = 0xfffff800
-      if (spy_gpr(5) /= 32x"fffff800") then
-         report "ERROR: addi x5, x0, -2048";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- slti  x5,  x5,   0     # x5 = 0x00000001
+      -- addi  x5,  x0,   1     # x5 = 0x00000001
       if (spy_gpr(5) /= 32x"00000001") then
-         report "ERROR: slti x5, x5, 0";
+         report "ERROR: addi  x5,  x0,   1";
       end if;
       wait until rising_edge(clk_tb);
-      -- slti  x6,  x2,   2     # x6 = 0x00000001
-      if (spy_gpr(6) /= 32x"00000001") then
-         report "ERROR: slti x6, x2, 2";
+      -- addi  x6,  x0,   511   # x6 = 0x000001ff
+      if (spy_gpr(6) /= 32x"000001ff") then
+         report "ERROR: addi  x6,  x0,   511";
       end if;
       wait until rising_edge(clk_tb);
-      -- slti  x7,  x6,   -2    # x7 = 0x00000000
-      if (spy_gpr(7) /= 32x"00000000") then
-         report "ERROR: slti x7, x6, -2";
+      -- addi  x7,  x0,   2047  # x7 = 0x000007ff
+      if (spy_gpr(7) /= 32x"000007ff") then
+         report "ERROR: addi  x7,  x0,   2047";
       end if;
       wait until rising_edge(clk_tb);
-      -- slti  x8,  x4,   1     # x8 = 0x00000000
-      if (spy_gpr(8) /= 32x"00000000") then
-         report "ERROR: slti x8, x4, 1";
+      -- addi  x1,  x7,   -2048 # x1 = 0xffffffff
+      if (spy_gpr(1) /= 32x"ffffffff") then
+         report "ERROR: addi  x1,  x7,   -2048";
       end if;
       wait until rising_edge(clk_tb);
-      -- slti  x9,  x3,  2047   # x11 = 0x00000001
-      if (spy_gpr(9) /= 32x"00000001") then
-         report "ERROR: slti x9, x3, 2047";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- slti  x10, x3,  -2048  # x12 = 0x00000000
-      if (spy_gpr(10) /= 32x"00000000") then
-         report "ERROR: slti x10, x3, -2048";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- sltiu x11, x11, 0      # x11 = 0x00000000
-      if (spy_gpr(11) /= 32x"00000000") then
-         report "ERROR: sltiu x11, x11, 0";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- sltiu x12, x4,  2      # x12 = 0x00000000
-      if (spy_gpr(12) /= 32x"00000000") then
-         report "ERROR: sltiu x12, x4, 2";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- sltiu x13, x4,  -2     # x13 = 0x00000001
-      if (spy_gpr(13) /= 32x"00000001") then
-         report "ERROR: sltiu x13, x4, -2";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- sltiu x14, x5,  2047   # x14 = 0x00000001
-      if (spy_gpr(14) /= 32x"00000001") then
-         report "ERROR: sltiu x14, x5, 2047";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- sltiu x15, x5,  -2048  # x15 = 0x00000001
-      if (spy_gpr(15) /= 32x"00000001") then
-         report "ERROR: x15, x5, -2048";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- xori  x16, x1,  0      # x16 = 0xffffffff
-      if (spy_gpr(16) /= 32x"ffffffff") then
-         report "xori x16, x1, 0";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- xori  x17, x1,  1      # x17 = 0xfffffffe
-      if (spy_gpr(17) /= 32x"fffffffe") then
-         report "xori x17, x1, 1";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- xori  x18, x4,  21     # x18 = 0x000007ea
-      if (spy_gpr(18) /= 32x"000007ea") then
-         report "ERROR: xori x18, x4, 21";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- xori  x19, x4,  -21    # x19 = 0xfffff814
-      if (spy_gpr(19) /= 32x"fffff814") then
-         report "ERROR: xori x19, x4, -21";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- xori  x20, x4,  2047   # x20 = 0x00000000
-      if (spy_gpr(20) /= 32x"00000000") then
-         report "ERROR: xori x20, x4, 2047";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- xori  x21, x4,  -2048  # x21 = 0xffffffff
-      if (spy_gpr(21) /= 32x"ffffffff") then
-         report "ERROR: xori x21, x4, -2048";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- ori   x22, x4,  0      # x22 = 0x000007ff
-      if (spy_gpr(22) /= 32x"000007ff") then
-         report "ERR2OR: ori x22, x4, 0";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- ori   x23, x3,  1      # x23 = 0x00000001
-      if (spy_gpr(23) /= 32x"00000001") then
-         report "ERROR: ori x23, x3, 1";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- ori   x24, x3,  21     # x24 = 0x00000015
-      if (spy_gpr(24) /= 32x"00000015") then
-         report "ERROR: ori x24, x3, 21";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- ori   x25, x4,  -21    # x25 = 0xffffffff 
-      if (spy_gpr(25) /= 32x"ffffffff") then
-         report "ERROR: ori x25, x4, -21";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- ori   x26, x4,  2047   # x26 = 0x000007ff
-      if (spy_gpr(26) /= 32x"000007ff") then
-         report "ERROR: ori x26, x4, 2047";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- ori   x27, x4,  -2048  # x27 = 0xffffffff
-      if (spy_gpr(27) /= 32x"ffffffff") then
-         report "ERROR: ori x27, x4, -2048";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- andi  x28, x4,  0      # x28 = 0x00000000
-      if (spy_gpr(28) /= 32x"00000000") then
-         report "ERROR: andi x28, x4, 0";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- andi  x29, x4,  1      # x29 = 0x00000001
-      if (spy_gpr(29) /= 32x"00000001") then
-         report "ERROR: andi x29, x4, 1";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- andi  x30, x4,  21     # x30 = 0x00000015
-      if (spy_gpr(30) /= 32x"00000015") then
-         report "ERROR: andi x30, x4, 21";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- andi  x31, x4,  -21    # x31 = 0x000007eb
-      if (spy_gpr(31) /= 32x"000007eb") then
-         report "ERROR: andi x31, x4, -21";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- andi  x1,  x4,  2047   # x1 = 0x000007ff
-      if (spy_gpr(1) /= 32x"000007ff") then
-         report "ERROR: andi x1, x4, 2047";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- andi  x2,  x4,  -2048  # x2 = 0x00000000
+      -- addi  x2,  x6,   -511  # x2 = 0x00000000
       if (spy_gpr(2) /= 32x"00000000") then
-         report "ERROR: andi x2, x4, -2048";
+         report "ERROR: addi  x2,  x6,   -511";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x3,  x2,  0      # x3 = 0x00000000
-      if (spy_gpr(3) /= 32x"00000000") then
-         report "ERROR: addi x3, x2, 0";
-      end if;
-      wait until rising_edge(clk_tb);
-      -- addi  x3,  x2,  -1     # x3 = 0xffffffff
+      -- addi  x3,  x5,   -2    # x3 = 0xffffffff
       if (spy_gpr(3) /= 32x"ffffffff") then
-         report "ERROR: addi x3, x2, -1";
+         report "ERROR: addi  x3,  x5,   -2";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x4,  x1,  21     # x4 = 0x00000814
-      if (spy_gpr(4) /= 32x"00000814") then
-         report "ERROR: addi x4, x1, 21";
+      -- addi  x4,  x4,   0     # x4 = 0x00000000
+      if (spy_gpr(4) /= 32x"00000000") then
+         report "ERROR: addi  x4,  x4,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x5,  x1,  2047   # x5 = 0x00000ffe
-      if (spy_gpr(5) /= 32x"00000ffe") then
-         report "ERROR: addi x5, x1, 2047";
+      -- addi  x5,  x3,   1     # x5 = 0x00000000
+      if (spy_gpr(5) /= 32x"00000000") then
+         report "ERROR: addi  x5,  x3,   1";
       end if;
       wait until rising_edge(clk_tb);
-      -- addi  x6,  x1,  -2048  # x6 = 0xffffffff
-      if (spy_gpr(6) /= 32x"ffffffff") then
-         report "ERROR: addi x6, x1, -2048";
+      -- addi  x6,  x2,   511   # x6 = 0x000001ff
+      if (spy_gpr(6) /= 32x"000001ff") then
+         report "ERROR: addi  x6,  x2,   511";
       end if;
       wait until rising_edge(clk_tb);
-      -- slli  x7,  x2,  0      # x7 = 0x00000000
-      if (spy_gpr(7) /= 32x"00000000") then
-         report "ERROR: slli x7, x2, 0";
+      -- addi  x7,  x1,   2047  # x7 = 0x000007fe
+      if (spy_gpr(7) /= 32x"000007fe") then
+         report "ERROR: addi  x7,  x1,   2047";
       end if;
       wait until rising_edge(clk_tb);
-      -- slli  x8,  x2,  1      # x8 = 0x00000000
+      -- addi  x1,  x1,   2047  # x1 = 0x000007fe
+      if (spy_gpr(1) /= 32x"000007fe") then
+         report "ERROR: addi  x1,  x1,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- addi  x1,  x1,   -2048 # x1 = 0xfffffffe
+      if (spy_gpr(1) /= 32x"fffffffe") then
+         report "ERROR: addi  x1,  x1,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x8,  x0,   -2048 # x8 = 0x00000000
       if (spy_gpr(8) /= 32x"00000000") then
-         report "ERROR: slli x8, x2, 1";
+         report "ERROR: slti  x8,  x0,   -2048";
       end if;
       wait until rising_edge(clk_tb);
-      -- slli  x9,  x29, 1      # x9 = 0x00000002
-      if (spy_gpr(9) /= 32x"000000002") then
-         report "ERROR: slli x9, x29, 1";
+      -- slti  x9,  x0,   -511  # x9 = 0x00000000
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: slti  x9,  x0,   -511";
       end if;
       wait until rising_edge(clk_tb);
-      -- slli  x10, x29, 31     # x10 = 0x80000000
-      if (spy_gpr(10) /= 32x"80000000") then
-         report "ERROR: slli x10, x29, 31";
+      -- slti  x10, x0,   -2    # x10 = 0x00000000
+      if (spy_gpr(10) /= 32x"00000000") then
+         report "ERROR: slti  x10, x0,   -2";
       end if;
       wait until rising_edge(clk_tb);
-      -- slli  x9,  x9,  1      # x9 = 0x00000004
-      if (spy_gpr(9) /= 32x"00000004") then
-         report "ERROR: slli x9, x9, 1";
+      -- slti  x11, x0,   0     # x11 = 0x00000000
+      if (spy_gpr(11) /= 32x"00000000") then
+         report "ERROR: slti  x11, x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- slli  x11, x27, 31     # x11 = 0x80000000
-      if (spy_gpr(11) /= 32x"80000000") then
-         report "ERROR: slli x11, x27, 31";
+      -- slti  x12, x0,   1     # x12 = 0x00000001
+      if (spy_gpr(12) /= 32x"00000001") then
+         report "ERROR: slti  x12, x0,   1";
       end if;
       wait until rising_edge(clk_tb);
-      -- srli  x12, x2,  0      # x12 = 0x00000000
-      if (spy_gpr(12) /= 32x"00000000") then
-         report "ERROR: srli x12, x2, 0";
+      -- slti  x13, x0,   511   # x13 = 0x00000001
+      if (spy_gpr(13) /= 32x"00000001") then
+         report "ERROR: slti  x13, x0,   511";
       end if;
       wait until rising_edge(clk_tb);
-      -- srli  x13, x2,  1      # x13 = 0x00000000
+      -- slti  x14, x0,   2047  # x14 = 0x00000001
+      if (spy_gpr(14) /= 32x"00000001") then
+         report "ERROR: slti  x14, x0,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x8,  x7,   -2048 # x8 = 0x00000000
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: slti  x8,  x7,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x9,  x1,   -511  # x9 = 0x00000000
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: slti  x9,  x1,   -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x10, x12,  -2    # x10 = 0x00000000
+      if (spy_gpr(10) /= 32x"00000000") then
+         report "ERROR: slti  x10, x12,  -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x11, x11,  0     # x11 = 0x00000000
+      if (spy_gpr(11) /= 32x"00000000") then
+         report "ERROR: slti  x11, x11,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x12, x10,  1     # x12 = 0x00000001
+      if (spy_gpr(12) /= 32x"00000001") then
+         report "ERROR: slti  x12, x10,  1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x13, x6,   511   # x13 = 0x00000000
       if (spy_gpr(13) /= 32x"00000000") then
-         report "ERROR: srli x13, x2, 1";
+         report "ERROR: slti  x13, x6,   511";
       end if;
       wait until rising_edge(clk_tb);
-      -- srli  x14, x29, 1      # x14 = 0x00000000
+      -- slti  x14, x9,   2047  # x14 = 0x00000001
+      if (spy_gpr(14) /= 32x"00000001") then
+         report "ERROR: slti  x14, x9,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x14, x14,  2047  # x14 = 0x00000001
+      if (spy_gpr(14) /= 32x"00000001") then
+         report "ERROR: slti  x14, x14,  2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slti  x14, x14,  -2048 # x14 = 0x00000000
       if (spy_gpr(14) /= 32x"00000000") then
-         report "ERROR: srli x14, x29, 1";
+         report "ERROR: slti  x14, x14,  -2048";
       end if;
       wait until rising_edge(clk_tb);
-      -- srli  x15, x29, 31     # x15 = 0x00000000
-      if (spy_gpr(15) /= 32x"00000000") then
-         report "ERROR: srli x15, x29, 31";
+      -- sltiu x15, x0,   -2048 # x15 = 0x00000001
+      if (spy_gpr(15) /= 32x"00000001") then
+         report "ERROR: sltiu x15, x0,   -2048";
       end if;
       wait until rising_edge(clk_tb);
-      -- srli  x16, x16, 1      # x16 = 0x7fffffff
-      if (spy_gpr(16) /= 32x"7fffffff") then
-         report "ERROR: srli x16, x16, 1";
+      -- sltiu x16, x0,   -511  # x16 = 0x00000001
+      if (spy_gpr(16) /= 32x"00000001") then
+         report "ERROR: sltiu x16, x0,   -511";
       end if;
       wait until rising_edge(clk_tb);
-      -- srli  x17, x27, 31     # x17 = 0x00000001
+      -- sltiu x17, x0,   -2    # x17 = 0x00000001
       if (spy_gpr(17) /= 32x"00000001") then
-         report "ERROR: srli x17, x27, 31";
+         report "ERROR: sltiu x17, x0,   -2";
       end if;
       wait until rising_edge(clk_tb);
-      -- srai  x18, x2, 0       # x18 = 0x00000000
+      -- sltiu x18, x0,   0     # x18 = 0x00000000
       if (spy_gpr(18) /= 32x"00000000") then
-         report "ERROR: srai x18, x2, 0";
+         report "ERROR: sltiu x18, x0,   0";
       end if;
       wait until rising_edge(clk_tb);
-      -- srai  x19, x2, 1       # x19 = 0x00000000
+      -- sltiu x19, x0,   1     # x19 = 0x00000001
+      if (spy_gpr(19) /= 32x"00000001") then
+         report "ERROR: sltiu x19, x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x20, x0,   511   # x20 = 0x00000001
+      if (spy_gpr(20) /= 32x"00000001") then
+         report "ERROR: sltiu x20, x0,   511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x21, x0,   2047  # x21 = 0x00000001
+      if (spy_gpr(21) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x0,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x15, x7,   -2048 # x15 = 0x00000001
+      if (spy_gpr(15) /= 32x"00000001") then
+         report "ERROR: sltiu x15, x7,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x16, x1,   -511  # x16 = 0x00000000
+      if (spy_gpr(16) /= 32x"00000000") then
+         report "ERROR: sltiu x16, x1,   -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x17, x19,  -2    # x17 = 0x00000001
+      if (spy_gpr(17) /= 32x"00000001") then
+         report "ERROR: sltiu x17, x19,  -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x18, x18,  0     # x18 = 0x00000000
+      if (spy_gpr(18) /= 32x"00000000") then
+         report "ERROR: sltiu x18, x18,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x19, x17,  1     # x19 = 0x00000000
       if (spy_gpr(19) /= 32x"00000000") then
-         report "ERROR: srai x19, x2, 1";
+         report "ERROR: sltiu x19, x17,  1";
       end if;
       wait until rising_edge(clk_tb);
-      -- srai  x20, x1, 1       # x20 = 0x000003ff
-      if (spy_gpr(20) /= 32x"000003ff") then
-         report "ERROR: srai x20, x1, 1";
+      -- sltiu x20, x6,   511   # x20 = 0x00000000
+      if (spy_gpr(20) /= 32x"00000000") then
+         report "ERROR: sltiu x20, x6,   511";
       end if;
       wait until rising_edge(clk_tb);
-      -- srai  x21, x1, 31      # x21 = 0x00000000
-      if (spy_gpr(21) /= 32x"00000000") then
-         report "ERROR: srai x21, x1, 31";
+      -- sltiu x21, x15,  2047  # x21 = 0x00000001
+      if (spy_gpr(21) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x15,  2047";
       end if;
       wait until rising_edge(clk_tb);
-      -- srai  x22, x3, 1       # x22 = 0xffffffff
+      -- sltiu x21, x21,  2047  # x21 = 0x00000001
+      if (spy_gpr(21) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x21,  2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- sltiu x21, x21,  -2048 # x21 = 0x00000001
+      if (spy_gpr(21) /= 32x"00000001") then
+         report "ERROR: sltiu x21, x21,  -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x22, x0,   -2048 # x22 = 0xfffff800
+      if (spy_gpr(22) /= 32x"fffff800") then
+         report "ERROR: xori  x22, x0,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x23, x0,   -511  # x23 = 0xfffffe01
+      if (spy_gpr(23) /= 32x"fffffe01") then
+         report "ERROR: xori  x23, x0,   -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x24, x0,   -2    # x24 = 0xfffffffe
+      if (spy_gpr(24) /= 32x"fffffffe") then
+         report "ERROR: xori  x24, x0,   -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x25, x0,   0     # x25 = 0x00000000
+      if (spy_gpr(25) /= 32x"00000000") then
+         report "ERROR: xori  x25, x0,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x26, x0,   1     # x26 = 0x00000001
+      if (spy_gpr(26) /= 32x"00000001") then
+         report "ERROR: xori  x26, x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x27, x0,   511   # x27 = 0x000001ff
+      if (spy_gpr(27) /= 32x"000001ff") then
+         report "ERROR: xori  x27, x0,   511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x0,   2047  # x28 = 0x000007ff
+      if (spy_gpr(28) /= 32x"000007ff") then
+         report "ERROR: xori  x28, x0,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x22, x28,  -2048 # x22 = 0xffffffff
       if (spy_gpr(22) /= 32x"ffffffff") then
-         report "ERROR: srai x22, x3, 1";
+         report "ERROR: xori  x22, x28,  -2048";
       end if;
       wait until rising_edge(clk_tb);
-      -- srai  x23, x3, 31      # z23 = 0xffffffff
-      if (spy_gpr(23) /= 32x"ffffffff") then
-         report "ERROR: srai x23, x3, 31";
+      -- xori  x23, x27,  -511  # x23 = 0xfffffffe
+      if (spy_gpr(23) /= 32x"fffffffe") then
+         report "ERROR: xori  x23, x27,  -511";
       end if;
       wait until rising_edge(clk_tb);
+      -- xori  x24, x26,  -2    # x24 = 0xffffffff
+      if (spy_gpr(24) /= 32x"ffffffff") then
+         report "ERROR: xori  x24, x26,  -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x25, x25,  0     # x25 = 0x00000000
+      if (spy_gpr(25) /= 32x"00000000") then
+         report "ERROR: xori  x25, x25,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x26, x24,  1     # x26 = 0xfffffffe
+      if (spy_gpr(26) /= 32x"fffffffe") then
+         report "ERROR: xori  x26, x24,  1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x27, x23,  511   # x27 = 0xfffffe01
+      if (spy_gpr(27) /= 32x"fffffe01") then
+         report "ERROR: xori  x27, x23,  511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x22,  2047  # x28 = 0xfffff800
+      if (spy_gpr(28) /= 32x"fffff800") then
+         report "ERROR: xori  x28, x22,  2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x28,  2047  # x28 = 0xffffffff
+      if (spy_gpr(28) /= 32x"ffffffff") then
+         report "ERROR: xori  x28, x28,  2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- xori  x28, x28,  -2048 # x28 = 0x000007ff
+      if (spy_gpr(28) /= 32x"000007ff") then
+         report "ERROR: xori  x28, x28,  -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x29, x0,   -2048 # x29 = 0xfffff800
+      if (spy_gpr(29) /= 32x"fffff800") then
+         report "ERROR: ori   x29, x0,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x30, x0,   -511  # x30 = 0xfffffe01
+      if (spy_gpr(30) /= 32x"fffffe01") then
+         report "ERROR: ori   x30, x0,   -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x31, x0,   -2    # x31 = 0xfffffffe
+      if (spy_gpr(31) /= 32x"fffffffe") then
+         report "ERROR: ori   x31, x0,   -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x1,  x0,   0     # x1 = 0x00000000
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: ori   x1,  x0,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x2,  x0,   1     # x2 = 0x00000001
+      if (spy_gpr(2) /= 32x"00000001") then
+         report "ERROR: ori   x2,  x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x3,  x0,   511   # x3 = 0x000001ff
+      if (spy_gpr(3) /= 32x"000001ff") then
+         report "ERROR: ori   x3,  x0,   511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x4,  x0,   2047  # x4 = 0x000007ff
+      if (spy_gpr(4) /= 32x"000007ff") then
+         report "ERROR: ori   x4,  x0,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x29, x4,   -2048 # x29 = 0xffffffff
+      if (spy_gpr(29) /= 32x"ffffffff") then
+         report "ERROR: ori   x29, x4,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x30, x3,   -511  # x30 = 0xffffffff
+      if (spy_gpr(30) /= 32x"ffffffff") then
+         report "ERROR: ori   x30, x3,   -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x31, x2,   -2    # x31 = 0xffffffff
+      if (spy_gpr(31) /= 32x"ffffffff") then
+         report "ERROR: ori   x31, x2,   -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x1,  x1,   0     # x1 = 0x00000000
+      if (spy_gpr(1) /= 32x"00000000") then
+         report "ERROR: ori   x1,  x1,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x2,  x31,  1     # x2 = 0xffffffff
+      if (spy_gpr(2) /= 32x"ffffffff") then
+         report "ERROR: ori   x2,  x31,  1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x3,  x30,  511   # x3 = 0xffffffff
+      if (spy_gpr(3) /= 32x"ffffffff") then
+         report "ERROR: ori   x3,  x30,  511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x4,  x28,  2047  # x4 = 0x000007ff
+      if (spy_gpr(4) /= 32x"000007ff") then
+         report "ERROR: ori   x4,  x28,  2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x4,  x4,   2047  # x4 = 0x000007ff
+      if (spy_gpr(4) /= 32x"000007ff") then
+         report "ERROR: ori   x4,  x4,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- ori   x4,  x4,   -2048 # x4 = 0xffffffff
+      if (spy_gpr(4) /= 32x"ffffffff") then
+         report "ERROR: ori   x4,  x4,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x5,  x0,   -2048 # x5 = 0x00000000
+      if (spy_gpr(5) /= 32x"00000000") then
+         report "ERROR: andi  x5,  x0,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x6,  x0,   -511  # x6 = 0x00000000
+      if (spy_gpr(6) /= 32x"00000000") then
+         report "ERROR: andi  x6,  x0,   -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x7,  x0,   -2    # x7 = 0x00000000
+      if (spy_gpr(7) /= 32x"00000000") then
+         report "ERROR: andi  x7,  x0,   -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x8,  x0,   0     # x8 = 0x00000000
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: andi  x8,  x0,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x9,  x0,   1     # x9 = 0x00000000
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: andi  x9,  x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x10, x0,   511   # x10 = 0x00000000
+      if (spy_gpr(10) /= 32x"00000000") then
+         report "ERROR: andi  x10, x0,   511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x0,   2047  # x11 = 0x00000000
+      if (spy_gpr(11) /= 32x"00000000") then
+         report "ERROR: andi  x11, x0,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x5,  x4,   -2048 # x5 = 0xfffff800
+      if (spy_gpr(5) /= 32x"fffff800") then
+         report "ERROR: andi  x5,  x4,   -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x6,  x10,  -511  # x6 = 0x00000000
+      if (spy_gpr(6) /= 32x"00000000") then
+         report "ERROR: andi  x6,  x10,  -511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x7,  x28,  -2    # x7 = 0x000007fe
+      if (spy_gpr(7) /= 32x"000007fe") then
+         report "ERROR: andi  x7,  x28,  -2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x8,  x27,  0     # x8 = 0x00000000
+      if (spy_gpr(8) /= 32x"00000000") then
+         report "ERROR: andi  x8,  x27,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x9,  x7,   1     # x9 = 0x00000000
+      if (spy_gpr(9) /= 32x"00000000") then
+         report "ERROR: andi  x9,  x7,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x10, x6,   511   # x10 = 0x00000000
+      if (spy_gpr(10) /= 32x"00000000") then
+         report "ERROR: andi  x10, x6,   511";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x5,   2047  # x11 = 0x00000000
+      if (spy_gpr(11) /= 32x"00000000") then
+         report "ERROR: andi  x11, x5,   2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x11,  2047  # x11 = 0x00000000
+      if (spy_gpr(11) /= 32x"00000000") then
+         report "ERROR: andi  x11, x11,  2047";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- andi  x11, x11,  -2048 # x11 = 0x00000000
+      if (spy_gpr(11) /= 32x"00000000") then
+         report "ERROR: andi  x11, x11,  -2048";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x12, x0,   0     # x12 = 0x00000000
+      if (spy_gpr(12) /= 32x"00000000") then
+         report "ERROR: slli  x12, x0,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x13, x0,   1     # x13 = 0x00000000
+      if (spy_gpr(13) /= 32x"00000000") then
+         report "ERROR: slli  x13, x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x14, x0,   2     # x14 = 0x00000000
+      if (spy_gpr(14) /= 32x"00000000") then
+         report "ERROR: slli  x14, x0,   2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x15, x0,   10    # x15 = 0x00000000
+      if (spy_gpr(15) /= 32x"00000000") then
+         report "ERROR: slli  x15, x0,   10";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x16, x0,   20    # x16 = 0x00000000
+      if (spy_gpr(16) /= 32x"00000000") then
+         report "ERROR: slli  x16, x0,   20";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x17, x0,   31    # x17 = 0x00000000
+      if (spy_gpr(17) /= 32x"00000000") then
+         report "ERROR: slli  x17, x0,   31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x12, x27,  0     # x12 = 0xfffffe01
+      if (spy_gpr(12) /= 32x"fffffe01") then
+         report "ERROR: slli  x12, x27,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x13, x28,  1     # x13 = 0x00000ffe
+      if (spy_gpr(13) /= 32x"00000ffe") then
+         report "ERROR: slli  x13, x28,  1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x14, x21,  2     # x14 = 0x00000004
+      if (spy_gpr(14) /= 32x"00000004") then
+         report "ERROR: slli  x14, x21,  2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x15, x29,  10    # x15 = 0xfffffc00
+      if (spy_gpr(15) /= 32x"fffffc00") then
+         report "ERROR: slli  x15, x29,  10";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x16, x5,   20    # x16 = 0x80000000
+      if (spy_gpr(16) /= 32x"80000000") then
+         report "ERROR: slli  x16, x5,   20";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x17, x7,   31    # x17 = 0x00000000
+      if (spy_gpr(17) /= 32x"00000000") then
+         report "ERROR: slli  x17, x7,   31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x17, x17,  31    # x17 = 0x00000000
+      if (spy_gpr(17) /= 32x"00000000") then
+         report "ERROR: slli  x17, x17,  31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- slli  x17, x17,  0     # x17 = 0x00000000
+      if (spy_gpr(17) /= 32x"00000000") then
+         report "ERROR: slli  x17, x17,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x18, x0,   0     # x18 = 0x00000000
+      if (spy_gpr(18) /= 32x"00000000") then
+         report "ERROR: srli  x18, x0,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x19, x0,   1     # x19 = 0x00000000
+      if (spy_gpr(19) /= 32x"00000000") then
+         report "ERROR: srli  x19, x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x20, x0,   2     # x20 = 0x00000000
+      if (spy_gpr(20) /= 32x"00000000") then
+         report "ERROR: srli  x20, x0,   2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x21, x0,   10    # x21 = 0x00000000
+      if (spy_gpr(21) /= 32x"00000000") then
+         report "ERROR: srli  x21, x0,   10";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x22, x0,   20    # x22 = 0x00000000
+      if (spy_gpr(22) /= 32x"00000000") then
+         report "ERROR: srli  x22, x0,   20";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x23, x0,   31    # x23 = 0x00000000
+      if (spy_gpr(23) /= 32x"00000000") then
+         report "ERROR: srli  x23, x0,   31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x18, x26,  0     # x18 = 0xfffffffe
+      if (spy_gpr(18) /= 32x"fffffffe") then
+         report "ERROR: srli  x18, x26,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x19, x27,  1     # x19 = 0x7fffff00
+      if (spy_gpr(19) /= 32x"7fffff00") then
+         report "ERROR: srli  x19, x27,  1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x20, x28,  2     # x20 = 0x000001ff
+      if (spy_gpr(20) /= 32x"000001ff") then
+         report "ERROR: srli  x20, x28,  2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x21, x29,  10    # x21 = 0x003fffff
+      if (spy_gpr(21) /= 32x"003fffff") then
+         report "ERROR: srli  x21, x29,  10";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x22, x30,  20    # x22 = 0x00000fff
+      if (spy_gpr(22) /= 32x"00000fff") then
+         report "ERROR: srli  x22, x30,  20";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x23, x7,   31    # x23 = 0x00000000
+      if (spy_gpr(23) /= 32x"00000000") then
+         report "ERROR: srli  x23, x7,   31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x23, x23,  31    # x23 = 0x00000000
+      if (spy_gpr(23) /= 32x"00000000") then
+         report "ERROR: srli  x23, x23,  31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srli  x23, x23,  0     # x23 = 0x00000000
+      if (spy_gpr(23) /= 32x"00000000") then
+         report "ERROR: srli  x23, x23,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x24, x0,   0     # x24 = 0x00000000
+      if (spy_gpr(24) /= 32x"00000000") then
+         report "ERROR: srai  x24, x0,   0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x25, x0,   1     # x25 = 0x00000000
+      if (spy_gpr(25) /= 32x"00000000") then
+         report "ERROR: srai  x25, x0,   1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x26, x0,   2     # x26 = 0x00000000
+      if (spy_gpr(26) /= 32x"00000000") then
+         report "ERROR: srai  x26, x0,   2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x27, x0,   10    # x27 = 0x00000000
+      if (spy_gpr(27) /= 32x"00000000") then
+         report "ERROR: srai  x27, x0,   10";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x28, x0,   20    # x28 = 0x00000000
+      if (spy_gpr(28) /= 32x"00000000") then
+         report "ERROR: srai  x28, x0,   20";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x29, x0,   31    # x29 = 0x00000000
+      if (spy_gpr(29) /= 32x"00000000") then
+         report "ERROR: srai  x29, x0,   31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x24, x22,  0     # x24 = 0x00000fff
+      if (spy_gpr(24) /= 32x"00000fff") then
+         report "ERROR: srai  x24, x22,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x25, x21,  1     # x25 = 0x001fffff
+      if (spy_gpr(25) /= 32x"001fffff") then
+         report "ERROR: srai  x25, x21,  1";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x26, x20,  2     # x26 = 0x0000007f
+      if (spy_gpr(26) /= 32x"0000007f") then
+         report "ERROR: srai  x26, x20,  2";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x27, x19,  10    # x27 = 0x001fffff
+      if (spy_gpr(27) /= 32x"001fffff") then
+         report "ERROR: srai  x27, x19,  10";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x28, x18,  20    # x28 = 0xffffffff
+      if (spy_gpr(28) /= 32x"ffffffff") then
+         report "ERROR: srai  x28, x18,  20";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x29, x16,  31    # x29 = 0xffffffff
+      if (spy_gpr(29) /= 32x"ffffffff") then
+         report "ERROR: srai  x29, x16,  31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x29, x29,  31    # x29 = 0xffffffff
+      if (spy_gpr(29) /= 32x"ffffffff") then
+         report "ERROR: srai  x29, x29,  31";
+      end if;
+      wait until rising_edge(clk_tb);
+      -- srai  x29, x29,  0     # x29 = 0xffffffff
+      if (spy_gpr(29) /= 32x"ffffffff") then
+         report "ERROR: srai  x29, x29,  0";
+      end if;
+      wait until rising_edge(clk_tb);
+      ----------------------------------------------------------------
+      --                                                            --
+      --     add, sub, sll, slt, sltu, xor, srl, sra, or, and       --
+      --                                                            --
+      ----------------------------------------------------------------
       
       wait for 10 ns;
       stop(2);
