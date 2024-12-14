@@ -40,12 +40,19 @@ signal pc_addr_buff : std_logic_vector(31 downto 0);
 begin
 
    o_pc_addr <= pc_addr_buff;
+   o_instruction_addr <= pc_addr_buff;
 
    p_program_counter : process(i_rst_n, i_clk)
+   variable flag : std_logic;
    begin
       if (i_rst_n = '0') then
          pc_addr_buff   <= (others => '0');
+         flag := '0';
       elsif (i_clk'event and i_clk = '1') then
+      if (flag = '0') then
+      flag := '1';
+      pc_addr_buff <= pc_addr_buff;
+      else
          case i_pc_ctrl is
             when C_INCREMENT_PC     => pc_addr_buff <=
                                    std_logic_vector(unsigned(pc_addr_buff) + 4);
@@ -56,21 +63,22 @@ begin
             when C_NOP              => pc_addr_buff <= pc_addr_buff;
             when others             => pc_addr_buff <= (others => '0');
          end case;
+        end if;
       end if;
    end process p_program_counter;
 
-   p_instruction_address : process(i_rst_n, i_inst_addr_ctrl, i_alu_result, pc_addr_buff)
-   begin
-      if (i_rst_n = '0') then
-         o_instruction_addr   <= (others => '0');
-      else -- TODO maybe uses if-else
-         case i_inst_addr_ctrl is
-            when C_INST_ADDR_PC     => o_instruction_addr <=
-                                   std_logic_vector(unsigned(pc_addr_buff) + 4);
-            when C_INST_ADDR_ALU    => o_instruction_addr <= i_alu_result;
-            when others             => o_instruction_addr <= (others => '0');
-         end case;
-      end if;
-   end process p_instruction_address;
+  -- p_instruction_address : process(i_rst_n, i_inst_addr_ctrl, i_alu_result, pc_addr_buff)
+  -- begin
+  --    if (i_rst_n = '0') then
+  --       o_instruction_addr   <= (others => '0');
+ --     else -- TODO maybe uses if-else
+  --       case i_inst_addr_ctrl is
+ --           when C_INST_ADDR_PC     => o_instruction_addr <=
+  --                                 std_logic_vector(unsigned(pc_addr_buff) + 4);
+  --          when C_INST_ADDR_ALU    => o_instruction_addr <= i_alu_result;
+  --          when others             => o_instruction_addr <= (others => '0');
+ --        end case;
+ --     end if;
+ --  end process p_instruction_address;
 
 end architecture rtl;
