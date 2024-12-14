@@ -29,14 +29,19 @@ end entity instruction_memory;
 
 architecture rtl of instruction_memory is
 
+signal flag : std_logic;
+
 begin
 
-   p_instruction_memory : process(i_clk, i_rst_n)
-   begin
-      if (i_rst_n = '0') then
-         o_instruction  <= C_CODE(0); -- The first instruction to execute is 
+    o_instruction  <= C_CODE(to_integer(unsigned(i_instruction_addr(11 downto 2))));
+
+--   p_instruction_memory : process(i_clk, i_rst_n)
+ --  begin
+    --  if (i_rst_n = '0') then
+  --      flag <= '0';
+     --    o_instruction  <= C_CODE(0); -- The first instruction to execute is 
          -- loaded during the reset.
-      elsif (i_clk = '1' and i_clk'event) then
+     -- elsif (i_clk = '1' and i_clk'event) then
          -- The program counter module (program_counter_design.vhdl) controls 
          -- the order of instructions to be executed using the 
          -- i_instruction_addr signal coming into this module. The program
@@ -58,8 +63,13 @@ begin
          -- 100 - 4
          -- Thanks to this, the instructions  in the C_CODE array are read in 
          -- the correct order, without being skipped.
-         o_instruction  <= C_CODE(to_integer(unsigned(i_instruction_addr(11 downto 2))));
-      end if;
-   end process p_instruction_memory;
+      --   if (flag = '0') then
+       --    o_instruction <= "00000000000000000000000000010011";
+      --     flag <= '1';
+      --   else
+          -- o_instruction  <= C_CODE(to_integer(unsigned(i_instruction_addr(11 downto 2))));
+      --   end if;
+    --  end if;
+  -- end process p_instruction_memory;
 
 end architecture rtl;
