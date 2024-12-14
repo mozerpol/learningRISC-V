@@ -73,6 +73,24 @@ architecture tb of riscpol_tb is
       end if;
       wait until rising_edge(clk_tb);
    end procedure;
+   
+   -----------------------------------------------------
+   ----   Check the result of branch instruction    ----
+   -----------------------------------------------------
+   procedure check_branch( constant instruction : in string;
+                        constant branch_result  : in std_logic;
+                        constant desired_value  : in std_logic;
+                        signal test_point       : out integer) is
+   begin
+      if (branch_result /= desired_value) then
+         echo("ERROR branch instruction: " & instruction);
+         echo("desired_value: " & to_string(desired_value));
+         echo("result: " & to_string(branch_result));
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+      end if;
+      wait until rising_edge(clk_tb);
+   end procedure;
 
    ----------------------------------------------------------------------------
    ---- Check the value of one byte in RAM - used to verify SB instruction ----
@@ -267,6 +285,7 @@ begin
 
    p_tb : process
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
+      alias spy_branch_result is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_branch_instructions.o_branch_result: std_logic >>;
       alias spy_ram is <<signal .riscpol_tb.inst_riscpol.inst_ram.ram: ram_t >>;
       alias spy_cnt8bit is <<signal .riscpol_tb.inst_riscpol.inst_counter8bit.o_cnt8_q:
                                   integer range 0 to C_COUNTER_8BIT_VALUE - 1>>;
@@ -275,8 +294,8 @@ begin
       gpio_tb(0) <= 'Z';
       rx_tb      <= '1';
       rst_n_tb   <= '0';
-      -- wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
-      wait for 20 ns;
+      --wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
+      wait for C_CLK_PERIOD*20;
       rst_n_tb   <= '1';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
@@ -1554,6 +1573,7 @@ begin
       --------------
       --  AUIPC   --
       --------------
+      -- TODO: check auipc!
       -- auipc x8,  0           # x8 = ...
       wait until rising_edge(clk_tb);
       -- auipc x9,  0           # x9 = ...
@@ -1657,27 +1677,31 @@ begin
       --------------
       --   BEQ    --
       --------------
-      -- 1.
-      check_gpr( instruction    => "addi  x0,  x0,   0",
+      -- TODO: COS NIE DZIALA KOLEJNOSC ;////
+      -- Po prawej numerki i hex kod instrukcji odpowiada kolejnosci z jaka
+      -- powinno to sie wykonywac (i sie wykonuje), przykladowo mozna to
+      -- sprobowac uruchomic w interpretzerze risc-v
+      check_gpr( instruction    => "addi  x0,  x0,   0",        -- 1. 00000013
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      -- beq   x3,  x4,   loop1 # ... 2.
-      -- The next instructions will check the correctness of this instruction
-      -- TODO: describe better, why some instructions are not checked
-      wait until rising_edge(clk_tb);
-      -- auipc x10, 0           # ... 3.
-      wait until rising_edge(clk_tb);
-      -- beq   x0,  x9,   loop2 # ... 4.
-      wait until rising_edge(clk_tb);
-      -- Below is the instruction that will never be executed, so the
-      -- "wait until rising_edge(clk_tb);" line have been removed
-      -- addi  x1,  x1,   1     # don't check, will never be done
-      -- wait until rising_edge(clk_tb);
-      -- auipc x11, 0           # ... 5.
-      wait until rising_edge(clk_tb);
-      -- 6.
-      check_gpr( instruction    => "sub   x12, x11,  x10",
+      check_branch( instruction   => "beq   x3,  x4,   loop1",  -- 2. fe418ee3
+                    branch_result => spy_branch_result,
+                    desired_value => '1',
+                    test_point    => set_test_point );
+      check_gpr( instruction    => "auipc x10, 0",              -- 3. 00000517
+                 gpr            => spy_gpr(10),
+                 desired_value  => 32x"0000051c",
+                 test_point     => set_test_point );
+      check_branch( instruction   => "beq   x0,  x9,   loop2",  -- 4. 02900063  PO TEJ INSTRUKCJI JEST JEDNA, KTORA NIE POWINNA SIE WYKONCA (CHYBA)
+                    branch_result => spy_branch_result,
+                    desired_value => '1',
+                    test_point    => set_test_point ); 
+      check_gpr( instruction    => "auipc x11, 0",              -- 5. 00000597
+                 gpr            => spy_gpr(11),
+                 desired_value  => 32x"00000540",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "sub   x12, x11,  x10",      -- 6. 40a58633
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000024",
                  test_point     => set_test_point );
@@ -1709,7 +1733,7 @@ begin
                  desired_value  => 32x"00000018",
                  test_point     => set_test_point );
       -- 16.
-      check_gpr( instruction    => "addi  x1,  x1,   1",
+      check_gpr( instruction    => "addi  x1,  x1,   1", -- 00108093
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000002",
                  test_point     => set_test_point );
@@ -2805,9 +2829,9 @@ begin
       -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
-      wait for 100 us;
+      wait for 100 ns;
       rst_n_tb   <= '0';
-      wait for 977 ns;
+      wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
       rst_n_tb   <= '1';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
@@ -2838,7 +2862,10 @@ begin
       check_gpio(instruction    => "sb    x0,  255(x0)",
                  desired_value  => 8b"00000000",
                  test_point     => set_test_point );
+
+      echo("======================================");
       echo("Total errors: " & integer'image(set_test_point));
+      echo("======================================");
       wait for 100 ns;
       stop(0);
    end process p_tb;
