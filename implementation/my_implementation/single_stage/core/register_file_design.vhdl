@@ -62,9 +62,9 @@ begin
             gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
          else
          -- Save program counter value in GPR
-            --elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
+            -- elsif (i_reg_file_inst_ctrl = C_WRITE_PC_ADDR) then
             gpr(to_integer(unsigned(i_rd_addr))) <= 
-                                    std_logic_vector(unsigned(i_pc_addr));
+                                    std_logic_vector(unsigned(i_pc_addr) + 4);
          end if;
       end if;
    end process p_reg_file;

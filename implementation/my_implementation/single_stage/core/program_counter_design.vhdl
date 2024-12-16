@@ -28,7 +28,7 @@ entity program_counter is
       i_alu_result         : in std_logic_vector(31 downto 0);
       i_pc_ctrl            : in std_logic_vector(1 downto 0);
       i_inst_addr_ctrl     : in std_logic;
-      o_pc_addr            : out std_logic_vector(31 downto 0);
+      o_pc_addr            : out std_logic_vector(31 downto 0); -- TODO: shoudl be one signal
       o_instruction_addr   : out std_logic_vector(31 downto 0)
    );
 end entity program_counter;
