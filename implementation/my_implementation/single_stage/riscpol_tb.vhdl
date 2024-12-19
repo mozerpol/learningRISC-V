@@ -315,6 +315,7 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
+
       ----------------------------------------------------------------
       --                                                            --
       --    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI    --
@@ -2617,65 +2618,30 @@ begin
       check_gpio(instruction    => "sb    x1,  255(x0)",
                  desired_value  => 8b"00000001",
                  test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
-      -- changes the GPIO state every 12 clock cycles.
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000010",
+      for i in 0 to 13 loop
+         wait for C_CLK_PERIOD*21;
+         check_gpr( instruction    => "addi  x3,  x0,   0",
+                    gpr            => spy_gpr(3),
+                    desired_value  => 32x"00000000",
+                    test_point     => set_test_point );
+         check_branch( instruction   => "bne   x1,  x2,   loop26",
+                       branch_result => spy_branch_result,
+                       desired_value => '0',
+                       test_point    => set_test_point );
+         -- 00108093  addi x1, x1, 1
+         wait until rising_edge(clk_tb);
+         -- 0e100fa3  sb   x1, 255(x0)
+         wait until rising_edge(clk_tb);
+      end loop;
+      wait for C_CLK_PERIOD*21;
+      check_gpr( instruction    => "addi  x3,  x0,   0",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000011",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000100",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000101",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000110",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000111",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001000",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001001",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001010",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001011",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001100",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001101",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001110",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24;
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00001111",
-                 test_point     => set_test_point );
-      wait for C_CLK_PERIOD*24; -- This delay is required, coz the algorithm
-      -- changes the GPIO state every 12 clock cycles.
+      check_branch( instruction   => "bne   x1,  x2,   loop26",
+                    branch_result => spy_branch_result,
+                    desired_value => '1',
+                    test_point    => set_test_point );
       check_gpr( instruction    => "addi  x1,  x0,   0",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
@@ -2687,29 +2653,20 @@ begin
       check_gpio(instruction    => "sb    x0,  255(x0)",
                  desired_value  => 8b"00000000",
                  test_point     => set_test_point );
+      gpio_tb(0) <= '1'; -- For "lw    x1,  255(x0)" instruction
       check_gpr( instruction    => "addi  x2,  x0,   15",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"0000000f",
                  test_point     => set_test_point );
+      gpio_tb(0) <= 'Z';
       check_gpr( instruction    => "addi  x3,  x0,   1",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000001",
                  test_point     => set_test_point );
-      -- TODO: describe below
-      wait for C_CLK_PERIOD*25;
-      wait until rising_edge(clk_tb);
-      gpio_tb(0) <= '1';
-      -- lw    x1,  255(x0)
-      wait until rising_edge(clk_tb);
-      gpio_tb(0) <= 'Z';
-      -- bne   x1,  x3    -4
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
       check_gpr( instruction    => "lw    x1,  255(x0)",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      gpio_tb(0) <= 'Z';
+                 test_point     => set_test_point );   
       -- beq   x1,  x0    loop27
       wait until rising_edge(clk_tb);
       check_gpio(instruction    => "sb    x2,  255(x0)",
@@ -2736,6 +2693,8 @@ begin
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- Have to wait one additional clock cycle
+      -- the counter value will be readable (stabilized).
       check_cnt8bit(instruction => "sb    x3,  251(x0)",
                  cnt_val        => spy_cnt8bit,
                  desired_value  => 1,
@@ -2792,9 +2751,10 @@ begin
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"00000001",
                  test_point     => set_test_point );
-      -- TODO: Comment ---------------------------------------------------------
-      -- TODO: I think all instructions are not cover with from general.asm
       for i in 0 to 1056 loop
+         -- A loop while the timer is counting.
+         -- bne x4, x2, -4   fe221ee3
+         -- addi x4, x4, 1   00120213
          wait until rising_edge(clk_tb);
       end loop;
       check_gpr( instruction    => "addi  x4,  x0,   0x0",
@@ -2805,9 +2765,11 @@ begin
                  cnt_val        => spy_cnt8bit,
                  desired_value  => 37,
                  test_point     => set_test_point );
-      -- TODO: Add test where turn on timer, turn off and check value, just
-      -- write a simple test in asm lang
-      check_cnt8bit(instruction => "sb    x0,  251(x0)",
+      check_gpr( instruction    => "addi  x4,  x0,   0x0",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_cnt8bit(instruction => "sb    x3,  251(x0)",
                  cnt_val        => spy_cnt8bit,
                  desired_value  => 0,
                  test_point     => set_test_point );
@@ -2823,13 +2785,13 @@ begin
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
-                 desired_value  => 3,
-                 test_point     => set_test_point );
       check_gpr( instruction    => "lw    x5,  251(x0)",
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"00000003",
+                 test_point     => set_test_point );
+      check_cnt8bit(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt8bit,
+                 desired_value  => 5,
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
@@ -2839,8 +2801,6 @@ begin
       --------------
       --    TX    --
       --------------
-      wait until rising_edge(clk_tb);
-
       check_gpr( instruction    => "lui   x1,  2",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00002000",
@@ -2906,32 +2866,29 @@ begin
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
+      for i in 0 to 3295 loop
+         -- loop31:
+         -- addi  x2,  x2,   1     # Increment x2
+         -- bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
+         wait until rising_edge(clk_tb);
+         wait until rising_edge(clk_tb);
+      end loop;                
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
       check_uart_rx( instruction       => "lw    x10,  247(x0)",
                  desired_value         => 32x"000000DD",
                  number_bytes_to_send  => 1,
                  out_rx                => rx_tb,
                  test_point            => set_test_point );
-      wait for C_CLK_PERIOD*2251;
-       -- loop31:
-       -- addi  x2,  x2,   1     # Increment x2
-       -- bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
-      wait until rising_edge(clk_tb);
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lw    x10, 247(x0)",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"000000DD",
-                 test_point     => set_test_point );
-
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
       -- The first instruction from rom.vhdl is always loaded during--
       -- the reset.                                                 --
       ----------------------------------------------------------------
-      wait for 100 ns;
+      wait for 250 ns;
       rst_n_tb   <= '0';
       wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
       rst_n_tb   <= '1';
@@ -2964,7 +2921,7 @@ begin
       echo("======================================");
       echo("Total errors: " & integer'image(set_test_point));
       echo("======================================");
-      wait for 870 us;
+      wait for 1 us;
       stop(0);
    end process p_tb;
 
