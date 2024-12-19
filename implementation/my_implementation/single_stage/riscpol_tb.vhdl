@@ -44,7 +44,6 @@ architecture tb of riscpol_tb is
    signal tx_tb            : std_logic;
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
-   constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns; -- TODO: change name
 
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
@@ -246,13 +245,13 @@ architecture tb of riscpol_tb is
    end procedure;
 
    -------------------------------------------
-   ---- Check UART transmission, incoming ---- TODO: change description, it's sending data, not to check
+   ----   Simulating incoming UART data   ----
    -------------------------------------------
-   procedure check_uart_rx( constant instruction : in string;
-                         constant desired_value  : in std_logic_vector(31 downto 0);
+   procedure check_uart_rx( constant instruction       : in string;
+                         constant desired_value        : in std_logic_vector(31 downto 0);
                          constant number_bytes_to_send : in integer;
-                         signal out_rx           : out std_logic;
-                         signal test_point       : out integer) is
+                         signal out_rx                 : out std_logic;
+                         signal test_point             : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
       for j in 0 to number_bytes_to_send-1 loop
@@ -2666,7 +2665,7 @@ begin
       check_gpr( instruction    => "lw    x1,  255(x0)",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
-                 test_point     => set_test_point );   
+                 test_point     => set_test_point );
       -- beq   x1,  x0    loop27
       wait until rising_edge(clk_tb);
       check_gpio(instruction    => "sb    x2,  255(x0)",
@@ -2872,7 +2871,7 @@ begin
          -- bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
          wait until rising_edge(clk_tb);
          wait until rising_edge(clk_tb);
-      end loop;                
+      end loop;
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
