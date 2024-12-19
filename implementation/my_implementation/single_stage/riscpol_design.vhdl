@@ -18,7 +18,7 @@ library riscpol_lib;
    use riscpol_lib.riscpol_pkg.all;
 library ram_lib;
 library gpio_lib;
-library counter8bit_lib;
+library counter1_lib;
 library mmio_lib;
 library uart_lib;
 library core_lib;
@@ -59,13 +59,13 @@ architecture rtl of riscpol is
          i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
          i_mmio_q_gpio        : in std_logic_vector(31 downto 0);
-         i_mmio_q_cnt8        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
+         i_mmio_q_cnt1        : in integer range 0 to C_COUNTER1_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          i_mmio_data_uart     : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
          o_mmio_re_gpio       : out std_logic;
-         o_mmio_we_cnt8bit    : out std_logic;
+         o_mmio_we_cnt1       : out std_logic;
          o_mmio_we_uart       : out std_logic;
          o_mmio_re_uart       : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
@@ -103,19 +103,19 @@ architecture rtl of riscpol is
    end component gpio;
    
    
-   component counter8 is
+   component counter1 is
       generic(
-         G_COUNTER_8BIT_VALUE : positive := C_COUNTER_8BIT_VALUE - 1 
+         G_COUNTER1_VALUE    : positive := C_COUNTER1_VALUE - 1 
       );
       port(
          i_rst_n              : in std_logic;
          i_clk                : in std_logic;
-         i_cnt8_we            : in std_logic;
-         i_cnt8_set_reset     : in std_logic;
-         o_cnt8_overflow      : out std_logic;
-         o_cnt8_q             : out integer range 0 to C_COUNTER_8BIT_VALUE - 1
+         i_cnt1_we            : in std_logic;
+         i_cnt1_set_reset     : in std_logic;
+         o_cnt1_overflow      : out std_logic;
+         o_cnt1_q             : out integer range 0 to C_COUNTER1_VALUE - 1
    );
-   end component counter8;
+   end component counter1;
    
    
    component uart is 
@@ -142,7 +142,7 @@ architecture rtl of riscpol is
    signal s_mmio_we_ram       : std_logic;
    signal s_mmio_we_gpio      : std_logic;
    signal s_mmio_re_gpio      : std_logic;
-   signal s_mmio_we_cnt8bit   : std_logic;
+   signal s_mmio_we_cnt1      : std_logic;
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
@@ -155,9 +155,9 @@ architecture rtl of riscpol is
    signal s_core_addr_write   : integer range 0 to C_RAM_LENGTH-1;
    -- RAM
    signal s_ram_q             : std_logic_vector(31 downto 0);
-   -- Counter 8bit
-   signal s_cnt8_q            : integer range 0 to C_COUNTER_8BIT_VALUE - 1;
-   signal s_cnt8_overflow     : std_logic;
+   -- Counter1
+   signal s_cnt1_q            : integer range 0 to C_COUNTER1_VALUE - 1;
+   signal s_cnt1_overflow     : std_logic;
    -- GPIO
    signal s_q_gpio            : std_logic_vector(31 downto 0);
    -- UART
@@ -186,13 +186,13 @@ begin
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
       i_mmio_q_gpio        => "0000000000000000000000000000000" & io_gpio(0), -- TODO: wtf???
-      i_mmio_q_cnt8        => s_cnt8_q,
+      i_mmio_q_cnt1        => s_cnt1_q,
       i_mmio_data_ram      => s_ram_q,
       i_mmio_data_uart     => s_uart_data,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_re_gpio       => s_mmio_re_gpio,
-      o_mmio_we_cnt8bit    => s_mmio_we_cnt8bit,
+      o_mmio_we_cnt1       => s_mmio_we_cnt1,
       o_mmio_we_uart       => s_mmio_we_uart,
       o_mmio_re_uart       => s_mmio_re_uart,
       o_mmio_data          => s_mmio_data
@@ -219,14 +219,14 @@ begin
       o_gpio_q             => s_q_gpio
    );
     
-   inst_counter8bit : component counter8
+   inst_counter1 : component counter1
    port map (
       i_rst_n              => rst_n,
       i_clk                => clk,
-      i_cnt8_we            => s_mmio_we_cnt8bit,
-      i_cnt8_set_reset     => s_core_data_write(24),
-      o_cnt8_overflow      => s_cnt8_overflow,
-      o_cnt8_q             => s_cnt8_q
+      i_cnt1_we            => s_mmio_we_cnt1,
+      i_cnt1_set_reset     => s_core_data_write(24),
+      o_cnt1_overflow      => s_cnt1_overflow,
+      o_cnt1_q             => s_cnt1_q
    );
    
    inst_uart : component uart

@@ -32,10 +32,10 @@ package riscpol_pkg is
    -- number of instructions and a power of 2.
    constant C_MMIO_ADDR_GPIO        : integer  := 64; -- At which address is
    -- access to GPIO.
-   constant C_MMIO_ADDR_CNT_8_BIT   : integer  := 63;
+   constant C_MMIO_ADDR_CNT1        : integer  := 63;
    constant C_MMIO_ADDR_UART        : integer  := 62;
 
-   constant C_COUNTER_8BIT_VALUE    : integer  := 512; -- Up to what value
+   constant C_COUNTER1_VALUE        : integer  := 512; -- Up to what value
    -- should the counter1 count?
    constant C_NUMBER_OF_GPIO        : integer  := 8;
    constant C_BAUD                  : positive := 115200; -- UART baud rate

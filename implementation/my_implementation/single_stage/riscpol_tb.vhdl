@@ -178,9 +178,9 @@ architecture tb of riscpol_tb is
    ------------------------------------------
    ---- Check the value of counter 8 bit ----
    ------------------------------------------
-   procedure check_cnt8bit( constant instruction    : in string;
-                            constant cnt_val        : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
-                            constant desired_value  : in integer range 0 to C_COUNTER_8BIT_VALUE - 1;
+   procedure check_cnt( constant instruction    : in string;
+                            constant cnt_val        : in integer range 0 to C_COUNTER1_VALUE - 1;
+                            constant desired_value  : in integer range 0 to C_COUNTER1_VALUE - 1;
                             signal test_point       : out integer) is
    begin
       if (cnt_val /= desired_value) then
@@ -201,8 +201,8 @@ architecture tb of riscpol_tb is
                          constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
-      alias cnt8_overflow is << signal .riscpol_tb.inst_riscpol.inst_uart.
-                                 inst_counter_tx.o_cnt8_overflow : std_logic >>;
+      alias cnt1_overflow is << signal .riscpol_tb.inst_riscpol.inst_uart.
+                                 inst_counter_tx.o_cnt1_overflow : std_logic >>;
    begin
       wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
       -- of the bit sent by UART
@@ -237,7 +237,7 @@ architecture tb of riscpol_tb is
          end if;
          if (j = 3) then -- Wait until the end of UART data sending (because
             -- there was delay C_WAIT_TIME/2 at the beginning).
-            wait until rising_edge(cnt8_overflow);
+            wait until rising_edge(cnt1_overflow);
          else
             wait for C_WAIT_TIME;
          end if;
@@ -296,8 +296,8 @@ begin
       alias spy_gpr           is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
       alias spy_branch_result is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_branch_instructions.o_branch_result: std_logic >>;
       alias spy_ram           is <<signal .riscpol_tb.inst_riscpol.inst_ram.ram: ram_t >>;
-      alias spy_cnt8bit       is <<signal .riscpol_tb.inst_riscpol.inst_counter8bit.o_cnt8_q:
-                                 integer range 0 to C_COUNTER_8BIT_VALUE - 1>>;
+      alias spy_cnt1          is <<signal .riscpol_tb.inst_riscpol.inst_counter1.o_cnt1_q:
+                                 integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
 
       gpio_tb(0) <= 'Z';
@@ -2673,7 +2673,7 @@ begin
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
-      --                    Check Timer8bit                         --
+      --                      Check Timer1                          --
       --                                                            --
       ----------------------------------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   0x2",
@@ -2694,12 +2694,12 @@ begin
                  test_point     => set_test_point );
       wait until rising_edge(clk_tb); -- Have to wait one additional clock cycle
       -- the counter value will be readable (stabilized).
-      check_cnt8bit(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x3,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 1,
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 0,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x0,  x0,   0x0",
@@ -2714,8 +2714,8 @@ begin
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x3,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 1,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x0,  x0,   0x0",
@@ -2726,8 +2726,8 @@ begin
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 0,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x0,  x0,   0x0",
@@ -2742,8 +2742,8 @@ begin
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x3,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 1,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x4,  x4,   0x1",
@@ -2760,16 +2760,16 @@ begin
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"00000212",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 37,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x4,  x0,   0x0",
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x3,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 0,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x0,  x0,   0x0",
@@ -2788,8 +2788,8 @@ begin
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"00000003",
                  test_point     => set_test_point );
-      check_cnt8bit(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt8bit,
+      check_cnt(instruction => "sb    x0,  251(x0)",
+                 cnt_val        => spy_cnt1,
                  desired_value  => 5,
                  test_point     => set_test_point );
       ----------------------------------------------------------------

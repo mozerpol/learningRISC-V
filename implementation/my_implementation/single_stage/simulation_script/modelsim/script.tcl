@@ -33,8 +33,8 @@ proc s_add_external_libs {} {
 
   
    set hdl_dir                "../../peripherals"
-   set library_name           "counter8bit_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/counter8bit.vhdl
+   set library_name           "counter1_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/counter1.vhdl
    
    
    set hdl_dir                "../../peripherals"
