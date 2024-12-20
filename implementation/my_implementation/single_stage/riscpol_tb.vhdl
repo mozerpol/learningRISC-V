@@ -300,7 +300,7 @@ begin
                                  integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
 
-      gpio_tb(0) <= 'Z';
+      gpio_tb    <= (others => 'Z');
       rx_tb      <= '1';
       rst_n_tb   <= '0';
       wait for C_CLK_PERIOD*20;
@@ -2652,12 +2652,12 @@ begin
       check_gpio(instruction    => "sb    x0,  255(x0)",
                  desired_value  => 8b"00000000",
                  test_point     => set_test_point );
-      gpio_tb(0) <= '1'; -- For "lw    x1,  255(x0)" instruction
+      gpio_tb <= "00000001"; -- For "lw    x1,  255(x0)" instruction
       check_gpr( instruction    => "addi  x2,  x0,   15",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"0000000f",
                  test_point     => set_test_point );
-      gpio_tb(0) <= 'Z';
+      gpio_tb <= (others => 'Z');
       check_gpr( instruction    => "addi  x3,  x0,   1",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000001",

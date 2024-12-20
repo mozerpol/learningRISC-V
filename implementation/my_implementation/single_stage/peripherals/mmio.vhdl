@@ -42,8 +42,8 @@ architecture rtl of mmio is
 
 
 begin
-   
-   
+
+
    with i_mmio_raddr select o_mmio_data <=
       i_mmio_q_gpio                                    when C_MMIO_ADDR_GPIO - 1,
       std_logic_vector(to_unsigned(i_mmio_q_cnt1, 32)) when C_MMIO_ADDR_CNT1 - 1,
@@ -52,36 +52,36 @@ begin
 
    o_mmio_re_gpio <= '1' when i_mmio_raddr = C_MMIO_ADDR_GPIO - 1 else '0';
    o_mmio_re_uart <= '1' when i_mmio_raddr = C_MMIO_ADDR_UART - 1 else '0';
-   
+
    process (i_mmio_write_enable, i_mmio_waddr)
    begin
       if (i_mmio_write_enable = '1') then
          case (i_mmio_waddr) is
-            when C_MMIO_ADDR_CNT1 - 1   =>
+            when C_MMIO_ADDR_CNT1 - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
-               o_mmio_we_cnt1   <= '1';
+               o_mmio_we_cnt1      <= '1';
                o_mmio_we_uart      <= '0';
-            when C_MMIO_ADDR_GPIO - 1        =>
+            when C_MMIO_ADDR_GPIO - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '1';
-               o_mmio_we_cnt1   <= '0';
+               o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
-            when C_MMIO_ADDR_UART - 1        =>
+            when C_MMIO_ADDR_UART - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
-               o_mmio_we_cnt1   <= '0';
+               o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '1';
-            when others                      =>
+            when others               =>
                o_mmio_we_ram       <= '1';
                o_mmio_we_gpio      <= '0';
-               o_mmio_we_cnt1   <= '0';
+               o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
          end case;
       else
          o_mmio_we_ram       <= '0';
          o_mmio_we_gpio      <= '0';
-         o_mmio_we_cnt1   <= '0';
+         o_mmio_we_cnt1      <= '0';
          o_mmio_we_uart      <= '0';
       end if;
    end process;

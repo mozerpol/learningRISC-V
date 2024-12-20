@@ -9,18 +9,18 @@
 > - Up to XXMIPS throughput at XXMHz for three-stage pipeline implementation
 
 ### Overview
-There are two implementations of a simple RISC-V (RV32I) core. Single-stage 
-implementation and three-stage implementation. Both are written in VHDL. The aim 
-of this project was to learn about RISC-V, for this reason the implementations 
+There are two implementations of a simple RISC-V (RV32I) core. Single-stage
+implementation and three-stage implementation. Both are written in VHDL. The aim
+of this project was to learn about RISC-V, for this reason the implementations
 are extremely simple, no interrupts, no branch prediction, no SYSTEM
 instructions, etc.
 
 ### Simulation
 I described how to run scripts that will automatically start simulation for
-GHDL, ModelSim or Vivado in *simulation_script/README.md*. The scripts are not 
-necessary, but they make life easier. Without scripts you have to do everything 
-manually, i.e. add all files with the vhdl extension, compile them and then run 
-tests which are in *riscpol_tb.vhdl* file. The top-level entity is *riscpol* in 
+GHDL, ModelSim or Vivado in *simulation_script/README.md*. The scripts are not
+necessary, but they make life easier. Without scripts you have to do everything
+manually, i.e. add all files with the vhdl extension, compile them and then run
+tests which are in *riscpol_tb.vhdl* file. The top-level entity is *riscpol* in
 *riscpol_design.vhdl*.
 
 ### Synthesis
@@ -50,9 +50,9 @@ There are two important rules for adding own instructions in *rom.vhdl* file:
 - [ ] 1-Wire,
 - [ ] SPI,
 - [ ] I2C,
-- [ ] UART.
+- [x] UART.
 3. Others
-- [ ] add 8-bit timer,
+- [x] add 8-bit timer,
 - [ ] add cache,
 - [ ] setup and run Dhrystone,
 - [ ] add script for Vivado and GHDL,
@@ -73,5 +73,5 @@ instructions,
 - [ ] fix signal names,
 - [ ] fix flowchart,
 - [x] change to negative reset,
-- [ ] add a sample system memory map table like here: 
+- [ ] add a sample system memory map table like here:
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples

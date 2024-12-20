@@ -2,9 +2,9 @@
 -- File          : riscpol_design.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
--- Description   : Main module. It connects all the modules together, such as 
--- the core and peripherals. The input and output ports of this module need to 
--- be connected to the physical pins of the FPGA to ensure the operation of the 
+-- Description   : Main module. It connects all the modules together, such as
+-- the core and peripherals. The input and output ports of this module need to
+-- be connected to the physical pins of the FPGA to ensure the operation of the
 -- entire processor.
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -101,11 +101,11 @@ architecture rtl of riscpol is
          o_gpio_q             : out std_logic_vector(31 downto 0)
       );
    end component gpio;
-   
-   
+
+
    component counter1 is
       generic(
-         G_COUNTER1_VALUE    : positive := C_COUNTER1_VALUE - 1 
+         G_COUNTER1_VALUE     : positive := C_COUNTER1_VALUE - 1
       );
       port(
          i_rst_n              : in std_logic;
@@ -116,21 +116,22 @@ architecture rtl of riscpol is
          o_cnt1_q             : out integer range 0 to C_COUNTER1_VALUE - 1
    );
    end component counter1;
-   
-   
-   component uart is 
+
+
+   component uart is
       generic(
-         G_BAUD            : positive := C_BAUD;
-         G_FREQUENCY_MHZ   : positive := C_FREQUENCY_MHZ
-      ); port (
-      i_rst_n              : in std_logic;
-      i_clk                : in std_logic;
-      i_uart_wdata         : in std_logic_vector(31 downto 0);
-      i_uart_rx            : in std_logic;
-      i_uart_we            : in std_logic;
-      i_uart_re            : in std_logic;
-      o_uart_data          : out std_logic_vector(31 downto 0);
-      o_uart_tx            : out std_logic
+         G_BAUD               : positive := C_BAUD;
+         G_FREQUENCY_MHZ      : positive := C_FREQUENCY_MHZ
+      );
+      port(
+         i_rst_n              : in std_logic;
+         i_clk                : in std_logic;
+         i_uart_wdata         : in std_logic_vector(31 downto 0);
+         i_uart_rx            : in std_logic;
+         i_uart_we            : in std_logic;
+         i_uart_re            : in std_logic;
+         o_uart_data          : out std_logic_vector(31 downto 0);
+         o_uart_tx            : out std_logic
    );
    end component uart;
 
@@ -179,13 +180,16 @@ begin
       o_core_addr_read     => s_core_addr_read,
       o_core_addr_write    => s_core_addr_write
    );
-   
+
    inst_mmio        : component mmio
    port map (
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
-      i_mmio_q_gpio        => "0000000000000000000000000000000" & io_gpio(0), -- TODO: wtf???
+      i_mmio_q_gpio(31 downto C_NUMBER_OF_GPIO)   =>
+                                       (others => '0'),
+      i_mmio_q_gpio(C_NUMBER_OF_GPIO -1 downto 0) =>
+                                       io_gpio(C_NUMBER_OF_GPIO - 1 downto 0),
       i_mmio_q_cnt1        => s_cnt1_q,
       i_mmio_data_ram      => s_ram_q,
       i_mmio_data_uart     => s_uart_data,
@@ -197,7 +201,7 @@ begin
       o_mmio_re_uart       => s_mmio_re_uart,
       o_mmio_data          => s_mmio_data
    );
-   
+
    inst_ram         : component byte_enabled_simple_dual_port_ram
    port map (
       i_clk                => clk,
@@ -208,7 +212,7 @@ begin
       i_ram_be             => s_core_byte_enable,
       o_ram_data           => s_ram_q
    );
-   
+
    inst_gpio        : component gpio
    port map (
       i_rst_n              => rst_n,
@@ -218,8 +222,8 @@ begin
       i_gpio_re            => s_mmio_re_gpio,
       o_gpio_q             => s_q_gpio
    );
-    
-   inst_counter1 : component counter1
+
+   inst_counter1    : component counter1
    port map (
       i_rst_n              => rst_n,
       i_clk                => clk,
@@ -228,8 +232,8 @@ begin
       o_cnt1_overflow      => s_cnt1_overflow,
       o_cnt1_q             => s_cnt1_q
    );
-   
-   inst_uart : component uart
+
+   inst_uart        : component uart
    port map (
       i_rst_n              => rst_n,
       i_clk                => clk,
