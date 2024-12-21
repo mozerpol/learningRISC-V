@@ -19,7 +19,7 @@ library counter1_lib;
 entity uart is
    generic(
       G_BAUD               : positive := C_BAUD;
-      G_FREQUENCY_MHZ      : positive := C_FREQUENCY_MHZ -- TODO: change to hz
+      G_FREQUENCY_MHZ      : positive := C_FREQUENCY_HZ
    ); port (
       i_rst_n              : in std_logic;
       i_clk                : in std_logic;
