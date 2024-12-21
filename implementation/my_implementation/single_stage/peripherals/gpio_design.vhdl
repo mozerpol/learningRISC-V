@@ -21,10 +21,7 @@ entity gpio is
    port (
       i_rst_n        : in std_logic;
       i_clk          : in std_logic;
-      i_gpio_wdata   : in std_logic_vector(31 downto 0); -- Why 32 bits if we're
-      -- using only 8? Maybe it shoudl depend on constant and be generated
-      -- in for loop, I mean o_gpio_q(constant_number) should be generated. Look
-      -- to ram.vhdl as generate example.
+      i_gpio_wdata   : in std_logic_vector(31 downto 0);
       i_gpio_we      : in std_logic;
       i_gpio_re      : in std_logic;
       o_gpio_q       : out std_logic_vector(31 downto 0)
@@ -61,7 +58,9 @@ begin
                for i in 0 to C_NUMBER_OF_GPIO - 1 loop
                   reg_gpio_q(i) <= i_gpio_wdata(32-C_NUMBER_OF_GPIO+i);
                end loop;
-               reg_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0'); -- TODO: describe line
+               -- The youngest bits are GPIO, and the oldest bits, unused by
+               -- GPIO, are zeros.
+               reg_gpio_q(31 downto C_NUMBER_OF_GPIO) <= (others => '0');
             end if;
          end if;
       end if;
