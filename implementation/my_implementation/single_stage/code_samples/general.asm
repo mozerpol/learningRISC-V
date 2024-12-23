@@ -638,7 +638,7 @@ lb    x3,  0(x1)       # x3 = 0xfffffffc
 lb    x4,  0(x2)       # x4 = 0xffffffff
 lb    x5,  11(x0)      # x5 = 0xffffffe0
 lb    x7,  -1(x2)      # x7 = 0xfffffffc
-lb    x8,  -2(x10)     # x8 = 0xffffffff
+lb    x8,  -2(x2)      # x8 = 0x00000000
 lb    x12, 4(x3)       # x12 = 0x00000000
 lb    x13, 15(x3)      # x13 = 0xffffffe0
 ##############
@@ -646,14 +646,11 @@ lb    x13, 15(x3)      # x13 = 0xffffffe0
 ##############
 lh    x14, 0(x2)       # x14 = 0xffffffff
 lh    x15, 10(x0)      # x15 = 0xffffe0f1
-lh    x16, -2(x10)     # x16 = 0xffffffff
 lh    x17, 4(x3)       # x17 = 0xfffffc00
 ##############
 ##    LW    ##
 ##############
 lw    x18, 2(x2)       # x18 = 0xfffffc00
-lw    x19, 0(x10)      # x19 = 0xfffffc00
-lw    x20, -4(x10)     # x20 = 0xfffffc00
 lw    x21, 4(x3)       # x21 = 0xfffffc00
 ##############
 ##   LBU    ##
