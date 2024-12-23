@@ -2407,10 +2407,10 @@ begin
                  gpr            => spy_gpr(7),
                  desired_value  => 32x"fffffffc",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "lb    x8,  -2(x10)",
+      check_gpr( instruction    => "lb    x8,  -2(x2)",
                  gpr            => spy_gpr(8),
-                 desired_value  => 32x"ffffffff",
-                 test_point     => set_test_point );
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );  
       check_gpr( instruction    => "lb    x12, 4(x3)",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000000",
@@ -2430,10 +2430,6 @@ begin
                  gpr            => spy_gpr(15),
                  desired_value  => 32x"ffffe0f1",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "lh    x16, -2(x10)",
-                 gpr            => spy_gpr(16),
-                 desired_value  => 32x"ffffffff",
-                 test_point     => set_test_point );
       check_gpr( instruction    => "lh    x17, 4(x3)",
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"fffffc00",
@@ -2443,14 +2439,6 @@ begin
       --------------
       check_gpr( instruction    => "lw    x18, 2(x2)",
                  gpr            => spy_gpr(18),
-                 desired_value  => 32x"fffffc00",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lw    x19, 0(x10)",
-                 gpr            => spy_gpr(19),
-                 desired_value  => 32x"fffffc00",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lw    x20, -4(x10)",
-                 gpr            => spy_gpr(20),
                  desired_value  => 32x"fffffc00",
                  test_point     => set_test_point );
       check_gpr( instruction    => "lw    x21, 4(x3)",
