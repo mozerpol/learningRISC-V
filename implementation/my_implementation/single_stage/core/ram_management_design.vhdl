@@ -20,6 +20,7 @@ library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
 
+
 entity ram_management is
    port (
       i_rst_n                 : in std_logic;
@@ -27,8 +28,7 @@ entity ram_management is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
-      i_data_from_mmio         : in std_logic_vector(31 downto 0); -- TODO: 
-      -- change to i_data_from_mmio or sth like this
+      i_data_from_mmio         : in std_logic_vector(31 downto 0);
       o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
@@ -45,7 +45,9 @@ end entity ram_management;
 
 architecture rtl of ram_management is
 
+
 begin
+
 
    p_ram_management : process(i_rst_n, i_rs2_data, i_rs1_data, i_imm, i_ram_management_ctrl)
       variable v_ram_address : std_logic_vector(31 downto 0);
@@ -59,12 +61,7 @@ begin
          v_ram_address     := (others => '0');
       else
          v_ram_address     := std_logic_vector(unsigned(i_rs1_data) + unsigned(i_imm));
-         -- TODO: describe if-else below
-         if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
-            o_waddr     <= 0;
-         else
-            o_waddr     <= to_integer(unsigned(v_ram_address(31 downto 2)));
-         end if;
+         o_waddr           <= to_integer(unsigned(v_ram_address(7 downto 2)));
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
@@ -117,32 +114,29 @@ begin
             when C_LB | C_LH | C_LW | C_LBU | C_LHU =>
                o_data         <= (others => '0');
                o_write_enable <= C_READ_ENABLE;
-               o_waddr        <= 0;
                o_byte_enable  <= (others => '0');
-               if (to_integer(unsigned(v_ram_address(31 downto 2))) >= C_RAM_LENGTH) then
-                  o_raddr        <= 0;
-               else
-                  o_raddr        <= to_integer(unsigned(v_ram_address(31 downto 2)));
-               end if;
+               o_waddr        <= 0;
+               o_raddr        <= to_integer(unsigned(v_ram_address(7 downto 2)));
             when others =>
                o_write_enable <= C_READ_ENABLE;
                o_byte_enable  <= "0000";
                o_data         <= (others => '0');
-               o_raddr        <= 0;
                o_waddr        <= 0;
+               o_raddr        <= 0;
          end case;
       end if;
    end process p_ram_management;
 
+
    p_reg_file : process(i_rst_n, i_ram_management_ctrl, i_data_from_mmio, i_imm, i_rs1_data)
-      variable v_reg_file_address : std_logic_vector(31 downto 0);
+      variable v_reg_file_address : std_logic_vector(1 downto 0);
    begin
       if (i_rst_n = '0') then
          o_rd_data          <= (others => '0');
-         v_reg_file_address := (others => '0');
+         v_reg_file_address := "00";
       else
-         v_reg_file_address := std_logic_vector(unsigned(i_rs1_data) +
-                                                unsigned(i_imm(31 downto 0)));
+         v_reg_file_address := std_logic_vector(unsigned(i_rs1_data(1 downto 0)) 
+                                                 + unsigned(i_imm(1 downto 0)));
          case i_ram_management_ctrl is
             when C_LW  =>
                o_rd_data <= i_data_from_mmio;
@@ -222,5 +216,6 @@ begin
          end case;
       end if;
    end process p_reg_file;
+
 
 end architecture rtl;
