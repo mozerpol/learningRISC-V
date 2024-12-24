@@ -1,5 +1,5 @@
 # RISCPOL
-> Implementation of a simple single-stage pipeline for the RISC-V core (RV32I) 
+> Implementation of a simple single-stage pipeline for the RISC-V core (RV32I)
 written in VHDL. Features include:
 > - 8-bit Timer
 > - UART
@@ -100,7 +100,7 @@ It is described in the main README (on the previous page).
 
 ### Datapath diagram
 JPG: <br/>
-![riscpol_diagram](https://github.com/user-attachments/assets/e467cdb3-a597-4aa0-b038-0879f96e79f5)
+![riscpol_diagram](https://github.com/user-attachments/assets/7aff3e5e-51b9-484c-8e80-14ab47620ca3)
 
 The *riscpol_diagram.drawio* file can be opened using flowchart maker. I used
 *drawio* available at: https://app.diagrams.net/
