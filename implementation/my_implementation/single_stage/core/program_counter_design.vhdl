@@ -21,6 +21,7 @@ library control_lib;
    use control_lib.all;
    use control_lib.control_pkg.all;
 
+
 entity program_counter is
    port (
       i_rst_n              : in std_logic;
@@ -32,36 +33,33 @@ entity program_counter is
    );
 end entity program_counter;
 
+
 architecture rtl of program_counter is
 
-signal pc_addr_buff : std_logic_vector(31 downto 0);
+
+   signal pc_addr_buff : std_logic_vector(31 downto 0);
+
 
 begin
+
 
    o_pc_addr <= pc_addr_buff;
 
    p_program_counter : process(i_rst_n, i_clk)
-   variable flag : std_logic;
    begin
       if (i_rst_n = '0') then
          pc_addr_buff   <= (others => '0');
-         flag := '0';
       elsif (i_clk'event and i_clk = '1') then
-      if (flag = '0') then
-      flag := '1';
-      pc_addr_buff <= pc_addr_buff;
-      else
          case i_pc_ctrl is
             when C_INCREMENT_PC     => pc_addr_buff <=
                                    std_logic_vector(unsigned(pc_addr_buff) + 4);
-            -- The instruction that decrements the PC value does not exist in
-            -- RISC-V, so the line below can be commented:
-            -- when C_DECREMENT_PC     => pc_addr_buff <= pc_addr_buff - 4;
             when C_LOAD_ALU_RESULT  => pc_addr_buff <= i_alu_result;
             when C_NOP              => pc_addr_buff <= pc_addr_buff;
             when others             => pc_addr_buff <= (others => '0');
+            -- The instruction that decrements the PC value does not exist in
+            -- RISC-V, so the line below can be commented:
+            -- when C_DECREMENT_PC     => pc_addr_buff <= pc_addr_buff - 4;
          end case;
-        end if;
       end if;
    end process p_program_counter;
 
