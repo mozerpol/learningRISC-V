@@ -154,7 +154,6 @@ architecture rtl of core is
          i_alu_result            : in std_logic_vector(31 downto 0);
          i_inst_addr_ctrl        : in std_logic;
          i_pc_ctrl               : in std_logic_vector(1 downto 0);
-         o_instruction_addr      : out std_logic_vector(31 downto 0);
          o_pc_addr               : out std_logic_vector(31 downto 0)
       );
    end component program_counter;
@@ -184,7 +183,6 @@ architecture rtl of core is
    signal imm                    : std_logic_vector(31 downto 0);
    signal branch_ctrl            : std_logic_vector(2 downto 0);
    signal branch_result          : std_logic;
-   signal instruction_addr       : std_logic_vector(31 downto 0);
    signal opcode                 : std_logic_vector(6 downto 0);
    signal instruction            : std_logic_vector(31 downto 0);
    signal rd_data                : std_logic_vector(31 downto 0);
@@ -298,7 +296,6 @@ begin
       i_alu_result            => alu_result,
       i_pc_ctrl               => pc_ctrl,
       i_inst_addr_ctrl        => inst_addr_ctrl,
-      o_instruction_addr      => instruction_addr,
       o_pc_addr               => pc_addr
    );
 
@@ -306,7 +303,7 @@ begin
    port map (
       i_rst_n                 => rst_n,
       i_clk                   => clk,
-      i_instruction_addr      => instruction_addr,
+      i_instruction_addr      => pc_addr,
       o_instruction           => instruction
    );
 

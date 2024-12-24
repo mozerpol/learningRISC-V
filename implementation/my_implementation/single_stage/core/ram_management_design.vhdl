@@ -28,7 +28,7 @@ entity ram_management is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
-      i_data_from_mmio         : in std_logic_vector(31 downto 0);
+      i_data_from_mmio        : in std_logic_vector(31 downto 0);
       o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
