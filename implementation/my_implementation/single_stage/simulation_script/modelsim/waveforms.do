@@ -121,8 +121,7 @@ add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_ram 
 add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram 
 add wave         -group MMIO              -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_uart 
-add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_uart 
-add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_re_uart 
+add wave         -group MMIO              -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_uart
 
 add wave         -group GPIO              -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_wdata
 add wave         -group GPIO              -radix bin /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_we
@@ -142,7 +141,6 @@ add wave         -group UART              -radix dec /riscpol_tb/inst_riscpol/in
 add wave         -group UART              -radix hex /riscpol_tb/inst_riscpol/inst_uart/i_uart_wdata
 add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/inst_uart/i_uart_rx
 add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/inst_uart/i_uart_we
-add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/inst_uart/i_uart_re
 add wave         -group UART              -radix hex /riscpol_tb/inst_riscpol/inst_uart/o_uart_data
 add wave         -group UART              -radix bin /riscpol_tb/inst_riscpol/inst_uart/o_uart_tx
 add wave         -group UART -group TX        -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_state_tx
