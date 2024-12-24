@@ -67,7 +67,6 @@ architecture rtl of riscpol is
          o_mmio_re_gpio       : out std_logic;
          o_mmio_we_cnt1       : out std_logic;
          o_mmio_we_uart       : out std_logic;
-         o_mmio_re_uart       : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -129,7 +128,6 @@ architecture rtl of riscpol is
          i_uart_wdata         : in std_logic_vector(31 downto 0);
          i_uart_rx            : in std_logic;
          i_uart_we            : in std_logic;
-         i_uart_re            : in std_logic;
          o_uart_data          : out std_logic_vector(31 downto 0);
          o_uart_tx            : out std_logic
    );
@@ -147,7 +145,6 @@ architecture rtl of riscpol is
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
-   signal s_mmio_re_uart      : std_logic;
    -- Core
    signal s_core_data_write   : std_logic_vector(31 downto 0);
    signal s_core_write_enable : std_logic;
@@ -186,8 +183,7 @@ begin
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
-      i_mmio_q_gpio(31 downto C_NUMBER_OF_GPIO)   =>
-                                       (others => '0'),
+      i_mmio_q_gpio(31 downto C_NUMBER_OF_GPIO)   => (others => '0'),
       i_mmio_q_gpio(C_NUMBER_OF_GPIO -1 downto 0) =>
                                        io_gpio(C_NUMBER_OF_GPIO - 1 downto 0),
       i_mmio_q_cnt1        => s_cnt1_q,
@@ -198,7 +194,6 @@ begin
       o_mmio_re_gpio       => s_mmio_re_gpio,
       o_mmio_we_cnt1       => s_mmio_we_cnt1,
       o_mmio_we_uart       => s_mmio_we_uart,
-      o_mmio_re_uart       => s_mmio_re_uart,
       o_mmio_data          => s_mmio_data
    );
 
@@ -240,7 +235,6 @@ begin
       i_uart_wdata         => s_core_data_write,
       i_uart_rx            => i_rx,
       i_uart_we            => s_mmio_we_uart,
-      i_uart_re            => s_mmio_re_uart,
       o_uart_data          => s_uart_data,
       o_uart_tx            => s_uart_tx
    );

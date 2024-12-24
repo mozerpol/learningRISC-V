@@ -26,7 +26,6 @@ entity uart is
       i_uart_wdata         : in std_logic_vector(31 downto 0);
       i_uart_rx            : in std_logic;
       i_uart_we            : in std_logic;
-      i_uart_re            : in std_logic;
       o_uart_data          : out std_logic_vector(31 downto 0);
       o_uart_tx            : out std_logic
 );
@@ -34,6 +33,7 @@ end entity uart;
 
 
 architecture rtl of uart is
+
 
    component counter1 is
       generic(
