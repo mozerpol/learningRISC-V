@@ -20,18 +20,17 @@ library instruction_memory_lib;
 
 entity instruction_memory is
    port (
-      i_rst_n              : in std_logic;
-      i_clk                : in std_logic;
       i_instruction_addr   : in std_logic_vector(31 downto 0);
       o_instruction        : out std_logic_vector(31 downto 0)
    );
 end entity instruction_memory;
 
+
 architecture rtl of instruction_memory is
 
-signal flag : std_logic;
 
 begin
+
 
     o_instruction  <= C_CODE(to_integer(unsigned(i_instruction_addr(11 downto 2))));
 

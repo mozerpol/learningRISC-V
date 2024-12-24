@@ -160,8 +160,6 @@ architecture rtl of core is
 
    component instruction_memory is
       port (
-         i_rst_n                 : in std_logic;
-         i_clk                   : in std_logic;
          i_instruction_addr      : in std_logic_vector(31 downto 0);
          o_instruction           : out std_logic_vector(31 downto 0)
       );
@@ -196,7 +194,9 @@ architecture rtl of core is
    signal ram_management_ctrl    : std_logic_vector(3 downto 0);
    signal data_from_mmio         : std_logic_vector(31 downto 0);
 
+
 begin
+
 
    inst_alu : component alu
    port map (
@@ -301,8 +301,6 @@ begin
 
    inst_instruction_memory : component instruction_memory
    port map (
-      i_rst_n                 => rst_n,
-      i_clk                   => clk,
       i_instruction_addr      => pc_addr,
       o_instruction           => instruction
    );
@@ -310,5 +308,6 @@ begin
    rst_n          <= i_rst_n;
    clk            <= i_clk;
    data_from_mmio <= i_core_data_read;
+
 
 end architecture rtl;
