@@ -50,6 +50,8 @@ There are two important rules for adding own instructions in *rom.vhdl* file:
 - [ ] 1-Wire,
 - [ ] SPI,
 - [ ] I2C,
+- [ ] 4x7-segment,
+- [ ] HD44780,
 - [x] UART.
 3. Others
 - [x] add 8-bit timer,
@@ -70,8 +72,8 @@ instructions,
 - [ ] add info, that vivado and modelsim have to be in PATH - modify .bashrc,
 - [ ] in single_stage directory should be only files like flowchart, readme,
     License, etc.,
-- [ ] fix signal names,
-- [ ] fix flowchart,
+- [x] fix signal names,
+- [x] fix flowchart,
 - [x] change to negative reset,
 - [ ] add a sample system memory map table like here:
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
