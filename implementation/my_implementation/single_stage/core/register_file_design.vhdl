@@ -39,11 +39,15 @@ entity reg_file is
    );
 end entity reg_file;
 
+
 architecture rtl of reg_file is
+
 
    signal gpr : t_gpr; -- general puprose register
 
+
 begin
+
 
    -- Assigning appropriate data from GPR to the output.
    o_rs1_data <= (others => '0') when i_rs1_addr = "00000" else
@@ -68,5 +72,6 @@ begin
          end if;
       end if;
    end process p_reg_file;
+
 
 end architecture rtl;

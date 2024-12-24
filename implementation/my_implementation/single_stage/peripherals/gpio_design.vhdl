@@ -9,7 +9,6 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
-
 library ieee;
    use ieee.std_logic_1164.all;
 library riscpol_lib;

@@ -38,7 +38,9 @@ entity control is
    );
 end entity control;
 
+
 architecture rtl of control is
+
 
 begin
 
