@@ -83,7 +83,7 @@ begin
       i_cnt1_we            => s_cnt1_we_tx,
       i_cnt1_set_reset     => s_cnt1_set_reset_tx,
       o_cnt1_overflow      => s_cnt1_overflow_tx,
-      o_cnt1_q             => s_cnt1_q_tx
+      o_cnt1_q             => open
    );
 
 
@@ -96,7 +96,7 @@ begin
       i_cnt1_we            => s_cnt1_we_rx,
       i_cnt1_set_reset     => s_cnt1_set_reset_rx,
       o_cnt1_overflow      => s_cnt1_overflow_rx,
-      o_cnt1_q             => s_cnt1_q_rx
+      o_cnt1_q             => open
    );
 
 

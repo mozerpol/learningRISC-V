@@ -151,8 +151,10 @@ begin
          case i_opcode(6 downto 0) is
             when C_OPCODE_OPIMM  =>
                o_data_source_ctrl <= C_WRITE_ALU_RESULT;
+               o_reg_file_inst_ctrl <= (others => '0');
             when C_OPCODE_OP     =>
                o_data_source_ctrl <= C_WRITE_ALU_RESULT;
+               o_reg_file_inst_ctrl <= (others => '0');
             when C_OPCODE_LOAD   =>
                o_data_source_ctrl <= C_WRITE_RD_DATA;
                case i_func3 is
@@ -173,12 +175,16 @@ begin
                end case;
             when C_OPCODE_LUI    =>
                o_data_source_ctrl   <= C_WRITE_ALU_RESULT;
+               o_reg_file_inst_ctrl <= (others => '0');
             when C_OPCODE_AUIPC  =>
                o_data_source_ctrl   <= C_WRITE_ALU_RESULT;
+               o_reg_file_inst_ctrl <= (others => '0');
             when C_OPCODE_JAL    =>
                o_data_source_ctrl   <= C_WRITE_PC_ADDR;
+               o_reg_file_inst_ctrl <= (others => '0');
             when C_OPCODE_JALR   =>
                o_data_source_ctrl   <= C_WRITE_PC_ADDR;
+               o_reg_file_inst_ctrl <= (others => '0');
             when others          =>
                o_data_source_ctrl   <= C_WRITE_RD_DATA;
                o_reg_file_inst_ctrl <= (others => '0');

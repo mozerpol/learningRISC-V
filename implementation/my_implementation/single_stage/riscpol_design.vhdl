@@ -224,7 +224,7 @@ begin
       i_clk                => clk,
       i_cnt1_we            => s_mmio_we_cnt1,
       i_cnt1_set_reset     => s_core_data_write(24),
-      o_cnt1_overflow      => s_cnt1_overflow,
+      o_cnt1_overflow      => open,
       o_cnt1_q             => s_cnt1_q
    );
 

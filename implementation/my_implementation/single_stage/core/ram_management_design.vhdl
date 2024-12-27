@@ -61,6 +61,7 @@ begin
       else
          v_ram_address     := std_logic_vector(unsigned(i_rs1_data) + unsigned(i_imm));
          o_waddr           <= to_integer(unsigned(v_ram_address(7 downto 2)));
+         o_raddr           <= 0;
          case i_ram_management_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;

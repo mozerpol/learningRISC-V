@@ -56,7 +56,7 @@ begin
 
    -- Based on the instruction, modify the value that will be written to the
    -- register file.
-   p_reg_file_management : process(i_reg_file_inst_ctrl, i_data_from_mmio, i_imm, i_rs1_data)
+   p_reg_file_management : process(i_rst_n, i_reg_file_inst_ctrl, i_data_from_mmio, i_imm, i_rs1_data)
       variable v_reg_file_address : std_logic_vector(1 downto 0);
    begin
       if (i_rst_n = '0') then
