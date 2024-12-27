@@ -300,9 +300,9 @@ begin
                                  integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
 
+      rst_n_tb   <= '0';
       gpio_tb    <= (others => 'Z');
       rx_tb      <= '1';
-      rst_n_tb   <= '0';
       wait for C_CLK_PERIOD*20;
       rst_n_tb   <= '1';
       -- After the reset, three delays are required for the simulation purposes.
