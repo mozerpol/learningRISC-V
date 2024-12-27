@@ -33,7 +33,7 @@ entity control is
       o_pc_ctrl               : out std_logic_vector(1 downto 0);
       o_inst_addr_ctrl        : out std_logic;
       o_alu_control           : out std_logic_vector(4 downto 0);
-      o_ram_management_ctrl   : out std_logic_vector(3 downto 0);
+      o_data_mem_mgmt_ctrl   : out std_logic_vector(3 downto 0);
       o_reg_file_inst_ctrl    : out std_logic_vector(3 downto 0);
       o_data_source_ctrl      : out std_logic_vector(1 downto 0);
       o_branch_ctrl           : out std_logic_vector(2 downto 0)
@@ -193,32 +193,32 @@ begin
    end process;
 
 
-   p_ram_management : process(i_rst_n, i_opcode, i_func3)
+   p_data_mem_mgmt : process(i_rst_n, i_opcode, i_func3)
    begin
       if (i_rst_n = '0') then
-         o_ram_management_ctrl   <= (others => '0');
+         o_data_mem_mgmt_ctrl   <= (others => '0');
       else
          if (i_opcode(6 downto 0) = C_OPCODE_LOAD) then
             case i_func3 is
-               when C_FUNC3_LB   => o_ram_management_ctrl <= C_LB;
-               when C_FUNC3_LH   => o_ram_management_ctrl <= C_LH;
-               when C_FUNC3_LW   => o_ram_management_ctrl <= C_LW;
-               when C_FUNC3_LBU  => o_ram_management_ctrl <= C_LBU;
-               when C_FUNC3_LHU  => o_ram_management_ctrl <= C_LHU;
-               when others       => o_ram_management_ctrl <= (others => '0');
+               when C_FUNC3_LB   => o_data_mem_mgmt_ctrl <= C_LB;
+               when C_FUNC3_LH   => o_data_mem_mgmt_ctrl <= C_LH;
+               when C_FUNC3_LW   => o_data_mem_mgmt_ctrl <= C_LW;
+               when C_FUNC3_LBU  => o_data_mem_mgmt_ctrl <= C_LBU;
+               when C_FUNC3_LHU  => o_data_mem_mgmt_ctrl <= C_LHU;
+               when others       => o_data_mem_mgmt_ctrl <= (others => '0');
             end case;
          elsif (i_opcode(6 downto 0) = C_OPCODE_STORE) then
             case i_func3 is
-               when C_FUNC3_SB   => o_ram_management_ctrl <= C_SB;
-               when C_FUNC3_SH   => o_ram_management_ctrl <= C_SH;
-               when C_FUNC3_SW   => o_ram_management_ctrl <= C_SW;
-               when others       => o_ram_management_ctrl <= (others => '0');
+               when C_FUNC3_SB   => o_data_mem_mgmt_ctrl <= C_SB;
+               when C_FUNC3_SH   => o_data_mem_mgmt_ctrl <= C_SH;
+               when C_FUNC3_SW   => o_data_mem_mgmt_ctrl <= C_SW;
+               when others       => o_data_mem_mgmt_ctrl <= (others => '0');
             end case;
          else
-            o_ram_management_ctrl <= (others => '0');
+            o_data_mem_mgmt_ctrl <= (others => '0');
          end if;
       end if;
-   end process p_ram_management;
+   end process p_data_mem_mgmt;
 
 
    p_program_counter : process(i_rst_n, i_opcode, i_branch_result)

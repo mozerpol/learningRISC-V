@@ -92,8 +92,8 @@ proc s_add_external_libs {} {
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/register_file_design.vhdl
 
    set hdl_dir                "../../core"
-   set library_name           "ram_management_lib"
-   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/ram_management_design.vhdl
+   set library_name           "data_mem_mgmt_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/data_mem_mgmt_design.vhdl
 
 
    set hdl_dir                "../../core"

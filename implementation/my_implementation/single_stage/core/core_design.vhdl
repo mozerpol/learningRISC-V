@@ -25,7 +25,7 @@ library control_lib;
 library decoder_lib;
 library instruction_memory_lib;
 library program_counter_lib;
-library ram_management_lib;
+library data_mem_mgmt_lib;
 library register_file_lib;
 library riscpol_lib;
    use riscpol_lib.all;
@@ -103,7 +103,7 @@ architecture rtl of core is
          o_alu_control           : out std_logic_vector(4 downto 0);
          o_data_source_ctrl      : out std_logic_vector(1 downto 0);
          o_reg_file_inst_ctrl    : out std_logic_vector(3 downto 0);
-         o_ram_management_ctrl   : out std_logic_vector(3 downto 0);
+         o_data_mem_mgmt_ctrl    : out std_logic_vector(3 downto 0);
          o_branch_ctrl           : out std_logic_vector(2 downto 0)
       );
    end component control;
@@ -143,10 +143,10 @@ architecture rtl of core is
    end component reg_file;
 
 
-   component ram_management is
+   component data_mem_mgmt is
       port (
          i_rst_n                 : in std_logic;
-         i_ram_management_ctrl   : in std_logic_vector(3 downto 0);
+         i_data_mem_mgmt_ctrl   : in std_logic_vector(3 downto 0);
          i_rs1_data              : in std_logic_vector(31 downto 0);
          i_rs2_data              : in std_logic_vector(31 downto 0);
          i_imm                   : in std_logic_vector(31 downto 0);
@@ -156,7 +156,7 @@ architecture rtl of core is
          o_waddr                 : out  integer range 0 to C_RAM_LENGTH-1;
          o_data                  : out  std_logic_vector(31 downto 0)
       );
-   end component ram_management;
+   end component data_mem_mgmt;
 
 
    component program_counter is
@@ -205,7 +205,7 @@ architecture rtl of core is
    signal pc_ctrl                : std_logic_vector(1 downto 0);
    signal reg_file_inst_ctrl     : std_logic_vector(3 downto 0);
    signal data_source_ctrl       : std_logic_vector(1 downto 0);   
-   signal ram_management_ctrl    : std_logic_vector(3 downto 0);
+   signal data_mem_mgmt_ctrl     : std_logic_vector(3 downto 0);
    signal data_from_mmio         : std_logic_vector(31 downto 0);
 
 
@@ -262,7 +262,7 @@ begin
       o_alu_control           => alu_control,
       o_data_source_ctrl      => data_source_ctrl,
       o_reg_file_inst_ctrl    => reg_file_inst_ctrl,
-      o_ram_management_ctrl   => ram_management_ctrl,
+      o_data_mem_mgmt_ctrl    => data_mem_mgmt_ctrl,
       o_branch_ctrl           => branch_ctrl
    );
 
@@ -298,10 +298,10 @@ begin
       o_rs2_data              => rs2_data
    );
 
-   inst_ram_management : component ram_management
+   inst_data_mem_mgmt : component data_mem_mgmt
    port map (
       i_rst_n                 => rst_n,
-      i_ram_management_ctrl   => ram_management_ctrl,
+      i_data_mem_mgmt_ctrl    => data_mem_mgmt_ctrl,
       i_rs1_data              => rs1_data,
       i_rs2_data              => rs2_data,
       i_imm                   => imm,

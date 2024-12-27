@@ -55,7 +55,7 @@ add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_pc_ctrl
 add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_inst_addr_ctrl
 add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_alu_control
-add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_ram_management_ctrl
+add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_data_mem_mgmt_ctrl
 add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_reg_file_inst_ctrl
 add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_data_source_ctrl
 add wave         -group CONTROL           -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_control/o_branch_ctrl
@@ -79,16 +79,16 @@ add wave         -group PC                -radix bin /riscpol_tb/inst_riscpol/in
 add wave         -group PC                -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/pc_addr_buff
 add wave         -group PC                -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_program_counter/o_pc_addr
 
-add wave         -group RAM_MNGT          -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/i_ram_management_ctrl
-add wave         -group RAM_MNGT          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/i_rs1_data
-add wave         -group RAM_MNGT          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/i_rs2_data
-add wave         -group RAM_MNGT          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/i_imm
-add wave         -group RAM_MNGT          -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/p_ram_management/v_ram_address
-add wave         -group RAM_MNGT          -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/o_write_enable
-add wave         -group RAM_MNGT          -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/o_byte_enable
-add wave         -group RAM_MNGT          -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/o_raddr
-add wave         -group RAM_MNGT          -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/o_waddr
-add wave         -group RAM_MNGT          -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_ram_management/o_data
+add wave         -group DATA_MEM_MNGT     -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/i_data_mem_mgmt_ctrl
+add wave         -group DATA_MEM_MNGT     -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/i_rs1_data
+add wave         -group DATA_MEM_MNGT     -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/i_rs2_data
+add wave         -group DATA_MEM_MNGT     -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/i_imm
+add wave         -group DATA_MEM_MNGT     -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/p_data_mem_mgmt/v_ram_address
+add wave         -group DATA_MEM_MNGT     -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/o_write_enable
+add wave         -group DATA_MEM_MNGT     -radix bin /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/o_byte_enable
+add wave         -group DATA_MEM_MNGT     -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/o_raddr
+add wave         -group DATA_MEM_MNGT     -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/o_waddr
+add wave         -group DATA_MEM_MNGT     -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_data_mem_mgmt/o_data
       
 add wave         -group REG_FILE          -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_reg_file/i_rs1_addr
 add wave         -group REG_FILE          -radix dec /riscpol_tb/inst_riscpol/inst_core/inst_reg_file/i_rs2_addr

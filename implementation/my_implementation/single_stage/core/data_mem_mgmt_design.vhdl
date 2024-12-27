@@ -1,10 +1,10 @@
 --------------------------------------------------------------------------------
--- File          : ram_management_design.vhdl
+-- File          : data_mem_mgmt.vhdl
 -- Author        : mozerpol
 --------------------------------------------------------------------------------
 -- Description   : This module is responsible for writing and reading the
 -- appropriate data in RAM (peripherials/ram.vhdl) and writing the read data from
--- RAM to the register file, based on the i_ram_management_ctrl signal from the
+-- RAM to the register file, based on the i_data_mem_mgmt_ctrl signal from the
 -- control module (control_design.vhdl).
 --------------------------------------------------------------------------------
 -- License       : MIT 2022 mozerpol
@@ -21,10 +21,10 @@ library riscpol_lib;
    use riscpol_lib.riscpol_pkg.all;
 
 
-entity ram_management is
+entity data_mem_mgmt is
    port (
       i_rst_n                 : in std_logic;
-      i_ram_management_ctrl   : in std_logic_vector(3 downto 0);
+      i_data_mem_mgmt_ctrl    : in std_logic_vector(3 downto 0);
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
@@ -34,7 +34,7 @@ entity ram_management is
       o_waddr                 : out integer range 0 to C_RAM_LENGTH-1;
       o_data                  : out std_logic_vector(31 downto 0)
    );
-end entity ram_management;
+end entity data_mem_mgmt;
 
 
 -- RAM addressing rules:
@@ -42,13 +42,13 @@ end entity ram_management;
 -- LH / SH - address must be divisible by 2
 -- LB / SB
 
-architecture rtl of ram_management is
+architecture rtl of data_mem_mgmt is
 
 
 begin
 
 
-   p_ram_management : process(i_rst_n, i_rs2_data, i_rs1_data, i_imm, i_ram_management_ctrl)
+   p_data_mem_mgmt : process(i_rst_n, i_rs2_data, i_rs1_data, i_imm, i_data_mem_mgmt_ctrl)
       variable v_ram_address : std_logic_vector(31 downto 0);
    begin
       if (i_rst_n = '0') then
@@ -62,7 +62,7 @@ begin
          v_ram_address     := std_logic_vector(unsigned(i_rs1_data) + unsigned(i_imm));
          o_waddr           <= to_integer(unsigned(v_ram_address(7 downto 2)));
          o_raddr           <= 0;
-         case i_ram_management_ctrl is
+         case i_data_mem_mgmt_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
                o_byte_enable  <= "1111";
@@ -125,7 +125,7 @@ begin
                o_raddr        <= 0;
          end case;
       end if;
-   end process p_ram_management;
+   end process p_data_mem_mgmt;
 
 
 end architecture rtl;
