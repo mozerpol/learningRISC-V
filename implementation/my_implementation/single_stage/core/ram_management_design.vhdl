@@ -28,8 +28,6 @@ entity ram_management is
       i_rs1_data              : in std_logic_vector(31 downto 0);
       i_rs2_data              : in std_logic_vector(31 downto 0);
       i_imm                   : in std_logic_vector(31 downto 0);
-      i_data_from_mmio        : in std_logic_vector(31 downto 0);
-      o_rd_data               : out std_logic_vector(31 downto 0);
       o_write_enable          : out std_logic;
       o_byte_enable           : out std_logic_vector (3 downto 0);
       o_raddr                 : out integer range 0 to C_RAM_LENGTH-1;
@@ -37,6 +35,7 @@ entity ram_management is
       o_data                  : out std_logic_vector(31 downto 0)
    );
 end entity ram_management;
+
 
 -- RAM addressing rules:
 -- LW / SW - address must be divisible by 4
@@ -126,96 +125,6 @@ begin
          end case;
       end if;
    end process p_ram_management;
-
-
-   p_reg_file : process(i_rst_n, i_ram_management_ctrl, i_data_from_mmio, i_imm, i_rs1_data)
-      variable v_reg_file_address : std_logic_vector(1 downto 0);
-   begin
-      if (i_rst_n = '0') then
-         o_rd_data          <= (others => '0');
-         v_reg_file_address := "00";
-      else
-         v_reg_file_address := std_logic_vector(unsigned(i_rs1_data(1 downto 0)) 
-                                                 + unsigned(i_imm(1 downto 0)));
-         case i_ram_management_ctrl is
-            when C_LW  =>
-               o_rd_data <= i_data_from_mmio;
-            when C_LH  =>
-               if (v_reg_file_address(1 downto 0) = "00") then
-                  if (i_data_from_mmio(15) = '1') then
-                     o_rd_data(31 downto 16)  <= (others => '1');
-                  else
-                     o_rd_data(31 downto 16)  <= (others => '0');
-                  end if;
-                  o_rd_data(15 downto 0)  <= i_data_from_mmio(15 downto 0);
-               elsif (v_reg_file_address(1 downto 0) = "10") then
-                  if (i_data_from_mmio(31) = '1') then
-                     o_rd_data(31 downto 16)  <= (others => '1');
-                  else
-                     o_rd_data(31 downto 16)  <= (others => '0');
-                  end if;
-                  o_rd_data(15 downto 0)  <= i_data_from_mmio(31 downto 16);
-               else
-                  o_rd_data               <= (others => '0');
-               end if;
-            when C_LHU =>
-               o_rd_data(31 downto 16) <= (others => '0');
-               if (v_reg_file_address(1 downto 0) = "00") then
-                  o_rd_data(15 downto 0)  <= i_data_from_mmio(15 downto 0);
-               elsif (v_reg_file_address(1 downto 0) = "10") then
-                  o_rd_data(15 downto 0)  <= i_data_from_mmio(31 downto 16);
-               else
-                  o_rd_data(15 downto 0)  <= (others => '0');
-               end if;
-            when C_LB  =>
-               if (v_reg_file_address(1 downto 0) = "00") then
-                  if (i_data_from_mmio(7) = '1') then
-                     o_rd_data(31 downto 8)  <= (others => '1');
-                  else
-                     o_rd_data(31 downto 8)  <= (others => '0');
-                  end if;
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(7 downto 0);
-               elsif (v_reg_file_address(1 downto 0) = "01") then
-                  if (i_data_from_mmio(15) = '1') then
-                     o_rd_data(31 downto 8)  <= (others => '1');
-                  else
-                     o_rd_data(31 downto 8)  <= (others => '0');
-                  end if;
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(15 downto 8);
-               elsif (v_reg_file_address(1 downto 0) = "10") then
-                  if (i_data_from_mmio(23) = '1') then
-                     o_rd_data(31 downto 8)  <= (others => '1');
-                  else
-                     o_rd_data(31 downto 8)  <= (others => '0');
-                  end if;
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(23 downto 16);
-               elsif (v_reg_file_address(1 downto 0) = "11") then
-                  if (i_data_from_mmio(31) = '1') then
-                     o_rd_data(31 downto 8)  <= (others => '1');
-                  else
-                     o_rd_data(31 downto 8)  <= (others => '0');
-                  end if;
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(31 downto 24);
-               else
-                  o_rd_data               <= (others => '0');
-               end if;
-            when C_LBU =>
-               o_rd_data(31 downto 8)  <= (others => '0');
-               if (v_reg_file_address(1 downto 0) = "00") then
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(7 downto 0);
-               elsif (v_reg_file_address(1 downto 0) = "01") then
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(15 downto 8);
-               elsif (v_reg_file_address(1 downto 0) = "10") then
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(23 downto 16);
-               elsif (v_reg_file_address(1 downto 0) = "11") then
-                  o_rd_data(7 downto 0)   <= i_data_from_mmio(31 downto 24);
-               else
-                  o_rd_data(7 downto 0)   <= (others => '0');
-               end if;
-            when others => o_rd_data   <= (others => '0');
-         end case;
-      end if;
-   end process p_reg_file;
 
 
 end architecture rtl;

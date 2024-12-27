@@ -77,3 +77,7 @@ instructions,
 - [x] change to negative reset,
 - [ ] add a sample system memory map table like here:
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
+- [ ] split ram_management, there is for ram and program counter, it doesn't
+make any sense,
+- [ ] change name from script.tcl to run_simulation.tcl,
+- [ ] change ram_management to data_memory
