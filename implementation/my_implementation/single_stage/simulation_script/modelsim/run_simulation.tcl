@@ -50,6 +50,11 @@ proc s_add_external_libs {} {
    set hdl_dir                "../../peripherals"
    set library_name           "mmio_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/mmio.vhdl
+   
+   
+   set hdl_dir                "../../7segment"
+   set library_name           "7segment_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/7segment.vhdl
 
 
    set hdl_dir                "../../core"
@@ -110,18 +115,18 @@ proc s_add_external_libs {} {
 # |   |___testbench.vhdl
 # |   |___package.vhdl
 # |   |
-# |   |___scripts
-# |       |___script.tcl (this file)
+# |   |___run_simulations
+# |       |___run_simulation.tcl (this file)
 # |       |___waveforms.do
 #
 #         RULES:
 # Design, testbench must have the vhdl extension
 # Waveforms must have the DO extension
-# Script must have the TCL extension
-# The scripts are written for Linux
+# run_simulation must have the TCL extension
+# The run_simulations are written for Linux
 #
 #         HOW TO RUN:
-# Go to directory where is script.tcl and run command: do script.tcl
+# Go to directory where is run_simulation.tcl and run command: do run_simulation.tcl
 
 set lib_name         $module\_lib
 set design_name      ../../$module\_design
@@ -131,7 +136,7 @@ set waveforms        $module\_lib.$module\_tb
 set systemTime_start [clock seconds]
 set systemTime_end   [clock seconds]
 
-proc s_show_description {} {
+proc s_show_derun_simulationion {} {
     global lib_name
     echo "\n============================\n"
     echo "      $lib_name"
@@ -186,7 +191,7 @@ proc s_comp_design_main {} {
        echo "OK"
        vcom -2008 -cover bcs -quiet -work $lib_name $design_name.vhdl
     } else {
-       return "File $design_name not found, stop script"
+       return "File $design_name not found, stop run_simulation"
     }
 }
 
@@ -197,7 +202,7 @@ proc s_comp_test_main {} {
        echo "OK"
        vcom -2008 -quiet -work $lib_name $test_name.vhdl
     } else {
-       return "File $test_name not found, stop script"
+       return "File $test_name not found, stop run_simulation"
     }
 }
 
@@ -226,7 +231,7 @@ proc s_start_sim {} {
     echo "Simulation time       : [expr {$systemTime_end - $systemTime_start}] sec."
 }
 
-s_show_description
+s_show_derun_simulationion
 s_clear
 s_create_lib_main
 s_map_lib_main
