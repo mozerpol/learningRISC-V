@@ -41,7 +41,15 @@ There are two important rules for adding own instructions in *rom.vhdl* file:
 2. The size of the instruction memory is set in the *riscpol_pkg.vhdl* file as a
 *C_ROM_LENGTH* constant.
 
-### Might help
+### Memory map
+
+Memory map:
+
+|Address range (hexadecimal)|Size|Device|
+|:--:|:--:|:--:|
+|0000 - 003D|c|RAM|
+||||
+
 
 ### Project status
 1. Implementation of a three-stage processor:
@@ -77,7 +85,7 @@ instructions,
 - [x] change to negative reset,
 - [ ] add a sample system memory map table like here:
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
-- [ ] split ram_management, there is for ram and program counter, it doesn't
+- [x] split ram_management, there is for ram and program counter, it doesn't
 make any sense,
-- [ ] change name from script.tcl to run_simulation.tcl,
-- [ ] change ram_management to data_memory
+- [x] change name from script.tcl to run_simulation.tcl,
+- [x] change ram_management to data_memory
