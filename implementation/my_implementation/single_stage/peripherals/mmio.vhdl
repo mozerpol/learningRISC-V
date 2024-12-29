@@ -7,6 +7,7 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.numeric_std.all;
@@ -48,7 +49,9 @@ begin
       i_mmio_data_uart                                 when C_MMIO_ADDR_UART - 1,
       i_mmio_data_ram                                  when others;
 
+
    o_mmio_re_gpio <= '1' when i_mmio_raddr = C_MMIO_ADDR_GPIO - 1 else '0';
+
 
    process (i_mmio_write_enable, i_mmio_waddr)
    begin

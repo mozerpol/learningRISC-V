@@ -9,6 +9,7 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
+
 library ieee;
    use ieee.std_logic_1164.all;
    use ieee.numeric_std.all;
@@ -19,8 +20,10 @@ library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
 
+
 entity riscpol_tb is
 end riscpol_tb;
+
 
 architecture tb of riscpol_tb is
 
@@ -35,6 +38,7 @@ architecture tb of riscpol_tb is
    );
    end component riscpol;
 
+
    -----------------------------------------------------------------------------
    -- SIGNALS AND CONSTANTS
    -----------------------------------------------------------------------------
@@ -45,6 +49,7 @@ architecture tb of riscpol_tb is
    signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal set_test_point   : integer := 0;
 
+
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -54,6 +59,7 @@ architecture tb of riscpol_tb is
    begin
       std.textio.write(std.textio.output, arg & LF);
    end procedure echo;
+
 
    -----------------------------------------------------
    ---- Check the value of general purpose register ----
@@ -74,6 +80,7 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
 
+
    -----------------------------------------------------
    ----   Check the result of branch instruction    ----
    -----------------------------------------------------
@@ -93,6 +100,7 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
 
+
    ----------------------------------------------------------------------------
    ---- Check the value of one byte in RAM - used to verify SB instruction ----
    ----------------------------------------------------------------------------
@@ -109,6 +117,7 @@ architecture tb of riscpol_tb is
       end if;
       wait until rising_edge(clk_tb);
    end procedure;
+
 
    -----------------------------------------------------------------------------
    ---- Check the value of two bytes in RAM - used to verify SH instruction ----
@@ -129,6 +138,7 @@ architecture tb of riscpol_tb is
       end if;
       wait until rising_edge(clk_tb);
    end procedure;
+
 
    -----------------------------------------------------------------------------
    ---- Check the value of three bytes in RAM - used to verify SW instruction --
@@ -156,6 +166,7 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
 
+
    ---------------------------------
    ---- Check the value of GPIO ----
    ---------------------------------
@@ -175,6 +186,7 @@ architecture tb of riscpol_tb is
       wait until rising_edge(clk_tb);
    end procedure;
 
+
    ------------------------------------------
    ---- Check the value of counter 8 bit ----
    ------------------------------------------
@@ -193,6 +205,7 @@ architecture tb of riscpol_tb is
       end if;
       wait until rising_edge(clk_tb);
    end procedure;
+
 
    -------------------------------------------
    ---- Check UART transmission, outgoing ----
@@ -243,6 +256,7 @@ architecture tb of riscpol_tb is
          end if;
       end loop;
    end procedure;
+
 
    -------------------------------------------
    ----   Simulating incoming UART data   ----
@@ -299,6 +313,7 @@ begin
       alias spy_cnt1          is <<signal .riscpol_tb.inst_riscpol.inst_counter1.o_cnt1_q:
                                  integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
+
 
       rst_n_tb   <= '0';
       gpio_tb    <= (others => 'Z');

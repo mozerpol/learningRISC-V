@@ -9,6 +9,7 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
+
 library ieee;
    use ieee.std_logic_1164.all;
 library riscpol_lib;
@@ -33,11 +34,13 @@ architecture rtl of gpio is
 
    signal reg_gpio_q : std_logic_vector(31 downto 0);
 
+
 begin
 
    
    o_gpio_q <= (others => 'Z') when i_gpio_re = '1' else 
                reg_gpio_q when i_gpio_we = '1' else reg_gpio_q;
+
 
    p_gpio : process(i_clk)
    begin
