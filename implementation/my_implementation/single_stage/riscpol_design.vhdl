@@ -21,6 +21,7 @@ library gpio_lib;
 library counter1_lib;
 library mmio_lib;
 library uart_lib;
+library 7segment_lib;
 library core_lib;
    use core_lib.all;
 
@@ -132,6 +133,19 @@ architecture rtl of riscpol is
          o_uart_tx            : out std_logic
    );
    end component uart;
+   
+   
+   component 7segment is
+      port (
+         i_rst_n           : in std_logic;
+         i_7segment_wdata  : in std_logic_vector(31 downto 0);
+         i_7segment_we     : in std_logic
+         o_7segment_1      : out std_logic_vector(7 downto 0);
+         o_7segment_2      : out std_logic_vector(7 downto 0);
+         o_7segment_3      : out std_logic_vector(7 downto 0);
+         o_7segment_4      : out std_logic_vector(7 downto 0)
+   );
+   end component 7segment;
 
 
    -- General
@@ -178,6 +192,7 @@ begin
       o_core_addr_write    => s_core_addr_write
    );
 
+
    inst_mmio        : component mmio
    port map (
       i_mmio_write_enable  => s_core_write_enable,
@@ -197,6 +212,7 @@ begin
       o_mmio_data          => s_mmio_data
    );
 
+
    inst_ram         : component byte_enabled_simple_dual_port_ram
    port map (
       i_clk                => clk,
@@ -208,6 +224,7 @@ begin
       o_ram_data           => s_ram_q
    );
 
+
    inst_gpio        : component gpio
    port map (
       i_rst_n              => rst_n,
@@ -217,6 +234,7 @@ begin
       i_gpio_re            => s_mmio_re_gpio,
       o_gpio_q             => s_q_gpio
    );
+
 
    inst_counter1    : component counter1
    port map (
@@ -228,6 +246,7 @@ begin
       o_cnt1_q             => s_cnt1_q
    );
 
+
    inst_uart        : component uart
    port map (
       i_rst_n              => rst_n,
@@ -238,6 +257,7 @@ begin
       o_uart_data          => s_uart_data,
       o_uart_tx            => s_uart_tx
    );
+
 
    io_gpio  <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
    o_tx     <= s_uart_tx;
