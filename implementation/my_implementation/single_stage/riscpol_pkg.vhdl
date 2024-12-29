@@ -39,6 +39,8 @@ package riscpol_pkg is
    -- should the counter1 count?
    constant C_NUMBER_OF_GPIO        : integer  := 8;
    constant C_BAUD                  : positive := 115200; -- UART baud rate
+   
+   constant C_MMIO_ADDR_7SEGMENT    : integer  := 61;
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
