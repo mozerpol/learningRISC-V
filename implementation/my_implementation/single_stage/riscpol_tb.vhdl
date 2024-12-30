@@ -2899,7 +2899,8 @@ begin
                  test_point            => set_test_point );
                  
                  
-                 -- TODO: DESCRIBE!!!!!!!!1
+      -- TODO: Add delay time, the last instruction is sending data using UART,
+      -- it blocks everything.
                  
       ----------------------------------------------------------------
       --                                                            --

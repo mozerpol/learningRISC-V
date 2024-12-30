@@ -33,7 +33,7 @@ end seven_segment;
 
 architecture rtl of seven_segment is
 
--- TODO: describe
+
    -- 7-segment encoding for digits 0-9
    function to_7seg(
       digit : std_logic_vector(3 downto 0)
@@ -71,6 +71,11 @@ begin
    o_7segment_4 <= to_7seg(s_7segment_4);
 
 
+   -- Below approach is too LE consuming, and bad for timing, before was:
+   -- 6830, 30.68
+   -- After:
+   -- 8157, 20.20
+   -- TODO: think how to fix it
    process(i_clk, i_rst_n)
    begin
       if (i_clk'event and i_clk = '1') then
