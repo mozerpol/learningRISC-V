@@ -32,7 +32,12 @@ entity riscpol is
       i_clk                   : in std_logic;
       io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
       i_rx                    : in std_logic;
-      o_tx                    : out std_logic
+      o_tx                    : out std_logic;
+      o_7segment_1            : out std_logic_vector(6 downto 0);
+      o_7segment_2            : out std_logic_vector(6 downto 0);
+      o_7segment_3            : out std_logic_vector(6 downto 0);
+      o_7segment_4            : out std_logic_vector(6 downto 0);
+      o_7segment_anodes       : out std_logic_vector(3 downto 0)
    );
 end entity riscpol;
 
@@ -68,6 +73,7 @@ architecture rtl of riscpol is
          o_mmio_re_gpio       : out std_logic;
          o_mmio_we_cnt1       : out std_logic;
          o_mmio_we_uart       : out std_logic;
+         o_mmio_we_7seg       : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -145,7 +151,7 @@ architecture rtl of riscpol is
          o_7segment_2      : out std_logic_vector(6 downto 0);
          o_7segment_3      : out std_logic_vector(6 downto 0);
          o_7segment_4      : out std_logic_vector(6 downto 0);
-         o_anodes          : out std_logic_vector(3 downto 0)
+         o_7segment_anodes : out std_logic_vector(3 downto 0)
    );
    end component seven_segment;
 
@@ -161,6 +167,7 @@ architecture rtl of riscpol is
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
+   signal s_mmio_we_7seg      : std_logic;
    -- Core
    signal s_core_data_write   : std_logic_vector(31 downto 0);
    signal s_core_write_enable : std_logic;
@@ -178,13 +185,11 @@ architecture rtl of riscpol is
    signal s_uart_tx           : std_logic;
    signal s_uart_data         : std_logic_vector(31 downto 0);
    -- 7 segment
-   signal s_7segment_wdata    : std_logic_vector(31 downto 0);
-   signal s_7segment_we       : std_logic;
    signal s_7segment_1        : std_logic_vector(6 downto 0);
    signal s_7segment_2        : std_logic_vector(6 downto 0);
    signal s_7segment_3        : std_logic_vector(6 downto 0);
    signal s_7segment_4        : std_logic_vector(6 downto 0);
-   signal s_anodes            : std_logic_vector(3 downto 0);
+   signal s_7segment_anodes   : std_logic_vector(3 downto 0);
 
 
 begin
@@ -219,6 +224,7 @@ begin
       o_mmio_re_gpio       => s_mmio_re_gpio,
       o_mmio_we_cnt1       => s_mmio_we_cnt1,
       o_mmio_we_uart       => s_mmio_we_uart,
+      o_mmio_we_7seg       => s_mmio_we_7seg,
       o_mmio_data          => s_mmio_data
    );
 
@@ -274,19 +280,24 @@ begin
       i_rst_n              => rst_n,
       i_clk                => clk,
       i_7segment_wdata     => s_core_data_write,
-      i_7segment_we        => s_7segment_we,
+      i_7segment_we        => s_mmio_we_7seg,
       o_7segment_1         => s_7segment_1,
       o_7segment_2         => s_7segment_2,
       o_7segment_3         => s_7segment_3,
       o_7segment_4         => s_7segment_4,
-      o_anodes             => s_anodes
+      o_7segment_anodes    => s_7segment_anodes
    );
 
 
-   io_gpio  <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
-   o_tx     <= s_uart_tx;
-   rst_n    <= (i_rst_n);
-   clk      <= i_clk;
+   rst_n             <= (i_rst_n);
+   clk               <= i_clk;
+   io_gpio           <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
+   o_tx              <= s_uart_tx;
+   o_7segment_1      <= s_7segment_1;
+   o_7segment_2      <= s_7segment_2;
+   o_7segment_3      <= s_7segment_3;
+   o_7segment_4      <= s_7segment_4;
+   o_7segment_anodes <= s_7segment_anodes;
 
 
 end architecture rtl;
