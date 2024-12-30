@@ -30,11 +30,16 @@ architecture tb of riscpol_tb is
 
    component riscpol is
    port (
-      i_rst_n     : in std_logic;
-      i_clk       : in std_logic;
-      io_gpio     : inout std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
-      i_rx        : in std_logic;
-      o_tx        : out std_logic
+      i_rst_n                 : in std_logic;
+      i_clk                   : in std_logic;
+      io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
+      i_rx                    : in std_logic;
+      o_tx                    : out std_logic;
+      o_7segment_1            : out std_logic_vector(6 downto 0);
+      o_7segment_2            : out std_logic_vector(6 downto 0);
+      o_7segment_3            : out std_logic_vector(6 downto 0);
+      o_7segment_4            : out std_logic_vector(6 downto 0);
+      o_7segment_anodes       : out std_logic_vector(3 downto 0)
    );
    end component riscpol;
 
@@ -42,14 +47,17 @@ architecture tb of riscpol_tb is
    -----------------------------------------------------------------------------
    -- SIGNALS AND CONSTANTS
    -----------------------------------------------------------------------------
-   signal rst_n_tb         : std_logic;
-   signal clk_tb           : std_logic;
-   signal rx_tb            : std_logic;
-   signal tx_tb            : std_logic;
-   signal gpio_tb          : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
-   signal set_test_point   : integer := 0;
-
-
+   signal rst_n_tb            : std_logic;
+   signal clk_tb              : std_logic;
+   signal rx_tb               : std_logic;
+   signal tx_tb               : std_logic;
+   signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
+   signal set_test_point      : integer := 0;
+   signal s_7segment_1_tb     : std_logic_vector(6 downto 0);
+   signal s_7segment_2_tb     : std_logic_vector(6 downto 0);
+   signal s_7segment_3_tb     : std_logic_vector(6 downto 0);
+   signal s_7segment_4_tb     : std_logic_vector(6 downto 0);
+   signal s_7segment_anodes_tb: std_logic_vector(3 downto 0);
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -289,11 +297,16 @@ begin
 
    inst_riscpol : component riscpol
    port map (
-      i_rst_n     => rst_n_tb,
-      i_clk       => clk_tb,
-      io_gpio     => gpio_tb,
-      i_rx        => rx_tb,
-      o_tx        => tx_tb
+      i_rst_n           => rst_n_tb,
+      i_clk             => clk_tb,
+      io_gpio           => gpio_tb,
+      i_rx              => rx_tb,
+      o_tx              => tx_tb,
+      o_7segment_1      => s_7segment_1_tb,
+      o_7segment_2      => s_7segment_2_tb,
+      o_7segment_3      => s_7segment_3_tb,
+      o_7segment_4      => s_7segment_4_tb,
+      o_7segment_anodes => s_7segment_anodes_tb
    );
 
 
@@ -2425,7 +2438,7 @@ begin
       check_gpr( instruction    => "lb    x8,  -2(x2)",
                  gpr            => spy_gpr(8),
                  desired_value  => 32x"00000000",
-                 test_point     => set_test_point );  
+                 test_point     => set_test_point );
       check_gpr( instruction    => "lb    x12, 4(x3)",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000000",
@@ -2884,6 +2897,10 @@ begin
                  number_bytes_to_send  => 1,
                  out_rx                => rx_tb,
                  test_point            => set_test_point );
+                 
+                 
+                 -- TODO: DESCRIBE!!!!!!!!1
+                 
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
