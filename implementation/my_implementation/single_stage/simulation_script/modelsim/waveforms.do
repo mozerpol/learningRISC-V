@@ -12,6 +12,12 @@ add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/io_gpio
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/i_rx
 add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_tx
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_7segment_1
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_7segment_2
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_7segment_3
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_7segment_4
+add wave         -group riscpol_DESIGN    -radix bin /riscpol_tb/inst_riscpol/o_7segment_anodes
+
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/inst_riscpol/s_mmio_we_ram
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/inst_riscpol/s_mmio_we_gpio
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/inst_riscpol/s_mmio_re_gpio
@@ -25,6 +31,11 @@ add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix dec /ri
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix hex /riscpol_tb/inst_riscpol/s_ram_q
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix dec /riscpol_tb/inst_riscpol/s_cnt1_q
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/inst_riscpol/s_q_gpio
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/s_7segment_1_tb 
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/s_7segment_2_tb 
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/s_7segment_3_tb 
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/s_7segment_4_tb 
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS    -radix bin /riscpol_tb/s_7segment_anodes_tb 
 
 add wave         -group ALU               -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_1
 add wave         -group ALU               -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_2
@@ -166,6 +177,18 @@ add wave         -group UART -group RX        -radix bin /riscpol_tb/inst_riscpo
 add wave         -group UART -group RX        -radix bin /riscpol_tb/inst_riscpol/inst_uart/inst_counter_rx/o_cnt1_overflow 
 add wave         -group UART -group RX        -radix dec /riscpol_tb/inst_riscpol/inst_uart/inst_counter_rx/o_cnt1_q 
 add wave         -group UART -group RX        -radix bin /riscpol_tb/inst_riscpol/inst_uart/inst_counter_rx/s_ce_latch
+
+add wave         -group 7SEGMENT          -radix hex /riscpol_tb/inst_riscpol/inst_seven_segment/i_7segment_wdata 
+add wave         -group 7SEGMENT          -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/i_7segment_we
+add wave         -group 7SEGMENT          -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/o_7segment_1
+add wave         -group 7SEGMENT          -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/o_7segment_2
+add wave         -group 7SEGMENT          -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/o_7segment_3
+add wave         -group 7SEGMENT          -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/o_7segment_4
+add wave         -group 7SEGMENT          -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/o_7segment_anodes
+add wave         -group 7SEGMENT -group INTERNAL_SIGNALS        -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/s_7segment_1 
+add wave         -group 7SEGMENT -group INTERNAL_SIGNALS        -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/s_7segment_2 
+add wave         -group 7SEGMENT -group INTERNAL_SIGNALS        -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/s_7segment_3 
+add wave         -group 7SEGMENT -group INTERNAL_SIGNALS        -radix bin /riscpol_tb/inst_riscpol/inst_seven_segment/s_7segment_4 
 
 add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_ram/i_ram_raddr
 add wave         -group RAM               -radix dec /riscpol_tb/inst_riscpol/inst_ram/i_ram_waddr
