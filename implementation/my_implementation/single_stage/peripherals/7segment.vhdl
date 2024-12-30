@@ -26,14 +26,14 @@ entity seven_segment is
       o_7segment_2      : out std_logic_vector(6 downto 0);
       o_7segment_3      : out std_logic_vector(6 downto 0);
       o_7segment_4      : out std_logic_vector(6 downto 0);
-      o_anodes          : out std_logic_vector(3 downto 0)
+      o_7segment_anodes : out std_logic_vector(3 downto 0)
    );
 end seven_segment;
 
 
 architecture rtl of seven_segment is
 
-
+-- TODO: describe
    -- 7-segment encoding for digits 0-9
    function to_7seg(
       digit : std_logic_vector(3 downto 0)
@@ -64,7 +64,7 @@ architecture rtl of seven_segment is
 begin
 
 
-   o_anodes     <= (others => '1'); -- Turn on all 7seg displays
+   o_7segment_anodes <= (others => '1'); -- Turn on all 7seg displays
    o_7segment_1 <= to_7seg(s_7segment_1);
    o_7segment_2 <= to_7seg(s_7segment_2);
    o_7segment_3 <= to_7seg(s_7segment_3);
@@ -73,19 +73,27 @@ begin
 
    process(i_clk, i_rst_n)
    begin
-      if (i_rst_n = '1') then
-         s_7segment_1 <= (others => '0');
-         s_7segment_2 <= (others => '0');
-         s_7segment_3 <= (others => '0');
-         s_7segment_4 <= (others => '0');
-      elsif (i_clk'event and i_clk = '1') then
-         if (i_7segment_we = '1') then
-            s_7segment_1 <= std_logic_vector(to_unsigned(to_integer(unsigned(i_7segment_wdata(13 downto 0))) mod 10, 4)); -- units
-            s_7segment_2 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 10) mod 10, 4)); -- tens
-            s_7segment_3 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 100) mod 10, 4)); -- hundreds
-            s_7segment_4 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 1000) mod 10, 4)); -- thousands
+      if (i_clk'event and i_clk = '1') then
+         if (i_rst_n = '0') then
+            s_7segment_1 <= (others => '0');
+            s_7segment_2 <= (others => '0');
+            s_7segment_3 <= (others => '0');
+            s_7segment_4 <= (others => '0');
+         else
+            if (i_7segment_we = '1') then
+               s_7segment_1 <= std_logic_vector(to_unsigned(to_integer(unsigned(i_7segment_wdata(13 downto 0))) mod 10, 4)); -- units
+               s_7segment_2 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 10) mod 10, 4)); -- tens
+               s_7segment_3 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 100) mod 10, 4)); -- hundreds
+               s_7segment_4 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 1000) mod 10, 4)); -- thousands
+         --   else
+          --     s_7segment_1 <= s_7segment_1;
+          --     s_7segment_2 <= s_7segment_2;
+          --     s_7segment_3 <= s_7segment_3;
+          --     s_7segment_4 <= s_7segment_4;
+            end if;
          end if;
       end if;
    end process;
+
 
 end rtl;
