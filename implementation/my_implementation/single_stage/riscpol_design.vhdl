@@ -21,7 +21,7 @@ library gpio_lib;
 library counter1_lib;
 library mmio_lib;
 library uart_lib;
-library 7segment_lib;
+library seven_segment_lib;
 library core_lib;
    use core_lib.all;
 
@@ -133,19 +133,21 @@ architecture rtl of riscpol is
          o_uart_tx            : out std_logic
    );
    end component uart;
-   
-   
-   component 7segment is
+
+
+   component seven_segment is
       port (
          i_rst_n           : in std_logic;
+         i_clk             : in std_logic;
          i_7segment_wdata  : in std_logic_vector(31 downto 0);
-         i_7segment_we     : in std_logic
-         o_7segment_1      : out std_logic_vector(7 downto 0);
-         o_7segment_2      : out std_logic_vector(7 downto 0);
-         o_7segment_3      : out std_logic_vector(7 downto 0);
-         o_7segment_4      : out std_logic_vector(7 downto 0)
+         i_7segment_we     : in std_logic;
+         o_7segment_1      : out std_logic_vector(6 downto 0);
+         o_7segment_2      : out std_logic_vector(6 downto 0);
+         o_7segment_3      : out std_logic_vector(6 downto 0);
+         o_7segment_4      : out std_logic_vector(6 downto 0);
+         o_anodes          : out std_logic_vector(3 downto 0)
    );
-   end component 7segment;
+   end component seven_segment;
 
 
    -- General
@@ -175,6 +177,14 @@ architecture rtl of riscpol is
    -- UART
    signal s_uart_tx           : std_logic;
    signal s_uart_data         : std_logic_vector(31 downto 0);
+   -- 7 segment
+   signal s_7segment_wdata    : std_logic_vector(31 downto 0);
+   signal s_7segment_we       : std_logic;
+   signal s_7segment_1        : std_logic_vector(6 downto 0);
+   signal s_7segment_2        : std_logic_vector(6 downto 0);
+   signal s_7segment_3        : std_logic_vector(6 downto 0);
+   signal s_7segment_4        : std_logic_vector(6 downto 0);
+   signal s_anodes            : std_logic_vector(3 downto 0);
 
 
 begin
@@ -256,6 +266,20 @@ begin
       i_uart_we            => s_mmio_we_uart,
       o_uart_data          => s_uart_data,
       o_uart_tx            => s_uart_tx
+   );
+
+
+   inst_seven_segment : component seven_segment
+   port map (
+      i_rst_n              => rst_n,
+      i_clk                => clk,
+      i_7segment_wdata     => s_core_data_write,
+      i_7segment_we        => s_7segment_we,
+      o_7segment_1         => s_7segment_1,
+      o_7segment_2         => s_7segment_2,
+      o_7segment_3         => s_7segment_3,
+      o_7segment_4         => s_7segment_4,
+      o_anodes             => s_anodes
    );
 
 
