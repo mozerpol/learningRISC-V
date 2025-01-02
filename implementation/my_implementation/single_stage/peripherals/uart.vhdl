@@ -198,7 +198,7 @@ begin
                         uart_state_rx        <= DATA;
                         s_cnt1_we_rx         <= '1';
                         s_cnt1_set_reset_rx  <= '1';
-                        uart_buff_rx         <= (others => '0');
+                   --     uart_buff_rx         <= (others => '0');
                      else
                         rx_start_counter     := rx_start_counter + 1;
                      end if;
