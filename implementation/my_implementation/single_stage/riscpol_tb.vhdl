@@ -2607,7 +2607,7 @@ begin
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
-      --            A simple algorithm to check GPIO                --
+      --              A simple algorithm to check GPIO              --
       --                                                            --
       ----------------------------------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   0",
@@ -2689,7 +2689,7 @@ begin
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
-      --                      Check Timer1                          --
+      --                        Check Timer1                        --
       --                                                            --
       ----------------------------------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   0x2",
@@ -2810,7 +2810,7 @@ begin
                  test_point     => set_test_point );
       ----------------------------------------------------------------
       --                                                            --
-      --                       Check UART                           --
+      --                         Check UART                         --
       --                                                            --
       ----------------------------------------------------------------
       --------------
@@ -2869,19 +2869,19 @@ begin
       --------------
       --    RX    --
       --------------
-      check_gpr( instruction    => "lui   x1,  1",
+      check_gpr( instruction    => "lui   x1,  2",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00001000",
+                 desired_value  => 32x"00002000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   -800",
+      check_gpr( instruction    => "addi  x1,  x1,   0x1FC",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000ce0",
+                 desired_value  => 32x"000021fc",
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      for i in 0 to 3295 loop
+      for i in 0 to 8700 loop
          -- loop31:
          -- addi  x2,  x2,   1     # Increment x2
          -- bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
@@ -2897,10 +2897,60 @@ begin
                  number_bytes_to_send  => 1,
                  out_rx                => rx_tb,
                  test_point            => set_test_point );
-                 
-                 
-      -- TODO: Add delay time, the last instruction is sending data using UART,
-      -- it blocks everything.
+      ----------------------------------------------------------------
+      --                                                            --
+      --                    Check 7seg displays                     --
+      --                                                            --
+      ----------------------------------------------------------------
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   1",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   9",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000009",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   10",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"0000000a",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x5,  x0,   91",
+                 gpr            => spy_gpr(5),
+                 desired_value  => 32x"0000005b",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x6,  x0,   100",
+                 gpr            => spy_gpr(6),
+                 desired_value  => 32x"00000064",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x7,  x0,   910",
+                 gpr            => spy_gpr(7),
+                 desired_value  => 32x"0000038e",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x8,  x0,   991",
+                 gpr            => spy_gpr(8),
+                 desired_value  => 32x"000003df",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x9,  x0,   999",
+                 gpr            => spy_gpr(9),
+                 desired_value  => 32x"000003e7",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lui   x10, 2",
+                 gpr            => spy_gpr(10),
+                 desired_value  => 32x"00002000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x10, x10,  1684",
+                 gpr            => spy_gpr(10),
+                 desired_value  => 32x"00002694",
+                 test_point     => set_test_point );
+
+
+
+
+
                  
       ----------------------------------------------------------------
       --                                                            --
