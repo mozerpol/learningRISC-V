@@ -65,37 +65,26 @@ begin
 
 
    o_7segment_anodes <= (others => '1'); -- Turn on all 7seg displays
-   o_7segment_1 <= to_7seg(s_7segment_1);
-   o_7segment_2 <= to_7seg(s_7segment_2);
-   o_7segment_3 <= to_7seg(s_7segment_3);
-   o_7segment_4 <= to_7seg(s_7segment_4);
 
 
-   -- Below approach is too LE consuming, and bad for timing, before was:
-   -- 6830, 30.68
-   -- After:
-   -- 8157, 20.20
-   -- TODO: think how to fix it
-   process(i_clk, i_rst_n)
+   s_7segment_1 <= std_logic_vector(to_unsigned(to_integer(unsigned(
+                     i_7segment_wdata(13 downto 0))) mod 10, 4)); -- units
+   s_7segment_2 <= std_logic_vector(to_unsigned((to_integer(unsigned(
+                     i_7segment_wdata(13 downto 0))) / 10) mod 10, 4)); -- tens
+   s_7segment_3 <= std_logic_vector(to_unsigned((to_integer(unsigned(
+                     i_7segment_wdata(13 downto 0))) / 100) mod 10, 4)); -- hundreds
+   s_7segment_4 <= std_logic_vector(to_unsigned((to_integer(unsigned(
+                     i_7segment_wdata(13 downto 0))) / 1000) mod 10, 4)); -- thousands
+
+
+   process (i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
-         if (i_rst_n = '0') then
-            s_7segment_1 <= (others => '0');
-            s_7segment_2 <= (others => '0');
-            s_7segment_3 <= (others => '0');
-            s_7segment_4 <= (others => '0');
-         else
-            if (i_7segment_we = '1') then
-               s_7segment_1 <= std_logic_vector(to_unsigned(to_integer(unsigned(i_7segment_wdata(13 downto 0))) mod 10, 4)); -- units
-               s_7segment_2 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 10) mod 10, 4)); -- tens
-               s_7segment_3 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 100) mod 10, 4)); -- hundreds
-               s_7segment_4 <= std_logic_vector(to_unsigned((to_integer(unsigned(i_7segment_wdata(13 downto 0))) / 1000) mod 10, 4)); -- thousands
-         --   else
-          --     s_7segment_1 <= s_7segment_1;
-          --     s_7segment_2 <= s_7segment_2;
-          --     s_7segment_3 <= s_7segment_3;
-          --     s_7segment_4 <= s_7segment_4;
-            end if;
+         if (i_7segment_we = '1') then
+            o_7segment_1 <= to_7seg(s_7segment_1);
+            o_7segment_2 <= to_7seg(s_7segment_2);
+            o_7segment_3 <= to_7seg(s_7segment_3);
+            o_7segment_4 <= to_7seg(s_7segment_4);
          end if;
       end if;
    end process;
