@@ -170,6 +170,7 @@ srai  x28, x18,  20    # x28 = 0xffffffff
 srai  x29, x16,  31    # x29 = 0xffffffff
 srai  x29, x29,  31    # x29 = 0xffffffff
 srai  x29, x29,  0     # x29 = 0xffffffff
+
 ########################################################
 ##                                                    ##
 ##  ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND  ##
@@ -365,6 +366,7 @@ and   x6,  x16,  x13   # x6 = 0x00000000
 and   x7,  x15,  x4    # x7 = 0x00600000
 and   x7,  x7,   x7    # x7 = 0x00600000
 and   x7,  x7,   x7    # x7 = 0x00600000
+
 ########################################################
 ##                                                    ##
 ##                     LUI, AUIPC                     ##
@@ -395,6 +397,7 @@ lui   x19, 1024        # x19 = 0x00400000
 lui   x20, 512         # x20 = 0x00200000
 lui   x20, 512         # x20 = 0x00200000
 lui   x21, 1           # x21 = 0x00001000
+
 ########################################################
 ##                                                    ##
 ##           BEQ, BNE, BLT, BGE, BLTU, BGEU           ##
@@ -543,6 +546,7 @@ loop21:
 auipc x10,  0          # ...  13.
 sub   x11, x10,  x30   # x11 = 0x0000000c 14.
 addi  x1,  x0,   0     # x1 = 0x00000000 15.
+
 ########################################################
 ##                                                    ##
 ##                     JAL, JALR                      ##
@@ -580,6 +584,7 @@ auipc x21, 0           # ... 5.
 jalr  x22, x21,  -12   # ... 6.
 addi  x0,  x0,   0     # x9 = 0x00000000 10.
 addi  x0,  x0,   0     # x9 = 0x00000000 11.
+
 ########################################################
 ##                                                    ##
 ##                     SB, SH, SW                     ##
@@ -626,6 +631,7 @@ sw    x7,  0(x0)       # 0x00000000 = 0x00fcffff
 sw    x7,  2(x2)       # 0x00000004 = 0x00fcffff
 sw    x8,  -1(x1)      # 0x00000000 = 0xf1e0cdab
 sw    x7,  -2(x2)      # 0x00000000 = 0x00fcffff
+
 ########################################################
 ##                                                    ##
 ##                LB, LH, LW, LBU, LHU                ##
@@ -663,6 +669,7 @@ lbu   x3,  1(x1)       # x3  = 0x000000ff
 ##############
 lhu   x4,  4(x0)       # x4  = 0x0000fc00
 lhu   x5,  1(x1)       # x5  = 0x0000ffff
+
 ########################################################
 ##                                                    ##
 ##                        GPIO                        ##
@@ -698,6 +705,7 @@ sb    x12, 255(x0)     # gpio = 10000001
 sb    x13, 255(x0)     # gpio = 00011000
 sb    x14, 255(x0)     # gpio = 10011001
 sb    x0,  255(x0)     # gpio = 00000000
+
 ###################################
 ##       Check the GPIOs         ##
 ###################################
@@ -732,6 +740,7 @@ beq   x1,  x0    loop27
 
 # Set high state on three output GPIOs
 sb    x2,  255(x0)
+
 ###################################
 ##      Check Counter8bit        ##
 ###################################
@@ -773,8 +782,8 @@ sb    x0,  251(x0)     # 0 = turn off the timer
 ##         Check UART tx         ##
 ###################################
 lui   x1,  0x2
-addi  x1   x1,   0x1FC # Loop purposes, x1 = 8700, 0x21FC
-addi  x2,  x0,   0     # Loop purposes
+addi  x1,  x1,   0x1FC # Delay purposes, x1 = 8700, 0x21FC
+addi  x2,  x0,   0     # Loop purposes, index
 lui   x4,  0x41505     # Load upper 20 bits
 ori   x4,  x4,   0x544 # Load lower 12 bits, x4 = 0x41505544, ascii = DUPA
 addi  x5,  x0,   0xD   # New line sign
@@ -789,14 +798,14 @@ nop
 sw    x5,  247(x0)     # Send data by UART, a new line sign
 loop30:
 addi  x2,  x2,   1     # Increment x2
-bne   x1,  x2,   loop30 # Is there enough delay? No: go to loop30
+bne   x1,  x2,   loop30# Is there enough delay? No: go to loop30
 addi  x2,  x0,   0     # Reset x2
 
 ###################################
 ##         Check UART rx         ##
 ###################################
-lui   x1,  1
-addi  x1,  x1,   -800  # Delay purposes, 0xce0 = 3296
+lui   x1,  0x1
+addi  x1,  x1,   -1926 # Delay purposes, x1 = 2170, 0x87a
 addi  x2,  x0,   0
 loop31:
 addi  x2,  x2,   1     # Increment x2
@@ -804,7 +813,27 @@ bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
 addi  x2,  x0,   0     # Reset counter
 lw    x10, 247(x0)     # Save incoming data on UART in x10 reg
 
-####################################
-##  Check behaviour after reset   ##
-####################################
-# The first instruction from rom.vhdl is always loaded during, the reset.
+###################################
+##   Check four 7seg displays    ##
+###################################
+addi  x1,  x0,   0
+addi  x2,  x0,   1
+addi  x3,  x0,   9
+addi  x4,  x0,   10
+addi  x5,  x0,   91
+addi  x6,  x0,   100
+addi  x7,  x0,   910
+addi  x8,  x0,   991
+addi  x9,  x0,   999
+lui   x10, 2
+addi  x10, x10,  1684
+sw    x1,  243(x0)     # Display 0
+sw    x2,  243(x0)     # Display 1
+sw    x3,  243(x0)     # Display 9
+sw    x4,  243(x0)     # Display 10
+sw    x5,  243(x0)
+sw    x6,  243(x0)
+sw    x7,  243(x0)
+sw    x8,  243(x0)
+sw    x9,  243(x0)
+sw    x10, 243(x0)
