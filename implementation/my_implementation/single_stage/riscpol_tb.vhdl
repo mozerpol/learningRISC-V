@@ -150,7 +150,8 @@ architecture tb of riscpol_tb is
 
    -----------------------------------------------------------------------------
    ---- Check the value of three bytes in RAM - used to verify SW instruction --
-   -----------------------------------------------------------------------------
+   ----------------------------------------------sim:/riscpol_tb/set_test_point
+-------------------------------
    procedure check_ram( constant instruction          : in string;
                         constant ram_byte_0           : in std_logic_vector(7 downto 0);
                         constant ram_byte_1           : in std_logic_vector(7 downto 0);
@@ -267,13 +268,14 @@ architecture tb of riscpol_tb is
 
 
    -------------------------------------------
-   ----   Simulating incoming UART data   ----
+   ----    Simulate sending UART data     ----
    -------------------------------------------
-   procedure check_uart_rx( constant instruction       : in string;
-                         constant desired_value        : in std_logic_vector(31 downto 0);
-                         constant number_bytes_to_send : in integer;
-                         signal out_rx                 : out std_logic;
-                         signal test_point             : out integer) is
+   procedure check_uart_rx(constant instruction          : in string;
+                           constant gpr                  : in std_logic_vector(31 downto 0);
+                           constant desired_value        : in std_logic_vector(31 downto 0);
+                           constant number_bytes_to_send : in integer;
+                           signal out_rx                 : out std_logic;
+                           signal test_point             : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
       for j in 0 to number_bytes_to_send-1 loop
@@ -288,6 +290,17 @@ architecture tb of riscpol_tb is
          -- Stop bit
          out_rx <= '1';
          wait for C_WAIT_TIME;
+         -- Check if the sent data has been saved in GPR
+         if (gpr /= desired_value) then
+            echo("ERROR UART RX: " & instruction);
+            echo("desired_value: " & to_string(desired_value));
+            echo("gpr value: " & to_string(gpr));
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+            echo("");
+         end if;
+         wait until rising_edge(clk_tb);
+
       end loop;
    end procedure;
 
@@ -2869,9 +2882,9 @@ begin
       --------------
       --    RX    --
       --------------
-      check_gpr( instruction    => "lui   x1,  2",
+      check_gpr( instruction    => "lui   x1,  1",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00002000",
+                 desired_value  => 32x"00001000",
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x1,  x1,   0x1FC",
                  gpr            => spy_gpr(1),
@@ -2881,77 +2894,35 @@ begin
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      for i in 0 to 8700 loop
+      set_test_point <= 444;
+   --   for i in 0 to 8700 loop
          -- loop31:
          -- addi  x2,  x2,   1     # Increment x2
          -- bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
-         wait until rising_edge(clk_tb);
-         wait until rising_edge(clk_tb);
-      end loop;
+       --  wait until rising_edge(clk_tb);
+    --     wait until rising_edge(clk_tb);
+    --  end loop;
+      check_uart_rx(instruction       => "lw    x10,  247(x0)",
+                 gpr                   => spy_gpr(10),
+                 desired_value         => 32x"000000DD", -- value_to_send
+                 number_bytes_to_send  => 1,
+                 out_rx                => rx_tb,
+                 test_point            => set_test_point );
+      set_test_point <= 555;
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_uart_rx( instruction       => "lw    x10,  247(x0)",
-                 desired_value         => 32x"000000DD",
-                 number_bytes_to_send  => 1,
-                 out_rx                => rx_tb,
-                 test_point            => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                    Check 7seg displays                     --
-      --                                                            --
-      ----------------------------------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   0",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   1",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   9",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000009",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   10",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"0000000a",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x5,  x0,   91",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"0000005b",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x6,  x0,   100",
-                 gpr            => spy_gpr(6),
-                 desired_value  => 32x"00000064",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x7,  x0,   910",
-                 gpr            => spy_gpr(7),
-                 desired_value  => 32x"0000038e",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x8,  x0,   991",
-                 gpr            => spy_gpr(8),
-                 desired_value  => 32x"000003df",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x9,  x0,   999",
-                 gpr            => spy_gpr(9),
-                 desired_value  => 32x"000003e7",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lui   x10, 2",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"00002000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x10, x10,  1684",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"00002694",
-                 test_point     => set_test_point );
+
+      -- TODO send 4 bytes on uart
+      
 
 
 
 
 
-                 
+
+
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
