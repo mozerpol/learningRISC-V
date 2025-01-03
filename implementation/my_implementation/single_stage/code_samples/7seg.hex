@@ -7,12 +7,15 @@ addi  x6,  x0,   100
 addi  x7,  x0,   910
 addi  x8,  x0,   991
 addi  x9,  x0,   999
-sw    x1,  243(x0)     # 
-sw    x2,  243(x0)     # 
-sw    x3,  243(x0)     # 
-sw    x4,  243(x0)     # 
-sw    x5,  243(x0)     # 
-sw    x6,  243(x0)     # 
-sw    x7,  243(x0)     # 
-sw    x8,  243(x0)     # 
-sw    x9,  243(x0)     #
+lui   x10, 2
+addi  x10, x10,  1684
+sw    x1,  243(x0)     # Display 0
+sw    x2,  243(x0)     # Display 1
+sw    x3,  243(x0)     # Display 9
+sw    x4,  243(x0)     # Display 10
+sw    x5,  243(x0)
+sw    x6,  243(x0)
+sw    x7,  243(x0)
+sw    x8,  243(x0)
+sw    x9,  243(x0)
+sw    x10, 243(x0)
