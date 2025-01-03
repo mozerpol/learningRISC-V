@@ -89,7 +89,7 @@ begin
 
    inst_counter_rx : component counter1
    generic map (
-      G_COUNTER1_VALUE    => positive(real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)))
+      G_COUNTER1_VALUE    => positive(real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)) - 2.0)
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -173,8 +173,10 @@ begin
 
 
    p_rx : process (i_clk)
+      -- TODO: for what is this variable?
       variable rx_start_counter  : integer range 0 to positive((
                                  real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)))/2.0);
+      -- TODO: why this constant exist?
       constant C_MAX_VALUE       : integer := positive((
                                  real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)))/2.0);
    begin
@@ -198,7 +200,7 @@ begin
                         uart_state_rx        <= DATA;
                         s_cnt1_we_rx         <= '1';
                         s_cnt1_set_reset_rx  <= '1';
-                   --     uart_buff_rx         <= (others => '0');
+                        uart_buff_rx         <= (others => '0');
                      else
                         rx_start_counter     := rx_start_counter + 1;
                      end if;
