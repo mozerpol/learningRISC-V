@@ -19,7 +19,7 @@ library counter1_lib;
 entity uart is
    generic(
       G_BAUD               : positive := C_BAUD;
-      G_FREQUENCY_MHZ      : positive := C_FREQUENCY_HZ
+      G_FREQUENCY_MHZ      : positive := C_FREQUENCY_HZ -- TODO: it's not necessary, I can use frequency from package to calculate formula
    ); port (
       i_rst_n              : in std_logic;
       i_clk                : in std_logic;
@@ -58,7 +58,7 @@ architecture rtl of uart is
    signal s_cnt1_set_reset_tx : std_logic;
    signal s_cnt1_overflow_tx  : std_logic;
    signal uart_buff_tx        : std_logic_vector(31 downto 0);
-   signal bit_cnt_tx          : integer range 0 to 8;
+   signal bit_cnt_tx          : integer range 0 to 8; -- TODO: range up to constant
    signal byte_cnt_tx         : integer range 0 to 3;
    -- Receive purposes
    signal s_cnt1_q_rx         : integer range 0 to C_COUNTER1_VALUE - 1;
@@ -89,7 +89,7 @@ begin
 
    inst_counter_rx : component counter1
    generic map (
-      G_COUNTER1_VALUE    => positive(real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)) - 2.0)
+      G_COUNTER1_VALUE => positive(real(G_FREQUENCY_MHZ)*(1.0/real(G_BAUD)) - 2.0)
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -112,7 +112,7 @@ begin
          else
             case (uart_state_tx) is
 
-               when IDLE =>
+               when IDLE   =>
 
                   o_uart_tx         <= '1';
                   if (i_uart_we = '1') then
@@ -120,14 +120,14 @@ begin
                      uart_buff_tx      <= i_uart_wdata; -- Latch data to send
                   end if;
 
-               when START =>
+               when START  =>
 
-                  o_uart_tx         <= '0';
-                  uart_state_tx     <= DATA;
-                  s_cnt1_we_tx      <= '1';
+                  o_uart_tx            <= '0';
+                  uart_state_tx        <= DATA;
+                  s_cnt1_we_tx         <= '1';
                   s_cnt1_set_reset_tx  <= '1';
 
-               when DATA =>
+               when DATA   =>
 
                   if (s_cnt1_overflow_tx = '1') then
                      if (bit_cnt_tx = 8) then
@@ -140,21 +140,21 @@ begin
                      end if;
                   end if;
 
-               when STOP =>
+               when STOP   =>
 
                   if (s_cnt1_overflow_tx = '1') then
                      if (byte_cnt_tx = 3) then
-                        byte_cnt_tx       <= 0;
-                        uart_state_tx     <= IDLE;
+                        byte_cnt_tx          <= 0;
+                        uart_state_tx        <= IDLE;
                         s_cnt1_set_reset_tx  <= '0';
                      -- All 32 bits must be sent, so shift the buffer and send
                      -- the next byte, until byte_cnt_tx = 3.
                      else
-                        byte_cnt_tx       <= byte_cnt_tx + 1;
-                        uart_state_tx     <= DATA;
-                        o_uart_tx         <= '0';
-                        uart_buff_tx      <= uart_buff_tx(7 downto 0) &
-                                             uart_buff_tx(31 downto 8);
+                        byte_cnt_tx          <= byte_cnt_tx + 1;
+                        uart_state_tx        <= DATA;
+                        o_uart_tx            <= '0';
+                        uart_buff_tx         <= uart_buff_tx(7 downto 0) &
+                                                uart_buff_tx(31 downto 8);
                      end if;
                   end if;
 
