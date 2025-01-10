@@ -8,7 +8,7 @@ library riscpol_lib;
 
 entity counter1 is
    generic(
-      G_COUNTER1_VALUE : positive := C_COUNTER1_VALUE - 1 
+      G_COUNTER1_VALUE : positive := C_COUNTER1_VALUE - 1
    ); port(
       i_rst_n           : in std_logic;
       i_clk             : in std_logic;
@@ -28,37 +28,38 @@ architecture rtl of counter1 is
 
 begin
 
+
    process (i_clk, i_rst_n)
       variable v_cnt : integer range 0 to G_COUNTER1_VALUE;
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
-            s_ce_latch <= '0';
-            v_cnt := 0;
-            o_cnt1_overflow <= '0';
+            s_ce_latch        <= '0';
+            v_cnt             := 0;
+            o_cnt1_overflow   <= '0';
          else
             if (i_cnt1_we = '1' and i_cnt1_set_reset = '1') then
-               s_ce_latch <= '1';
+               s_ce_latch     <= '1';
             elsif (i_cnt1_we = '1' and i_cnt1_set_reset = '0') then
-               s_ce_latch <= '0';
+               s_ce_latch     <= '0';
             end if;
-        
+
             if (s_ce_latch = '1') then
                if (v_cnt = G_COUNTER1_VALUE) then
-                  v_cnt := 0;
-                  o_cnt1_overflow <= '1';
+                  v_cnt             := 0;
+                  o_cnt1_overflow   <= '1';
                else
-                  v_cnt := v_cnt + 1;
-                  o_cnt1_overflow <= '0';
+                  v_cnt             := v_cnt + 1;
+                  o_cnt1_overflow   <= '0';
                end if;
             else
-               v_cnt := 0;
-               o_cnt1_overflow <= '0';
+               v_cnt                := 0;
+               o_cnt1_overflow      <= '0';
             end if;
          end if;
-         o_cnt1_q <= v_cnt;
+         o_cnt1_q    <= v_cnt;
       end if;
-   end process;        
+   end process;
 
 
 end architecture;
