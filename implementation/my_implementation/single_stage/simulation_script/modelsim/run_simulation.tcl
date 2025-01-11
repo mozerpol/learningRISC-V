@@ -55,6 +55,11 @@ proc s_add_external_libs {} {
    set hdl_dir                "../../peripherals"
    set library_name           "seven_segment_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/7segment.vhdl
+   
+   
+   set hdl_dir                "../../peripherals"
+   set library_name           "spi_lib"
+   vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/spi.vhdl
 
 
    set hdl_dir                "../../core"
