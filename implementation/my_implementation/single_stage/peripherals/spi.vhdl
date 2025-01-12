@@ -101,7 +101,58 @@ begin
 
    p_tx : process (i_clk)
    begin
- 
+      if (i_clk'event and i_clk = '1') then
+         if (i_rst_n = '0') then
+            s_cnt1_we_tx         <= '0';
+            s_cnt1_set_reset_tx  <= '0';
+            s_cnt1_overflow_tx   <= '0';
+            s_spi_ss_n           <= '1';
+            s_spi_sclk           <= '0';
+            spi_states           <= IDLE;
+         else
+            case (spi_states) is
+
+               when IDLE   =>
+
+                  if (i_spi_we = '1') then
+                     spi_states        <= START;
+                     buffer_spi_mosi   <= i_spi_wdata; -- Latch data to send
+                     s_spi_ss_n        <= '0';
+                  end if;
+
+               when START  =>
+
+                  spi_states           <= DATA;
+                  s_cnt1_we_tx         <= '1';
+                  s_cnt1_set_reset_tx  <= '1';
+
+               when DATA   =>
+
+                  if (s_cnt1_overflow_tx = '1') then
+                     if (bit_cnt_tx = 31) then
+                        spi_states        <= STOP;
+                        bit_cnt_tx        <= 0;
+                     else
+                        bit_cnt_tx        <= bit_cnt_tx + 1;
+                        s_spi_sclk        <= not(s_spi_sclk);
+                     end if;
+                  end if;
+
+               when STOP   =>
+
+               when others =>
+
+                  spi_states              <= IDLE;
+                  bit_cnt_tx              <= 0;
+                  s_cnt1_we_tx            <= '0';
+                  s_cnt1_set_reset_tx     <= '0';
+                  s_spi_ss_n              <= '1';
+                  s_spi_sclk              <= '0';
+
+            end case;
+
+         end if;
+      end if;
    end process;
 
 
