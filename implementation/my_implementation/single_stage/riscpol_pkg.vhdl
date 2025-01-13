@@ -42,7 +42,7 @@ package riscpol_pkg is
    
    constant C_MMIO_ADDR_7SEGMENT    : integer  := 61;
    
-   
+   constant C_MMIO_ADDR_SPI         : integer  := 60;
    constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000;
 
    -- Type for General-Purpose Register
