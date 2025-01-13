@@ -73,12 +73,14 @@ architecture rtl of riscpol is
          i_mmio_q_cnt1        : in integer range 0 to C_COUNTER1_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          i_mmio_data_uart     : in std_logic_vector(31 downto 0);
+         i_mmio_data_spi      : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
          o_mmio_re_gpio       : out std_logic;
          o_mmio_we_cnt1       : out std_logic;
          o_mmio_we_uart       : out std_logic;
          o_mmio_we_7seg       : out std_logic;
+         o_mmio_we_spi        : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -187,8 +189,10 @@ architecture rtl of riscpol is
    signal s_mmio_we_gpio      : std_logic;
    signal s_mmio_re_gpio      : std_logic;
    signal s_mmio_we_cnt1      : std_logic;
+   signal s_mmio_we_spi       : std_logic;
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
+   signal s_mmio_data_spi     : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
    signal s_mmio_we_7seg      : std_logic;
    -- Core
@@ -215,11 +219,9 @@ architecture rtl of riscpol is
    signal s_7segment_anodes   : std_logic_vector(3 downto 0);
    -- SPI
    signal s_spi_wdata         : std_logic_vector(31 downto 0);
-   signal s_spi_we            : std_logic;
    signal s_spi_ss_n          : std_logic;
    signal s_spi_mosi          : std_logic;
    signal s_spi_sclk          : std_logic;
-   signal s_spi_data          : std_logic_vector(31 downto 0);
 
 
 begin
@@ -249,12 +251,14 @@ begin
       i_mmio_q_cnt1        => s_cnt1_q,
       i_mmio_data_ram      => s_ram_q,
       i_mmio_data_uart     => s_uart_data,
+      i_mmio_data_spi      => s_mmio_data_spi,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_re_gpio       => s_mmio_re_gpio,
       o_mmio_we_cnt1       => s_mmio_we_cnt1,
       o_mmio_we_uart       => s_mmio_we_uart,
       o_mmio_we_7seg       => s_mmio_we_7seg,
+      o_mmio_we_spi        => s_mmio_we_spi,
       o_mmio_data          => s_mmio_data
    );
 
@@ -324,12 +328,12 @@ begin
       i_rst_n              => rst_n,
       i_clk                => clk,
       i_spi_wdata          => s_spi_wdata,
-      i_spi_we             => s_spi_we,
+      i_spi_we             => s_mmio_we_spi,
       i_spi_miso           => i_spi_miso,
       o_spi_ss_n           => s_spi_ss_n,
       o_spi_mosi           => s_spi_mosi,
       o_spi_sclk           => s_spi_sclk,
-      o_spi_data           => s_spi_data
+      o_spi_data           => s_mmio_data_spi
    );
 
 
