@@ -39,7 +39,11 @@ architecture tb of riscpol_tb is
       o_7segment_2            : out std_logic_vector(6 downto 0);
       o_7segment_3            : out std_logic_vector(6 downto 0);
       o_7segment_4            : out std_logic_vector(6 downto 0);
-      o_7segment_anodes       : out std_logic_vector(3 downto 0)
+      o_7segment_anodes       : out std_logic_vector(3 downto 0);
+      i_spi_miso              : in std_logic;
+      o_spi_mosi              : out std_logic;
+      o_spi_ss_n              : out std_logic;
+      o_spi_sclk              : out std_logic
    );
    end component riscpol;
 
@@ -58,6 +62,10 @@ architecture tb of riscpol_tb is
    signal s_7segment_3_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_4_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_anodes_tb: std_logic_vector(3 downto 0);
+   signal s_spi_miso          : std_logic;
+   signal s_spi_mosi          : std_logic;
+   signal s_spi_ss_n          : std_logic;
+   signal s_spi_sclk          : std_logic;
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -319,7 +327,11 @@ begin
       o_7segment_2      => s_7segment_2_tb,
       o_7segment_3      => s_7segment_3_tb,
       o_7segment_4      => s_7segment_4_tb,
-      o_7segment_anodes => s_7segment_anodes_tb
+      o_7segment_anodes => s_7segment_anodes_tb,
+      i_spi_miso        => s_spi_miso,
+      o_spi_mosi        => s_spi_mosi,
+      o_spi_ss_n        => s_spi_ss_n,
+      o_spi_sclk        => s_spi_sclk
    );
 
 
@@ -343,7 +355,8 @@ begin
 
       rst_n_tb   <= '0';
       gpio_tb    <= (others => 'Z');
-      rx_tb      <= '1';
+      rx_tb      <= 'Z';
+      s_spi_miso <= 'Z';
       wait for C_CLK_PERIOD*20;
       rst_n_tb   <= '1';
       -- After the reset, three delays are required for the simulation purposes.
@@ -2894,14 +2907,13 @@ begin
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-    -- TODO: add comment
-   --   for i in 0 to 8700 loop
-         -- loop31:
-         -- addi  x2,  x2,   1     # Increment x2
-         -- bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
-       --  wait until rising_edge(clk_tb);
-    --     wait until rising_edge(clk_tb);
-    --  end loop;
+      -- for i in 0 to 8700 loop
+      -- loop31:
+      --    addi  x2,  x2,   1     # Increment x2
+      --    bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
+      -- wait until rising_edge(clk_tb);
+      -- wait until rising_edge(clk_tb);
+      -- end loop;
       check_uart_rx(instruction       => "lw    x10,  247(x0)",
                  gpr                   => spy_gpr(10),
                  value_to_send         => 32x"000000DD", -- value_to_send
@@ -2912,9 +2924,6 @@ begin
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-                 
-      -- TODO send 4 bytes on uart
-      
       ----------------------------------------------------------------
       --                                                            --
       --                    Check 7seg displays                     --
@@ -2964,7 +2973,6 @@ begin
                  gpr            => spy_gpr(10),
                  desired_value  => 32x"00002694",
                  test_point     => set_test_point );
-                 
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
@@ -3000,7 +3008,6 @@ begin
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-
       echo("======================================");
       echo("Total errors: " & integer'image(set_test_point));
       echo("======================================");
