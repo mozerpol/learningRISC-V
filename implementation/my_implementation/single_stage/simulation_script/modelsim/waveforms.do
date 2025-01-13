@@ -152,6 +152,8 @@ add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mm
 add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram
 add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_uart
 add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_uart
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_spi
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_spi
 
 
 add wave         -group GPIO         -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_wdata
