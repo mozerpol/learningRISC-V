@@ -16,14 +16,15 @@ library ieee;
 library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
+library core_lib;
+   use core_lib.all;
 library ram_lib;
 library gpio_lib;
 library counter1_lib;
 library mmio_lib;
 library uart_lib;
 library seven_segment_lib;
-library core_lib;
-   use core_lib.all;
+library spi_lib;
 
 
 entity riscpol is
@@ -31,13 +32,17 @@ entity riscpol is
       i_rst_n                 : in std_logic;
       i_clk                   : in std_logic;
       io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
-      i_rx                    : in std_logic;
+      i_rx                    : in std_logic; -- TODO: change to i_uart_rx
       o_tx                    : out std_logic;
       o_7segment_1            : out std_logic_vector(6 downto 0);
       o_7segment_2            : out std_logic_vector(6 downto 0);
       o_7segment_3            : out std_logic_vector(6 downto 0);
       o_7segment_4            : out std_logic_vector(6 downto 0);
-      o_7segment_anodes       : out std_logic_vector(3 downto 0)
+      o_7segment_anodes       : out std_logic_vector(3 downto 0);
+      i_spi_miso              : in std_logic;
+      o_spi_mosi              : out std_logic;
+      o_spi_ss_n              : out std_logic;
+      o_spi_sclk              : out std_logic
    );
 end entity riscpol;
 
@@ -156,6 +161,24 @@ architecture rtl of riscpol is
    end component seven_segment;
 
 
+   component spi is
+      generic(
+         G_SPI_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ
+      );
+      port (
+         i_rst_n              : in std_logic;
+         i_clk                : in std_logic;
+         i_spi_wdata          : in std_logic_vector(31 downto 0);
+         i_spi_we             : in std_logic;
+         i_spi_miso           : in std_logic;  -- master in, slave out
+         o_spi_ss_n           : out std_logic; -- slave select / chip select
+         o_spi_mosi           : out std_logic; -- master out, slave in
+         o_spi_sclk           : out std_logic;
+         o_spi_data           : out std_logic_vector(31 downto 0)
+   );
+   end component spi;
+
+
    -- General
    signal rst_n               : std_logic;
    signal clk                 : std_logic;
@@ -190,6 +213,13 @@ architecture rtl of riscpol is
    signal s_7segment_3        : std_logic_vector(6 downto 0);
    signal s_7segment_4        : std_logic_vector(6 downto 0);
    signal s_7segment_anodes   : std_logic_vector(3 downto 0);
+   -- SPI
+   signal s_spi_wdata         : std_logic_vector(31 downto 0);
+   signal s_spi_we            : std_logic;
+   signal s_spi_ss_n          : std_logic;
+   signal s_spi_mosi          : std_logic;
+   signal s_spi_sclk          : std_logic;
+   signal s_spi_data          : std_logic_vector(31 downto 0);
 
 
 begin
@@ -287,17 +317,34 @@ begin
       o_7segment_4         => s_7segment_4,
       o_7segment_anodes    => s_7segment_anodes
    );
+   
+
+   inst_spi          : component spi
+   port map (
+      i_rst_n              => rst_n,
+      i_clk                => clk,
+      i_spi_wdata          => s_spi_wdata,
+      i_spi_we             => s_spi_we,
+      i_spi_miso           => i_spi_miso,
+      o_spi_ss_n           => s_spi_ss_n,
+      o_spi_mosi           => s_spi_mosi,
+      o_spi_sclk           => s_spi_sclk,
+      o_spi_data           => s_spi_data
+   );
 
 
-   rst_n             <= (i_rst_n);
-   clk               <= i_clk;
-   io_gpio           <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
-   o_tx              <= s_uart_tx;
-   o_7segment_1      <= s_7segment_1;
-   o_7segment_2      <= s_7segment_2;
-   o_7segment_3      <= s_7segment_3;
-   o_7segment_4      <= s_7segment_4;
-   o_7segment_anodes <= s_7segment_anodes;
+   rst_n                   <= i_rst_n;
+   clk                     <= i_clk;
+   io_gpio                 <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
+   o_tx                    <= s_uart_tx;
+   o_7segment_1            <= s_7segment_1;
+   o_7segment_2            <= s_7segment_2;
+   o_7segment_3            <= s_7segment_3;
+   o_7segment_4            <= s_7segment_4;
+   o_7segment_anodes       <= s_7segment_anodes;
+   o_spi_mosi              <= s_spi_mosi;
+   o_spi_ss_n              <= s_spi_ss_n;
+   o_spi_sclk              <= s_spi_sclk;
 
 
 end architecture rtl;
