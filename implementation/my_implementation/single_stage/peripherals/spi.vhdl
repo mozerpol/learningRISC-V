@@ -54,14 +54,15 @@ architecture rtl of spi is
    -- General
    type t_spi_states          is (START, STOP, DATA, IDLE);
    signal spi_states          : t_spi_states;
-   signal s_spi_sclk              : std_logic;
+   signal s_spi_sclk          : std_logic;
+   signal s_toggle_flag       : std_logic;
    -- Transmit purposes
    signal s_cnt1_we_tx        : std_logic;
    signal s_cnt1_set_reset_tx : std_logic;
    signal s_cnt1_overflow_tx  : std_logic;
    signal s_spi_ss_n          : std_logic;
    signal buffer_spi_mosi     : std_logic_vector(31 downto 0);
-   signal bit_cnt_tx          : integer range 0 to 31; -- TODO: range up to constant
+   signal bit_cnt_tx          : integer range 0 to 31;
    -- Receive purposes
    signal s_cnt1_we_rx        : std_logic;
    signal s_cnt1_set_reset_rx : std_logic;
@@ -75,7 +76,7 @@ begin
 
    inst_counter_tx : component counter1
    generic map (
-      G_COUNTER1_VALUE => positive(real(C_FREQUENCY_HZ)/(real(G_SPI_FREQUENCY_HZ)))
+      G_COUNTER1_VALUE => positive(((real(C_FREQUENCY_HZ/G_SPI_FREQUENCY_HZ))/2.0)-1.0)
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -88,7 +89,7 @@ begin
 
    inst_counter_rx : component counter1
    generic map (
-      G_COUNTER1_VALUE => positive(real(C_FREQUENCY_HZ)/(real(G_SPI_FREQUENCY_HZ)))
+      G_COUNTER1_VALUE => positive(((real(C_FREQUENCY_HZ/G_SPI_FREQUENCY_HZ))/2.0)-1.0)
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -105,10 +106,11 @@ begin
          if (i_rst_n = '0') then
             s_cnt1_we_tx         <= '0';
             s_cnt1_set_reset_tx  <= '0';
-            s_cnt1_overflow_tx   <= '0';
             s_spi_ss_n           <= '1';
             s_spi_sclk           <= '0';
             spi_states           <= IDLE;
+            s_toggle_flag        <= '0';
+            s_spi_mosi           <= '0';
          else
             case (spi_states) is
 
@@ -129,16 +131,24 @@ begin
                when DATA   =>
 
                   if (s_cnt1_overflow_tx = '1') then
-                     if (bit_cnt_tx = 31) then
-                        spi_states        <= STOP;
-                        bit_cnt_tx        <= 0;
+                     s_spi_sclk           <= not(s_spi_sclk);
+                     if (s_toggle_flag = '0') then
+                        s_toggle_flag        <= '1';
+                        s_spi_mosi           <= buffer_spi_mosi(31);
+                        buffer_spi_mosi      <= buffer_spi_mosi(30 downto 0) &
+                                                buffer_spi_mosi(31);
+                        if (bit_cnt_tx = 31) then
+                           spi_states           <= IDLE;
+                           bit_cnt_tx           <= 0;
+                           s_cnt1_set_reset_tx  <= '0';
+                           s_spi_ss_n           <= '1';
+                        else
+                           bit_cnt_tx           <= bit_cnt_tx + 1;
+                        end if;
                      else
-                        bit_cnt_tx        <= bit_cnt_tx + 1;
-                        s_spi_sclk        <= not(s_spi_sclk);
+                        s_toggle_flag        <= '0';
                      end if;
                   end if;
-
-               when STOP   =>
 
                when others =>
 
@@ -150,8 +160,10 @@ begin
                   s_spi_sclk              <= '0';
 
             end case;
-
          end if;
+         o_spi_ss_n  <= s_spi_ss_n;
+         o_spi_mosi  <= s_spi_mosi;
+         o_spi_sclk  <= s_spi_sclk;
       end if;
    end process;
 
