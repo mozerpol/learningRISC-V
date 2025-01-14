@@ -43,7 +43,9 @@ package riscpol_pkg is
    constant C_MMIO_ADDR_7SEGMENT    : integer  := 61;
    
    constant C_MMIO_ADDR_SPI         : integer  := 60;
-   constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000;
+   constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000; -- TODO: describe 
+   -- that for some freq formula is not accurate (for example 2 MHz is not
+   -- possible, it's 1.92 MHz)
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
