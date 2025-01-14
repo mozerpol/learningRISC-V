@@ -29,7 +29,7 @@ architecture rtl of counter1 is
 begin
 
 
-   process (i_clk, i_rst_n)
+   process (i_clk)
       variable v_cnt : integer range 0 to G_COUNTER1_VALUE;
    begin
       if (i_clk'event and i_clk = '1') then
