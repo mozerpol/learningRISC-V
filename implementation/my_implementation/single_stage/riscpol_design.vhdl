@@ -218,7 +218,6 @@ architecture rtl of riscpol is
    signal s_7segment_4        : std_logic_vector(6 downto 0);
    signal s_7segment_anodes   : std_logic_vector(3 downto 0);
    -- SPI
-   signal s_spi_wdata         : std_logic_vector(31 downto 0);
    signal s_spi_ss_n          : std_logic;
    signal s_spi_mosi          : std_logic;
    signal s_spi_sclk          : std_logic;
@@ -327,7 +326,7 @@ begin
    port map (
       i_rst_n              => rst_n,
       i_clk                => clk,
-      i_spi_wdata          => s_spi_wdata,
+      i_spi_wdata          => s_core_data_write,
       i_spi_we             => s_mmio_we_spi,
       i_spi_miso           => i_spi_miso,
       o_spi_ss_n           => s_spi_ss_n,
