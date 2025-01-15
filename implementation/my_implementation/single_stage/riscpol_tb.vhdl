@@ -3017,19 +3017,24 @@ begin
                  gpr            => spy_gpr(10),
                  desired_value  => 32x"00002694",
                  test_point     => set_test_point );
-                 
-
-wait until rising_edge(clk_tb); -- sw    x1,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x2,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x3,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x4,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x5,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x6,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x7,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x8,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x9,  243(x0)
-wait until rising_edge(clk_tb); -- sw    x10, 243(x0)
-                 
+      wait until rising_edge(clk_tb); -- sw    x1,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x2,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x3,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x4,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x5,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x6,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x7,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x8,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x9,  243(x0)
+      wait until rising_edge(clk_tb); -- sw    x10, 243(x0)
+      ----------------------------------------------------------------
+      --                                                            --
+      --                         Check SPI                          --
+      --                                                            --
+      ----------------------------------------------------------------
+      --------------
+      --    TX    --
+      --------------
       check_gpr( instruction    => "addi  x1,  x1,   789",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000315",
