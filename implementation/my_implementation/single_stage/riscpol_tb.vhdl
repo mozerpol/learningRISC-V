@@ -205,9 +205,9 @@ architecture tb of riscpol_tb is
 
 
    ------------------------------------------
-   ---- Check the value of counter 8 bit ----
+   ---- Check the value of counter1 bit  ----
    ------------------------------------------
-   procedure check_cnt( constant instruction    : in string;
+   procedure check_cnt( constant instruction        : in string;
                             constant cnt_val        : in integer range 0 to C_COUNTER1_VALUE - 1;
                             constant desired_value  : in integer range 0 to C_COUNTER1_VALUE - 1;
                             signal test_point       : out integer) is
@@ -225,7 +225,7 @@ architecture tb of riscpol_tb is
 
 
    -------------------------------------------
-   ---- Check UART transmission, outgoing ----
+   ----    Simulate sending UART data     ----
    -------------------------------------------
    procedure check_uart_tx( constant instruction : in string;
                          constant desired_value  : in std_logic_vector(31 downto 0);
@@ -275,8 +275,10 @@ architecture tb of riscpol_tb is
    end procedure;
 
 
+
+
    -------------------------------------------
-   ----    Simulate sending UART data     ----
+   ----    Simulate receiving UART data   ----
    -------------------------------------------
    procedure check_uart_rx(constant instruction          : in string;
                            constant gpr                  : in std_logic_vector(31 downto 0);
@@ -311,6 +313,48 @@ architecture tb of riscpol_tb is
 
       end loop;
    end procedure;
+
+
+
+
+
+
+
+
+
+   -------------------------------------------
+   ----    Simulate sending SPI data     ----
+   -------------------------------------------
+   procedure check_uart_rx(constant instruction          : in string;
+                           constant gpr                  : in std_logic_vector(31 downto 0);
+                           constant value_to_send        : in std_logic_vector(31 downto 0);
+                           constant tx                   : in std_logic;
+                           signal test_point             : out integer) is
+      constant C_WAIT_TIME    : time := ((real(C_FREQUENCY_HZ/C_SPI_FREQUENCY_HZ))/2.0) * ns;
+   begin
+      for i in 0 to 31 loop
+         if (tx /= value_to_send(i)) then
+            echo("ERROR SPI TX: " & instruction);
+            echo("value_to_send: " & to_string(value_to_send));
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+            echo("");
+         end if;
+      wait for C_WAIT_TIME;
+      end loop;
+   end procedure;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 begin
@@ -2973,6 +3017,37 @@ begin
                  gpr            => spy_gpr(10),
                  desired_value  => 32x"00002694",
                  test_point     => set_test_point );
+                 
+
+                 
+      check_gpr( instruction    => "addi  x1,  x1,   789",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000315",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   0xff",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"000000ff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lui   x4,  699051",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"AAAAB000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x4,   -1366",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"AAAAAAAA",
+                 test_point     => set_test_point );
+
+
+
+--sw    x3,  239(x0)     # Send the value stored in the register x3
+
+                 wait for 60 us;
+
+
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --
