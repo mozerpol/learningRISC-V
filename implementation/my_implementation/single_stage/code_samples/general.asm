@@ -841,7 +841,7 @@ sw    x10, 243(x0)
 ###################################
 ##         Check SPI tx          ##
 ###################################
-addi  x1,  x1,   789   # Delay purposes, x1 = 789, 0x315
+addi  x1,  x1,   813   # Delay purposes, x1 = 813, 0x32d
 addi  x2,  x0,   0
 addi  x3,  x0,   0xff
 lui   x4,  699051
