@@ -62,10 +62,10 @@ architecture tb of riscpol_tb is
    signal s_7segment_3_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_4_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_anodes_tb: std_logic_vector(3 downto 0);
-   signal s_spi_miso          : std_logic;
-   signal s_spi_mosi          : std_logic;
-   signal s_spi_ss_n          : std_logic;
-   signal s_spi_sclk          : std_logic;
+   signal s_spi_miso_tb       : std_logic;
+   signal s_spi_mosi_tb       : std_logic;
+   signal s_spi_ss_n_tb       : std_logic;
+   signal s_spi_sclk_tb       : std_logic;
    -----------------------------------------------------------------------------
    -- PROCEDURES DEDICATED TO TEST
    -----------------------------------------------------------------------------
@@ -275,8 +275,6 @@ architecture tb of riscpol_tb is
    end procedure;
 
 
-
-
    -------------------------------------------
    ----    Simulate receiving UART data   ----
    -------------------------------------------
@@ -310,51 +308,34 @@ architecture tb of riscpol_tb is
             echo("");
          end if;
          wait until rising_edge(clk_tb);
-
       end loop;
    end procedure;
-
-
-
-
-
-
-
-
-
+   
+   
    -------------------------------------------
-   ----    Simulate sending SPI data     ----
+   ----     Simulate sending SPI data     ----
    -------------------------------------------
-   procedure check_uart_rx(constant instruction          : in string;
-                           constant gpr                  : in std_logic_vector(31 downto 0);
-                           constant value_to_send        : in std_logic_vector(31 downto 0);
-                           constant tx                   : in std_logic;
-                           signal test_point             : out integer) is
-      constant C_WAIT_TIME    : time := ((real(C_FREQUENCY_HZ/C_SPI_FREQUENCY_HZ))/2.0) * ns;
+   procedure check_spi_tx(constant instruction          : in string;
+                          constant value_to_send        : in std_logic_vector(31 downto 0);
+                          signal test_point             : out integer) is
+      constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
    begin
       for i in 0 to 31 loop
-         if (tx /= value_to_send(i)) then
+         wait for C_WAIT_TIME;
+         if (s_spi_mosi_tb /= value_to_send(31-i)) then
             echo("ERROR SPI TX: " & instruction);
             echo("value_to_send: " & to_string(value_to_send));
+            echo("Shoudl be: " & to_string(value_to_send(31-i)));
+            echo("spi_mosi: " & to_string(s_spi_mosi_tb));
             echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
             echo("");
          end if;
-      wait for C_WAIT_TIME;
       end loop;
+         wait for C_WAIT_TIME/2;
+         wait until rising_edge(clk_tb);
+         wait until rising_edge(clk_tb);
+         wait until rising_edge(clk_tb);
    end procedure;
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 begin
@@ -372,10 +353,10 @@ begin
       o_7segment_3      => s_7segment_3_tb,
       o_7segment_4      => s_7segment_4_tb,
       o_7segment_anodes => s_7segment_anodes_tb,
-      i_spi_miso        => s_spi_miso,
-      o_spi_mosi        => s_spi_mosi,
-      o_spi_ss_n        => s_spi_ss_n,
-      o_spi_sclk        => s_spi_sclk
+      i_spi_miso        => s_spi_miso_tb,
+      o_spi_mosi        => s_spi_mosi_tb,
+      o_spi_ss_n        => s_spi_ss_n_tb,
+      o_spi_sclk        => s_spi_sclk_tb
    );
 
 
@@ -397,12 +378,12 @@ begin
    begin
 
 
-      rst_n_tb   <= '0';
-      gpio_tb    <= (others => 'Z');
-      rx_tb      <= 'Z';
-      s_spi_miso <= 'Z';
+      rst_n_tb       <= '0';
+      gpio_tb        <= (others => 'Z');
+      rx_tb          <= 'Z';
+      s_spi_miso_tb  <= 'Z';
       wait for C_CLK_PERIOD*20;
-      rst_n_tb   <= '1';
+      rst_n_tb       <= '1';
       -- After the reset, three delays are required for the simulation purposes.
       -- The first delay is to "detec" the nearest rising edge of the clock.
       -- The second delay is to execute the instruction, but its result is not
@@ -3035,9 +3016,9 @@ begin
       --------------
       --    TX    --
       --------------
-      check_gpr( instruction    => "addi  x1,  x1,   789",
+      check_gpr( instruction    => "addi  x1,  x1,   813",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000315",
+                 desired_value  => 32x"0000032d",
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
@@ -3055,10 +3036,15 @@ begin
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"AAAAAAAA",
                  test_point     => set_test_point );
+      check_spi_tx( instruction    => "sw    x3,  239(x0)",
+                    value_to_send  => 32x"000000FF",
+                    test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
 
-
-
---sw    x3,  239(x0)     # Send the value stored in the register x3
+--     # Send the value stored in the register x3
 
                  wait for 60 us;
 
