@@ -62,7 +62,7 @@ architecture rtl of spi is
    signal s_cnt1_overflow_tx  : std_logic;
    signal s_spi_ss_n          : std_logic;
    signal buffer_spi_mosi     : std_logic_vector(31 downto 0);
-   signal bit_cnt_tx          : integer range 0 to 31;
+   signal bit_cnt_tx          : integer range 0 to 32;
    -- Receive purposes
    signal s_cnt1_we_rx        : std_logic;
    signal s_cnt1_set_reset_rx : std_logic;
@@ -110,12 +110,15 @@ begin
             s_spi_sclk           <= '0';
             spi_states           <= IDLE;
             s_toggle_flag        <= '0';
-            s_spi_mosi           <= '0';
+            s_spi_mosi           <= 'Z';
+            bit_cnt_tx           <= 0;
          else
             case (spi_states) is
 
                when IDLE   =>
 
+                  s_spi_mosi           <= 'Z';
+                  s_toggle_flag        <= '0';
                   if (i_spi_we = '1') then
                      spi_states        <= START;
                      buffer_spi_mosi   <= i_spi_wdata; -- Latch data to send
@@ -137,7 +140,7 @@ begin
                         s_spi_mosi           <= buffer_spi_mosi(31);
                         buffer_spi_mosi      <= buffer_spi_mosi(30 downto 0) &
                                                 buffer_spi_mosi(31);
-                        if (bit_cnt_tx = 31) then
+                        if (bit_cnt_tx = 32) then
                            spi_states           <= IDLE;
                            bit_cnt_tx           <= 0;
                            s_cnt1_set_reset_tx  <= '0';
@@ -158,6 +161,8 @@ begin
                   s_cnt1_set_reset_tx     <= '0';
                   s_spi_ss_n              <= '1';
                   s_spi_sclk              <= '0';
+                  s_spi_mosi              <= 'Z';
+                  s_toggle_flag           <= '0';
 
             end case;
          end if;
