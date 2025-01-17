@@ -117,6 +117,7 @@ begin
 
                when IDLE   =>
 
+                  s_spi_sclk           <= '0';
                   s_spi_mosi           <= 'Z';
                   s_toggle_flag        <= '0';
                   if (i_spi_we = '1') then
