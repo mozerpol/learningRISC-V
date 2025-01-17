@@ -310,8 +310,8 @@ architecture tb of riscpol_tb is
          wait until rising_edge(clk_tb);
       end loop;
    end procedure;
-   
-   
+
+
    -------------------------------------------
    ----     Simulate sending SPI data     ----
    -------------------------------------------
@@ -320,6 +320,9 @@ architecture tb of riscpol_tb is
                           signal test_point             : out integer) is
       constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
    begin
+         wait until rising_edge(clk_tb);
+         wait until rising_edge(clk_tb);
+         wait until rising_edge(clk_tb);
       for i in 0 to 31 loop
          wait for C_WAIT_TIME;
          if (s_spi_mosi_tb /= value_to_send(31-i)) then
@@ -332,7 +335,6 @@ architecture tb of riscpol_tb is
          end if;
       end loop;
          wait for C_WAIT_TIME/2;
-         wait until rising_edge(clk_tb);
          wait until rising_edge(clk_tb);
          wait until rising_edge(clk_tb);
    end procedure;
@@ -3016,9 +3018,9 @@ begin
       --------------
       --    TX    --
       --------------
-      check_gpr( instruction    => "addi  x1,  x1,   813",
+      check_gpr( instruction    => "addi  x1,  x1,   814",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"0000032d",
+                 desired_value  => 32x"0000032e",
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
@@ -3044,10 +3046,25 @@ begin
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
 
---     # Send the value stored in the register x3
-
-                 wait for 60 us;
-
+      check_spi_tx( instruction    => "sw    x4,  239(x0)",
+                    value_to_send  => 32x"AAAAAAAA",
+                    test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   1",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x3,   1",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000002",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x3,   1",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000003",
+                 test_point     => set_test_point );
 
       ----------------------------------------------------------------
       --                                                            --
