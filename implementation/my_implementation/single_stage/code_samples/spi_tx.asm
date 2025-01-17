@@ -1,7 +1,7 @@
 ###################################
 ##         Check SPI tx          ##
 ###################################
-addi  x1,  x1,   813   # Delay purposes, x1 = 813, 0x32d
+addi  x1,  x1,   814   # Delay purposes, x1 = 814, 0x32e
 addi  x2,  x0,   0
 addi  x3,  x0,   0xff
 lui   x4,  699051
