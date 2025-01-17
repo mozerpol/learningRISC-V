@@ -220,7 +220,7 @@ add wave         -group 7SEGMENT -group INTERNAL_SIGNALS         -radix bin /ris
 
 
 add wave         -group SPI         -radix dec /riscpol_tb/inst_riscpol/inst_spi/G_SPI_FREQUENCY_HZ
-add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_tx
+add wave         -group SPI         -radix dec /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_tx
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_miso
 add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/i_spi_wdata
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_we
