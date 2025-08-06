@@ -7,31 +7,41 @@
 -- License       : MIT 2022 mozerpol
 --------------------------------------------------------------------------------
 
+
 library ieee;
    use ieee.std_logic_1164.all;
 
+
 package opcodesPkg is
-   ---- U-type ----
+
+
+   ---- R-type - Register ----
+   -- ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+   constant C_OPCODE_OP       : std_logic_vector(6 downto 0) := "0110011";
+   
+   ---- I-type - Immediate ----
+   -- ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI, SRAI
+   constant C_OPCODE_OPIMM    : std_logic_vector(6 downto 0) := "0010011";
+   -- LB, LH, LW, LBU, LHU, LD, LWU
+   constant C_OPCODE_LOAD     : std_logic_vector(6 downto 0) := "0000011";
+   
+   ---- S-type - Store ----
+   -- SB, SH, SW, SD
+   constant C_OPCODE_STORE    : std_logic_vector(6 downto 0) := "0100011";
+   
+   ---- B-type - Branch ----
+   -- BEQ, BNE, BLT, BGE, BLTU, BGEU
+   constant C_OPCODE_BRANCH   : std_logic_vector(6 downto 0) := "1100011";
+
+   ---- U-type - Upper immediate ----
    constant C_OPCODE_LUI      : std_logic_vector(6 downto 0) := "0110111";
    constant C_OPCODE_AUIPC    : std_logic_vector(6 downto 0) := "0010111";
-   ---- J-type ----
+   
+   ---- J-type - Jump ----
    constant C_OPCODE_JAL      : std_logic_vector(6 downto 0) := "1101111";
-   ---- I-type ----
    constant C_OPCODE_JALR     : std_logic_vector(6 downto 0) := "1100111";
-   constant C_OPCODE_LOAD     : std_logic_vector(6 downto 0) := "0000011";
-   -- LOAD = LB, LH, LW, LBU, LHU, LD, LWU
-   constant C_OPCODE_OPIMM    : std_logic_vector(6 downto 0) := "0010011";
-   -- OP_IMM = ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI, 
-   -- SRAI
-   ---- B-type ----
-   constant C_OPCODE_BRANCH   : std_logic_vector(6 downto 0) := "1100011";
-   -- BRANCH = BEQ, BNE, BLT, BGE, BLTU, BGEU
-   ---- S-type ----
-   constant C_OPCODE_STORE    : std_logic_vector(6 downto 0) := "0100011";
-   -- STORE = SB, SH, SW, SD
-   ---- R-type ----
-   constant C_OPCODE_OP       : std_logic_vector(6 downto 0) := "0110011";
-   -- OP = ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+   
+   ---- Others ----
    constant C_OPCODE_ZEROS    : std_logic_vector(6 downto 0) := "0000000";
 
    --''''''''''''''''''''''--
@@ -101,6 +111,8 @@ package opcodesPkg is
 
 end;
 
+
 package body opcodesPkg is
+
 
 end package body;
