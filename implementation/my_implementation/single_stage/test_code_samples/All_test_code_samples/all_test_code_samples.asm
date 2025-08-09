@@ -1,4 +1,4 @@
-# The machine code for these instructions below is in the file general.hex
+# The machine code for these instructions below is in the file all_test_code_samples.hex
 
 ##########################################################
 ##                                                      ##
