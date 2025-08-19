@@ -1,3 +1,45 @@
+########################################
+##         Prepare registers          ##
+########################################
+addi  x1,  x0,   0     # x1 = 0x00000000
+addi  x2,  x0,   -1    # x2 = 0xffffffff
+addi  x3,  x0,   -1    # x3 = 0xffffffff
+addi  x4,  x0,   -1    # x4 = 0xffffffff
+addi  x5,  x0,   -2048 # x5 = 0xfffff800
+addi  x6,  x0,   0     # x6 = 0x00000000
+addi  x7,  x0,   2046  # x7 = 0x000007fe
+addi  x8,  x0,   0     # x8 = 0x00000000
+addi  x9,  x0,   0     # x9 = 0x00000000
+addi  x10, x0,   0     # x10 = 0x00000000
+addi  x11, x0,   0     # x11 = 0x00000000
+addi  x12, x0,   -511  # x12 = 0xfffffe01
+lui   x13, 1           # x13 = 0x00001000
+addi  x13, x13,  -2	   # x13 = 0x00000ffe
+addi  x14, x0,   4     # x14 = 0x00000004
+addi  x15, x0,   -1024 # x15 = 0xfffffc00
+lui   x16  524288      # x16 = 0x80000000
+addi  x17, x0,   0     # x17 = 0x00000000
+addi  x18, x0,   -2    # x18 = 0xfffffffe
+lui   x19, 524288      # x19 = 0x80000000
+addi  x19, x19,  -256  # x19 = 0x7fffff00
+addi  x20, x0,   511   # x20 = 0x000001ff
+lui   x21, 1024	       # x21 = 0x00400000
+addi  x21, x21,  -1    # x21 = 0x003fffff
+lui   x22, 1           # x22 = 0x00001000
+addi  x22, x22,  -1	   # x22 = 0x00000fff
+addi  x23, x0,   0	   # x23 = 0x00000000
+lui   x24, 1           # x24 = 0x00001000
+addi  x24, x24,  -1	   # x24 = 0x00000fff
+lui   x25, 512         # x25 = 0x00200000
+addi  x25, x25,  -1    # x25 = 0x001fffff
+addi  x26, x0,   0x7f  # x26 = 0x0000007f
+lui   x27, 512         # x27 = 0x00200000
+addi  x27, x27,  -1    # x27 = 0x001fffff
+addi  x28, x0,   -1    # x28 = 0xffffffff
+addi  x29, x0,   -1    # x29 = 0xffffffff
+addi  x30, x0,   -1    # x30 = 0xffffffff
+addi  x31, x0,   -1    # x31 = 0xffffffff
+
 ########################################################
 ##                                                    ##
 ##  ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND  ##
