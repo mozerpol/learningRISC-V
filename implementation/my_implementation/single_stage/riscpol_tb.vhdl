@@ -393,19 +393,10 @@ begin
       -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);     
 
-      -- TODO: put instructions here, describe it.
-      -- TODO: write that, firstly ADDI instruction should be run, in case to
-      -- prepare the rest of instructions.
-      -- TODO: create a new packet testbench_procedures.vhdl and put all procedures
-      -- there, in this file.
-      -- TODO: fix all instructions, put them in the separate file.
-      -- TODO: add a separate folder: Documentation and put there README and drawio
-      -- TODO: describe tests
-      -- TODO: add timer ov output
-      -- TODO: remove test_point     => set_test_point ); from procedure, try to
-      -- make test_poin a global variable, thx to this procedure will be shorter
+      -- TODO: add to i type instructions tests for LB family.
+      -- TODO: FInish s type tests.
  
 
       ----------------------------------------------------------------

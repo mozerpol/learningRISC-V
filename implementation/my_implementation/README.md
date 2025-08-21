@@ -54,38 +54,53 @@ Memory map:
 ### Project status
 1. Implementation of a three-stage processor:
 - [ ] Fetch, decode, execute.
-2. Protocols implementation
+2. Protocols and modules implementation
+- [x] UART,
 - [ ] 1-Wire,
 - [ ] SPI,
 - [ ] I2C,
 - [ ] 4x7-segment,
 - [ ] HD44780,
-- [x] UART.
+- [ ] ADC,
+- [ ] ECC module,
+- [ ] simple sd card controller,
+- [ ] cache,
+- [ ] DMA controller.
 3. Others
 - [x] add 8-bit timer,
-- [ ] add cache,
-- [ ] setup and run Dhrystone,
-- [ ] add script for Vivado and GHDL,
 - [x] change name to single-stage and move part of readme there,
-- [ ] describe timing constraints,
-- [ ] add some helpful articles,
-- [ ] add gif (or maybe link to youtube) how to step by step run project in
-quartus,
-- [x] change vhdl to vhdl,
-- [x] change script to simulation_script,
+- [x] change vhd to vhdl,
 - [x] fix GPIO, it's good to read from them :P
 - [x] fix tests, maybe after some clock cycles (second reset) can check the last
 instructions,
 - [x] clean gitignore,
-- [ ] add info, that vivado and modelsim have to be in PATH - modify .bashrc,
-- [ ] in single_stage directory should be only files like flowchart, readme,
-    License, etc.,
 - [x] fix signal names,
 - [x] fix flowchart,
 - [x] change to negative reset,
-- [ ] add a sample system memory map table like here:
-    https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
 - [x] split ram_management, there is for ram and program counter, it doesn't
-make any sense,
+      make any sense,
 - [x] change name from script.tcl to run_simulation.tcl,
 - [x] change ram_management to data_memory
+- [ ] setup and run Dhrystone,
+- [ ] add script for Vivado and GHDL,
+- [ ] describe timing constraints,
+- [ ] add some helpful articles - but very short!!!,
+- [ ] add gif (or maybe link to youtube) how to step by step run project in
+quartus,
+- [ ] add timer with configurable width (timer ov output?),
+- [ ] finish tests and clean them, describe as well. Firstly LUI, then ADDI
+      should run,
+- [ ] remove test_point => set_test_point from procedure, try to make test_point
+  a global variable, thx to this procedure will be shorter,
+- [ ] crate a new packet testbench_procedures.vhdl and put there all procedures,
+      in this file,
+- [ ] change 7 seg display module. i_7segment_wdata(31:0) shuld change only
+      state of the output. I mean output of the i_7segment_wdata shoudl be
+      directly assigned to the input of the 7 seg display. Not that it is
+      convert to a number... Its odd. Then write tests for this module,
+- [ ] add a separate folder: Documentation and put there README and drawio,
+- [ ] add info, that vivado and modelsim have to be in PATH - modify .bashrc,
+- [ ] in single_stage directory should be only files like flowchart, readme,
+      License, etc.,
+- [ ] add a sample system memory map table like here:
+    https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
