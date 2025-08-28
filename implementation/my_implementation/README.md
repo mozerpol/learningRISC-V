@@ -104,3 +104,4 @@ quartus,
       License, etc.,
 - [ ] add a sample system memory map table like here:
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
+- [ ] add documentation with table with instruction formats, and instructions...
