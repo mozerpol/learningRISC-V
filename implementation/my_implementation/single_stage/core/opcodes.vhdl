@@ -15,33 +15,38 @@ library ieee;
 package opcodesPkg is
 
 
-   ---- R-type - Register ----
+   --''''''''''''''''''''''--
+   --        OPCODES       --
+   --,,,,,,,,,,,,,,,,,,,,,,--
+
    -- ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
-   constant C_OPCODE_OP       : std_logic_vector(6 downto 0) := "0110011";
-   
-   ---- I-type - Immediate ----
+   constant C_OPCODE_OP       : std_logic_vector(6 downto 0) := "0110011";   
+  
    -- ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLLI, SRLI, SRAI
    constant C_OPCODE_OPIMM    : std_logic_vector(6 downto 0) := "0010011";
+  
    -- LB, LH, LW, LBU, LHU, LD, LWU
    constant C_OPCODE_LOAD     : std_logic_vector(6 downto 0) := "0000011";
-   
-   ---- S-type - Store ----
+  
    -- SB, SH, SW, SD
    constant C_OPCODE_STORE    : std_logic_vector(6 downto 0) := "0100011";
-   
-   ---- B-type - Branch ----
+  
    -- BEQ, BNE, BLT, BGE, BLTU, BGEU
    constant C_OPCODE_BRANCH   : std_logic_vector(6 downto 0) := "1100011";
-
-   ---- U-type - Upper immediate ----
+  
+   -- LUI
    constant C_OPCODE_LUI      : std_logic_vector(6 downto 0) := "0110111";
+  
+   -- AUIPC
    constant C_OPCODE_AUIPC    : std_logic_vector(6 downto 0) := "0010111";
-   
-   ---- J-type - Jump ----
+  
+   -- JAL
    constant C_OPCODE_JAL      : std_logic_vector(6 downto 0) := "1101111";
+  
+   -- JALR
    constant C_OPCODE_JALR     : std_logic_vector(6 downto 0) := "1100111";
-   
-   ---- Others ----
+  
+   -- Others
    constant C_OPCODE_ZEROS    : std_logic_vector(6 downto 0) := "0000000";
 
    --''''''''''''''''''''''--
