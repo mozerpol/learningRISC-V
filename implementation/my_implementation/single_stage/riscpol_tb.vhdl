@@ -393,12 +393,12 @@ begin
       -- can be checked.
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);   
-      
-      
+      wait until rising_edge(clk_tb);
 
 
- 
+
+
+
       ----------------------------------------------------------------
       --                                                            --
       --               Check behaviour after reset                  --

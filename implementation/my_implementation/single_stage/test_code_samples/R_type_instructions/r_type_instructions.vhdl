@@ -117,7 +117,7 @@
       check_gpr( instruction    => "lui   x24, 1",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"00001000",
-                 test_point     => set_test_point );    
+                 test_point     => set_test_point );
       check_gpr( instruction    => "addi  x24, x24,  -1",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"00000fff",

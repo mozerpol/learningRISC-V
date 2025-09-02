@@ -66,12 +66,12 @@
       --   JAL    --
       --------------
       wait until rising_edge(clk_tb); -- auipc x12, 0
-      wait until rising_edge(clk_tb); -- jal   x13, loop22    
+      wait until rising_edge(clk_tb); -- jal   x13, loop22
       check_gpr( instruction    => "addi  x1,  x1,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "sub   x14, x13,  x12", 
+      check_gpr( instruction    => "sub   x14, x13,  x12",
                  gpr            => spy_gpr(14),
                  desired_value  => 32x"00000008",
                  test_point     => set_test_point );
@@ -88,8 +88,8 @@
       check_gpr( instruction    => "addi  x1,  x1,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000004",
-                 test_point     => set_test_point );              
-      check_gpr( instruction    => "sub   x17, x16,  x14", 
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "sub   x17, x16,  x14",
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"fffffff4",
                  test_point     => set_test_point );
@@ -102,13 +102,13 @@
       --------------
       wait until rising_edge(clk_tb); -- auipc x18, 0
       wait until rising_edge(clk_tb); -- jalr  x19, x18,  8
-      check_gpr( instruction    => "sub   x20, x19,  x18", 
+      check_gpr( instruction    => "sub   x20, x19,  x18",
                  gpr            => spy_gpr(20),
                  desired_value  => 32x"00000008",
                  test_point     => set_test_point );
       wait until rising_edge(clk_tb); -- jalr  x20, x18,  32
       wait until rising_edge(clk_tb); -- auipc x21, 0
-      check_gpr( instruction    => "sub   x21, x21,  x20", 
+      check_gpr( instruction    => "sub   x21, x21,  x20",
                  gpr            => spy_gpr(21),
                  desired_value  => 32x"00000010",
                  test_point     => set_test_point );
@@ -117,9 +117,9 @@
       check_gpr( instruction    => "addi  x1,  x1,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
-                 test_point     => set_test_point );  
+                 test_point     => set_test_point );
       wait until rising_edge(clk_tb); -- auipc x23,  0
-      check_gpr( instruction    => "sub   x24, x22,  x21", 
+      check_gpr( instruction    => "sub   x24, x22,  x21",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"00000008",
                  test_point     => set_test_point );
@@ -127,9 +127,9 @@
       check_gpr( instruction    => "addi  x1,  x1,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000002",
-                 test_point     => set_test_point );  
+                 test_point     => set_test_point );
       wait until rising_edge(clk_tb); -- auipc x25,  0
-      check_gpr( instruction    => "sub   x25, x25,  x24", 
+      check_gpr( instruction    => "sub   x25, x25,  x24",
                  gpr            => spy_gpr(25),
                  desired_value  => 32x"00000014",
                  test_point     => set_test_point );

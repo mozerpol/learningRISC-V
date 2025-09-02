@@ -16,7 +16,7 @@ addi  x8,  x8,   0xF1  # x8 = 0x0000e0f1
 ########################################
 ##           Prepare memory           ##
 ########################################
-sw    x7,  0(x0)       # Load to address 0x00000000 4 bytes: 0x 00 fc ff ff 
+sw    x7,  0(x0)       # Load to address 0x00000000 4 bytes: 0x 00 fc ff ff
 sw    x7,  2(x2)       # Load to address 0x00000004 4 bytes: 0x 00 fc ff ff
 sh    x8   10(x0)      # Load to address 0x00000008 2 bytes: 0x -- -- f1 e0
 ##############
