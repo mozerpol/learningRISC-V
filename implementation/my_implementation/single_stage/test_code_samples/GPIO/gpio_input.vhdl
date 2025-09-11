@@ -1,6 +1,8 @@
-      ---------------------
-      --    GPIO input   --
-      ---------------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              GPIO input                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
       gpio_tb        <= 8b"00001101"; -- Simulate GPIO input
       wait until rising_edge(clk_tb); -- nop instruction
       wait until rising_edge(clk_tb); -- nop instruction

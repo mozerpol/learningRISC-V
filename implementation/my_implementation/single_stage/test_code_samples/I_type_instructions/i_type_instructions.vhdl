@@ -1,11 +1,11 @@
-      ----------------------------------------------------------------
-      --                                                            --
-      --    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI    --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --   ADDI   --
-      --------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --         ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI         --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --               ADDI              --
+      -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   -2048",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"fffff800",
@@ -70,9 +70,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"fffffffe",
                  test_point     => set_test_point );
-      --------------
-      --   SLTI   --
-      --------------
+      -------------------------------------
+      --               SLTI              --
+      -------------------------------------
       check_gpr( instruction    => "slti  x8,  x0,   -2048",
                  gpr            => spy_gpr(8),
                  desired_value  => 32x"00000000",
@@ -137,9 +137,9 @@
                  gpr            => spy_gpr(14),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLTIU  --
-      --------------
+      -------------------------------------
+      --              SLTIU              --
+      -------------------------------------
       check_gpr( instruction    => "sltiu x15, x0,   -2048",
                  gpr            => spy_gpr(15),
                  desired_value  => 32x"00000001",
@@ -204,9 +204,9 @@
                  gpr            => spy_gpr(21),
                  desired_value  => 32x"00000001",
                  test_point     => set_test_point );
-      --------------
-      --   XORI   --
-      --------------
+      -------------------------------------
+      --               XORI              --
+      -------------------------------------
       check_gpr( instruction    => "xori  x22, x0,   -2048",
                  gpr            => spy_gpr(22),
                  desired_value  => 32x"fffff800",
@@ -271,9 +271,9 @@
                  gpr            => spy_gpr(28),
                  desired_value  => 32x"000007ff",
                  test_point     => set_test_point );
-      --------------
-      --   ORI    --
-      --------------
+      -------------------------------------
+      --               ORI               --
+      -------------------------------------
       check_gpr( instruction    => "ori   x29, x0,   -2048",
                  gpr            => spy_gpr(29),
                  desired_value  => 32x"fffff800",
@@ -338,9 +338,9 @@
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"ffffffff",
                  test_point     => set_test_point );
-      --------------
-      --   ANDI   --
-      --------------
+      -------------------------------------
+      --               ANDI              --
+      -------------------------------------
       check_gpr( instruction    => "andi  x5,  x0,   -2048",
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"00000000",
@@ -405,9 +405,9 @@
                  gpr            => spy_gpr(11),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLLI   --
-      --------------
+      -------------------------------------
+      --               SLLI              --
+      -------------------------------------
       check_gpr( instruction    => "slli  x12, x0,   0",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000000",
@@ -464,9 +464,9 @@
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SRLI   --
-      --------------
+      -------------------------------------
+      --               SRLI              --
+      -------------------------------------
       check_gpr( instruction    => "srli  x18, x0,   0",
                  gpr            => spy_gpr(18),
                  desired_value  => 32x"00000000",
@@ -523,9 +523,9 @@
                  gpr            => spy_gpr(23),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SRAI   --
-      --------------
+      -------------------------------------
+      --               SRAI              --
+      -------------------------------------
       check_gpr( instruction    => "srai  x24, x0,   0",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"00000000",

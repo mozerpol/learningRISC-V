@@ -1,5 +1,8 @@
-# The machine code for these instructions below is in the file gpio_output.hex
-
+################################################################################
+##                                                                            ##
+##                                 GPIO OUTPUT                                ##
+##                                                                            ##
+################################################################################
 # Check operation for four GPIO ports
 # gpio[0] = LED
 # gpio[1] = LED

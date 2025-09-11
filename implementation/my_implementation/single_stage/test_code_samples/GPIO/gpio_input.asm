@@ -1,5 +1,8 @@
-# The machine code for these instructions below is in the file gpio_input.hex
-
+################################################################################
+##                                                                            ##
+##                                 GPIO input                                 ##
+##                                                                            ##
+################################################################################
 # Introduce some delay
 nop
 nop

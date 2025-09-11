@@ -396,7 +396,7 @@ begin
       wait until rising_edge(clk_tb);
 
 
-
+      -- TODO: remove LUI from r type, then put it to the all_test_code_samples
 
 
       ----------------------------------------------------------------

@@ -1,8 +1,11 @@
-      ----------------------------------------------------------------
-      --                                                            --
-      --              BEQ, BNE, BLT, BGE, BLTU, BGEU                --
-      --                                                            --
-      ----------------------------------------------------------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                   BEQ, BNE, BLT, BGE, BLTU, BGEU                     --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
@@ -35,9 +38,9 @@
                  gpr            => spy_gpr(9),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BEQ    --
-      --------------
+      -------------------------------------
+      --               BEQ               --
+      -------------------------------------
       check_gpr( instruction    => "addi  x0,  x0,   0",
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
@@ -91,9 +94,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BNE    --
-      --------------
+      -------------------------------------
+      --               BNE               --
+      -------------------------------------
       wait until rising_edge(clk_tb); -- auipc x19, 0
       check_branch( instruction   => "bne   x3,  x4,   loop7",
                     branch_result => spy_branch_result,
@@ -139,9 +142,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BLT    --
-      --------------
+      -------------------------------------
+      --               BLT               --
+      -------------------------------------
       wait until rising_edge(clk_tb); -- auipc x28, 0
       check_branch( instruction   => "blt   x3,  x4,   loop10",
                     branch_result => spy_branch_result,
@@ -198,9 +201,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BGE    --
-      --------------
+      -------------------------------------
+      --               BGE               --
+      -------------------------------------
       wait until rising_edge(clk_tb); -- auipc x13, 0
       check_branch( instruction   => "bge   x4,  x3,   loop13",
                     branch_result => spy_branch_result,
@@ -257,9 +260,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BLTU   --
-      --------------
+      -------------------------------------
+      --              BLTU               --
+      -------------------------------------
       wait until rising_edge(clk_tb); -- auipc x20, 0
       check_branch( instruction   => "bltu  x8,  x7,   loop16",
                     branch_result => spy_branch_result,
@@ -308,9 +311,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BGEU   --
-      --------------
+      -------------------------------------
+      --              BGEU               --
+      -------------------------------------
       wait until rising_edge(clk_tb); -- auipc x27, 0
       check_branch( instruction   => "bgeu  x7,  x8,   loop19",
                     branch_result => spy_branch_result,
