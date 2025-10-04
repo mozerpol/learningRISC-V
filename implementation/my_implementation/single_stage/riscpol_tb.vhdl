@@ -2809,16 +2809,32 @@ begin
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-                 
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              GPIO input                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      gpio_tb        <= 8b"00001101"; -- Simulate GPIO input
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      -- Check if value 0000000D has been loaded into register x1
+      check_gpr( instruction    => "lw    x1,  255(x0)",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"0000000D",
+                 test_point     => set_test_point );
+      gpio_tb        <= (others => 'Z');
 
 
-      ----------------------------------------------------------------
-      --                                                            --
-      --               Check behaviour after reset                  --
-      -- The first instruction from rom.vhdl is always loaded during--
-      -- the reset.                                                 --
-      --                                                            --
-      ----------------------------------------------------------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                    Check behaviour after reset                       --
+      --      The first instruction from rom.vhdl is always loaded during     --
+      --      the reset.                                                      --
+      --                                                                      --
+      --------------------------------------------------------------------------
       wait for 250 ns;
       rst_n_tb   <= '0';
       wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
