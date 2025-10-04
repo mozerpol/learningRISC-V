@@ -782,3 +782,16 @@ bne   x1,  x2,   loop27# Were all the GPIOs on? No: go to loop2
 # Yes: all the GPIOs were turn on, reset all counters
 addi  x1,  x0,   0
 addi  x3,  x0,   0
+################################################################################
+##                                                                            ##
+##                                 GPIO input                                 ##
+##                                                                            ##
+################################################################################
+# Introduce some delay
+nop
+nop
+nop
+nop
+nop
+# The lw command loads the value from GPIO into x1 register.
+lw    x1,  255(x0)
