@@ -36,7 +36,7 @@ architecture rtl of seven_segment is
 
    -- 7-segment encoding for digits 0-9
    function to_7seg(
-      digit : std_logic_vector(3 downto 0)
+      digit : std_logic_vector(7 downto 0)
    ) return std_logic_vector is
    begin
       case to_integer(unsigned(digit)) is
@@ -55,10 +55,10 @@ architecture rtl of seven_segment is
    end function;
 
 
-   signal s_7segment_1 : std_logic_vector(3 downto 0);
-   signal s_7segment_2 : std_logic_vector(3 downto 0);
-   signal s_7segment_3 : std_logic_vector(3 downto 0);
-   signal s_7segment_4 : std_logic_vector(3 downto 0);
+   signal s_7segment_1 : std_logic_vector(7 downto 0);
+   signal s_7segment_2 : std_logic_vector(7 downto 0);
+   signal s_7segment_3 : std_logic_vector(7 downto 0);
+   signal s_7segment_4 : std_logic_vector(7 downto 0);
 
 
 begin
@@ -66,15 +66,10 @@ begin
 
    o_7segment_anodes <= (others => '1'); -- Turn on all 7seg displays
 
-
-   s_7segment_1 <= std_logic_vector(to_unsigned(to_integer(unsigned(
-                     i_7segment_wdata(13 downto 0))) mod 10, 4)); -- units
-   s_7segment_2 <= std_logic_vector(to_unsigned((to_integer(unsigned(
-                     i_7segment_wdata(13 downto 0))) / 10) mod 10, 4)); -- tens
-   s_7segment_3 <= std_logic_vector(to_unsigned((to_integer(unsigned(
-                     i_7segment_wdata(13 downto 0))) / 100) mod 10, 4)); -- hundreds
-   s_7segment_4 <= std_logic_vector(to_unsigned((to_integer(unsigned(
-                     i_7segment_wdata(13 downto 0))) / 1000) mod 10, 4)); -- thousands
+   s_7segment_1 <= i_7segment_wdata(7 downto 0); -- units
+   s_7segment_2 <= i_7segment_wdata(15 downto 8); -- tens
+   s_7segment_3 <= i_7segment_wdata(23 downto 16); -- hundreds
+   s_7segment_4 <= i_7segment_wdata(31 downto 24); -- thousands
 
 
    process (i_clk)
