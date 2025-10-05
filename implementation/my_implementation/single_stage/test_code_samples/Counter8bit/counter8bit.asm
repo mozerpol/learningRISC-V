@@ -24,9 +24,9 @@ addi  x0,  x0,   0     # nop
 addi  x0,  x0,   0     # nop
 # Check the timer for 212 clock cycles
 sb    x3,  251(x0)     # 1 = turn on the timer
-loop27:
+loop28:
 addi  x4,  x4,   1     # Long delay loop
-bne   x4,  x2,   loop27# Is there enough delay?
+bne   x4,  x2,   loop28# Is there enough delay?
 sb    x0,  251(x0)     # 0 = turn off the timer
 addi  x4,  x0,   0     # Reset delay loop
 # Read the counter value and save it in the x5 register
