@@ -223,6 +223,30 @@ architecture tb of riscpol_tb is
    end procedure;
 
 
+   ---------------------------------
+   ---- Check the value of seven segment display ----
+   ---------------------------------
+   procedure check_7segment(constant instruction    : in string;
+                        constant desired_value_segment_1  : in std_logic_vector(6 downto 0);
+                        constant desired_value_segment_2  : in std_logic_vector(6 downto 0);
+                        constant desired_value_segment_3  : in std_logic_vector(6 downto 0);
+                        constant desired_value_segment_4  : in std_logic_vector(6 downto 0);
+                        signal test_point       : out integer) is
+   begin
+      if (to_integer(s_7segment_1_tb) /= to_integer(desired_value_segment_1) or
+      to_integer(s_7segment_2_tb) /= to_integer(desired_value_segment_2) or
+      to_integer(s_7segment_3_tb) /= to_integer(desired_value_segment_3) or
+      to_integer(s_7segment_4_tb) /= to_integer(desired_value_segment_4)) then
+         echo("ERROR seven segment: " & instruction);
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("instruction: " & instruction);
+         echo("");
+      end if;
+      wait until rising_edge(clk_tb);
+   end procedure;
+   
+
    -------------------------------------------
    ----    Simulate sending UART data     ----
    -------------------------------------------
@@ -2949,7 +2973,30 @@ begin
                  test_point     => set_test_point );
                  
                  
-                 
+
+
+      check_gpr( instruction    => "addi  x1,  x0,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   8",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000008",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   9",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000009",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x0,  243(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+
+
+
+
 
       --------------------------------------------------------------------------
       --                                                                      --
@@ -2958,7 +3005,7 @@ begin
       --      the reset.                                                      --
       --                                                                      --
       --------------------------------------------------------------------------
-      wait for 250 ns;
+      wait for 1 us;
       rst_n_tb   <= '0';
       wait for C_CLK_PERIOD*20+C_CLK_PERIOD/2;
       rst_n_tb   <= '1';
