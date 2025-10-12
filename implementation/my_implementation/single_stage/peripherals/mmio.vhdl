@@ -49,7 +49,11 @@ begin
    with i_mmio_raddr select o_mmio_data <=
       i_mmio_q_gpio                                    when C_MMIO_ADDR_GPIO - 1,
       std_logic_vector(to_unsigned(i_mmio_q_cnt1, 32)) when C_MMIO_ADDR_CNT1 - 1,
-      i_mmio_data_uart                                 when C_MMIO_ADDR_UART - 1,
+      i_mmio_data_uart                                 when C_MMIO_ADDR_UART - 1, -- TODO: C_MMIO_ADDR_UART_DATA
+      -- TODO: C_MMIO_ADDR_UART_STATUS then read status. Pass status from UART 
+      -- module to the o_mmio_data from this module. Thanks to this will be
+      -- possible read UART status trhough addres, like reading from RAM.
+      -- Now for UART is 62, 61 can be UART status.
       i_mmio_data_spi                                  when C_MMIO_ADDR_SPI  - 1,
       i_mmio_data_ram                                  when others;
 
