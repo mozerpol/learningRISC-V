@@ -133,8 +133,7 @@ architecture rtl of riscpol is
 
    component uart is
       generic(
-         G_BAUD               : positive := C_BAUD;
-         G_FREQUENCY_MHZ      : positive := C_FREQUENCY_HZ
+         G_BAUD               : positive := C_BAUD
       );
       port(
          i_rst_n              : in std_logic;
