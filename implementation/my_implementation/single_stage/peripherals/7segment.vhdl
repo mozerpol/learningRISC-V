@@ -34,15 +34,29 @@ end seven_segment;
 architecture rtl of seven_segment is
 
 
+-- bit position:       7  6 5 4 3 2 1 0
+-- display position:  dot g f e d c b a
+
+--    __a__
+--   |     |
+--  f|     |b
+--   |  g  |
+--    -----
+--   |     |
+--  e|     |c        
+--   |  d  |         
+--    -----                 
+ 
+ 
    -- 7-segment encoding for digits 0-9
    function to_7seg(
       digit : std_logic_vector(7 downto 0)
    ) return std_logic_vector is
    begin
       case to_integer(unsigned(digit)) is
-         when 0 => return "0111111"; -- 0
-         when 1 => return "0000110"; -- 1
-         when 2 => return "1011011"; -- 2
+         when 0 => return "0111111"; -- 0 turn on: fedcba
+         when 1 => return "0000110"; -- 1 turn on: bc
+         when 2 => return "1011011"; -- 2 turn on: gedba
          when 3 => return "1001111"; -- 3
          when 4 => return "1100110"; -- 4
          when 5 => return "1101101"; -- 5
