@@ -169,14 +169,13 @@ add wave         -group GPIO         -radix bin /riscpol_tb/inst_riscpol/inst_gp
 
 add wave         -group CNT1         -radix bin /riscpol_tb/inst_riscpol/inst_counter1/i_cnt1_we
 add wave         -group CNT1         -radix bin /riscpol_tb/inst_riscpol/inst_counter1/i_cnt1_set_reset
-#add wave         -group CNT1         -radix dec /riscpol_tb/inst_riscpol/inst_counter1/line__32/v_cnt
+#add wave        -group CNT1         -radix dec /riscpol_tb/inst_riscpol/inst_counter1/line__32/v_cnt
 add wave         -group CNT1         -radix dec /riscpol_tb/inst_riscpol/inst_counter1/o_cnt1_q
 add wave         -group CNT1         -radix dec /riscpol_tb/inst_riscpol/inst_counter1/o_cnt1_overflow
 add wave         -group CNT1  -group INTERNAL_SIGNALS         -radix dec /riscpol_tb/inst_riscpol/inst_counter1/s_ce_latch
 
 
 add wave         -group UART         -radix dec /riscpol_tb/inst_riscpol/inst_uart/G_BAUD
-add wave         -group UART         -radix dec /riscpol_tb/inst_riscpol/inst_uart/G_FREQUENCY_MHZ
 add wave         -group UART         -radix hex /riscpol_tb/inst_riscpol/inst_uart/i_uart_wdata
 add wave         -group UART         -radix bin /riscpol_tb/inst_riscpol/inst_uart/i_uart_rx
 add wave         -group UART         -radix bin /riscpol_tb/inst_riscpol/inst_uart/i_uart_we
@@ -184,7 +183,6 @@ add wave         -group UART         -radix hex /riscpol_tb/inst_riscpol/inst_ua
 add wave         -group UART         -radix bin /riscpol_tb/inst_riscpol/inst_uart/o_uart_tx
 add wave         -group UART -group TX         -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_state_tx
 add wave         -group UART -group TX         -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_buff_tx
-add wave         -group UART -group TX         -radix dec /riscpol_tb/inst_riscpol/inst_uart/byte_cnt_tx
 add wave         -group UART -group TX         -radix dec /riscpol_tb/inst_riscpol/inst_uart/bit_cnt_tx
 add wave         -group UART -group TX         -radix dec /riscpol_tb/inst_riscpol/inst_uart/inst_counter_tx/G_COUNTER1_VALUE
 add wave         -group UART -group TX         -radix bin /riscpol_tb/inst_riscpol/inst_uart/inst_counter_tx/i_cnt1_set_reset
