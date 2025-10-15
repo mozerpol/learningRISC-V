@@ -26,6 +26,7 @@ entity uart is
       i_uart_rx            : in std_logic;
       i_uart_we            : in std_logic;
       o_uart_data          : out std_logic_vector(31 downto 0);
+      o_uart_status        : out std_logic_vector(31 downto 0);
       o_uart_tx            : out std_logic
 );
 end entity uart;
@@ -58,6 +59,7 @@ architecture rtl of uart is
    signal s_cnt1_overflow_tx  : std_logic;
    signal uart_buff_tx        : std_logic_vector(31 downto 0);
    signal bit_cnt_tx          : integer range 0 to 8; -- TODO: range up to constant
+   signal s_status_tx_ready   : std_logic;
    -- Receive purposes
    signal s_cnt1_q_rx         : integer range 0 to C_COUNTER1_VALUE - 1;
    signal uart_state_rx       : t_uart_states;
@@ -67,6 +69,7 @@ architecture rtl of uart is
    signal uart_buff_rx        : std_logic_vector(31 downto 0);
    signal bit_cnt_rx          : integer range 0 to 8;
    signal byte_cnt_rx         : integer range 0 to 3;
+   signal s_status_rx_ready   : std_logic;
 
 
 begin
@@ -98,6 +101,15 @@ begin
    );
 
 
+   o_uart_status(0) <= s_status_tx_ready;
+   o_uart_status(1) <= s_status_rx_ready;
+   o_uart_status(31 downto 2) <= (others => '0');
+   
+
+   -- TODO: check p_tx, fix p_rx, write asm code for tx, code.txt is up to date
+   -- with 7segment. Take care about addresses
+
+
    p_tx : process(i_clk)
    begin
       if (i_clk'event and i_clk = '1') then
@@ -106,7 +118,7 @@ begin
             s_cnt1_we_tx      <= '0';
             uart_buff_tx      <= (others => '0');
             bit_cnt_tx        <= 0;
-            -- s_uart_status_tx_ready <= '0'; 
+            s_status_tx_ready <= '0'; 
          else
             case (uart_state_tx) is
 
@@ -116,7 +128,7 @@ begin
                   if (i_uart_we = '1') then
                      uart_state_tx     <= START;
                      uart_buff_tx      <= i_uart_wdata; -- Latch data to send
-                     -- s_uart_status_tx_ready <= '1'; 
+                     s_status_tx_ready <= '1'; 
                   end if;
 
                when START  =>
@@ -144,7 +156,7 @@ begin
                   if (s_cnt1_overflow_tx = '1') then
                      uart_state_tx        <= IDLE;
                      s_cnt1_set_reset_tx  <= '0';
-                     -- s_uart_status_tx_ready <= '0';
+                     s_status_tx_ready    <= '0';
                   end if;
 
                when others =>
@@ -153,7 +165,7 @@ begin
                   s_cnt1_we_tx      <= '0';
                   uart_buff_tx      <= (others => '0');
                   bit_cnt_tx        <= 0;
-                  -- s_uart_status_tx_ready <= '0';
+                  s_status_tx_ready <= '0';
 
             end case;
          end if;
@@ -178,6 +190,7 @@ begin
             s_cnt1_set_reset_rx  <= '0';
             bit_cnt_rx           <= 0;
             o_uart_data          <= (others => '0');
+            s_status_rx_ready <= '0'; 
          else
             case (uart_state_rx) is
 
