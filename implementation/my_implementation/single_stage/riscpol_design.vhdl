@@ -73,6 +73,7 @@ architecture rtl of riscpol is
          i_mmio_q_cnt1        : in integer range 0 to C_COUNTER1_VALUE - 1;
          i_mmio_data_ram      : in std_logic_vector(31 downto 0);
          i_mmio_data_uart     : in std_logic_vector(31 downto 0);
+         i_mmio_status_uart   : in std_logic_vector(31 downto 0);
          i_mmio_data_spi      : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
@@ -142,6 +143,7 @@ architecture rtl of riscpol is
          i_uart_rx            : in std_logic;
          i_uart_we            : in std_logic;
          o_uart_data          : out std_logic_vector(31 downto 0);
+         o_uart_status        : out std_logic_vector(31 downto 0);
          o_uart_tx            : out std_logic
    );
    end component uart;
@@ -191,6 +193,7 @@ architecture rtl of riscpol is
    signal s_mmio_we_spi       : std_logic;
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
+   signal s_mmio_status_uart  : std_logic_vector(31 downto 0);
    signal s_mmio_data_spi     : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
    signal s_mmio_we_7seg      : std_logic;
@@ -210,6 +213,7 @@ architecture rtl of riscpol is
    -- UART
    signal s_uart_tx           : std_logic;
    signal s_uart_data         : std_logic_vector(31 downto 0);
+   signal s_uart_status       : std_logic_vector(31 downto 0);
    -- 7 segment
    signal s_7segment_1        : std_logic_vector(6 downto 0);
    signal s_7segment_2        : std_logic_vector(6 downto 0);
@@ -249,6 +253,7 @@ begin
       i_mmio_q_cnt1        => s_cnt1_q,
       i_mmio_data_ram      => s_ram_q,
       i_mmio_data_uart     => s_uart_data,
+      i_mmio_status_uart   => s_uart_status,
       i_mmio_data_spi      => s_mmio_data_spi,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
@@ -303,6 +308,7 @@ begin
       i_uart_rx            => i_rx,
       i_uart_we            => s_mmio_we_uart,
       o_uart_data          => s_uart_data,
+      o_uart_status        => s_uart_status,
       o_uart_tx            => s_uart_tx
    );
 
