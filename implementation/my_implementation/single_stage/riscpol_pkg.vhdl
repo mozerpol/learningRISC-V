@@ -34,7 +34,7 @@ package riscpol_pkg is
    -- access to GPIO.
    constant C_MMIO_ADDR_CNT1        : integer  := 63;
    constant C_MMIO_ADDR_7SEGMENT    : integer  := 62;
-   constant C_MMIO_ADDR_UART        : integer  := 61;
+   constant C_MMIO_ADDR_UART_DATA   : integer  := 61;
    constant C_MMIO_ADDR_UART_STATUS : integer  := 60;
 
    constant C_COUNTER1_VALUE        : integer  := 512; -- Up to what value
