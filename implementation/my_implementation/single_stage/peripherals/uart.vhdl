@@ -57,9 +57,9 @@ architecture rtl of uart is
    signal s_cnt1_we_tx        : std_logic;
    signal s_cnt1_set_reset_tx : std_logic;
    signal s_cnt1_overflow_tx  : std_logic;
-   signal uart_buff_tx        : std_logic_vector(31 downto 0);
+   signal uart_buff_tx        : std_logic_vector(7 downto 0);
    signal bit_cnt_tx          : integer range 0 to 8; -- TODO: range up to constant
-   signal s_status_tx_ready   : std_logic;
+   signal s_status_tx_busy    : std_logic;
    -- Receive purposes
    signal s_cnt1_q_rx         : integer range 0 to C_COUNTER1_VALUE - 1;
    signal uart_state_rx       : t_uart_states;
@@ -101,7 +101,7 @@ begin
    );
 
 
-   o_uart_status(0) <= s_status_tx_ready;
+   o_uart_status(0) <= s_status_tx_busy;
    o_uart_status(1) <= s_status_rx_ready;
    o_uart_status(31 downto 2) <= (others => '0');
    
@@ -118,17 +118,18 @@ begin
             s_cnt1_we_tx      <= '0';
             uart_buff_tx      <= (others => '0');
             bit_cnt_tx        <= 0;
-            s_status_tx_ready <= '0'; 
+            s_status_tx_busy  <= '0'; 
          else
             case (uart_state_tx) is
 
                when IDLE   =>
 
                   o_uart_tx         <= '1';
+                  s_status_tx_busy  <= '0';
                   if (i_uart_we = '1') then
                      uart_state_tx     <= START;
-                     uart_buff_tx      <= i_uart_wdata; -- Latch data to send
-                     s_status_tx_ready <= '1'; 
+                     uart_buff_tx      <= i_uart_wdata(7 downto 0); -- Latch data to send
+                     s_status_tx_busy  <= '1'; 
                   end if;
 
                when START  =>
@@ -156,7 +157,6 @@ begin
                   if (s_cnt1_overflow_tx = '1') then
                      uart_state_tx        <= IDLE;
                      s_cnt1_set_reset_tx  <= '0';
-                     s_status_tx_ready    <= '0';
                   end if;
 
                when others =>
@@ -165,7 +165,7 @@ begin
                   s_cnt1_we_tx      <= '0';
                   uart_buff_tx      <= (others => '0');
                   bit_cnt_tx        <= 0;
-                  s_status_tx_ready <= '0';
+                  s_status_tx_busy  <= '0';
 
             end case;
          end if;
