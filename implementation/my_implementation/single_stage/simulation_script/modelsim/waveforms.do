@@ -186,7 +186,7 @@ add wave         -group UART         -radix bin /riscpol_tb/inst_riscpol/inst_ua
 add wave         -group UART -group TX         -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_state_tx
 add wave         -group UART -group TX         -radix hex /riscpol_tb/inst_riscpol/inst_uart/uart_buff_tx
 add wave         -group UART -group TX         -radix dec /riscpol_tb/inst_riscpol/inst_uart/bit_cnt_tx
-add wave         -group UART -group TX         -radix bin /riscpol_tb/inst_riscpol/inst_uart/s_status_tx_ready
+add wave         -group UART -group TX         -radix bin /riscpol_tb/inst_riscpol/inst_uart/s_status_tx_busy
 add wave         -group UART -group TX         -radix dec /riscpol_tb/inst_riscpol/inst_uart/inst_counter_tx/G_COUNTER1_VALUE
 add wave         -group UART -group TX         -radix bin /riscpol_tb/inst_riscpol/inst_uart/inst_counter_tx/i_cnt1_set_reset
 add wave         -group UART -group TX         -radix bin /riscpol_tb/inst_riscpol/inst_uart/inst_counter_tx/i_cnt1_we
