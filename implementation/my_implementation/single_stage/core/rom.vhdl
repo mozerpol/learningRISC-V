@@ -40,6 +40,7 @@ package rom is
       x"0e4029a3",
       x"00110113",
       x"fe209ee3",
+      x"00000113",
       others => x"00000000"
       );
 end;
