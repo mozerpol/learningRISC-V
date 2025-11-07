@@ -249,52 +249,51 @@ architecture tb of riscpol_tb is
 
    -------------------------------------------
    ----    Simulate sending UART data     ----
+   -- TODO: comment, sendint from which perspective
    -------------------------------------------
    procedure check_uart_tx( constant instruction : in string;
                          constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
-      alias cnt1_overflow is << signal .riscpol_tb.inst_riscpol.inst_uart.
-                                 inst_counter_tx.o_cnt1_overflow : std_logic >>;
+      alias uart_status is << signal .riscpol_tb.inst_riscpol.inst_uart.
+                              o_uart_status : std_logic_vector >>;
    begin
       wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
       -- of the bit sent by UART
-      for j in 0 to 3 loop
-         -- Check start bit
-         if (std_logic(tx_tb) /= '0') then
+      -- Check start bit
+      if (std_logic(tx_tb) /= '0') then
+         echo("ERROR UART: " & instruction);
+         echo("Start bit does not match the expected value.");
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+      wait for C_WAIT_TIME;
+      -- Check data bits
+      for i in 0 to 7 loop
+         if (desired_value(i) /= std_logic(tx_tb)) then
             echo("ERROR UART: " & instruction);
-            echo("Start bit does not match the expected value.");
+            echo("The bit does not match the expected value.");
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
             echo("");
          end if;
          wait for C_WAIT_TIME;
-         -- Check data bits
-         for i in 0 to 7 loop
-            if (desired_value(8*j+i) /= std_logic(tx_tb)) then
-               echo("ERROR UART: " & instruction);
-               echo("The bit does not match the expected value.");
-               echo("Test_point: " & integer'image(test_point+1));
-               test_point <= test_point + 1;
-               echo("");
-            end if;
-            wait for C_WAIT_TIME;
-         end loop;
-         -- Check stop bit
-         if (std_logic(tx_tb) /= '1') then
-            echo("ERROR UART: " & instruction);
-            echo("Stop bit does not match the expected value.");
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-         end if;
-         if (j = 3) then -- Wait until the end of UART data sending (because
-            -- there was delay C_WAIT_TIME/2 at the beginning).
-            wait until rising_edge(cnt1_overflow);
-         else
-            wait for C_WAIT_TIME;
-         end if;
       end loop;
+      -- Check stop bit
+      if (std_logic(tx_tb) /= '1') then
+         echo("ERROR UART: " & instruction);
+         echo("Stop bit does not match the expected value.");
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+      -- Wait until the end of UART data sending
+      wait until uart_status(0) = '0';
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk_tb);
    end procedure;
 
 
@@ -427,18 +426,6 @@ begin
       -------------------------------------
       --             UART TX             --
       -------------------------------------
-      check_gpr( instruction    => "lui   x1,  1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00001000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   -1096",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000bb8",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
       check_gpr( instruction    => "addi  x3,  x0,   0x44",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000044",
@@ -446,13 +433,19 @@ begin
       check_gpr( instruction    => "addi  x4,  x0,   0xD",
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );
-      -- TODO: I think something is wrong with check_uart_tx procedure
+                 test_point     => set_test_point );                 
       check_uart_tx( instruction=> "sw    x3,  243(x0)",
                  desired_value  => 32x"00000044",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
+      check_gpr( instruction    => "addi  x3,  x0,   0",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_uart_tx( instruction=> "sw    x4,  243(x0)",
+                 desired_value  => 32x"0000000d",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   0",
+                 gpr            => spy_gpr(4),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
                  
