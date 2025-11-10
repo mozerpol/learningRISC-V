@@ -81,6 +81,7 @@ instructions,
       make any sense,
 - [x] change name from script.tcl to run_simulation.tcl,
 - [x] change ram_management to data_memory
+- [ ] change integer to natural where it's possible,
 - [ ] setup and run Dhrystone,
 - [ ] add script for Vivado and GHDL,
 - [ ] describe timing constraints,
