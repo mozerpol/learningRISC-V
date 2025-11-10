@@ -51,6 +51,9 @@ architecture rtl of uart is
 
    -- General
    type t_uart_states         is (IDLE, START, DATA, STOP);
+   -- Counter counts up to this value, it's duration of sending one character:
+   constant C_DURATION_OF_THE_CHAR : positive := 
+   positive(real(C_FREQUENCY_HZ)*(1.0/real(G_BAUD)));
    -- Transmit purposes
    signal s_cnt1_q_tx         : integer range 0 to C_COUNTER1_VALUE - 1;
    signal uart_state_tx       : t_uart_states;
@@ -77,7 +80,7 @@ begin
 
    inst_counter_tx : component counter1
    generic map (
-      G_COUNTER1_VALUE => positive(real(C_FREQUENCY_HZ)*(1.0/real(G_BAUD)))
+      G_COUNTER1_VALUE => C_DURATION_OF_THE_CHAR
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -90,7 +93,7 @@ begin
 
    inst_counter_rx : component counter1
    generic map (
-      G_COUNTER1_VALUE => positive(real(C_FREQUENCY_HZ)*(1.0/real(G_BAUD)) - 2.0)
+      G_COUNTER1_VALUE => C_DURATION_OF_THE_CHAR
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -105,10 +108,6 @@ begin
    o_uart_status(1) <= s_status_rx_ready;
    o_uart_status(31 downto 2) <= (others => '0');
    
-
-   -- TODO: check p_tx, fix p_rx, write asm code for tx, code.txt is up to date
-   -- with 7segment. Take care about addresses
-
 
    p_tx : process(i_clk)
    begin
@@ -174,12 +173,7 @@ begin
 
 
    p_rx : process (i_clk)
-      -- TODO: for what is this variable?
-      variable rx_start_counter  : integer range 0 to positive((
-                                 real(C_FREQUENCY_HZ)*(1.0/real(G_BAUD)))/2.0);
-      -- TODO: why this constant exist?
-      constant C_MAX_VALUE       : integer := positive((
-                                 real(C_FREQUENCY_HZ)*(1.0/real(G_BAUD)))/2.0);
+      variable rx_start_counter  : natural range 0 to C_DURATION_OF_THE_CHAR/2;
    begin
       if (i_clk'event and i_clk = '1') then
          if (i_rst_n = '0') then
@@ -197,11 +191,10 @@ begin
                when IDLE   =>
 
                   if (i_uart_rx = '0') then
-                     if (rx_start_counter = C_MAX_VALUE) then
+                     if (rx_start_counter = C_DURATION_OF_THE_CHAR/2) then
                         rx_start_counter     := 0;
-                        uart_state_rx        <= DATA;
-                        s_cnt1_we_rx         <= '1';
-                        s_cnt1_set_reset_rx  <= '1';
+                        s_status_rx_ready    <= '0';
+                        uart_state_rx        <= START;
                         uart_buff_rx         <= (others => '0');
                      else
                         rx_start_counter     := rx_start_counter + 1;
@@ -211,6 +204,10 @@ begin
                   end if;
 
                when START  =>
+               
+                        s_cnt1_we_rx         <= '1';
+                        s_cnt1_set_reset_rx  <= '1';
+                        uart_state_rx        <= DATA;
 
                when DATA   =>
 
@@ -226,13 +223,11 @@ begin
 
                when STOP   =>
 
-                  if (rx_start_counter = C_MAX_VALUE) then
+                  if (s_cnt1_overflow_rx = '1') then
                      uart_state_rx           <= IDLE;
                      o_uart_data(7 downto 0) <= uart_buff_rx(31 downto 24);
                      s_cnt1_set_reset_rx     <= '0';
-                     rx_start_counter        := 0;
-                  else
-                     rx_start_counter        := rx_start_counter + 1;
+                     s_status_rx_ready       <= '1';
                   end if;
 
                when others =>
