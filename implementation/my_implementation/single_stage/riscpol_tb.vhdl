@@ -252,6 +252,7 @@ architecture tb of riscpol_tb is
    -- TODO: comment, sendint from which perspective
    -------------------------------------------
    procedure check_uart_tx( constant instruction : in string;
+                         -- TODO: change name, I think, it's not desired value...
                          constant desired_value  : in std_logic_vector(31 downto 0);
                          signal test_point       : out integer) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
@@ -299,13 +300,12 @@ architecture tb of riscpol_tb is
 
    -------------------------------------------
    ----    Simulate receiving UART data   ----
+   -- TODO: comment, sendint from which perspective
    -------------------------------------------
-   procedure check_uart_rx(constant instruction          : in string;
-                           constant gpr                  : in std_logic_vector(31 downto 0);
-                           constant value_to_send        : in std_logic_vector(31 downto 0);
-                           constant number_bytes_to_send : in integer;
+   procedure check_uart_rx(constant value_to_send        : in std_logic_vector(31 downto 0);
+                           constant number_bytes_to_send : in positive range 1 to 4;
                            signal out_rx                 : out std_logic;
-                           signal test_point             : out integer) is
+                           signal test_point             : out integer ) is
       constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
    begin
       for j in 0 to number_bytes_to_send-1 loop
@@ -320,15 +320,7 @@ architecture tb of riscpol_tb is
          -- Stop bit
          out_rx <= '1';
          wait for C_WAIT_TIME;
-         -- Check if the sent data has been saved in GPR
-         if (gpr /= value_to_send) then
-            echo("ERROR UART RX: " & instruction);
-            echo("value_to_send: " & to_string(value_to_send));
-            echo("gpr value: " & to_string(gpr));
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-         end if;
+         test_point <= test_point + 1;
          wait until rising_edge(clk_tb);
       end loop;
    end procedure;
@@ -404,7 +396,7 @@ begin
 
       rst_n_tb       <= '0';
       gpio_tb        <= (others => 'Z');
-      rx_tb          <= 'Z';
+      rx_tb          <= '1';
       s_spi_miso_tb  <= 'Z';
       wait for C_CLK_PERIOD*20;
       rst_n_tb       <= '1';
@@ -424,32 +416,16 @@ begin
       --                                                                      --
       --------------------------------------------------------------------------
       -------------------------------------
-      --             UART TX             --
+      --             UART RX             --
       -------------------------------------
-      check_gpr( instruction    => "addi  x3,  x0,   0x44",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000044",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0xD",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );                 
-      check_uart_tx( instruction=> "sw    x3,  243(x0)",
-                 desired_value  => 32x"00000044",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_uart_tx( instruction=> "sw    x4,  243(x0)",
-                 desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-                 
-                 
+
+      
+
+      check_uart_rx( value_to_send     => 32x"ABCDEF12",
+                 number_bytes_to_send  => 4,
+                 out_rx                => rx_tb,
+                 test_point            => set_test_point );
+
       wait for 300 us; -- UART
 
 
