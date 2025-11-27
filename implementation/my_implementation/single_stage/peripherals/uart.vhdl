@@ -60,7 +60,7 @@ architecture rtl of uart is
    signal s_cnt1_we_tx        : std_logic;
    signal s_cnt1_set_reset_tx : std_logic;
    signal s_cnt1_overflow_tx  : std_logic;
-   signal uart_buff_tx        : std_logic_vector(7 downto 0);
+   signal uart_buff_tx        : std_logic_vector(7 downto 0); -- TODO: it's register
    signal bit_cnt_tx          : integer range 0 to 8; -- TODO: range up to constant
    signal s_status_tx_busy    : std_logic;
    -- Receive purposes
@@ -69,7 +69,7 @@ architecture rtl of uart is
    signal s_cnt1_we_rx        : std_logic;
    signal s_cnt1_set_reset_rx : std_logic;
    signal s_cnt1_overflow_rx  : std_logic;
-   signal uart_buff_rx        : std_logic_vector(31 downto 0);
+   signal uart_buff_rx        : std_logic_vector(31 downto 0); -- TODO: it's register
    signal bit_cnt_rx          : integer range 0 to 8;
    signal byte_cnt_rx         : integer range 0 to 3;
    signal s_status_rx_ready   : std_logic;
@@ -127,7 +127,8 @@ begin
                   s_status_tx_busy  <= '0';
                   if (i_uart_we = '1') then
                      uart_state_tx     <= START;
-                     uart_buff_tx      <= i_uart_wdata(7 downto 0); -- Latch data to send
+                      -- Latch the data to send
+                     uart_buff_tx      <= i_uart_wdata(7 downto 0);
                      s_status_tx_busy  <= '1'; 
                   end if;
 
@@ -205,32 +206,32 @@ begin
 
                when START  =>
                
-                        s_cnt1_we_rx         <= '1';
-                        s_cnt1_set_reset_rx  <= '1';
-                        uart_state_rx        <= DATA;
+                  s_cnt1_we_rx         <= '1';
+                  s_cnt1_set_reset_rx  <= '1';
+                  uart_state_rx        <= DATA;
 
                when DATA   =>
 
                   if (s_cnt1_overflow_rx = '1') then
                      if (bit_cnt_rx = 8) then
-                        uart_state_rx        <= STOP;
-                        bit_cnt_rx           <= 0;
+                        bit_cnt_rx              <= 0;
+                        uart_state_rx           <= IDLE;
+                        o_uart_data(7 downto 0) <= uart_buff_rx(31 downto 24);
+                        s_cnt1_set_reset_rx     <= '0';
+                        s_status_rx_ready       <= '1';
                      else
-                        bit_cnt_rx           <= bit_cnt_rx + 1;
-                        uart_buff_rx         <= i_uart_rx & uart_buff_rx(31 downto 1);
+                        bit_cnt_rx              <= bit_cnt_rx + 1;
+                        uart_buff_rx            <= i_uart_rx & uart_buff_rx(31 downto 1);
                      end if;
                   end if;
 
-               when STOP   =>
-
-                  if (s_cnt1_overflow_rx = '1') then
-                     uart_state_rx           <= IDLE;
-                     o_uart_data(7 downto 0) <= uart_buff_rx(31 downto 24);
-                     s_cnt1_set_reset_rx     <= '0';
-                     s_status_rx_ready       <= '1';
-                  end if;
-
                when others =>
+
+                  rx_start_counter     := 0;
+                  s_cnt1_we_rx         <= '0';
+                  s_cnt1_set_reset_rx  <= '0';
+                  bit_cnt_rx           <= 0;
+                  s_status_rx_ready <= '0'; 
 
             end case;
          end if;
