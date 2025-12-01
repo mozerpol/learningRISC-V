@@ -422,6 +422,7 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
+
       --------------------------------------------------------------------------
       --                                                                      --
       --         ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI         --
@@ -3184,29 +3185,22 @@ begin
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-                 
-                 
       check_uart_rx( value_to_send     => 32x"ABEEEEEE",
                  number_bytes_to_send  => 4,
                  out_rx                => rx_tb,
                  test_point            => set_test_point );
-                 
       check_uart_rx( value_to_send     => 32x"00120000",
                  number_bytes_to_send  => 3,
                  out_rx                => rx_tb,
                  test_point            => set_test_point );
-                 
       check_uart_rx( value_to_send     => 32x"0000CDEF",
                  number_bytes_to_send  => 2,
                  out_rx                => rx_tb,
                  test_point            => set_test_point );
-                 
       check_uart_rx( value_to_send     => 32x"00000099",
                  number_bytes_to_send  => 1,
                  out_rx                => rx_tb,
-                 test_point            => set_test_point );
-                 
-                 
+                 test_point            => set_test_point );   
       check_gpr( instruction    => "addi  x2,  x0,   0",
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
@@ -3223,9 +3217,6 @@ begin
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000003",
                  test_point     => set_test_point );
-                 
-
-      wait for 300 us; -- UART
 
 
       --------------------------------------------------------------------------
