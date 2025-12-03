@@ -16,97 +16,97 @@ set module        "riscpol"
 
 
 proc s_add_external_libs {} {
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "opcodes"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/opcodes.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "control_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/control_pkg.vhdl
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/control_design.vhdl
 
 
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "ram_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/ram.vhdl
 
   
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "counter1_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/counter1.vhdl
    
    
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "uart_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/uart.vhdl
    
  
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "gpio_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/gpio_design.vhdl
    
    
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "mmio_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/mmio.vhdl
    
    
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "seven_segment_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/7segment.vhdl
    
    
-   set hdl_dir                "../../peripherals"
+   set hdl_dir                "../../src/peripherals"
    set library_name           "spi_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/spi.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "alu_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "alu_mux_1_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_mux_1_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "alu_mux_2_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/alu_mux_2_design.vhdl
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "branch_instructions_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/branch_instructions_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "decoder_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/decoder_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "instruction_memory_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/rom.vhdl
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/instruction_memory_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "program_counter_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/program_counter_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "register_file_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/register_file_design.vhdl
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "data_mem_mgmt_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/data_mem_mgmt_design.vhdl
 
 
-   set hdl_dir                "../../core"
+   set hdl_dir                "../../src/core"
    set library_name           "core_lib"
    vcom -2008 -cover bcs -quiet -work    $library_name $hdl_dir/core_design.vhdl
 }
@@ -134,9 +134,9 @@ proc s_add_external_libs {} {
 # Go to directory where is run_simulation.tcl and run command: do run_simulation.tcl
 
 set lib_name         $module\_lib
-set design_name      ../../$module\_design
-set test_name        ../../$module\_tb
-set package_name     ../../$module\_pkg
+set design_name      ../../src/$module\_design
+set test_name        ../../tb/$module\_tb
+set package_name     ../../src/$module\_pkg
 set waveforms        $module\_lib.$module\_tb
 set systemTime_start [clock seconds]
 set systemTime_end   [clock seconds]
