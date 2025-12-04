@@ -3,12 +3,12 @@
 # In code.txt paste instructions to be executed
 
 # Open the code.txt file
-with open("code.txt", "r") as file:
+with open("../src/core/code.txt", "r") as file:
     # Read the contents of the file
     code_data = file.readlines()
 
 # Open the rom.vhdl file
-with open("rom.vhdl", "w") as file:
+with open("../src/core/rom.vhdl", "w") as file:
     # Write the initial lines of the rom.vhdl file
     file.write('--------------------------------------------------------------------------------\n')
     file.write('-- File          : rom.vhdl\n')
