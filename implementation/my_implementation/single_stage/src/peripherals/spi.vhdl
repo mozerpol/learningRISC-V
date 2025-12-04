@@ -102,7 +102,7 @@ begin
 
    p_tx : process (i_clk)
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             s_cnt1_we_tx         <= '0';
             s_cnt1_set_reset_tx  <= '0';
@@ -176,7 +176,7 @@ begin
 
    p_rx : process (i_clk)
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
          else
          end if;

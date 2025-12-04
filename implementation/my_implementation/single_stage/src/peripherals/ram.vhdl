@@ -51,7 +51,7 @@ begin  -- rtl
 
    process(i_clk)
    begin
-      if(i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if(i_ram_we = '1') then
             if(i_ram_be(0) = '1') then
                ram(i_ram_waddr)(0) <= i_ram_wdata(7 downto 0);

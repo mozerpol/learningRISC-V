@@ -155,7 +155,7 @@ begin
 
    p_reg_file : process(i_clk)
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          -- Save data from RAM in GPR
          if (i_data_source_ctrl = C_WRITE_RD_DATA) then
             gpr(to_integer(unsigned(i_rd_addr))) <= s_data;
@@ -163,7 +163,7 @@ begin
          elsif (i_data_source_ctrl = C_WRITE_ALU_RESULT) then
             gpr(to_integer(unsigned(i_rd_addr))) <= i_alu_result;
          else
-         -- Save program counter value in GPR
+            -- Save program counter value in GPR
             -- elsif (i_data_source_ctrl = C_WRITE_PC_ADDR) then
             gpr(to_integer(unsigned(i_rd_addr))) <= 
                                     std_logic_vector(unsigned(i_pc_addr) + 4);

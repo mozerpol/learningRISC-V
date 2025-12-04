@@ -32,7 +32,7 @@ begin
    process (i_clk)
       variable v_cnt : integer range 0 to G_COUNTER1_VALUE;
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             s_ce_latch        <= '0';
             v_cnt             := 0;

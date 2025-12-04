@@ -88,7 +88,7 @@ begin
 
    process (i_clk)
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_7segment_we = '1') then
             o_7segment_1 <= to_7seg(s_7segment_1);
             o_7segment_2 <= to_7seg(s_7segment_2);

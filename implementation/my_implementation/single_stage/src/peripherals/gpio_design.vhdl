@@ -44,7 +44,7 @@ begin
 
    p_gpio : process(i_clk)
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             reg_gpio_q <= (others => 'Z');
          else

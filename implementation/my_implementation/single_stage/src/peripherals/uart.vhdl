@@ -111,7 +111,7 @@ begin
 
    p_tx : process(i_clk)
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             uart_state_tx     <= IDLE;
             s_cnt1_we_tx      <= '0';
@@ -176,7 +176,7 @@ begin
    p_rx : process (i_clk)
       variable rx_start_counter  : natural range 0 to C_DURATION_OF_THE_CHAR/2;
    begin
-      if (i_clk'event and i_clk = '1') then
+      if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             uart_state_rx        <= IDLE;
             uart_buff_rx         <= (others => '0');
