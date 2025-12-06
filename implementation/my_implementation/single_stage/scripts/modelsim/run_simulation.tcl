@@ -136,6 +136,7 @@ proc s_add_external_libs {} {
 set lib_name         $module\_lib
 set design_name      ../../src/$module\_design
 set test_name        ../../tb/$module\_tb
+set test_package_name ../../tb/$module\_tb_pkg
 set package_name     ../../src/$module\_pkg
 set waveforms        $module\_lib.$module\_tb
 set systemTime_start [clock seconds]
@@ -200,6 +201,17 @@ proc s_comp_design_main {} {
     }
 }
 
+proc s_comp_test_package {} {
+    global test_package_name lib_name
+    echo "-> Testbench package"
+    if {[file exist $test_package_name.vhdl]} {
+       echo "OK"
+       vcom -2008 -cover bcs -quiet -work $lib_name $test_package_name.vhdl
+    } else {
+       echo "File $test_package_name not found"
+    }
+}
+
 proc s_comp_test_main {} {
     global test_name lib_name
     echo "-> Testbench"
@@ -243,6 +255,7 @@ s_map_lib_main
 s_comp_package_main
 s_add_external_libs
 s_comp_design_main
+s_comp_test_package
 s_comp_test_main
 s_load_waves
 s_start_sim
