@@ -57,7 +57,7 @@ architecture tb of riscpol_tb is
    signal rx_tb               : std_logic;
    signal tx_tb               : std_logic;
    signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
-   signal set_test_point      : integer := 0;
+   signal set_test_point      : integer := 0; -- TODO: change to test_point
    signal s_7segment_1_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_2_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_3_tb     : std_logic_vector(6 downto 0);
@@ -407,11 +407,41 @@ begin
       --               ADDI              --
       -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   -2048",
+                 gpr            => 1,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
-    
-
+      check_gpr( instruction    => "addi  x0,  x0,   -2048",
+                 gpr            => 2,
+                 desired_value  => 32x"fffff800",
+                 clk            => clk_tb,
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x1,  x0,   -2048",
+                 gpr            => 2,
+                 desired_value  => 32x"fffff800",
+                 clk            => clk_tb,
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x10,  x0,   -2048",
+                 gpr            => 2,
+                 desired_value  => 32x"fffff800",
+                 clk            => clk_tb,
+                 test_point     => set_test_point );
+          check_gpr( instruction    => "addi  x30,  x0,   -2048",
+                 gpr            => 2,
+                 desired_value  => 32x"fffff800",
+                 clk            => clk_tb,
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x22,  x0,   -2048",
+                 gpr            => 2,
+                 desired_value  => 32x"fffff800",
+                 clk            => clk_tb,
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "a  x0,  ",
+                 gpr            => 2,
+                 desired_value  => 32x"fffff800",
+                 clk            => clk_tb,
+                 test_point     => set_test_point );
+                 
 
       --------------------------------------------------------------------------
       --                                                                      --
