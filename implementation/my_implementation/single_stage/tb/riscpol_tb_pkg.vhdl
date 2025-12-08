@@ -16,7 +16,7 @@ package riscpol_tb_pkg is
    -- like time or iteration.
    procedure echo (arg : in string := "");
       
-   function gpr_extraction_from_instruction (instruction : string) return integer;
+   function gpr_extraction_from_string (instruction : string) return integer;
       
    -----------------------------------------------------
    ---- Check the value of general purpose register ----
@@ -38,23 +38,23 @@ package body riscpol_tb_pkg is
    end procedure echo;
 
 
-   function gpr_extraction_from_instruction(instruction : string) return integer is
+   function gpr_extraction_from_string(instruction : string) return integer is
       variable extracted_gpr : natural range 0 to 31;
    begin
-         for i in 1 to instruction'length loop -- TODO: replace for to while
+         for i in 1 to instruction'length loop
             if (instruction(i) = 'x') then
                if (instruction(i + 2) = ',') then
                   extracted_gpr := integer'value(instruction(i+1 to i+1));
                   return extracted_gpr;
-               -- TODO: elsif if (instruction(i + 1) = ',') then
-               -- TODO: else return error
-               else
+               elsif (instruction(i + 3) = ',') then
                   extracted_gpr := integer'value(instruction(i+1 to i+2));
                   return extracted_gpr;
+               else
+                  report "ERROR in extracting GPR number from instruction" severity error;
                end if;
             end if;
          end loop;
-   end function gpr_extraction_from_instruction;
+   end function gpr_extraction_from_string;
 
 
    procedure check_gpr( constant instruction    : in string;
@@ -64,7 +64,7 @@ package body riscpol_tb_pkg is
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
       variable extracted_gpr : natural range 0 to 31;
    begin
-      extracted_gpr := gpr_extraction_from_instruction(instruction);
+      extracted_gpr := gpr_extraction_from_string(instruction);
       if (spy_gpr(extracted_gpr) /= desired_value) then         
          test_point <= test_point + 1;
          echo("ERROR GPR[" & to_string(extracted_gpr) & "]: " & instruction);
