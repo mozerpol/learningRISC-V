@@ -57,7 +57,7 @@ architecture tb of riscpol_tb is
    signal rx_tb               : std_logic;
    signal tx_tb               : std_logic;
    signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
-   signal set_test_point      : integer := 0; -- TODO: change to test_point
+   signal test_point          : integer := 0;
    signal s_7segment_1_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_2_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_3_tb     : std_logic_vector(6 downto 0);
@@ -67,10 +67,6 @@ architecture tb of riscpol_tb is
    signal s_spi_mosi_tb       : std_logic;
    signal s_spi_ss_n_tb       : std_logic;
    signal s_spi_sclk_tb       : std_logic;
-
-
-
-
 
 
    -----------------------------------------------------
@@ -370,6 +366,7 @@ begin
       wait for C_CLK_PERIOD/2;
       clk_tb   <= '0';
       wait for C_CLK_PERIOD/2;
+      -- TODO: add procedure
    end process;
 
 
@@ -380,7 +377,6 @@ begin
       alias spy_cnt1          is <<signal .riscpol_tb.inst_riscpol.inst_counter1.o_cnt1_q:
                                  integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
-
 
       rst_n_tb       <= '0';
       gpio_tb        <= (others => 'Z');
@@ -406,34 +402,8 @@ begin
       -------------------------------------
       --               ADDI              --
       -------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   -2048",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   -2048",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x0,   -2048",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x10,  x0,   -2048",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
-          check_gpr( instruction    => "addi  x30,  x0,   -2048",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x22,  x0,   -2048",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "a  x0,  ",
-                 desired_value  => 32x"fffff800",
-                 clk            => clk_tb,
-                 test_point     => set_test_point );
+      check_gpr("addi  x1,  x0,   -2048", x"fffff800", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   -2048", x"fff1f800", clk_tb, test_point);
                  
 
       --------------------------------------------------------------------------
@@ -460,21 +430,21 @@ begin
       -- check_gpr( instruction    => "addi  x1,  x0,   -2048",
       --            gpr            => spy_gpr(1),
       --            desired_value  => 32x"fffff800",
-      --            test_point     => set_test_point );
+      --            test_point     => test_point);
       -- check_gpr( instruction    => "addi  x2,  x0,   -511",
       --            gpr            => spy_gpr(2),
       --            desired_value  => 32x"fffffe01",
-      --            test_point     => set_test_point );
+      --            test_point     => test_point);
       -- check_gpr( instruction    => "addi  x3,  x0,   -2",
       --            gpr            => spy_gpr(3),
       --            desired_value  => 32x"fffffffe",
-      --            test_point     => set_test_point );
+      --            test_point     => test_point);
       -- check_gpr( instruction    => "addi  x4,  x0,   0",
       --            gpr            => spy_gpr(4),
       --            desired_value  => 32x"00000000",
-      --            test_point     => set_test_point );
+      --            test_point     => test_point);
       echo("======================================");
-      echo("Total errors: " & integer'image(set_test_point));
+      echo("Total errors: " & integer'image(test_point));
       echo("======================================");
       wait for 1 us;
       stop(0);
