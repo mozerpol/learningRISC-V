@@ -5,7 +5,7 @@
 
 
 ##### Waveforms: #####
-add wave -expand -group testbench         -radix dec /riscpol_tb/set_test_point
+add wave -expand -group testbench         -radix dec /riscpol_tb/test_point
 
 
 add wave -expand -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/i_rst_n
