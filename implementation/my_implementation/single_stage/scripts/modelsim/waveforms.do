@@ -254,7 +254,7 @@ add wave         -group RAM         -radix hex /riscpol_tb/inst_riscpol/inst_ram
 add wave         -group RAM         -radix bin /riscpol_tb/inst_riscpol/inst_ram/i_ram_be
 add wave         -group RAM         -radix hex /riscpol_tb/inst_riscpol/inst_ram/o_ram_data
 add wave         -group RAM         -radix hex /riscpol_tb/inst_riscpol/inst_ram/ram
-add wave         -group RAM         -radix hex /riscpol_tb/p_tb/spy_ram
+#add wave         -group RAM         -radix hex /riscpol_tb/p_tb/spy_ram
 
 
 # Waveform window settings:
