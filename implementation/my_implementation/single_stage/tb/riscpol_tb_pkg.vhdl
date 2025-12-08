@@ -22,7 +22,6 @@ package riscpol_tb_pkg is
    ---- Check the value of general purpose register ----
    -----------------------------------------------------
    procedure check_gpr( constant instruction    : in string;
-                        constant gpr            : in natural range 0 to 31;
                         constant desired_value  : in std_logic_vector(31 downto 0);
                         signal clk              : in std_logic;
                         signal test_point       : out integer);
@@ -46,13 +45,11 @@ package body riscpol_tb_pkg is
             if (instruction(i) = 'x') then
                if (instruction(i + 2) = ',') then
                   extracted_gpr := integer'value(instruction(i+1 to i+1));
-                  report "asdf i+1: " & integer'image(extracted_gpr);
                   return extracted_gpr;
                -- TODO: elsif if (instruction(i + 1) = ',') then
                -- TODO: else return error
                else
                   extracted_gpr := integer'value(instruction(i+1 to i+2));
-                  report "asdf x+1 to i+2: " & integer'image(extracted_gpr);
                   return extracted_gpr;
                end if;
             end if;
@@ -61,20 +58,18 @@ package body riscpol_tb_pkg is
 
 
    procedure check_gpr( constant instruction    : in string;
-                        constant gpr            : in natural range 0 to 31;
                         constant desired_value  : in std_logic_vector(31 downto 0);
                         signal clk              : in std_logic;
                         signal test_point       : out integer) is
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
       variable extracted_gpr : natural range 0 to 31;
    begin
-      if (spy_gpr(gpr) /= desired_value) then
-         extracted_gpr := gpr_extraction_from_instruction(instruction);
-         
+      extracted_gpr := gpr_extraction_from_instruction(instruction);
+      if (spy_gpr(extracted_gpr) /= desired_value) then         
          test_point <= test_point + 1;
-         echo("ERROR GPR[" & to_string(gpr) & "]: " & instruction);
+         echo("ERROR GPR[" & to_string(extracted_gpr) & "]: " & instruction);
          echo("desired_value: " & to_hstring(desired_value));
-         echo("gpr value: " & to_hstring(spy_gpr(gpr)));
+         echo("gpr value: " & to_hstring(spy_gpr(extracted_gpr)));
          echo("Test_point: " & integer'image(test_point+1));
          echo("");
          echo("");

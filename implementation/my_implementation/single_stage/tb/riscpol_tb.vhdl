@@ -407,37 +407,30 @@ begin
       --               ADDI              --
       -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   -2048",
-                 gpr            => 1,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x0,  x0,   -2048",
-                 gpr            => 2,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x1,  x0,   -2048",
-                 gpr            => 2,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x10,  x0,   -2048",
-                 gpr            => 2,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
           check_gpr( instruction    => "addi  x30,  x0,   -2048",
-                 gpr            => 2,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x22,  x0,   -2048",
-                 gpr            => 2,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
       check_gpr( instruction    => "a  x0,  ",
-                 gpr            => 2,
                  desired_value  => 32x"fffff800",
                  clk            => clk_tb,
                  test_point     => set_test_point );
