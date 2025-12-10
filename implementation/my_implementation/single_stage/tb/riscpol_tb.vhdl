@@ -69,110 +69,8 @@ architecture tb of riscpol_tb is
    signal s_spi_sclk_tb       : std_logic;
 
 
-   -----------------------------------------------------
-   ----   Check the result of branch instruction    ----
-   -----------------------------------------------------
-   procedure check_branch( constant instruction : in string;
-                        constant branch_result  : in std_logic;
-                        constant desired_value  : in std_logic;
-                        signal test_point       : out integer) is
-   begin
-      if (branch_result /= desired_value) then
-         echo("ERROR branch instruction: " & instruction);
-         echo("desired_value: " & to_string(desired_value));
-         echo("result: " & to_string(branch_result));
-         echo("Test_point: " & integer'image(test_point+1));
-         test_point <= test_point + 1;
-         echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
+ 
 
-
-   ----------------------------------------------------------------------------
-   ---- Check the value of one byte in RAM - used to verify SB instruction ----
-   ----------------------------------------------------------------------------
-   procedure check_ram( constant instruction          : in string;
-                        constant ram_byte             : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte   : in std_logic_vector(7 downto 0);
-                        signal test_point             : out integer ) is
-   begin
-      if (ram_byte /= desired_value_byte) then
-          echo("ERROR RAM: " & instruction);
-          echo("Test_point: " & integer'image(test_point+1));
-          test_point <= test_point + 1;
-          echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
-
-
-   -----------------------------------------------------------------------------
-   ---- Check the value of two bytes in RAM - used to verify SH instruction ----
-   -----------------------------------------------------------------------------
-   procedure check_ram( constant instruction          : in string;
-                        constant ram_byte_0           : in std_logic_vector(7 downto 0);
-                        constant ram_byte_1           : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_0 : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_1 : in std_logic_vector(7 downto 0);
-                        signal test_point             : out integer ) is
-   begin
-      if (ram_byte_0 /= desired_value_byte_0 or
-          ram_byte_1 /= desired_value_byte_1) then
-            echo("ERROR RAM: " & instruction);
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
-
-
-   -----------------------------------------------------------------------------
-   ---- Check the value of three bytes in RAM - used to verify SW instruction --
-   -----------------------------------------------------------------------------
-   procedure check_ram( constant instruction          : in string;
-                        constant ram_byte_0           : in std_logic_vector(7 downto 0);
-                        constant ram_byte_1           : in std_logic_vector(7 downto 0);
-                        constant ram_byte_2           : in std_logic_vector(7 downto 0);
-                        constant ram_byte_3           : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_0 : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_1 : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_2 : in std_logic_vector(7 downto 0);
-                        constant desired_value_byte_3 : in std_logic_vector(7 downto 0);
-                        signal test_point             : out integer ) is
-   begin
-      if (ram_byte_0 /= desired_value_byte_0 or
-          ram_byte_1 /= desired_value_byte_1 or
-          ram_byte_2 /= desired_value_byte_2 or
-          ram_byte_3 /= desired_value_byte_3) then
-            echo("ERROR RAM: " & instruction);
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
-
-
-   --------------------------------- TODO: fix comment
-   ---- Check the value of GPIO ----
-   ---------------------------------
-   procedure check_gpio(constant instruction    : in string;
-                        constant desired_value  : in std_logic_vector(7 downto 0);
-                        signal test_point       : out integer) is
-   begin
-      if (to_integer(gpio_tb) /= to_integer(desired_value)) then
-         echo("ERROR GPIO: " & instruction);
-         echo("Test_point: " & integer'image(test_point+1));
-         test_point <= test_point + 1;
-         echo("instruction: " & instruction);
-         echo("desired_value: " & to_string(desired_value));
-         echo("gpio_tb value: " & to_string(gpio_tb));
-         echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
 
 
    ------------------------------------------
@@ -372,8 +270,6 @@ begin
 
    p_tb : process
       -- TODO: move aliases to procedures
-      alias spy_branch_result is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_branch_instructions.o_branch_result: std_logic >>;
-      alias spy_ram           is <<signal .riscpol_tb.inst_riscpol.inst_ram.ram: ram_t >>;
       alias spy_cnt1          is <<signal .riscpol_tb.inst_riscpol.inst_counter1.o_cnt1_q:
                                  integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
@@ -405,7 +301,12 @@ begin
       check_gpr("addi  x1,  x0,   -2048", x"fffff800", clk_tb, test_point);
       check_gpr("addi  x1,  x0,   -2048", x"fff1f800", clk_tb, test_point);
                  
-
+      check_branch("beq   x3,  x4,   loop1", '1', clk_tb, test_point);
+      check_branch("beq   x3,  x4,   loop1", '0', clk_tb, test_point);
+      check_ram("sw   x9,  0(x0)", x"00000078", 0, 0, clk_tb, test_point);
+      check_ram("sh   x9,  0(x0)", x"00001234", 0, 0, clk_tb, test_point);
+      check_ram("sb   x9,  0(x0)", x"00000034", 0, 0, clk_tb, test_point);
+                 
       --------------------------------------------------------------------------
       --                                                                      --
       --                    Check behaviour after reset                       --
