@@ -42,6 +42,11 @@ package riscpol_tb_pkg is
                        signal clk                    : in std_logic;
                        signal test_point             : out integer);
                        
+   -- 
+   procedure check_gpio(constant instruction    : in string;
+                        constant desired_value  : in std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
+                        signal clk              : in std_logic;
+                        signal test_point       : out integer);
                        
 end riscpol_tb_pkg;
 
@@ -166,23 +171,24 @@ package body riscpol_tb_pkg is
    end procedure;
    
    
-   --------------------------------- TODO: fix comment
+   ---------------------------------
    ---- Check the value of GPIO ----
    ---------------------------------
    procedure check_gpio(constant instruction    : in string;
                         constant desired_value  : in std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
+                        signal clk              : in std_logic;
                         signal test_point       : out integer) is
+     alias spy_gpio is <<signal .riscpol_tb.inst_riscpol.io_gpio: std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0) >>;
    begin
-      if (to_integer(gpio_tb) /= to_integer(desired_value)) then
+      if (spy_gpio /= desired_value) then
          echo("ERROR GPIO: " & instruction);
+         echo("desired_value: " & to_string(desired_value));
+         echo("gpio_tb value: " & to_string(spy_gpio));
          echo("Test_point: " & integer'image(test_point+1));
          test_point <= test_point + 1;
-         echo("instruction: " & instruction);
-         echo("desired_value: " & to_string(desired_value));
-         echo("gpio_tb value: " & to_string(gpio_tb));
          echo("");
       end if;
-      wait until rising_edge(clk_tb);
+      wait until rising_edge(clk);
    end procedure;
    
    

@@ -69,10 +69,6 @@ architecture tb of riscpol_tb is
    signal s_spi_sclk_tb       : std_logic;
 
 
- 
-
-
-
    ------------------------------------------
    ---- Check the value of counter1 bit  ----
    ------------------------------------------
@@ -306,6 +302,7 @@ begin
       check_ram("sw   x9,  0(x0)", x"00000078", 0, 0, clk_tb, test_point);
       check_ram("sh   x9,  0(x0)", x"00001234", 0, 0, clk_tb, test_point);
       check_ram("sb   x9,  0(x0)", x"00000034", 0, 0, clk_tb, test_point);
+      check_gpio("sb    x1,  255(x0)", b"00000001", clk_tb, test_point);
                  
       --------------------------------------------------------------------------
       --                                                                      --
