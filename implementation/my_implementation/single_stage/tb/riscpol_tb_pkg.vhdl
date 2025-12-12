@@ -47,6 +47,12 @@ package riscpol_tb_pkg is
                         constant desired_value  : in std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
                         signal clk              : in std_logic;
                         signal test_point       : out integer);
+                    
+   --     
+   procedure check_cnt(constant instruction    : in string;
+                       constant desired_value  : in integer range 0 to C_COUNTER1_VALUE - 1;
+                       signal clk              : in std_logic;
+                       signal test_point       : out integer);
                        
 end riscpol_tb_pkg;
 
@@ -191,5 +197,25 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk);
    end procedure;
    
+   
+   ------------------------------------------
+   ---- Check the value of counter1 bit  ----
+   ------------------------------------------
+   procedure check_cnt(constant instruction    : in string;
+                       constant desired_value  : in integer range 0 to C_COUNTER1_VALUE - 1;
+                       signal clk              : in std_logic;
+                       signal test_point       : out integer) is
+      alias spy_cnt1 is <<signal .riscpol_tb.inst_riscpol.inst_counter1.o_cnt1_q: integer range 0 to C_COUNTER1_VALUE - 1>>;
+   begin
+      if (spy_cnt1 /= desired_value) then
+         echo("ERROR COUNTER: " & instruction);
+         echo("desired_value:" & integer'image(desired_value));
+         echo("Counter value:" & integer'image(spy_cnt1));
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+      wait until rising_edge(clk);
+   end procedure;
    
 end riscpol_tb_pkg;

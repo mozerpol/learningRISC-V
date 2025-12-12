@@ -15,7 +15,7 @@ entity counter1 is
       i_cnt1_we         : in std_logic;
       i_cnt1_set_reset  : in std_logic;
       o_cnt1_overflow   : out std_logic;
-      o_cnt1_q          : out integer range 0 to C_COUNTER1_VALUE - 1
+      o_cnt1_q          : out integer range 0 to C_COUNTER1_VALUE - 1 -- TODO: change to natural
 );
 end entity counter1;
 

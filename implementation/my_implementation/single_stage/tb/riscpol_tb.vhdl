@@ -56,7 +56,7 @@ architecture tb of riscpol_tb is
    signal clk_tb              : std_logic;
    signal rx_tb               : std_logic;
    signal tx_tb               : std_logic;
-   signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
+   signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0); -- TODO: it's not necessary
    signal test_point          : integer := 0;
    signal s_7segment_1_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_2_tb     : std_logic_vector(6 downto 0);
@@ -67,26 +67,6 @@ architecture tb of riscpol_tb is
    signal s_spi_mosi_tb       : std_logic;
    signal s_spi_ss_n_tb       : std_logic;
    signal s_spi_sclk_tb       : std_logic;
-
-
-   ------------------------------------------
-   ---- Check the value of counter1 bit  ----
-   ------------------------------------------
-   procedure check_cnt( constant instruction        : in string;
-                            constant cnt_val        : in integer range 0 to C_COUNTER1_VALUE - 1;
-                            constant desired_value  : in integer range 0 to C_COUNTER1_VALUE - 1;
-                            signal test_point       : out integer) is
-   begin
-      if (cnt_val /= desired_value) then
-         echo("ERROR COUNTER: " & instruction);
-         echo("Desired value:" & integer'image(desired_value));
-         echo("Counter value:" & integer'image(cnt_val));
-         echo("Test_point: " & integer'image(test_point+1));
-         test_point <= test_point + 1;
-         echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
 
 
    ---------------------------------
@@ -265,9 +245,6 @@ begin
 
 
    p_tb : process
-      -- TODO: move aliases to procedures
-      alias spy_cnt1          is <<signal .riscpol_tb.inst_riscpol.inst_counter1.o_cnt1_q:
-                                 integer range 0 to C_COUNTER1_VALUE - 1>>;
    begin
 
       rst_n_tb       <= '0';
@@ -303,6 +280,7 @@ begin
       check_ram("sh   x9,  0(x0)", x"00001234", 0, 0, clk_tb, test_point);
       check_ram("sb   x9,  0(x0)", x"00000034", 0, 0, clk_tb, test_point);
       check_gpio("sb    x1,  255(x0)", b"00000001", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
                  
       --------------------------------------------------------------------------
       --                                                                      --
