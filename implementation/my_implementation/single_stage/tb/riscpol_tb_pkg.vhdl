@@ -62,7 +62,13 @@ package riscpol_tb_pkg is
                        constant desired_value_segment_4  : in std_logic_vector(6 downto 0);
                        signal clk                        : in std_logic;
                        signal test_point                 : out integer);
-                       
+   -- 
+   procedure check_uart_tx(constant instruction    : in string;
+                           constant desired_value  : in std_logic_vector(31 downto 0);
+                           signal clk              : in std_logic;
+                           signal test_point       : out integer);
+                           
+                               
 end riscpol_tb_pkg;
 
 
@@ -256,6 +262,58 @@ package body riscpol_tb_pkg is
    end procedure;
    
    
+   -------------------------------------------
+   ----    Simulate sending UART data     ----
+   -- TODO: comment, sendint from which perspective
+   -------------------------------------------
+   procedure check_uart_tx(constant instruction    : in string;
+                           constant desired_value  : in std_logic_vector(31 downto 0);
+                           signal clk              : in std_logic;
+                           signal test_point       : out integer) is
+      constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
+      alias spy_uart_tx is <<signal .riscpol_tb.inst_riscpol.o_uart_tx: std_logic >>;
+      alias spy_uart_status is << signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_status : std_logic_vector >>;
+   begin
+      wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
+      -- of the bit sent by UART
+      -- Check start bit
+      if (std_logic(spy_uart_tx) /= '0') then
+         echo("ERROR UART: " & instruction);
+         echo("Start bit does not match to the expected value.");
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+      wait for C_WAIT_TIME;
+      -- Check data bits
+      for i in 0 to 7 loop
+         if (desired_value(i) /= std_logic(spy_uart_tx)) then
+            echo("ERROR UART: " & instruction);
+            echo("The bit does not match to the expected value.");
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+            echo("");
+         end if;
+         wait for C_WAIT_TIME;
+      end loop;
+      -- Check stop bit
+      if (std_logic(spy_uart_tx) /= '1') then
+         echo("ERROR UART: " & instruction);
+         echo("Stop bit does not match to the expected value.");
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+      -- Wait until the end of UART data sending
+      wait until spy_uart_status(0) = '0';
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+   end procedure;
+   
+   
+
    
    
 end riscpol_tb_pkg;

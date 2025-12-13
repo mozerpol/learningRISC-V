@@ -69,34 +69,6 @@ architecture tb of riscpol_tb is
    signal s_spi_sclk_tb       : std_logic;
 
 
-   -------------------------------------------
-   ----     Simulate sending SPI data     ----
-   -------------------------------------------
-   procedure check_spi_tx(constant instruction          : in string;
-                          constant value_to_send        : in std_logic_vector(31 downto 0);
-                          signal test_point             : out integer) is
-      constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
-   begin
-         wait until rising_edge(clk_tb);
-         wait until rising_edge(clk_tb);
-         wait until rising_edge(clk_tb);
-      for i in 0 to 31 loop
-         wait for C_WAIT_TIME;
-         if (s_spi_mosi_tb /= value_to_send(31-i)) then
-            echo("ERROR SPI TX: " & instruction);
-            echo("value_to_send: " & to_string(value_to_send));
-            echo("Shoudl be: " & to_string(value_to_send(31-i)));
-            echo("spi_mosi: " & to_string(s_spi_mosi_tb));
-            echo("Test_point: " & integer'image(test_point+1));
-            echo("");
-         end if;
-      end loop;
-         wait for C_WAIT_TIME/2;
-         wait until rising_edge(clk_tb);
-         wait until rising_edge(clk_tb);
-   end procedure;
-
-
 begin
 
 
@@ -169,6 +141,8 @@ begin
                  
       check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111", 
                      b"0111111", clk_tb, test_point);
+                 
+      check_uart_tx("sw    x3,  243(x0)", 32x"00000044", clk_tb, test_point);
                  
       --------------------------------------------------------------------------
       --                                                                      --
