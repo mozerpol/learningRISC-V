@@ -53,6 +53,15 @@ package riscpol_tb_pkg is
                        constant desired_value  : in integer range 0 to C_COUNTER1_VALUE - 1;
                        signal clk              : in std_logic;
                        signal test_point       : out integer);
+
+   -- 
+   procedure check_7segment(constant instruction         : in string;
+                       constant desired_value_segment_1  : in std_logic_vector(6 downto 0);
+                       constant desired_value_segment_2  : in std_logic_vector(6 downto 0);
+                       constant desired_value_segment_3  : in std_logic_vector(6 downto 0);
+                       constant desired_value_segment_4  : in std_logic_vector(6 downto 0);
+                       signal clk                        : in std_logic;
+                       signal test_point                 : out integer);
                        
 end riscpol_tb_pkg;
 
@@ -115,7 +124,7 @@ package body riscpol_tb_pkg is
      alias spy_branch_result is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_branch_instructions.o_branch_result: std_logic >>;
    begin
       if (desired_value /= spy_branch_result) then
-         echo("ERROR branch instruction: " & instruction);
+         echo("ERROR BRANCH instruction: " & instruction);
          echo("desired_value: " & to_string(desired_value));
          echo("Result: " & to_string(spy_branch_result));
          echo("test_point: " & integer'image(test_point+1));
@@ -217,5 +226,34 @@ package body riscpol_tb_pkg is
       end if;
       wait until rising_edge(clk);
    end procedure;
+   
+   
+   ---------------------------------
+   ---- Check the value of seven segment display ----
+   ---------------------------------
+   procedure check_7segment(constant instruction         : in string;
+                       constant desired_value_segment_1  : in std_logic_vector(6 downto 0);
+                       constant desired_value_segment_2  : in std_logic_vector(6 downto 0);
+                       constant desired_value_segment_3  : in std_logic_vector(6 downto 0);
+                       constant desired_value_segment_4  : in std_logic_vector(6 downto 0);
+                       signal clk                        : in std_logic;
+                       signal test_point                 : out integer) is
+      alias spy_segment_1 is <<signal .riscpol_tb.inst_riscpol.o_7segment_1: std_logic_vector(6 downto 0) >>;
+      alias spy_segment_2 is <<signal .riscpol_tb.inst_riscpol.o_7segment_2: std_logic_vector(6 downto 0) >>;
+      alias spy_segment_3 is <<signal .riscpol_tb.inst_riscpol.o_7segment_3: std_logic_vector(6 downto 0) >>;
+      alias spy_segment_4 is <<signal .riscpol_tb.inst_riscpol.o_7segment_4: std_logic_vector(6 downto 0) >>;
+   begin
+      if ((spy_segment_1 /= desired_value_segment_1) or
+          (spy_segment_2 /= desired_value_segment_2) or
+          (spy_segment_3 /= desired_value_segment_3) or
+          (spy_segment_4 /= desired_value_segment_4)) then
+         echo("ERROR 7-SEGMENT: " & instruction);
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+      wait until rising_edge(clk);
+   end procedure;
+   
    
 end riscpol_tb_pkg;

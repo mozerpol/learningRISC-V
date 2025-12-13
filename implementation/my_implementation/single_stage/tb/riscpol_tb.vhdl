@@ -69,28 +69,7 @@ architecture tb of riscpol_tb is
    signal s_spi_sclk_tb       : std_logic;
 
 
-   ---------------------------------
-   ---- Check the value of seven segment display ----
-   ---------------------------------
-   procedure check_7segment(constant instruction    : in string;
-                        constant desired_value_segment_1  : in std_logic_vector(6 downto 0);
-                        constant desired_value_segment_2  : in std_logic_vector(6 downto 0);
-                        constant desired_value_segment_3  : in std_logic_vector(6 downto 0);
-                        constant desired_value_segment_4  : in std_logic_vector(6 downto 0);
-                        signal test_point       : out integer) is
-   begin
-      if (to_integer(s_7segment_1_tb) /= to_integer(desired_value_segment_1) or
-      to_integer(s_7segment_2_tb) /= to_integer(desired_value_segment_2) or
-      to_integer(s_7segment_3_tb) /= to_integer(desired_value_segment_3) or
-      to_integer(s_7segment_4_tb) /= to_integer(desired_value_segment_4)) then
-         echo("ERROR seven segment: " & instruction);
-         echo("Test_point: " & integer'image(test_point+1));
-         test_point <= test_point + 1;
-         echo("instruction: " & instruction);
-         echo("");
-      end if;
-      wait until rising_edge(clk_tb);
-   end procedure;
+
    
 
    -------------------------------------------
@@ -281,6 +260,9 @@ begin
       check_ram("sb   x9,  0(x0)", x"00000034", 0, 0, clk_tb, test_point);
       check_gpio("sb    x1,  255(x0)", b"00000001", clk_tb, test_point);
       check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+                 
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111", 
+                     b"0111111", clk_tb, test_point);
                  
       --------------------------------------------------------------------------
       --                                                                      --
