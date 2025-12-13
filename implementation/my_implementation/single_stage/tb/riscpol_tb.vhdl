@@ -34,8 +34,8 @@ architecture tb of riscpol_tb is
       i_rst_n                 : in std_logic;
       i_clk                   : in std_logic;
       io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
-      i_rx                    : in std_logic;
-      o_tx                    : out std_logic;
+      i_uart_rx               : in std_logic;
+      o_uart_tx               : out std_logic;
       o_7segment_1            : out std_logic_vector(6 downto 0);
       o_7segment_2            : out std_logic_vector(6 downto 0);
       o_7segment_3            : out std_logic_vector(6 downto 0);
@@ -54,8 +54,8 @@ architecture tb of riscpol_tb is
    -----------------------------------------------------------------------------
    signal rst_n_tb            : std_logic;
    signal clk_tb              : std_logic;
-   signal rx_tb               : std_logic;
-   signal tx_tb               : std_logic;
+   signal uart_rx_tb          : std_logic;
+   signal uart_tx_tb          : std_logic;
    signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0); -- TODO: it's not necessary
    signal test_point          : integer := 0;
    signal s_7segment_1_tb     : std_logic_vector(6 downto 0);
@@ -67,100 +67,6 @@ architecture tb of riscpol_tb is
    signal s_spi_mosi_tb       : std_logic;
    signal s_spi_ss_n_tb       : std_logic;
    signal s_spi_sclk_tb       : std_logic;
-
-
-
-   
-
-   -------------------------------------------
-   ----    Simulate sending UART data     ----
-   -- TODO: comment, sendint from which perspective
-   -------------------------------------------
-   procedure check_uart_tx( constant instruction : in string;
-                         -- TODO: change name, I think, it's not desired value...
-                         constant desired_value  : in std_logic_vector(31 downto 0);
-                         signal test_point       : out integer) is
-      constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
-      alias uart_status is << signal .riscpol_tb.inst_riscpol.inst_uart.
-                              o_uart_status : std_logic_vector >>;
-   begin
-      wait for C_WAIT_TIME/2; -- Thanks to this delay, test will hit about half
-      -- of the bit sent by UART
-      -- Check start bit
-      if (std_logic(tx_tb) /= '0') then
-         echo("ERROR UART: " & instruction);
-         echo("Start bit does not match the expected value.");
-         echo("Test_point: " & integer'image(test_point+1));
-         test_point <= test_point + 1;
-         echo("");
-      end if;
-      wait for C_WAIT_TIME;
-      -- Check data bits
-      for i in 0 to 7 loop
-         if (desired_value(i) /= std_logic(tx_tb)) then
-            echo("ERROR UART: " & instruction);
-            echo("The bit does not match the expected value.");
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-         end if;
-         wait for C_WAIT_TIME;
-      end loop;
-      -- Check stop bit
-      if (std_logic(tx_tb) /= '1') then
-         echo("ERROR UART: " & instruction);
-         echo("Stop bit does not match the expected value.");
-         echo("Test_point: " & integer'image(test_point+1));
-         test_point <= test_point + 1;
-         echo("");
-      end if;
-      -- Wait until the end of UART data sending
-      wait until uart_status(0) = '0';
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-   end procedure;
-
-
-   -----------------------------------------------------------------------------
-   ----    Simulate receiving UART data   ----
-   -- TODO: comment, sendint from which perspective
-   -----------------------------------------------------------------------------
-   procedure check_uart_rx(constant value_to_send        : in std_logic_vector(31 downto 0);
-                           constant number_bytes_to_send : in positive range 1 to 4;
-                           signal out_rx                 : out std_logic;
-                           signal test_point             : out integer ) is
-      constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
-      alias spy_uart_data     is <<signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_data: std_logic_vector(31 downto 0) >>;
-      alias spy_uart_status   is <<signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_status: std_logic_vector(31 downto 0) >>;
-   begin
-      for j in 0 to number_bytes_to_send-1 loop
-         -- Start bit
-         out_rx <= '0';
-         wait for C_WAIT_TIME;
-         -- Data bits
-         for i in 0 to 7 loop
-            out_rx <= value_to_send(8*j+i);
-            wait for C_WAIT_TIME;
-         end loop;
-         -- Stop bit
-         out_rx <= '1';
-         wait until spy_uart_status(1) = '1';
-         if (spy_uart_data(7 downto 0) /= value_to_send(8*j+7 downto 8*j)) then
-            echo("ERROR UART rx: " & to_string(spy_uart_data(8*j+7 downto 8*j)));
-            echo("The bit does not match the expected value.");
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-         end if;
-      end loop;
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-      wait until rising_edge(clk_tb);
-   end procedure;
 
 
    -------------------------------------------
@@ -199,8 +105,8 @@ begin
       i_rst_n           => rst_n_tb,
       i_clk             => clk_tb,
       io_gpio           => gpio_tb,
-      i_rx              => rx_tb,
-      o_tx              => tx_tb,
+      i_uart_rx         => uart_rx_tb,
+      o_uart_tx         => uart_tx_tb,
       o_7segment_1      => s_7segment_1_tb,
       o_7segment_2      => s_7segment_2_tb,
       o_7segment_3      => s_7segment_3_tb,
@@ -228,7 +134,7 @@ begin
 
       rst_n_tb       <= '0';
       gpio_tb        <= (others => 'Z');
-      rx_tb          <= '1';
+      uart_rx_tb     <= '1';
       s_spi_miso_tb  <= 'Z';
       wait for C_CLK_PERIOD*20;
       rst_n_tb       <= '1';

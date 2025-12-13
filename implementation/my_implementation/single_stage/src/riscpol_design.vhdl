@@ -32,8 +32,8 @@ entity riscpol is
       i_rst_n                 : in std_logic;
       i_clk                   : in std_logic;
       io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
-      i_rx                    : in std_logic; -- TODO: change to i_uart_rx
-      o_tx                    : out std_logic;
+      i_uart_rx               : in std_logic; -- TODO: change to i_uart_rx
+      o_uart_tx               : out std_logic;
       o_7segment_1            : out std_logic_vector(6 downto 0);
       o_7segment_2            : out std_logic_vector(6 downto 0);
       o_7segment_3            : out std_logic_vector(6 downto 0);
@@ -305,7 +305,7 @@ begin
       i_rst_n              => rst_n,
       i_clk                => clk,
       i_uart_wdata         => s_core_data_write,
-      i_uart_rx            => i_rx,
+      i_uart_rx            => i_uart_rx,
       i_uart_we            => s_mmio_we_uart,
       o_uart_data          => s_uart_data,
       o_uart_status        => s_uart_status,
@@ -344,7 +344,7 @@ begin
    rst_n                   <= i_rst_n;
    clk                     <= i_clk;
    io_gpio                 <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
-   o_tx                    <= s_uart_tx;
+   o_uart_tx               <= s_uart_tx;
    o_7segment_1            <= s_7segment_1;
    o_7segment_2            <= s_7segment_2;
    o_7segment_3            <= s_7segment_3;

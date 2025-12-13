@@ -11,8 +11,8 @@ add wave -expand -group testbench         -radix dec /riscpol_tb/test_point
 add wave -expand -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/i_rst_n
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/i_clk
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/io_gpio
-add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/i_rx
-add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_tx
+add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/i_uart_rx
+add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_uart_tx
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_7segment_1
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_7segment_2
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_7segment_3
