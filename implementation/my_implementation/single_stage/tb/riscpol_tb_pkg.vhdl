@@ -67,8 +67,13 @@ package riscpol_tb_pkg is
                            constant desired_value  : in std_logic_vector(31 downto 0);
                            signal clk              : in std_logic;
                            signal test_point       : out integer);
-                           
-                               
+                          
+   --  
+   procedure check_spi_tx(constant instruction    : in string;
+                          constant value_to_send  : in std_logic_vector(31 downto 0);
+                          signal clk              : in std_logic;
+                          signal test_point       : out integer);
+                                    
 end riscpol_tb_pkg;
 
 
@@ -313,7 +318,34 @@ package body riscpol_tb_pkg is
    end procedure;
    
    
-
+   -------------------------------------------
+   ----     Simulate sending SPI data     ----
+   -------------------------------------------
+   procedure check_spi_tx(constant instruction    : in string;
+                          constant value_to_send  : in std_logic_vector(31 downto 0);
+                          signal clk              : in std_logic;
+                          signal test_point       : out integer) is
+      constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
+      alias spy_spi_mosi is <<signal .riscpol_tb.inst_riscpol.o_spi_mosi: std_logic >>;
+   begin
+         wait until rising_edge(clk);
+         wait until rising_edge(clk);
+         wait until rising_edge(clk);
+      for i in 0 to 31 loop
+         wait for C_WAIT_TIME;
+         if (spy_spi_mosi /= value_to_send(31-i)) then
+            echo("ERROR SPI TX: " & instruction);
+            echo("value_to_send: " & to_string(value_to_send));
+            echo("Shoudl be: " & to_string(value_to_send(31-i)));
+            echo("spi_mosi: " & to_string(spy_spi_mosi));
+            echo("Test_point: " & integer'image(test_point+1));
+            echo("");
+         end if;
+      end loop;
+         wait for C_WAIT_TIME/2;
+         wait until rising_edge(clk);
+         wait until rising_edge(clk);
+   end procedure;
    
    
 end riscpol_tb_pkg;
