@@ -138,11 +138,10 @@ begin
       check_ram("sb   x9,  0(x0)", x"00000034", 0, 0, clk_tb, test_point);
       check_gpio("sb    x1,  255(x0)", b"00000001", clk_tb, test_point);
       check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
-                 
       check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111", 
-                     b"0111111", clk_tb, test_point);
-                 
-      check_uart_tx("sw    x3,  243(x0)", 32x"00000044", clk_tb, test_point);
+                     b"0111111", clk_tb, test_point);  
+      check_uart_tx("sw    x3,  243(x0)", x"00000044", clk_tb, test_point);
+      check_uart_rx(x"00120000", 3, uart_rx_tb, clk_tb, test_point);
                  
       --------------------------------------------------------------------------
       --                                                                      --

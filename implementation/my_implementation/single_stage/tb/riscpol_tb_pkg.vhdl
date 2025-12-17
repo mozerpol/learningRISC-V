@@ -68,6 +68,13 @@ package riscpol_tb_pkg is
                            signal clk              : in std_logic;
                            signal test_point       : out integer);
                           
+   --
+   procedure check_uart_rx(constant value_to_send        : in std_logic_vector(31 downto 0);
+                           constant number_bytes_to_send : in positive range 1 to 4;
+                           signal uart_rx                : out std_logic;
+                           signal clk                    : in std_logic;
+                           signal test_point             : out integer);
+
    --  
    procedure check_spi_tx(constant instruction    : in string;
                           constant value_to_send  : in std_logic_vector(31 downto 0);
@@ -318,6 +325,46 @@ package body riscpol_tb_pkg is
    end procedure;
    
    
+   ----    Simulate receiving UART data   ----
+   -- TODO: comment, sendint from which perspective
+   -----------------------------------------------------------------------------
+   procedure check_uart_rx(constant value_to_send        : in std_logic_vector(31 downto 0);
+                           constant number_bytes_to_send : in positive range 1 to 4;
+                           signal uart_rx                : out std_logic;
+                           signal clk                    : in std_logic;
+                           signal test_point             : out integer) is
+      constant C_WAIT_TIME    : time := 1_000_000_000.0/real(C_BAUD) * ns;
+      alias spy_uart_data     is <<signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_data: std_logic_vector(31 downto 0) >>;
+      alias spy_uart_status   is <<signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_status: std_logic_vector(31 downto 0) >>;
+   begin
+      for j in 0 to number_bytes_to_send-1 loop
+         -- Start bit
+         uart_rx <= '0';
+         wait for C_WAIT_TIME;
+         -- Data bits
+         for i in 0 to 7 loop
+            uart_rx <= value_to_send(8*j+i);
+            wait for C_WAIT_TIME;
+         end loop;
+         -- Stop bit
+         uart_rx <= '1';
+         wait until spy_uart_status(1) = '1';
+         if (spy_uart_data(7 downto 0) /= value_to_send(8*j+7 downto 8*j)) then
+            echo("ERROR UART rx: " & to_string(spy_uart_data(8*j+7 downto 8*j)));
+            echo("The bit does not match the expected value.");
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+            echo("");
+         end if;
+      end loop;
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+   end procedure;
+   
+
    -------------------------------------------
    ----     Simulate sending SPI data     ----
    -------------------------------------------
