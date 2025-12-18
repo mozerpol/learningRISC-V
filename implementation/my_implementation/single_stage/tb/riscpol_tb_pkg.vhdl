@@ -96,7 +96,8 @@ package body riscpol_tb_pkg is
    function gpr_extraction_from_string(instruction : string) return integer is
       variable extracted_gpr : natural range 0 to 31;
    begin
-      for i in 1 to instruction'length loop
+      for i in 2 to instruction'length loop -- Start from the second character
+      -- in the instruction (because the first can be x from xori instruction).
          if (instruction(i) = 'x') then
             if (instruction(i + 2) = ',') then
                extracted_gpr := integer'value(instruction(i+1 to i+1));
@@ -104,8 +105,6 @@ package body riscpol_tb_pkg is
             elsif (instruction(i + 3) = ',') then
                extracted_gpr := integer'value(instruction(i+1 to i+2));
                return extracted_gpr;
-            else
-               report "ERROR in extracting GPR number from instruction" severity error;
             end if;
          end if;
       end loop;
@@ -117,7 +116,7 @@ package body riscpol_tb_pkg is
                        signal clk               : in std_logic;
                        signal test_point        : out integer) is
       alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
-      variable extracted_gpr : natural range 0 to 31;
+      variable extracted_gpr : natural range 0 to 32;
    begin
       extracted_gpr := gpr_extraction_from_string(instruction);
       if (spy_gpr(extracted_gpr) /= desired_value) then

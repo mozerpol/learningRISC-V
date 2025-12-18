@@ -1,11 +1,11 @@
-      ----------------------------------------------------------------
-      --                                                            --
-      --    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI    --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --   ADDI   --
-      --------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --         ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI         --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --               ADDI              --
+      -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   -2048",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"fffff800",
@@ -70,9 +70,9 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"fffffffe",
                  test_point     => set_test_point );
-      --------------
-      --   SLTI   --
-      --------------
+      -------------------------------------
+      --               SLTI              --
+      -------------------------------------
       check_gpr( instruction    => "slti  x8,  x0,   -2048",
                  gpr            => spy_gpr(8),
                  desired_value  => 32x"00000000",
@@ -137,9 +137,9 @@
                  gpr            => spy_gpr(14),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLTIU  --
-      --------------
+      -------------------------------------
+      --              SLTIU              --
+      -------------------------------------
       check_gpr( instruction    => "sltiu x15, x0,   -2048",
                  gpr            => spy_gpr(15),
                  desired_value  => 32x"00000001",
@@ -204,9 +204,9 @@
                  gpr            => spy_gpr(21),
                  desired_value  => 32x"00000001",
                  test_point     => set_test_point );
-      --------------
-      --   XORI   --
-      --------------
+      -------------------------------------
+      --               XORI              --
+      -------------------------------------
       check_gpr( instruction    => "xori  x22, x0,   -2048",
                  gpr            => spy_gpr(22),
                  desired_value  => 32x"fffff800",
@@ -271,9 +271,9 @@
                  gpr            => spy_gpr(28),
                  desired_value  => 32x"000007ff",
                  test_point     => set_test_point );
-      --------------
-      --   ORI    --
-      --------------
+      -------------------------------------
+      --               ORI               --
+      -------------------------------------
       check_gpr( instruction    => "ori   x29, x0,   -2048",
                  gpr            => spy_gpr(29),
                  desired_value  => 32x"fffff800",
@@ -338,9 +338,9 @@
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"ffffffff",
                  test_point     => set_test_point );
-      --------------
-      --   ANDI   --
-      --------------
+      -------------------------------------
+      --               ANDI              --
+      -------------------------------------
       check_gpr( instruction    => "andi  x5,  x0,   -2048",
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"00000000",
@@ -405,9 +405,9 @@
                  gpr            => spy_gpr(11),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLLI   --
-      --------------
+      -------------------------------------
+      --               SLLI              --
+      -------------------------------------
       check_gpr( instruction    => "slli  x12, x0,   0",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000000",
@@ -464,9 +464,9 @@
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SRLI   --
-      --------------
+      -------------------------------------
+      --               SRLI              --
+      -------------------------------------
       check_gpr( instruction    => "srli  x18, x0,   0",
                  gpr            => spy_gpr(18),
                  desired_value  => 32x"00000000",
@@ -523,9 +523,9 @@
                  gpr            => spy_gpr(23),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SRAI   --
-      --------------
+      -------------------------------------
+      --               SRAI              --
+      -------------------------------------
       check_gpr( instruction    => "srai  x24, x0,   0",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"00000000",
@@ -582,14 +582,197 @@
                  gpr            => spy_gpr(29),
                  desired_value  => 32x"ffffffff",
                  test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --      ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND      --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --   ADD    --
-      --------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --           ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND           --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   -1",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   -1",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   -1",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x5,  x0,   -2048",
+                 gpr            => spy_gpr(5),
+                 desired_value  => 32x"fffff800",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x6,  x0,   0",
+                 gpr            => spy_gpr(6),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x7,  x0,   2046",
+                 gpr            => spy_gpr(7),
+                 desired_value  => 32x"000007fe",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x8,  x0,   0",
+                 gpr            => spy_gpr(8),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x9,  x0,   0",
+                 gpr            => spy_gpr(9),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x10, x0,   0",
+                 gpr            => spy_gpr(10),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x11, x0,   0",
+                 gpr            => spy_gpr(11),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x12, x0,   -511",
+                 gpr            => spy_gpr(12),
+                 desired_value  => 32x"fffffe01",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x13, x0,   0xff",
+                 gpr            => spy_gpr(13),
+                 desired_value  => 32x"000000ff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x13, x13,  4",
+                 gpr            => spy_gpr(13),
+                 desired_value  => 32x"00000ff0",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x13, x13,  0xE",
+                 gpr            => spy_gpr(13),
+                 desired_value  => 32x"00000ffe",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x14, x0,   4",
+                 gpr            => spy_gpr(14),
+                 desired_value  => 32x"00000004",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x15, x0,   -1024",
+                 gpr            => spy_gpr(15),
+                 desired_value  => 32x"fffffc00",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x16, x0,   0x1",
+                 gpr            => spy_gpr(16),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x16, x16,  31",
+                 gpr            => spy_gpr(16),
+                 desired_value  => 32x"80000000",
+                 test_point     => set_test_point );               
+      check_gpr( instruction    => "addi  x17, x0,   0",
+                 gpr            => spy_gpr(17),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x18, x0,   -2",
+                 gpr            => spy_gpr(18),
+                 desired_value  => 32x"fffffffe",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x19, x0,   0",
+                 gpr            => spy_gpr(19),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x19, x19,  -256",
+                 gpr            => spy_gpr(19),
+                 desired_value  => 32x"ffffff00",
+                 test_point     => set_test_point );          
+      check_gpr( instruction    => "addi  x20, x0,   511",
+                 gpr            => spy_gpr(20),
+                 desired_value  => 32x"000001ff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x21, x0,   4",
+                 gpr            => spy_gpr(21),
+                 desired_value  => 32x"00000004",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x21, x21,  20",
+                 gpr            => spy_gpr(21),
+                 desired_value  => 32x"00400000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x21, x21,  -1",
+                 gpr            => spy_gpr(21),
+                 desired_value  => 32x"003fffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x22, x0,   1",
+                 gpr            => spy_gpr(22),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x22, x22,  12",
+                 gpr            => spy_gpr(22),
+                 desired_value  => 32x"00001000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x22, x22,  -1",
+                 gpr            => spy_gpr(22),
+                 desired_value  => 32x"00000fff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x23, x0,   0",
+                 gpr            => spy_gpr(23),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x24, x0,   1",
+                 gpr            => spy_gpr(24),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x24, x24,  12",
+                 gpr            => spy_gpr(24),
+                 desired_value  => 32x"00001000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x24, x24,  -1",
+                 gpr            => spy_gpr(24),
+                 desired_value  => 32x"00000fff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x25, x0,   2",
+                 gpr            => spy_gpr(25),
+                 desired_value  => 32x"00000002",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x25, x25,  20",
+                 gpr            => spy_gpr(25),
+                 desired_value  => 32x"00200000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x25, x25,  -1",
+                 gpr            => spy_gpr(25),
+                 desired_value  => 32x"001fffff",
+                 test_point     => set_test_point );    
+      check_gpr( instruction    => "addi  x26, x0,   0x7f",
+                 gpr            => spy_gpr(26),
+                 desired_value  => 32x"0000007f",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x27, x0,   2",
+                 gpr            => spy_gpr(27),
+                 desired_value  => 32x"00000002",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x27, x27,  20",
+                 gpr            => spy_gpr(27),
+                 desired_value  => 32x"00200000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x27, x27,  -1",
+                 gpr            => spy_gpr(27),
+                 desired_value  => 32x"001fffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x28, x0,   -1",
+                 gpr            => spy_gpr(28),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x29, x0,   -1",
+                 gpr            => spy_gpr(29),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x30, x0,   -1",
+                 gpr            => spy_gpr(30),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x31, x0,   -1",
+                 gpr            => spy_gpr(31),
+                 desired_value  => 32x"ffffffff",
+                 test_point     => set_test_point );
+      -------------------------------------
+      --               ADD               --
+      -------------------------------------
       check_gpr( instruction    => "add   x30, x0,   x28",
                  gpr            => spy_gpr(30),
                  desired_value  => 32x"ffffffff",
@@ -654,9 +837,9 @@
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"007ffff8",
                  test_point     => set_test_point );
-      --------------
-      --   SUB    --
-      --------------
+      -------------------------------------
+      --               SUB               --
+      -------------------------------------
       check_gpr( instruction    => "sub   x6,  x0,   x28",
                  gpr            => spy_gpr(6),
                  desired_value  => 32x"00000001",
@@ -721,9 +904,9 @@
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLL    --
-      --------------
+      -------------------------------------
+      --               SLL               --
+      -------------------------------------
       check_gpr( instruction    => "sll   x13, x28,  x0",
                  gpr            => spy_gpr(13),
                  desired_value  => 32x"ffffffff",
@@ -788,9 +971,9 @@
                  gpr            => spy_gpr(19),
                  desired_value  => 32x"80000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLT    --
-      --------------
+      -------------------------------------
+      --               SLT               --
+      -------------------------------------
       check_gpr( instruction    => "slt   x20, x28,  x0",
                  gpr            => spy_gpr(20),
                  desired_value  => 32x"00000001",
@@ -855,9 +1038,9 @@
                  gpr            => spy_gpr(20),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SLTU   --
-      --------------
+      -------------------------------------
+      --              SLTU               --
+      -------------------------------------
       check_gpr( instruction    => "sltu  x27, x1,   x0",
                  gpr            => spy_gpr(27),
                  desired_value  => 32x"00000000",
@@ -922,9 +1105,9 @@
                  gpr            => spy_gpr(2),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   XOR    --
-      --------------
+      -------------------------------------
+      --               XOR               --
+      -------------------------------------
       check_gpr( instruction    => "xor   x3,  x10,  x11",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"001fef82",
@@ -989,9 +1172,9 @@
                  gpr            => spy_gpr(9),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SRL    --
-      --------------
+      -------------------------------------
+      --               SRL               --
+      -------------------------------------
       check_gpr( instruction    => "srl   x10, x10,  x11",
                  gpr            => spy_gpr(10),
                  desired_value  => 32x"ffffef82",
@@ -1056,9 +1239,9 @@
                  gpr            => spy_gpr(16),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   SRA    --
-      --------------
+      -------------------------------------
+      --               SRA               --
+      -------------------------------------
       check_gpr( instruction    => "sra   x17, x4,   x6",
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"0000e00f",
@@ -1123,9 +1306,9 @@
                  gpr            => spy_gpr(23),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   OR     --
-      --------------
+      -------------------------------------
+      --               OR                --
+      -------------------------------------
       check_gpr( instruction    => "or    x24, x4,   x8",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"7fffefff",
@@ -1190,9 +1373,9 @@
                  gpr            => spy_gpr(30),
                  desired_value  => 32x"7fffef8a",
                  test_point     => set_test_point );
-      --------------
-      --   AND    --
-      --------------
+      -------------------------------------
+      --               AND               --
+      -------------------------------------
       check_gpr( instruction    => "and   x31, x4,   x6",
                  gpr            => spy_gpr(31),
                  desired_value  => 32x"00600008",
@@ -1257,65 +1440,41 @@
                  gpr            => spy_gpr(7),
                  desired_value  => 32x"00600000",
                  test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                         LUI, AUIPC                         --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --  AUIPC   --
-      --------------
-      check_gpr( instruction    => "auipc x8,  0",
-                 gpr            => spy_gpr(8),
-                 desired_value  => 32x"000004a8",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x9,  0",
-                 gpr            => spy_gpr(9),
-                 desired_value  => 32x"000004ac",
-                 test_point     => set_test_point );
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              LUI, AUIPC                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --              AUIPC              --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x8,  0
+      wait until rising_edge(clk_tb); -- auipc x9,  0
       check_gpr( instruction    => "sub   x10, x9,   x8",
                  gpr            => spy_gpr(10),
                  desired_value  => 32x"00000004",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x11, 0",
-                 gpr            => spy_gpr(11),
-                 desired_value  => 32x"000004b4",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x12, 1048575",
-                 gpr            => spy_gpr(12),
-                 desired_value  => 32x"fffff4b8",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x11, 0
+      wait until rising_edge(clk_tb); -- auipc x12, 1048575
       check_gpr( instruction    => "sub   x13, x12,  x11",
                  gpr            => spy_gpr(13),
                  desired_value  => 32x"fffff004",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x14, 0",
-                 gpr            => spy_gpr(14),
-                 desired_value  => 32x"000004c0",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x15, 2048",
-                 gpr            => spy_gpr(15),
-                 desired_value  => 32x"008004c4",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x14, 0
+      wait until rising_edge(clk_tb); -- auipc x15, 2048
       check_gpr( instruction    => "sub   x16, x15, x14",
                  gpr            => spy_gpr(16),
                  desired_value  => 32x"00800004",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x17, 0",
-                 gpr            => spy_gpr(17),
-                 desired_value  => 32x"000004cc",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "uipc x18, 1",
-                 gpr            => spy_gpr(18),
-                 desired_value  => 32x"000014d0",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x17, 0
+      wait until rising_edge(clk_tb); -- auipc x18, 1
       check_gpr( instruction    => "sub   x19, x18, x17",
                  gpr            => spy_gpr(19),
                  desired_value  => 32x"00001004",
                  test_point     => set_test_point );
-      --------------
-      --   LUI    --
-      --------------
+      -------------------------------------
+      --               LUI               --
+      -------------------------------------
       check_gpr( instruction    => "lui   x16, 0",
                  gpr            => spy_gpr(16),
                  desired_value  => 32x"00000000",
@@ -1344,11 +1503,18 @@
                  gpr            => spy_gpr(21),
                  desired_value  => 32x"00001000",
                  test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --              BEQ, BNE, BLT, BGE, BLTU, BGEU                --
-      --                                                            --
-      ----------------------------------------------------------------
+      check_gpr( instruction    => "lui   x21, 3",
+                 gpr            => spy_gpr(21),
+                 desired_value  => 32x"00003000",
+                 test_point     => set_test_point );
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                   BEQ, BNE, BLT, BGE, BLTU, BGEU                     --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
@@ -1381,9 +1547,9 @@
                  gpr            => spy_gpr(9),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BEQ    --
-      --------------
+      -------------------------------------
+      --               BEQ               --
+      -------------------------------------
       check_gpr( instruction    => "addi  x0,  x0,   0",
                  gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
@@ -1392,18 +1558,12 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x10, 0",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"0000051c",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x10, 0
       check_branch( instruction   => "beq   x0,  x9,   loop2",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x11, 0",
-                 gpr            => spy_gpr(11),
-                 desired_value  => 32x"00000540",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x11, 0
       check_gpr( instruction    => "sub   x12, x11,  x10",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000024",
@@ -1412,10 +1572,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x13, 0",
-                 gpr            => spy_gpr(13),
-                 desired_value  => 32x"00000528",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x13, 0
       check_gpr( instruction    => "sub  x14, x13, x11",
                  gpr            => spy_gpr(14),
                  desired_value  => 32x"ffffffe8",
@@ -1424,10 +1581,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x15, 0",
-                 gpr            => spy_gpr(15),
-                 desired_value  => 32x"00000534",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x15, 0
       check_gpr( instruction    => "sub   x16, x15,  x13",
                  gpr            => spy_gpr(16),
                  desired_value  => 32x"0000000c",
@@ -1436,10 +1590,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x17, 0",
-                 gpr            => spy_gpr(17),
-                 desired_value  => 32x"0000054c",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x17, 0
       check_gpr( instruction    => "sub   x18, x17,  x15",
                  gpr            => spy_gpr(18),
                  desired_value  => 32x"00000018",
@@ -1452,21 +1603,15 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BNE    --
-      --------------
-      check_gpr( instruction    => "auipc x19, 0",
-                 gpr            => spy_gpr(19),
-                 desired_value  => 32x"0000055c",
-                 test_point     => set_test_point );
+      -------------------------------------
+      --               BNE               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x19, 0
       check_branch( instruction   => "bne   x3,  x4,   loop7",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x20, 0",
-                 gpr            => spy_gpr(20),
-                 desired_value  => 32x"00000580",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x20, 0
       check_gpr( instruction    => "sub   x21, x20,  x19",
                  gpr            => spy_gpr(21),
                  desired_value  => 32x"00000024",
@@ -1475,10 +1620,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x22, 0",
-                 gpr            => spy_gpr(22),
-                 desired_value  => 32x"00000564",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x22, 0
       check_gpr( instruction    => "sub   x23, x22,  x20",
                  gpr            => spy_gpr(23),
                  desired_value  => 32x"ffffffe4",
@@ -1491,10 +1633,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x24, 0",
-                 gpr            => spy_gpr(24),
-                 desired_value  => 32x"00000574",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x24, 0
       check_gpr( instruction    => "sub   x25, x24,  x22",
                  gpr            => spy_gpr(25),
                  desired_value  => 32x"00000010",
@@ -1503,10 +1642,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x26, 0",
-                 gpr            => spy_gpr(26),
-                 desired_value  => 32x"0000058c",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x26, 0
       check_gpr( instruction    => "sub   x27, x26,  x24",
                  gpr            => spy_gpr(27),
                  desired_value  => 32x"00000018",
@@ -1515,21 +1651,15 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BLT    --
-      --------------
-      check_gpr( instruction    => "auipc x28, 0",
-                 gpr            => spy_gpr(28),
-                 desired_value  => 32x"00000598",
-                 test_point     => set_test_point );
+      -------------------------------------
+      --               BLT               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x28, 0
       check_branch( instruction   => "blt   x3,  x4,   loop10",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x29, 0",
-                 gpr            => spy_gpr(29),
-                 desired_value  => 32x"000005b4",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x29, 0
       check_gpr( instruction    => "sub   x30, x29,  x28",
                  gpr            => spy_gpr(30),
                  desired_value  => 32x"0000001c",
@@ -1554,10 +1684,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x31, 0",
-                 gpr            => spy_gpr(31),
-                 desired_value  => 32x"000005a0",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x31, 0
       check_gpr( instruction    => "sub   x10, x31,  x28",
                  gpr            => spy_gpr(10),
                  desired_value  => 32x"00000008",
@@ -1574,10 +1701,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x11, 0",
-                 gpr            => spy_gpr(11),
-                 desired_value  => 32x"000005d0",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x11, 0
       check_gpr( instruction    => "sub   x12, x11,  x31",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000030",
@@ -1586,21 +1710,15 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BGE    --
-      --------------
-      check_gpr( instruction    => "auipc x13, 0",
-                 gpr            => spy_gpr(13),
-                 desired_value  => 32x"000005dc",
-                 test_point     => set_test_point );
+      -------------------------------------
+      --               BGE               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x13, 0
       check_branch( instruction   => "bge   x4,  x3,   loop13",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x14, 0",
-                 gpr            => spy_gpr(14),
-                 desired_value  => 32x"000005f8",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x14, 0
       check_gpr( instruction    => "sub   x15, x14,  x13",
                  gpr            => spy_gpr(15),
                  desired_value  => 32x"0000001c",
@@ -1625,10 +1743,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x16, 0",
-                 gpr            => spy_gpr(16),
-                 desired_value  => 32x"000005e4",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x16, 0
       check_gpr( instruction    => "sub   x17, x16,  x14",
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"ffffffec",
@@ -1645,10 +1760,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x18, 0",
-                 gpr            => spy_gpr(18),
-                 desired_value  => 32x"00000614",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x18, 0
       check_gpr( instruction    => "sub   x12, x18,  x17",
                  gpr            => spy_gpr(12),
                  desired_value  => 32x"00000030",
@@ -1657,21 +1769,15 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BLTU   --
-      --------------
-      check_gpr( instruction    => "auipc x20, 0",
-                 gpr            => spy_gpr(20),
-                 desired_value  => 32x"00000620",
-                 test_point     => set_test_point );
+      -------------------------------------
+      --              BLTU               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x20, 0
       check_branch( instruction   => "bltu  x8,  x7,   loop16",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x21, 0",
-                 gpr            => spy_gpr(21),
-                 desired_value  => 32x"00000644",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x21, 0
       check_gpr( instruction    => "sub   x22, x21,  x20",
                  gpr            => spy_gpr(22),
                  desired_value  => 32x"00000024",
@@ -1680,10 +1786,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x23, 0",
-                 gpr            => spy_gpr(23),
-                 desired_value  => 32x"00000628",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x23, 0
       check_gpr( instruction    => "sub   x24, x23,  x21",
                  gpr            => spy_gpr(24),
                  desired_value  => 32x"ffffffe4",
@@ -1708,10 +1811,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x25, 0",
-                 gpr            => spy_gpr(25),
-                 desired_value  => 32x"00000650",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x25, 0
       check_gpr( instruction    => "sub   x26, x25,  x23",
                  gpr            => spy_gpr(26),
                  desired_value  => 32x"00000028",
@@ -1720,21 +1820,15 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   BGEU   --
-      --------------
-      check_gpr( instruction    => "auipc x27, 0",
-                 gpr            => spy_gpr(27),
-                 desired_value  => 32x"0000065c",
-                 test_point     => set_test_point );
+      -------------------------------------
+      --              BGEU               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x27, 0
       check_branch( instruction   => "bgeu  x7,  x8,   loop19",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x30, 0",
-                 gpr            => spy_gpr(30),
-                 desired_value  => 32x"00000680",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x30, 0
       check_gpr( instruction    => "sub   x31, x30,  x27",
                  gpr            => spy_gpr(31),
                  desired_value  => 32x"00000024",
@@ -1743,10 +1837,7 @@
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x28, 0",
-                 gpr            => spy_gpr(28),
-                 desired_value  => 32x"00000664",
-                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x28, 0
       check_gpr( instruction    => "sub   x29, x28,  x27",
                  gpr            => spy_gpr(29),
                  desired_value  => 32x"00000008",
@@ -1767,130 +1858,162 @@
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000002",
                  test_point     => set_test_point );
-      check_branch( instruction   => "bgeu  x3,  x4,   loop21", -- 0041f863
+      check_branch( instruction   => "bgeu  x3,  x4,   loop21",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
-      check_gpr( instruction    => "auipc x10, 0", -- 0000517
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"0000068c",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "sub   x11, x10,  x30", -- 41e505b3
+      wait until rising_edge(clk_tb); -- auipc x10, 0
+      check_gpr( instruction    => "sub   x11, x10,  x30",
                  gpr            => spy_gpr(11),
                  desired_value  => 32x"0000000c",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x0,   0", -- 0000093
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                         JAL, JALR                          --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --   JAL    --
-      --------------
-      check_gpr( instruction    => "auipc x12,  0",
-                 gpr            => spy_gpr(12),
-                 desired_value  => 32x"00000698",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "jal   x13,  loop22",
-                 gpr            => spy_gpr(13),
-                 desired_value  => 32x"000006a0",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000002",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "jal   x14,  loop23",
-                 gpr            => spy_gpr(14),
-                 desired_value  => 32x"000006b8",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000003",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000004",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "jal   x15,  loop24",
-                 gpr            => spy_gpr(15),
-                 desired_value  => 32x"000006ac",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000005",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x16, 0",
-                 gpr            => spy_gpr(16),
-                 desired_value  => 32x"000006bc",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "sub   x17, x16,  x15",
-                 gpr            => spy_gpr(17),
-                 desired_value  => 32x"00000010",
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x1,  x0,   0",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      --------------
-      --   JALR   --
-      --------------
-      check_gpr( instruction    => "auipc x18, 0",
-                 gpr            => spy_gpr(0),
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                               JAL, JALR                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "jalr  x19, x18,  8",
+      check_gpr( instruction    => "addi  x12,  x0,   0",
+                 gpr            => spy_gpr(12),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x13,  x0,   0",
+                 gpr            => spy_gpr(13),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x14,  x0,   0",
+                 gpr            => spy_gpr(14),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x16,  x0,   0",
+                 gpr            => spy_gpr(16),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x17,  x0,   0",
+                 gpr            => spy_gpr(17),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x18,  x0,   0",
+                 gpr            => spy_gpr(18),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x19,  x0,   0",
                  gpr            => spy_gpr(19),
-                 desired_value  => 32x"000006d0",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "jalr  x20, x18,  28",
+      check_gpr( instruction    => "addi  x20,  x0,   0",
                  gpr            => spy_gpr(20),
-                 desired_value  => 32x"000006d8",
+                 desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x21, 0",
+      check_gpr( instruction    => "addi  x21,  x0,   0",
                  gpr            => spy_gpr(21),
-                 desired_value  => 32x"000006e4",
+                 desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "jalr  x22, x21,  -12",
+      check_gpr( instruction    => "addi  x22,  x0,   0",
                  gpr            => spy_gpr(22),
-                 desired_value  => 32x"000006ec",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "auipc x23, 0",
+      check_gpr( instruction    => "addi  x23,  x0,   0",
                  gpr            => spy_gpr(23),
-                 desired_value  => 32x"000006dc",
+                 desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "jalr  x24, x23,  16",
+      check_gpr( instruction    => "addi  x24,  x0,   0",
                  gpr            => spy_gpr(24),
-                 desired_value  => 32x"000006e4",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
+      check_gpr( instruction    => "addi  x25,  x0,   0",
+                 gpr            => spy_gpr(25),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                         SB, SH, SW                         --
-      --                                                            --
-      ----------------------------------------------------------------
+      -------------------------------------
+      --               JAL               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x12, 0
+      wait until rising_edge(clk_tb); -- jal   x13, loop22
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "sub   x14, x13,  x12",
+                 gpr            => spy_gpr(14),
+                 desired_value  => 32x"00000008",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- jal   x14, loop23
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000002",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000003",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- jal   x16, loop24
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000004",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "sub   x17, x16,  x14",
+                 gpr            => spy_gpr(17),
+                 desired_value  => 32x"fffffff4",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x1,  x0,   0",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      -------------------------------------
+      --               JALR              --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x18, 0
+      wait until rising_edge(clk_tb); -- jalr  x19, x18,  8
+      check_gpr( instruction    => "sub   x20, x19,  x18",
+                 gpr            => spy_gpr(20),
+                 desired_value  => 32x"00000008",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- jalr  x20, x18,  32
+      wait until rising_edge(clk_tb); -- auipc x21, 0
+      check_gpr( instruction    => "sub   x21, x21,  x20",
+                 gpr            => spy_gpr(21),
+                 desired_value  => 32x"00000010",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x21,  0
+      wait until rising_edge(clk_tb); -- jalr  x22, x21,  -24
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x23,  0
+      check_gpr( instruction    => "sub   x24, x22,  x21",
+                 gpr            => spy_gpr(24),
+                 desired_value  => 32x"00000008",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- jalr  x24, x23,  28
+      check_gpr( instruction    => "addi  x1,  x1,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000002",
+                 test_point     => set_test_point );
+      wait until rising_edge(clk_tb); -- auipc x25,  0
+      check_gpr( instruction    => "sub   x25, x25,  x24",
+                 gpr            => spy_gpr(25),
+                 desired_value  => 32x"00000014",
+                 test_point     => set_test_point );
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              SB, SH, SW                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
@@ -1935,9 +2058,9 @@
                  gpr            => spy_gpr(9),
                  desired_value  => 32x"12345678",
                  test_point     => set_test_point );
-      --------------
-      --   SB     --
-      --------------
+      -------------------------------------
+      --               SB                --
+      -------------------------------------
       check_ram( instruction        => "sb   x9,  0(x0)",
                  ram_byte           => spy_ram(0)(0),
                  desired_value_byte => x"78",
@@ -1978,9 +2101,9 @@
                  ram_byte           => spy_ram(4)(1),
                  desired_value_byte => x"f1",
                  test_point         => set_test_point );
-      --------------
-      --   SH     --
-      --------------
+      -------------------------------------
+      --               SH                --
+      -------------------------------------
       check_ram( instruction           => "sh    x8,  0(x0)",
                  ram_byte_0            => spy_ram(0)(0),
                  ram_byte_1            => spy_ram(0)(1),
@@ -2023,9 +2146,9 @@
                  desired_value_byte_0  => x"f1",
                  desired_value_byte_1  => x"e0",
                  test_point            => set_test_point );
-      --------------
-      --   SW     --
-      --------------
+      -------------------------------------
+      --               SW                --
+      -------------------------------------
       check_ram( instruction           => "sw   x7,  0(x0)",
                  ram_byte_0            => spy_ram(0)(0),
                  ram_byte_1            => spy_ram(0)(1),
@@ -2066,14 +2189,70 @@
                  desired_value_byte_2  => x"ff",
                  desired_value_byte_3  => x"ff",
                  test_point            => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                    LB, LH, LW, LBU, LHU                    --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --   LB     --
-      --------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              LB, LH, LW                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --         Prepare registers       --
+      -------------------------------------
+      check_gpr( instruction    => "addi  x1,  x0,   1",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   2",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000002",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   0",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x7,  x0,   -1024",
+                 gpr            => spy_gpr(7),
+                 desired_value  => 32x"fffffc00",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "lui   x8,  0xE",
+                 gpr            => spy_gpr(8),
+                 desired_value  => 32x"0000e000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x8,  x8,   0xF1",
+                 gpr            => spy_gpr(8),
+                 desired_value  => 32x"0000e0f1",
+                 test_point     => set_test_point );
+      -------------------------------------
+      --          Prepare memory         --
+      -------------------------------------
+      check_ram( instruction           => "sw   x7,  0(x0)",
+                 ram_byte_0            => spy_ram(0)(0),
+                 ram_byte_1            => spy_ram(0)(1),
+                 ram_byte_2            => spy_ram(0)(2),
+                 ram_byte_3            => spy_ram(0)(3),
+                 desired_value_byte_0  => x"00",
+                 desired_value_byte_1  => x"fc",
+                 desired_value_byte_2  => x"ff",
+                 desired_value_byte_3  => x"ff",
+                 test_point            => set_test_point );
+      check_ram( instruction           => "sw   x7,  2(x2)",
+                 ram_byte_0            => spy_ram(1)(0),
+                 ram_byte_1            => spy_ram(1)(1),
+                 ram_byte_2            => spy_ram(1)(2),
+                 ram_byte_3            => spy_ram(1)(3),
+                 desired_value_byte_0  => x"00",
+                 desired_value_byte_1  => x"fc",
+                 desired_value_byte_2  => x"ff",
+                 desired_value_byte_3  => x"ff",
+                 test_point            => set_test_point );
+      check_ram( instruction           => "sh    x8,  10(x0)",
+                 ram_byte_0            => spy_ram(2)(2),
+                 ram_byte_1            => spy_ram(2)(3),
+                 desired_value_byte_0  => x"f1",
+                 desired_value_byte_1  => x"e0",
+                 test_point            => set_test_point );
+      -------------------------------------
+      --                LB               --
+      -------------------------------------
       check_gpr( instruction    => "lb    x3,  0(x1)",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"fffffffc",
@@ -2102,9 +2281,9 @@
                  gpr            => spy_gpr(13),
                  desired_value  => 32x"ffffffe0",
                  test_point     => set_test_point );
-      --------------
-      --    LH    --
-      --------------
+      -------------------------------------
+      --                LH               --
+      -------------------------------------
       check_gpr( instruction    => "lh    x14, 0(x2)",
                  gpr            => spy_gpr(14),
                  desired_value  => 32x"ffffffff",
@@ -2117,9 +2296,9 @@
                  gpr            => spy_gpr(17),
                  desired_value  => 32x"fffffc00",
                  test_point     => set_test_point );
-      --------------
-      --    LW    --
-      --------------
+      -------------------------------------
+      --                LW               --
+      -------------------------------------
       check_gpr( instruction    => "lw    x18, 2(x2)",
                  gpr            => spy_gpr(18),
                  desired_value  => 32x"fffffc00",
@@ -2128,9 +2307,9 @@
                  gpr            => spy_gpr(21),
                  desired_value  => 32x"fffffc00",
                  test_point     => set_test_point );
-      --------------
-      --   LBU    --
-      --------------
+      -------------------------------------
+      --               LBU               --
+      -------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
@@ -2143,9 +2322,9 @@
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"000000ff",
                  test_point     => set_test_point );
-      --------------
-      --    LHU   --
-      --------------
+      -------------------------------------
+      --               LHU               --
+      -------------------------------------
       check_gpr( instruction    => "lhu   x4,  4(x0)",
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"0000fc00",
@@ -2154,117 +2333,11 @@
                  gpr            => spy_gpr(5),
                  desired_value  => 32x"0000ffff",
                  test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                            GPIO                            --
-      --                                                            --
-      ----------------------------------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   2",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000002",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   4",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000004",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   8",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000008",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x5,  x0,   f",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"0000000f",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x6,  x0,   251",
-                 gpr            => spy_gpr(6),
-                 desired_value  => 32x"000000fb",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x7,  x0,   1f",
-                 gpr            => spy_gpr(7),
-                 desired_value  => 32x"0000001f",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x8,  x0,   2f",
-                 gpr            => spy_gpr(8),
-                 desired_value  => 32x"0000002f",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x9,  x0,   4f",
-                 gpr            => spy_gpr(9),
-                 desired_value  => 32x"0000004f",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x10, x0,   8f",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"0000008f",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x11, x0,   ff",
-                 gpr            => spy_gpr(11),
-                 desired_value  => 32x"000000ff",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x12, x0,   129",
-                 gpr            => spy_gpr(12),
-                 desired_value  => 32x"00000081",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x13, x0,   24",
-                 gpr            => spy_gpr(13),
-                 desired_value  => 32x"00000018",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x14, x0,   153",
-                 gpr            => spy_gpr(14),
-                 desired_value  => 32x"00000099",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 8b"00000000",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x1,  255(x0)",
-                 desired_value  => 8b"00000001",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x2,  4(x6)",
-                 desired_value  => 8b"00000010",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x3,  255(x0)",
-                 desired_value  => 8b"00000100",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x4,  255(x0)",
-                 desired_value  => 8b"00001000",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x5,  255(x0)",
-                 desired_value  => 8b"00001111",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x7,  255(x0)",
-                 desired_value  => 8b"00011111",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x8,  255(x0)",
-                 desired_value  => 8b"00101111",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x9,  255(x0)",
-                 desired_value  => 8b"01001111",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x10, 255(x0)",
-                 desired_value  => 8b"10001111",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x11, 255(x0)",
-                 desired_value  => 8b"11111111",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x12, 255(x0)",
-                 desired_value  => 8b"10000001",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x13, 255(x0)",
-                 desired_value  => 8b"00011000",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x14, 255(x0)",
-                 desired_value  => 8b"10011001",
-                 test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 8b"00000000",
-                 test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --              A simple algorithm to check GPIO              --
-      --                                                            --
-      ----------------------------------------------------------------
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              GPIO output                             --
+      --                                                                      --
+      --------------------------------------------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   0",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000000",
@@ -2281,6 +2354,7 @@
                  gpr            => spy_gpr(4),
                  desired_value  => 32x"0000000a",
                  test_point     => set_test_point );
+      -- loop27:
       check_gpr( instruction    => "addi  x1,  x1,   1",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000001",
@@ -2289,26 +2363,40 @@
                  desired_value  => 8b"00000001",
                  test_point     => set_test_point );
       for i in 0 to 13 loop
-         wait for C_CLK_PERIOD*21;
+         -- loop26:
+         for i in 1 to 20 loop
+            -- wait for execute loop26
+            -- addi  x3,  x3,   1
+            -- bne   x3,  x4,   loop26
+            wait until rising_edge(clk_tb);
+         end loop;
          check_gpr( instruction    => "addi  x3,  x0,   0",
                     gpr            => spy_gpr(3),
                     desired_value  => 32x"00000000",
                     test_point     => set_test_point );
-         check_branch( instruction   => "bne   x1,  x2,   loop26",
+         check_branch( instruction   => "bne   x1,  x2,   loop27",
                        branch_result => spy_branch_result,
                        desired_value => '0',
                        test_point    => set_test_point );
-         -- 00108093  addi x1, x1, 1
+         -- addi  x1,  x1,   1     # Increment x1
          wait until rising_edge(clk_tb);
-         -- 0e100fa3  sb   x1, 255(x0)
+         -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
          wait until rising_edge(clk_tb);
       end loop;
-      wait for C_CLK_PERIOD*21;
+      -- The last iteration where GPIO = 00001111. This is here (outside the
+      -- loop27) because the return value of the instruction bne x1, x2, loop27
+      --  is 1, not 0 as inside the loop.
+      for i in 1 to 20 loop
+         -- wait for execute loop26
+         -- addi  x3,  x3,   1
+         -- bne   x3,  x4,   loop26
+         wait until rising_edge(clk_tb);
+      end loop;
       check_gpr( instruction    => "addi  x3,  x0,   0",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_branch( instruction   => "bne   x1,  x2,   loop26",
+      check_branch( instruction   => "bne   x1,  x2,   loop27",
                     branch_result => spy_branch_result,
                     desired_value => '1',
                     test_point    => set_test_point );
@@ -2320,33 +2408,28 @@
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000000",
                  test_point     => set_test_point );
-      check_gpio(instruction    => "sb    x0,  255(x0)",
-                 desired_value  => 8b"00000000",
-                 test_point     => set_test_point );
-      gpio_tb <= "00000001"; -- For "lw    x1,  255(x0)" instruction
-      check_gpr( instruction    => "addi  x2,  x0,   15",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"0000000f",
-                 test_point     => set_test_point );
-      gpio_tb <= (others => 'Z');
-      check_gpr( instruction    => "addi  x3,  x0,   1",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              GPIO input                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      gpio_tb        <= 8b"00001101"; -- Simulate GPIO input
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      -- Check if value 0000000D has been loaded into register x1
       check_gpr( instruction    => "lw    x1,  255(x0)",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000001",
+                 desired_value  => 32x"0000000D",
                  test_point     => set_test_point );
-      -- beq   x1,  x0    loop27
-      wait until rising_edge(clk_tb);
-      check_gpio(instruction    => "sb    x2,  255(x0)",
-                 desired_value  => 8b"00001111",
-                 test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                        Check Timer1                        --
-      --                                                            --
-      ----------------------------------------------------------------
+      gpio_tb        <= (others => 'Z');
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                            COUNTER 8-BIT                             --
+      --                                                                      --
+      --------------------------------------------------------------------------
       check_gpr( instruction    => "addi  x1,  x0,   0x2",
                  gpr            => spy_gpr(1),
                  desired_value  => 32x"00000002",
@@ -2463,207 +2546,249 @@
                  cnt_val        => spy_cnt1,
                  desired_value  => 5,
                  test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                         Check UART                         --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --    TX    --
-      --------------
-      check_gpr( instruction    => "lui   x1,  2",
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                        SEVEN SEGMENT DISPLAY                         --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      check_gpr( instruction    => "addi  x1,  x0,   1",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"00002000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1   x1,   0x1FC",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"000021fc",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lui   x4,  0x41505",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"41505000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "ori   x4,  x4,   0x544",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"41505544",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x5,  x0,   0xD",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );
-      check_uart_tx( instruction=> "sw    x4,  247(x0)",
-                 desired_value  => 32x"41505544",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_uart_tx( instruction=> "sw    x5,  247(x0)",
-                 desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      --------------
-      --    RX    --
-      --------------
-      check_gpr( instruction    => "lui   x1,  1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00001000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x1,   -1926",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"0000087a",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      -- for i in 0 to 8700 loop
-      -- loop31:
-      --    addi  x2,  x2,   1     # Increment x2
-      --    bne   x1,  x2,   loop31# Is there enough delay? No: go to loop31
-      -- wait until rising_edge(clk_tb);
-      -- wait until rising_edge(clk_tb);
-      -- end loop;
-      check_uart_rx(instruction       => "lw    x10,  247(x0)",
-                 gpr                   => spy_gpr(10),
-                 value_to_send         => 32x"000000DD", -- value_to_send
-                 number_bytes_to_send  => 1,
-                 out_rx                => rx_tb,
-                 test_point            => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      ----------------------------------------------------------------
-      --                                                            --
-      --                    Check 7seg displays                     --
-      --                                                            --
-      ----------------------------------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   0",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   1",
-                 gpr            => spy_gpr(2),
                  desired_value  => 32x"00000001",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   8",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000008",
                  test_point     => set_test_point );
       check_gpr( instruction    => "addi  x3,  x0,   9",
                  gpr            => spy_gpr(3),
                  desired_value  => 32x"00000009",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   10",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"0000000a",
+      -------------------------------------
+      --         SEVEN SEGMENT 1         --
+      -------------------------------------
+      check_7segment( instruction    => "sw    x0,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x5,  x0,   91",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"0000005b",
+      check_7segment( instruction    => "sw    x1,  247(x0)",
+                 desired_value_segment_1 => 7b"0000110",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x6,  x0,   100",
-                 gpr            => spy_gpr(6),
-                 desired_value  => 32x"00000064",
+      check_7segment( instruction    => "sw    x2,  247(x0)",
+                 desired_value_segment_1 => 7b"1111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x7,  x0,   910",
-                 gpr            => spy_gpr(7),
-                 desired_value  => 32x"0000038e",
+      check_7segment( instruction    => "sw    x3,  247(x0)",
+                 desired_value_segment_1 => 7b"1101111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x8,  x0,   991",
-                 gpr            => spy_gpr(8),
-                 desired_value  => 32x"000003df",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x9,  x0,   999",
-                 gpr            => spy_gpr(9),
-                 desired_value  => 32x"000003e7",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lui   x10, 2",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"00002000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x10, x10,  1684",
-                 gpr            => spy_gpr(10),
-                 desired_value  => 32x"00002694",
-                 test_point     => set_test_point );
-      wait until rising_edge(clk_tb); -- sw    x1,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x2,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x3,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x4,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x5,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x6,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x7,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x8,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x9,  243(x0)
-      wait until rising_edge(clk_tb); -- sw    x10, 243(x0)
-      ----------------------------------------------------------------
-      --                                                            --
-      --                         Check SPI                          --
-      --                                                            --
-      ----------------------------------------------------------------
-      --------------
-      --    TX    --
-      --------------
-      check_gpr( instruction    => "addi  x1,  x1,   814",
+      -------------------------------------
+      --         SEVEN SEGMENT 2         --
+      -------------------------------------
+      check_gpr( instruction    => "slli  x1,  x1,   8",
                  gpr            => spy_gpr(1),
-                 desired_value  => 32x"0000032e",
+                 desired_value  => 32x"00000100",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
+      check_gpr( instruction    => "slli  x2,  x2,   8",
                  gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
+                 desired_value  => 32x"00000800",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0xff",
+      check_gpr( instruction    => "slli  x3,  x3,   8",
                  gpr            => spy_gpr(3),
-                 desired_value  => 32x"000000ff",
+                 desired_value  => 32x"00000900",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "lui   x4,  699051",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"AAAAB000",
+      check_7segment( instruction    => "sw    x0,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x4,   -1366",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"AAAAAAAA",
+      check_7segment( instruction    => "sw    x1,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0000110",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
                  test_point     => set_test_point );
-      check_spi_tx( instruction    => "sw    x3,  239(x0)",
-                    value_to_send  => 32x"000000FF",
-                    test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
+      check_7segment( instruction    => "sw    x2,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"1111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x3,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"1101111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      -------------------------------------
+      --         SEVEN SEGMENT 3         --
+      -------------------------------------
+      check_gpr( instruction    => "slli  x1,  x1,   8",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"00010000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x2,  x2,   8",
                  gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
+                 desired_value  => 32x"00080000",
                  test_point     => set_test_point );
-
-      check_spi_tx( instruction    => "sw    x4,  239(x0)",
-                    value_to_send  => 32x"AAAAAAAA",
-                    test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   1",
+      check_gpr( instruction    => "slli  x3,  x3,   8",
                  gpr            => spy_gpr(3),
+                 desired_value  => 32x"00090000",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x0,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x1,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0000110",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x2,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"1111111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x3,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"1101111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      -------------------------------------
+      --         SEVEN SEGMENT 4         --
+      -------------------------------------
+      check_gpr( instruction    => "slli  x1,  x1,   8",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"01000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x2,  x2,   8",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"08000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "slli  x3,  x3,   8",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"09000000",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x0,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0111111",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x1,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"0000110",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x2,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"1111111",
+                 test_point     => set_test_point );
+      check_7segment( instruction    => "sw    x3,  247(x0)",
+                 desired_value_segment_1 => 7b"0111111",
+                 desired_value_segment_2 => 7b"0111111",
+                 desired_value_segment_3 => 7b"0111111",
+                 desired_value_segment_4 => 7b"1101111",
+                 test_point     => set_test_point );
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                                 UART                                 --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --             UART TX             --
+      -------------------------------------
+      check_gpr( instruction    => "addi  x3,  x0,   0x44",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000044",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   0xD",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"0000000d",
+                 test_point     => set_test_point );                 
+      check_uart_tx( instruction=> "sw    x3,  243(x0)",
+                 desired_value  => 32x"00000044",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   0",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_uart_tx( instruction=> "sw    x4,  243(x0)",
+                 desired_value  => 32x"0000000d",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   0",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      -------------------------------------
+      --             UART RX             --
+      -------------------------------------
+      check_gpr( instruction    => "addi  x1,  x0,   0xAB",
+                 gpr            => spy_gpr(1),
+                 desired_value  => 32x"000000ab",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x0,   0x12",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000012",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x3,  x0,   0xCD",
+                 gpr            => spy_gpr(3),
+                 desired_value  => 32x"000000CD",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x4,  x0,   0x99",
+                 gpr            => spy_gpr(4),
+                 desired_value  => 32x"00000099",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x5,  x0,   0",
+                 gpr            => spy_gpr(5),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_uart_rx( value_to_send     => 32x"ABEEEEEE",
+                 number_bytes_to_send  => 4,
+                 out_rx                => rx_tb,
+                 test_point            => set_test_point );
+      check_uart_rx( value_to_send     => 32x"00120000",
+                 number_bytes_to_send  => 3,
+                 out_rx                => rx_tb,
+                 test_point            => set_test_point );
+      check_uart_rx( value_to_send     => 32x"0000CDEF",
+                 number_bytes_to_send  => 2,
+                 out_rx                => rx_tb,
+                 test_point            => set_test_point );
+      check_uart_rx( value_to_send     => 32x"00000099",
+                 number_bytes_to_send  => 1,
+                 out_rx                => rx_tb,
+                 test_point            => set_test_point );   
+      check_gpr( instruction    => "addi  x2,  x0,   0",
+                 gpr            => spy_gpr(2),
+                 desired_value  => 32x"00000000",
+                 test_point     => set_test_point );
+      check_gpr( instruction    => "addi  x2,  x2,   1",
+                 gpr            => spy_gpr(2),
                  desired_value  => 32x"00000001",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x3,   1",
-                 gpr            => spy_gpr(3),
+      check_gpr( instruction    => "addi  x2,  x2,   1",
+                 gpr            => spy_gpr(2),
                  desired_value  => 32x"00000002",
                  test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x3,   1",
-                 gpr            => spy_gpr(3),
+      check_gpr( instruction    => "addi  x2,  x2,   1",
+                 gpr            => spy_gpr(2),
                  desired_value  => 32x"00000003",
                  test_point     => set_test_point );
