@@ -580,7 +580,311 @@ begin
       check_gpr("addi  x7,  x0,   -4", x"fffffffc", clk_tb, test_point);
       check_gpr("addi  x8,  x0,   -8", x"fffffff8", clk_tb, test_point);
       check_gpr("addi  x9,  x0,   0", x"00000000", clk_tb, test_point);
-                 
+      -------------------------------------
+      --               BEQ               --
+      -------------------------------------
+      check_gpr("addi  x0,  x0,   0", x"00000000", clk_tb, test_point);
+      check_branch("beq   x3,  x4,   loop1", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x10, 0
+      check_branch("beq   x0,  x9,   loop2", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x11, 0
+      check_gpr("sub   x12, x11,  x10", x"00000024", clk_tb, test_point);
+      check_branch("beq   x0,  x9,   loop4", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x13, 0
+      check_gpr("sub  x14, x13, x11", x"ffffffe8", clk_tb, test_point);
+      check_branch("beq   x5,  x7,   loop6", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x15, 0
+      check_gpr("sub   x16, x15,  x13", x"0000000c", clk_tb, test_point);
+      check_branch("beq   x9,  x0,   loop6", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x17, 0
+      check_gpr("sub   x18, x17,  x15", x"00000018", clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --               BNE               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x19, 0
+      check_branch("bne   x3,  x4,   loop7", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x20, 0
+      check_gpr("sub   x21, x20,  x19", x"00000024", clk_tb, test_point);
+      check_branch("bne   x5,  x7,   loop8", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x22, 0
+      check_gpr("sub   x23, x22,  x20", x"ffffffe4", clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_branch("bne   x9,  x0,   loop9", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x24, 0
+      check_gpr("sub   x25, x24,  x22", x"00000010", clk_tb, test_point);
+      check_branch("bne   x7,  x8,   loop9", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x26, 0
+      check_gpr("sub   x27, x26,  x24", x"00000018", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --               BLT               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x28, 0
+      check_branch("blt   x3,  x4,   loop10", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x29, 0
+      check_gpr("sub   x30, x29,  x28", x"0000001c", clk_tb, test_point);
+      check_branch("blt   x4,  x3,   loop11", '1', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_branch("blt   x9,  x0,   loop11", '0', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      check_branch("blt   x8,  x7,   loop11", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x31, 0
+      check_gpr("sub   x10, x31,  x28", x"00000008", clk_tb, test_point);
+      check_branch("blt   x7,  x8,   loop12", '0', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000003", clk_tb, test_point);
+      check_branch("blt   x3,  x1,   loop12", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x11, 0
+      check_gpr("sub   x12, x11,  x31", x"00000030", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --               BGE               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x13, 0
+      check_branch("bge   x4,  x3,   loop13", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x14, 0
+      check_gpr("sub   x15, x14,  x13", x"0000001c", clk_tb, test_point);
+      check_branch("bge   x3,  x4,   loop14", '1', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_branch("bge   x7,  x4,   loop14", '0', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      check_branch("bge   x0,  x9,   loop14", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x16, 0
+      check_gpr("sub   x17, x16,  x14", x"ffffffec", clk_tb, test_point);
+      check_branch("bge   x8,  x7,   loop15", '0', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000003", clk_tb, test_point);
+      check_branch("bge   x1,  x3,   loop15", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x18, 0
+      check_gpr("sub   x12, x18,  x17", x"00000030", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --              BLTU               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x20, 0
+      check_branch("bltu  x8,  x7,   loop16", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x21, 0
+      check_gpr("sub   x22, x21,  x20", x"00000024", clk_tb, test_point);
+      check_branch("bltu  x8,  x7,   loop17", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x23, 0
+      check_gpr("sub   x24, x23,  x21", x"ffffffe4", clk_tb, test_point);
+      check_branch("bltu  x9,  x0,   loop18", '1', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_branch("bltu  x3,  x4,   loop18", '0', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      check_branch("bltu  x4,  x3,   loop18", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x25, 0
+      check_gpr("sub   x26, x25,  x23", x"00000028", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --              BGEU               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x27, 0
+      check_branch("bgeu  x7,  x8,   loop19", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x30, 0
+      check_gpr("sub   x31, x30,  x27", x"00000024", clk_tb, test_point);
+      check_branch("bgeu  x7,  x8,   loop20", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x28, 0
+      check_gpr("sub   x29, x28,  x27", x"00000008", clk_tb, test_point);
+      check_branch("bgeu  x2,  x7,   loop21", '1', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_branch("bgeu  x4,  x3,   loop21", '0', clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      check_branch("bgeu  x3,  x4,   loop21", '1', clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x10, 0
+      check_gpr("sub   x11, x10,  x30", x"0000000c", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                               JAL, JALR                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x12,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x13,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x14,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x16,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x17,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x18,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x19,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x20,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x21,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x22,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x23,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x24,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x25,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --               JAL               --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x12, 0
+      wait until rising_edge(clk_tb); -- jal   x13, loop22
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_gpr("sub   x14, x13,  x12", x"00000008", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- jal   x14, loop23
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x1,  x1,   1", x"00000003", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- jal   x16, loop24
+      check_gpr("addi  x1,  x1,   1", x"00000004", clk_tb, test_point);
+      check_gpr("sub   x17, x16,  x14", x"fffffff4", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --               JALR              --
+      -------------------------------------
+      wait until rising_edge(clk_tb); -- auipc x18, 0
+      wait until rising_edge(clk_tb); -- jalr  x19, x18,  8
+      check_gpr("sub   x20, x19,  x18", x"00000008", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- jalr  x20, x18,  32
+      wait until rising_edge(clk_tb); -- auipc x21, 0
+      check_gpr("sub   x21, x21,  x20", x"00000010", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x21,  0
+      wait until rising_edge(clk_tb); -- jalr  x22, x21,  -24
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x23,  0
+      check_gpr("sub   x24, x22,  x21", x"00000008", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- jalr  x24, x23,  28
+      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- auipc x25,  0
+      check_gpr("sub   x25, x25,  x24", x"00000014", clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              SB, SH, SW                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --        Prepare registers        --
+      -------------------------------------
+      check_gpr("addi  x1,  x0,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   2", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   1234", x"000004d2", clk_tb, test_point);
+      check_gpr("addi  x5,  x0,   AB", x"000000ab", clk_tb, test_point);
+      check_gpr("addi  x6,  x0,   CD", x"000000cd", clk_tb, test_point);
+      check_gpr("addi  x7,  x0,   -1024", x"fffffc00", clk_tb, test_point);
+      check_gpr("lui   x8,  ABCDE", x"abcde000", clk_tb, test_point);
+      check_gpr("addi  x8,  x8,   F1", x"abcde0f1", clk_tb, test_point);
+      check_gpr("lui   x9,  12345", x"12345000", clk_tb, test_point);
+      check_gpr("addi  x9,  x9,   678", x"12345678", clk_tb, test_point);    
+      -------------------------------------
+      --               SB                --
+      -------------------------------------
+      check_ram("sb   x9,  0(x0)", x"00000078", 0, 0,clk_tb, test_point);
+      check_ram("sb   x9,  1(x0)", x"00000078", 0, 1,clk_tb, test_point);
+      check_ram("sb   x9,  1(x1)", x"00000078", 0, 2,clk_tb, test_point);
+      check_ram("sb   x9,  1(x2)", x"00000078", 0, 3,clk_tb, test_point);
+      check_ram("sb   x9,  2(x2)", x"00000078", 1, 0,clk_tb, test_point);
+      check_ram("sb   x8,  -1(x1)", x"000000f1", 0, 0,clk_tb, test_point);
+      check_ram("sb   x8,  -1(x2)", x"000000f1", 0, 1,clk_tb, test_point);
+      check_ram("sb   x8,  -2(x2)", x"000000f1", 0, 0,clk_tb, test_point);
+      check_ram("sb   x8,  10(x0)", x"000000f1",2, 2, clk_tb, test_point);
+      check_ram("sb   x8,  16(x1)", x"000000f1", 4, 1, clk_tb, test_point);
+      -------------------------------------
+      --               SH                --
+      -------------------------------------
+      check_ram("sh    x8,  0(x0)", x"0000e0f1", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  1(x1)", x"0000e0f1", 0, 2, clk_tb, test_point);
+      check_ram("sh    x8,  2(x2)", x"0000e0f1", 1, 0, clk_tb, test_point);
+      check_ram("sh    x9,  -1(x1)", x"00005678", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  -2(x2)", x"0000e0f1", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  10(x0)", x"0000e0f1", 2, 2, clk_tb, test_point);
+      check_ram("sh    x8,  16(x2)", x"0000e0f1", 4, 2, clk_tb, test_point);
+      -------------------------------------
+      --               SW                --
+      -------------------------------------
+      check_ram("sw   x7,  0(x0)", x"fffffc00", 0, 0, clk_tb, test_point);
+      check_ram("sw   x7,  2(x2)", x"fffffc00", 0, 0, clk_tb, test_point);
+      check_ram("sw   x8,  -1(x1)", x"abcde0f1", 0, 0, clk_tb, test_point);
+      check_ram("sw   x7,  -2(x2)", x"fffffc00", 0, 0, clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              LB, LH, LW                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --         Prepare registers       --
+      -------------------------------------
+      check_gpr("addi  x1,  x0,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   2", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x7,  x0,   -1024", x"fffffc00", clk_tb, test_point);
+      check_gpr("lui   x8,  0xE", x"0000e000", clk_tb, test_point);
+      check_gpr("addi  x8,  x8,   0xF1", x"0000e0f1", clk_tb, test_point);
+      -------------------------------------
+      --          Prepare memory         --
+      -------------------------------------
+      check_ram("sw   x7,  0(x0)", x"fffffc00", 0, 0, clk_tb, test_point);
+      check_ram("sw   x7,  2(x2)", x"fffffc00", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  10(x0)", x"0000e0f1", 2, 2, clk_tb, test_point);
+      -------------------------------------
+      --                LB               --
+      -------------------------------------
+      check_gpr("lb    x3,  0(x1)", x"fffffffc", clk_tb, test_point);
+      check_gpr("lb    x4,  0(x2)", x"ffffffff", clk_tb, test_point);
+      check_gpr("lb    x5,  11(x0)", x"ffffffe0", clk_tb, test_point);
+      check_gpr("lb    x7,  -1(x2)", x"fffffffc", clk_tb, test_point);
+      check_gpr("lb    x8,  -2(x2)", x"00000000", clk_tb, test_point);
+      check_gpr("lb    x12, 4(x3)", x"00000000", clk_tb, test_point);
+      check_gpr("lb    x13, 15(x3)", x"ffffffe0", clk_tb, test_point);
+      -------------------------------------
+      --                LH               --
+      -------------------------------------
+      check_gpr("lh    x14, 0(x2)", x"ffffffff", clk_tb, test_point);
+      check_gpr("lh    x15, 10(x0)", x"ffffe0f1", clk_tb, test_point);
+      check_gpr("lh    x17, 4(x3)", x"fffffc00", clk_tb, test_point);
+      -------------------------------------
+      --                LW               --
+      -------------------------------------
+      check_gpr("lw    x18, 2(x2)", x"fffffc00", clk_tb, test_point);
+      check_gpr("lw    x21, 4(x3)", x"fffffc00", clk_tb, test_point);
+      -------------------------------------
+      --               LBU               --
+      -------------------------------------
+      check_gpr("addi  x1,  x0,   1", x"00000001", clk_tb, test_point);
+      check_gpr("lbu   x2,  1(x0)", x"000000fc", clk_tb, test_point);
+      check_gpr("lbu   x3,  1(x1)", x"000000ff", clk_tb, test_point);
+      -------------------------------------
+      --               LHU               --
+      -------------------------------------
+      check_gpr("lhu   x4,  4(x0)", x"0000fc00", clk_tb, test_point);
+      check_gpr("lhu   x5,  1(x1)", x"0000ffff", clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              GPIO output                             --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   15", x"0000000f", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   10", x"0000000a", clk_tb, test_point);
+      -- loop27:
+      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
+      check_gpio("sb    x1,  255(x0)", b"00000001", clk_tb, test_point);
+      for i in 0 to 13 loop
+         -- loop26:
+         for i in 1 to 20 loop
+            -- wait for execute loop26
+            -- addi  x3,  x3,   1
+            -- bne   x3,  x4,   loop26
+            wait until rising_edge(clk_tb);
+         end loop;
+         check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+         check_branch("bne   x1,  x2,   loop27", '0', clk_tb, test_point);
+         -- addi  x1,  x1,   1     # Increment x1
+         wait until rising_edge(clk_tb);
+         -- sb    x1,  255(x0)     # Assign the value of x1 to GPIO
+         wait until rising_edge(clk_tb);
+      end loop;
+      -- The last iteration where GPIO = 00001111. This is here (outside the
+      -- loop27) because the return value of the instruction bne x1, x2, loop27
+      --  is 1, not 0 as inside the loop.
+      for i in 1 to 20 loop
+         -- wait for execute loop26
+         -- addi  x3,  x3,   1
+         -- bne   x3,  x4,   loop26
+         wait until rising_edge(clk_tb);
+      end loop;
       --------------------------------------------------------------------------
       --                                                                      --
       --                    Check behaviour after reset                       --
