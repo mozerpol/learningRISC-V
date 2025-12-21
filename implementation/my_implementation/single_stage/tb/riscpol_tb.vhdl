@@ -56,7 +56,7 @@ architecture tb of riscpol_tb is
    signal clk_tb              : std_logic;
    signal uart_rx_tb          : std_logic;
    signal uart_tx_tb          : std_logic;
-   signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0); -- TODO: it's not necessary
+   signal gpio_tb             : std_logic_vector(C_NUMBER_OF_GPIO-1 downto 0);
    signal test_point          : integer := 0;
    signal s_7segment_1_tb     : std_logic_vector(6 downto 0);
    signal s_7segment_2_tb     : std_logic_vector(6 downto 0);
@@ -119,7 +119,6 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
-
       --------------------------------------------------------------------------
       --                                                                      --
       --         ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI         --
@@ -579,7 +578,7 @@ begin
       check_gpr("addi  x5,  x0,   4", x"00000004", clk_tb, test_point);
       check_gpr("addi  x7,  x0,   -4", x"fffffffc", clk_tb, test_point);
       check_gpr("addi  x8,  x0,   -8", x"fffffff8", clk_tb, test_point);
-      check_gpr("addi  x9,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x9,  x0,   0", x"00000000", clk_tb, test_point);      
       -------------------------------------
       --               BEQ               --
       -------------------------------------
@@ -766,7 +765,7 @@ begin
       check_gpr("lui   x8,  ABCDE", x"abcde000", clk_tb, test_point);
       check_gpr("addi  x8,  x8,   F1", x"abcde0f1", clk_tb, test_point);
       check_gpr("lui   x9,  12345", x"12345000", clk_tb, test_point);
-      check_gpr("addi  x9,  x9,   678", x"12345678", clk_tb, test_point);    
+      check_gpr("addi  x9,  x9,   678", x"12345678", clk_tb, test_point);
       -------------------------------------
       --               SB                --
       -------------------------------------
@@ -885,6 +884,155 @@ begin
          -- bne   x3,  x4,   loop26
          wait until rising_edge(clk_tb);
       end loop;
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_branch("bne   x1,  x2,   loop27", '1', clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                              GPIO input                              --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      gpio_tb        <= 8b"00001101"; -- Simulate GPIO input
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      wait until rising_edge(clk_tb); -- nop instruction
+      -- Check if value 0000000D has been loaded into register x1
+      check_gpr("lw    x1,  255(x0)", x"0000000D", clk_tb, test_point);
+      gpio_tb        <= (others => 'Z');
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                            COUNTER 8-BIT                             --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      check_gpr("addi  x1,  x0,   0x2", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0x212", x"00000212", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0x1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0x0", x"00000000", clk_tb, test_point);
+      wait until rising_edge(clk_tb); -- Have to wait one additional clock cycle
+      -- the counter value will be readable (stabilized).
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 0, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 0, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"00000001", clk_tb, test_point);
+      for i in 0 to 1056 loop
+         -- A loop while the timer is counting.
+         -- bne x4, x2, -4   fe221ee3
+         -- addi x4, x4, 1   00120213
+         wait until rising_edge(clk_tb);
+      end loop;
+      check_gpr("addi  x4,  x0,   0x0", x"00000212", clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 37, clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 0, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("lw    x5,  251(x0)", x"00000003", clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 5, clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                        SEVEN SEGMENT DISPLAY                         --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      check_gpr("addi  x1,  x0,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   8", x"00000008", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   9", x"00000009", clk_tb, test_point);
+      -------------------------------------
+      --         SEVEN SEGMENT 1         --
+      -------------------------------------
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0000110", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"1111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"1101111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      -------------------------------------
+      --         SEVEN SEGMENT 2         --
+      -------------------------------------
+      check_gpr("slli  x1,  x1,   8", x"00000100", clk_tb, test_point);
+      check_gpr("slli  x2,  x2,   8", x"00000800", clk_tb, test_point);
+      check_gpr("slli  x3,  x3,   8", x"00000900", clk_tb, test_point);
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0111111", b"0000110", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"0111111", b"1111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"0111111", b"1101111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      -------------------------------------
+      --         SEVEN SEGMENT 3         --
+      -------------------------------------
+      check_gpr("slli  x1,  x1,   8", x"00010000", clk_tb, test_point);
+      check_gpr("slli  x2,  x2,   8", x"00080000", clk_tb, test_point);
+      check_gpr("slli  x3,  x3,   8", x"00090000", clk_tb, test_point);
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0111111", b"0111111", b"0000110",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"0111111", b"0111111", b"1111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"0111111", b"0111111", b"1101111",
+                      b"0111111", clk_tb, test_point);
+      -------------------------------------
+      --         SEVEN SEGMENT 4         --
+      -------------------------------------
+      check_gpr("slli  x1,  x1,   8", x"01000000", clk_tb, test_point);
+      check_gpr("slli  x2,  x2,   8", x"08000000", clk_tb, test_point);
+      check_gpr("slli  x3,  x3,   8", x"09000000", clk_tb, test_point);
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0000110", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"1111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"1101111", clk_tb, test_point);
+      --------------------------------------------------------------------------
+      --                                                                      --
+      --                                 UART                                 --
+      --                                                                      --
+      --------------------------------------------------------------------------
+      -------------------------------------
+      --             UART TX             --
+      -------------------------------------
+      check_gpr("addi  x3,  x0,   0x44", x"00000044", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0xD", x"0000000d", clk_tb, test_point);                 
+      check_uart_tx("sw    x3,  243(x0)", x"00000044", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_uart_tx("sw    x4,  243(x0)", x"0000000d", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0", x"00000000", clk_tb, test_point);
+      -------------------------------------
+      --             UART RX             --
+      -------------------------------------
+      check_gpr("addi  x1,  x0,   0xAB", x"000000ab", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0x12", x"00000012", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0xCD", x"000000CD", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0x99", x"00000099", clk_tb, test_point);
+      check_gpr("addi  x5,  x0,   0", x"00000000", clk_tb, test_point);
+      check_uart_rx(x"ABEEEEEE", 4, uart_rx_tb, clk_tb, test_point);
+      check_uart_rx(x"00120000", 3, uart_rx_tb, clk_tb, test_point);
+      check_uart_rx(x"0000CDEF", 2, uart_rx_tb, clk_tb, test_point);
+      check_uart_rx(x"00000099", 1, uart_rx_tb, clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   1", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   1", x"00000003", clk_tb, test_point);
       --------------------------------------------------------------------------
       --                                                                      --
       --                    Check behaviour after reset                       --
