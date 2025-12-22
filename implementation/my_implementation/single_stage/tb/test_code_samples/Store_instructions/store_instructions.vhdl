@@ -6,178 +6,44 @@
       -------------------------------------
       --        Prepare registers        --
       -------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   2",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000002",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   1234",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"000004d2",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x5,  x0,   AB",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"000000ab",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x6,  x0,   CD",
-                 gpr            => spy_gpr(6),
-                 desired_value  => 32x"000000cd",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x7,  x0,   -1024",
-                 gpr            => spy_gpr(7),
-                 desired_value  => 32x"fffffc00",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lui   x8,  ABCDE",
-                 gpr            => spy_gpr(8),
-                 desired_value  => 32x"abcde000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x8,  x8,   F1",
-                 gpr            => spy_gpr(8),
-                 desired_value  => 32x"abcde0f1",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lui   x9,  12345",
-                 gpr            => spy_gpr(9),
-                 desired_value  => 32x"12345000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x9,  x9,   678",
-                 gpr            => spy_gpr(9),
-                 desired_value  => 32x"12345678",
-                 test_point     => set_test_point );
+      check_gpr("addi  x1,  x0,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   2", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   1234", x"000004d2", clk_tb, test_point);
+      check_gpr("addi  x5,  x0,   AB", x"000000ab", clk_tb, test_point);
+      check_gpr("addi  x6,  x0,   CD", x"000000cd", clk_tb, test_point);
+      check_gpr("addi  x7,  x0,   -1024", x"fffffc00", clk_tb, test_point);
+      check_gpr("lui   x8,  ABCDE", x"abcde000", clk_tb, test_point);
+      check_gpr("addi  x8,  x8,   F1", x"abcde0f1", clk_tb, test_point);
+      check_gpr("lui   x9,  12345", x"12345000", clk_tb, test_point);
+      check_gpr("addi  x9,  x9,   678", x"12345678", clk_tb, test_point);
       -------------------------------------
       --               SB                --
       -------------------------------------
-      check_ram( instruction        => "sb   x9,  0(x0)",
-                 ram_byte           => spy_ram(0)(0),
-                 desired_value_byte => x"78",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x9,  1(x0)",
-                 ram_byte           => spy_ram(0)(1),
-                 desired_value_byte => x"78",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x9,  1(x1)",
-                 ram_byte           => spy_ram(0)(2),
-                 desired_value_byte => x"78",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x9,  1(x2)",
-                 ram_byte           => spy_ram(0)(3),
-                 desired_value_byte => x"78",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x9,  2(x2)",
-                 ram_byte           => spy_ram(1)(0),
-                 desired_value_byte => x"78",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x8,  -1(x1)",
-                 ram_byte           => spy_ram(0)(0),
-                 desired_value_byte => x"f1",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x8,  -1(x2)",
-                 ram_byte           => spy_ram(0)(1),
-                 desired_value_byte => x"f1",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x8,  -2(x2)",
-                 ram_byte           => spy_ram(0)(0),
-                 desired_value_byte => x"f1",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x8,  10(x0)",
-                 ram_byte           => spy_ram(2)(2),
-                 desired_value_byte => x"f1",
-                 test_point         => set_test_point );
-      check_ram( instruction        => "sb   x8,  16(x1)",
-                 ram_byte           => spy_ram(4)(1),
-                 desired_value_byte => x"f1",
-                 test_point         => set_test_point );
+      check_ram("sb   x9,  0(x0)", x"00000078", 0, 0,clk_tb, test_point);
+      check_ram("sb   x9,  1(x0)", x"00000078", 0, 1,clk_tb, test_point);
+      check_ram("sb   x9,  1(x1)", x"00000078", 0, 2,clk_tb, test_point);
+      check_ram("sb   x9,  1(x2)", x"00000078", 0, 3,clk_tb, test_point);
+      check_ram("sb   x9,  2(x2)", x"00000078", 1, 0,clk_tb, test_point);
+      check_ram("sb   x8,  -1(x1)", x"000000f1", 0, 0,clk_tb, test_point);
+      check_ram("sb   x8,  -1(x2)", x"000000f1", 0, 1,clk_tb, test_point);
+      check_ram("sb   x8,  -2(x2)", x"000000f1", 0, 0,clk_tb, test_point);
+      check_ram("sb   x8,  10(x0)", x"000000f1",2, 2, clk_tb, test_point);
+      check_ram("sb   x8,  16(x1)", x"000000f1", 4, 1, clk_tb, test_point);
       -------------------------------------
       --               SH                --
       -------------------------------------
-      check_ram( instruction           => "sh    x8,  0(x0)",
-                 ram_byte_0            => spy_ram(0)(0),
-                 ram_byte_1            => spy_ram(0)(1),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sh    x8,  1(x1)",
-                 ram_byte_0            => spy_ram(0)(2),
-                 ram_byte_1            => spy_ram(0)(3),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sh    x8,  2(x2)",
-                 ram_byte_0            => spy_ram(1)(0),
-                 ram_byte_1            => spy_ram(1)(1),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sh    x9,  -1(x1)",
-                 ram_byte_0            => spy_ram(0)(0),
-                 ram_byte_1            => spy_ram(0)(1),
-                 desired_value_byte_0  => x"78",
-                 desired_value_byte_1  => x"56",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sh    x8,  -2(x2)",
-                 ram_byte_0            => spy_ram(0)(0),
-                 ram_byte_1            => spy_ram(0)(1),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sh    x8,  10(x0)",
-                 ram_byte_0            => spy_ram(2)(2),
-                 ram_byte_1            => spy_ram(2)(3),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sh    x8,  16(x2)",
-                 ram_byte_0            => spy_ram(4)(2),
-                 ram_byte_1            => spy_ram(4)(3),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 test_point            => set_test_point );
+      check_ram("sh    x8,  0(x0)", x"0000e0f1", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  1(x1)", x"0000e0f1", 0, 2, clk_tb, test_point);
+      check_ram("sh    x8,  2(x2)", x"0000e0f1", 1, 0, clk_tb, test_point);
+      check_ram("sh    x9,  -1(x1)", x"00005678", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  -2(x2)", x"0000e0f1", 0, 0, clk_tb, test_point);
+      check_ram("sh    x8,  10(x0)", x"0000e0f1", 2, 2, clk_tb, test_point);
+      check_ram("sh    x8,  16(x2)", x"0000e0f1", 4, 2, clk_tb, test_point);
       -------------------------------------
       --               SW                --
       -------------------------------------
-      check_ram( instruction           => "sw   x7,  0(x0)",
-                 ram_byte_0            => spy_ram(0)(0),
-                 ram_byte_1            => spy_ram(0)(1),
-                 ram_byte_2            => spy_ram(0)(2),
-                 ram_byte_3            => spy_ram(0)(3),
-                 desired_value_byte_0  => x"00",
-                 desired_value_byte_1  => x"fc",
-                 desired_value_byte_2  => x"ff",
-                 desired_value_byte_3  => x"ff",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sw   x7,  2(x2)",
-                 ram_byte_0            => spy_ram(1)(0),
-                 ram_byte_1            => spy_ram(1)(1),
-                 ram_byte_2            => spy_ram(1)(2),
-                 ram_byte_3            => spy_ram(1)(3),
-                 desired_value_byte_0  => x"00",
-                 desired_value_byte_1  => x"fc",
-                 desired_value_byte_2  => x"ff",
-                 desired_value_byte_3  => x"ff",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sw   x8,  -1(x1)",
-                 ram_byte_0            => spy_ram(0)(0),
-                 ram_byte_1            => spy_ram(0)(1),
-                 ram_byte_2            => spy_ram(0)(2),
-                 ram_byte_3            => spy_ram(0)(3),
-                 desired_value_byte_0  => x"f1",
-                 desired_value_byte_1  => x"e0",
-                 desired_value_byte_2  => x"cd",
-                 desired_value_byte_3  => x"ab",
-                 test_point            => set_test_point );
-      check_ram( instruction           => "sw   x7,  -2(x2)",
-                 ram_byte_0            => spy_ram(0)(0),
-                 ram_byte_1            => spy_ram(0)(1),
-                 ram_byte_2            => spy_ram(0)(2),
-                 ram_byte_3            => spy_ram(0)(3),
-                 desired_value_byte_0  => x"00",
-                 desired_value_byte_1  => x"fc",
-                 desired_value_byte_2  => x"ff",
-                 desired_value_byte_3  => x"ff",
-                 test_point            => set_test_point );
+      check_ram("sw   x7,  0(x0)", x"fffffc00", 0, 0, clk_tb, test_point);
+      check_ram("sw   x7,  2(x2)", x"fffffc00", 0, 0, clk_tb, test_point);
+      check_ram("sw   x8,  -1(x1)", x"abcde0f1", 0, 0, clk_tb, test_point);
+      check_ram("sw   x7,  -2(x2)", x"fffffc00", 0, 0, clk_tb, test_point);
