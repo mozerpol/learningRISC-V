@@ -188,7 +188,7 @@
       check_gpr("addi  x10, x0,   0", x"00000000", clk_tb, test_point);
       check_gpr("addi  x11, x0,   0", x"00000000", clk_tb, test_point);
       check_gpr("addi  x12, x0,   -511", x"fffffe01", clk_tb, test_point);
-      check_gpr("addi  x13, x0,   0xff", x"00000ff", clk_tb, test_point);
+      check_gpr("addi  x13, x0,   0xff", x"000000ff", clk_tb, test_point);
       check_gpr("slli  x13, x13,  4", x"00000ff0", clk_tb, test_point);
       check_gpr("addi  x13, x13,  0xE", x"00000ffe", clk_tb, test_point);
       check_gpr("addi  x14, x0,   4", x"00000004", clk_tb, test_point);
@@ -763,22 +763,10 @@
          -- bne   x3,  x4,   loop26
          wait until rising_edge(clk_tb);
       end loop;
-      check_gpr( instruction    => "addi  x3,  x0,   0",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_branch( instruction   => "bne   x1,  x2,   loop27",
-                    branch_result => spy_branch_result,
-                    desired_value => '1',
-                    test_point    => set_test_point );
-      check_gpr( instruction    => "addi  x1,  x0,   0",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_branch("bne   x1,  x2,   loop27", '1', clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
       --------------------------------------------------------------------------
       --                                                                      --
       --                              GPIO input                              --
@@ -791,293 +779,109 @@
       wait until rising_edge(clk_tb); -- nop instruction
       wait until rising_edge(clk_tb); -- nop instruction
       -- Check if value 0000000D has been loaded into register x1
-      check_gpr( instruction    => "lw    x1,  255(x0)",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"0000000D",
-                 test_point     => set_test_point );
+      check_gpr("lw    x1,  255(x0)", x"0000000D", clk_tb, test_point);
       gpio_tb        <= (others => 'Z');
       --------------------------------------------------------------------------
       --                                                                      --
       --                            COUNTER 8-BIT                             --
       --                                                                      --
       --------------------------------------------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   0x2",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000002",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0x212",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000212",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0x1",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0x0",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
+      check_gpr("addi  x1,  x0,   0x2", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0x212", x"00000212", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0x1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0x0", x"00000000", clk_tb, test_point);
       wait until rising_edge(clk_tb); -- Have to wait one additional clock cycle
       -- the counter value will be readable (stabilized).
-      check_cnt(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 1,
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 0,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 1,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 0,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 1,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x4,   0x1",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 0, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 0, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 1, clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"00000001", clk_tb, test_point);
       for i in 0 to 1056 loop
          -- A loop while the timer is counting.
          -- bne x4, x2, -4   fe221ee3
          -- addi x4, x4, 1   00120213
          wait until rising_edge(clk_tb);
       end loop;
-      check_gpr( instruction    => "addi  x4,  x0,   0x0",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000212",
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 37,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0x0",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x3,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 0,
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x0,  x0,   0x0",
-                 gpr            => spy_gpr(0),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "lw    x5,  251(x0)",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"00000003",
-                 test_point     => set_test_point );
-      check_cnt(instruction => "sb    x0,  251(x0)",
-                 cnt_val        => spy_cnt1,
-                 desired_value  => 5,
-                 test_point     => set_test_point );
+      check_gpr("addi  x4,  x0,   0x0", x"00000212", clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 37, clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_cnt("sb    x3,  251(x0)", 0, clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0x0", x"00000000", clk_tb, test_point);
+      check_gpr("lw    x5,  251(x0)", x"00000003", clk_tb, test_point);
+      check_cnt("sb    x0,  251(x0)", 5, clk_tb, test_point);
       --------------------------------------------------------------------------
       --                                                                      --
       --                        SEVEN SEGMENT DISPLAY                         --
       --                                                                      --
       --------------------------------------------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   1",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   8",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000008",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   9",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000009",
-                 test_point     => set_test_point );
+      check_gpr("addi  x1,  x0,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   8", x"00000008", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   9", x"00000009", clk_tb, test_point);
       -------------------------------------
       --         SEVEN SEGMENT 1         --
       -------------------------------------
-      check_7segment( instruction    => "sw    x0,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x1,  247(x0)",
-                 desired_value_segment_1 => 7b"0000110",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x2,  247(x0)",
-                 desired_value_segment_1 => 7b"1111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x3,  247(x0)",
-                 desired_value_segment_1 => 7b"1101111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0000110", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"1111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"1101111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
       -------------------------------------
       --         SEVEN SEGMENT 2         --
       -------------------------------------
-      check_gpr( instruction    => "slli  x1,  x1,   8",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00000100",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "slli  x2,  x2,   8",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000800",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "slli  x3,  x3,   8",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000900",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x0,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x1,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0000110",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x2,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"1111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x3,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"1101111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
+      check_gpr("slli  x1,  x1,   8", x"00000100", clk_tb, test_point);
+      check_gpr("slli  x2,  x2,   8", x"00000800", clk_tb, test_point);
+      check_gpr("slli  x3,  x3,   8", x"00000900", clk_tb, test_point);
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0111111", b"0000110", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"0111111", b"1111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"0111111", b"1101111", b"0111111",
+                      b"0111111", clk_tb, test_point);
       -------------------------------------
       --         SEVEN SEGMENT 3         --
       -------------------------------------
-      check_gpr( instruction    => "slli  x1,  x1,   8",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"00010000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "slli  x2,  x2,   8",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00080000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "slli  x3,  x3,   8",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00090000",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x0,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x1,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0000110",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x2,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"1111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x3,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"1101111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
+      check_gpr("slli  x1,  x1,   8", x"00010000", clk_tb, test_point);
+      check_gpr("slli  x2,  x2,   8", x"00080000", clk_tb, test_point);
+      check_gpr("slli  x3,  x3,   8", x"00090000", clk_tb, test_point);
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0111111", b"0111111", b"0000110",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"0111111", b"0111111", b"1111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"0111111", b"0111111", b"1101111",
+                      b"0111111", clk_tb, test_point);
       -------------------------------------
       --         SEVEN SEGMENT 4         --
       -------------------------------------
-      check_gpr( instruction    => "slli  x1,  x1,   8",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"01000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "slli  x2,  x2,   8",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"08000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "slli  x3,  x3,   8",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"09000000",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x0,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x1,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"0000110",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x2,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"1111111",
-                 test_point     => set_test_point );
-      check_7segment( instruction    => "sw    x3,  247(x0)",
-                 desired_value_segment_1 => 7b"0111111",
-                 desired_value_segment_2 => 7b"0111111",
-                 desired_value_segment_3 => 7b"0111111",
-                 desired_value_segment_4 => 7b"1101111",
-                 test_point     => set_test_point );
+      check_gpr("slli  x1,  x1,   8", x"01000000", clk_tb, test_point);
+      check_gpr("slli  x2,  x2,   8", x"08000000", clk_tb, test_point);
+      check_gpr("slli  x3,  x3,   8", x"09000000", clk_tb, test_point);
+      check_7segment("sw    x0,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0111111", clk_tb, test_point);
+      check_7segment("sw    x1,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"0000110", clk_tb, test_point);
+      check_7segment("sw    x2,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"1111111", clk_tb, test_point);
+      check_7segment("sw    x3,  247(x0)", b"0111111", b"0111111", b"0111111",
+                      b"1101111", clk_tb, test_point);
       --------------------------------------------------------------------------
       --                                                                      --
       --                                 UART                                 --
@@ -1086,80 +890,25 @@
       -------------------------------------
       --             UART TX             --
       -------------------------------------
-      check_gpr( instruction    => "addi  x3,  x0,   0x44",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000044",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0xD",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );                 
-      check_uart_tx( instruction=> "sw    x3,  243(x0)",
-                 desired_value  => 32x"00000044",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_uart_tx( instruction=> "sw    x4,  243(x0)",
-                 desired_value  => 32x"0000000d",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
+      check_gpr("addi  x3,  x0,   0x44", x"00000044", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0xD", x"0000000d", clk_tb, test_point);                 
+      check_uart_tx("sw    x3,  243(x0)", x"00000044", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0", x"00000000", clk_tb, test_point);
+      check_uart_tx("sw    x4,  243(x0)", x"0000000d", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0", x"00000000", clk_tb, test_point);
       -------------------------------------
       --             UART RX             --
       -------------------------------------
-      check_gpr( instruction    => "addi  x1,  x0,   0xAB",
-                 gpr            => spy_gpr(1),
-                 desired_value  => 32x"000000ab",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x0,   0x12",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000012",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x3,  x0,   0xCD",
-                 gpr            => spy_gpr(3),
-                 desired_value  => 32x"000000CD",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x4,  x0,   0x99",
-                 gpr            => spy_gpr(4),
-                 desired_value  => 32x"00000099",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x5,  x0,   0",
-                 gpr            => spy_gpr(5),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_uart_rx( value_to_send     => 32x"ABEEEEEE",
-                 number_bytes_to_send  => 4,
-                 out_rx                => rx_tb,
-                 test_point            => set_test_point );
-      check_uart_rx( value_to_send     => 32x"00120000",
-                 number_bytes_to_send  => 3,
-                 out_rx                => rx_tb,
-                 test_point            => set_test_point );
-      check_uart_rx( value_to_send     => 32x"0000CDEF",
-                 number_bytes_to_send  => 2,
-                 out_rx                => rx_tb,
-                 test_point            => set_test_point );
-      check_uart_rx( value_to_send     => 32x"00000099",
-                 number_bytes_to_send  => 1,
-                 out_rx                => rx_tb,
-                 test_point            => set_test_point );   
-      check_gpr( instruction    => "addi  x2,  x0,   0",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000000",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x2,   1",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000001",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x2,   1",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000002",
-                 test_point     => set_test_point );
-      check_gpr( instruction    => "addi  x2,  x2,   1",
-                 gpr            => spy_gpr(2),
-                 desired_value  => 32x"00000003",
-                 test_point     => set_test_point );
+      check_gpr("addi  x1,  x0,   0xAB", x"000000ab", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0x12", x"00000012", clk_tb, test_point);
+      check_gpr("addi  x3,  x0,   0xCD", x"000000CD", clk_tb, test_point);
+      check_gpr("addi  x4,  x0,   0x99", x"00000099", clk_tb, test_point);
+      check_gpr("addi  x5,  x0,   0", x"00000000", clk_tb, test_point);
+      check_uart_rx(x"ABEEEEEE", 4, uart_rx_tb, clk_tb, test_point);
+      check_uart_rx(x"00120000", 3, uart_rx_tb, clk_tb, test_point);
+      check_uart_rx(x"0000CDEF", 2, uart_rx_tb, clk_tb, test_point);
+      check_uart_rx(x"00000099", 1, uart_rx_tb, clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   1", x"00000001", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   1", x"00000002", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   1", x"00000003", clk_tb, test_point);
