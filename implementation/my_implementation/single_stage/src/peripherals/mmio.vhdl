@@ -20,16 +20,17 @@ library ram_lib;
 
 entity mmio is
    port (
+      -- TODO: change this names to i_mmio_gpio_q, i_mmio_cnt1_q, i_mmio_ram_data, etc.
       i_mmio_write_enable  : in std_logic;
       i_mmio_waddr         : in integer range 0 to C_RAM_LENGTH-1;
       i_mmio_raddr         : in integer range 0 to C_RAM_LENGTH-1;
-      i_mmio_q_gpio        : in std_logic_vector(31 downto 0); -- TODO: change
-      -- this names to i_mmio_gpio_q, i_mmio_cnt1_q, i_mmio_ram_data, etc.
+      i_mmio_q_gpio        : in std_logic_vector(31 downto 0);
       i_mmio_q_cnt1        : in integer range 0 to C_COUNTER1_VALUE - 1;
       i_mmio_data_ram      : in std_logic_vector(31 downto 0);
       i_mmio_data_uart     : in std_logic_vector(31 downto 0);
       i_mmio_status_uart   : in std_logic_vector(31 downto 0);
       i_mmio_data_spi      : in std_logic_vector(31 downto 0);
+      i_mmio_status_spi    : in std_logic_vector(31 downto 0);
       o_mmio_we_ram        : out std_logic;
       o_mmio_we_gpio       : out std_logic;
       o_mmio_re_gpio       : out std_logic;
@@ -53,12 +54,8 @@ begin
       std_logic_vector(to_unsigned(i_mmio_q_cnt1, 32)) when C_MMIO_ADDR_CNT1 - 1,
       i_mmio_data_uart                                 when C_MMIO_ADDR_UART_DATA - 1, 
       i_mmio_status_uart                               when C_MMIO_ADDR_UART_STATUS - 1, 
-      -- TODO: C_MMIO_ADDR_UART_DATA
-      -- TODO: C_MMIO_ADDR_UART_STATUS then read status. Pass status from UART 
-      -- module to the o_mmio_data from this module. Thanks to this will be
-      -- possible read UART status trhough addres, like reading from RAM.
-      -- Now for UART is 62, 61 can be UART status.
-      i_mmio_data_spi                                  when C_MMIO_ADDR_SPI  - 1,
+      i_mmio_data_spi                                  when C_MMIO_ADDR_SPI_DATA - 1,
+      i_mmio_status_spi                                when C_MMIO_ADDR_SPI_STATUS - 1,
       i_mmio_data_ram                                  when others;
 
 
@@ -69,13 +66,6 @@ begin
    begin
       if (i_mmio_write_enable = '1') then
          case (i_mmio_waddr) is
-            when C_MMIO_ADDR_CNT1 - 1     =>
-               o_mmio_we_ram       <= '0';
-               o_mmio_we_gpio      <= '0';
-               o_mmio_we_cnt1      <= '1';
-               o_mmio_we_uart      <= '0';
-               o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '0';
             when C_MMIO_ADDR_GPIO - 1     =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '1';
@@ -83,11 +73,11 @@ begin
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
                o_mmio_we_spi       <= '0';
-            when C_MMIO_ADDR_UART_DATA - 1     =>
+            when C_MMIO_ADDR_CNT1 - 1     =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
-               o_mmio_we_cnt1      <= '0';
-               o_mmio_we_uart      <= '1';
+               o_mmio_we_cnt1      <= '1';
+               o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
                o_mmio_we_spi       <= '0';
             when C_MMIO_ADDR_7SEGMENT - 1 =>
@@ -97,7 +87,21 @@ begin
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '1';
                o_mmio_we_spi       <= '0';
-            when C_MMIO_ADDR_SPI - 1      =>
+            when C_MMIO_ADDR_UART_DATA - 1 =>
+               o_mmio_we_ram       <= '0';
+               o_mmio_we_gpio      <= '0';
+               o_mmio_we_cnt1      <= '0';
+               o_mmio_we_uart      <= '1';
+               o_mmio_we_7seg      <= '0';
+               o_mmio_we_spi       <= '0';
+            when C_MMIO_ADDR_SPI_DATA - 1 =>
+               o_mmio_we_ram       <= '0';
+               o_mmio_we_gpio      <= '0';
+               o_mmio_we_cnt1      <= '0';
+               o_mmio_we_uart      <= '0';
+               o_mmio_we_7seg      <= '0';
+               o_mmio_we_spi       <= '1';
+            when C_MMIO_ADDR_SPI_CONTROL - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
