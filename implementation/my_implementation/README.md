@@ -56,10 +56,10 @@ Memory map:
 - [ ] Fetch, decode, execute.
 2. Protocols and modules implementation
 - [x] UART,
+- [x] 4x7-segment,
 - [ ] 1-Wire,
 - [ ] SPI,
 - [ ] I2C,
-- [ ] 4x7-segment,
 - [ ] HD44780,
 - [ ] ADC,
 - [ ] ECC module,
@@ -74,13 +74,23 @@ Memory map:
 - [x] fix tests, maybe after some clock cycles (second reset) can check the last
 instructions,
 - [x] clean gitignore,
-- [x] fix signal names,
-- [x] fix flowchart,
 - [x] change to negative reset,
 - [x] split ram_management, there is for ram and program counter, it doesn't
       make any sense,
 - [x] change name from script.tcl to run_simulation.tcl,
-- [x] change ram_management to data_memory
+- [x] change ram_management to data_memory,
+- [x] finish tests and clean them, describe as well. Firstly LUI, then ADDI
+      should run,
+- [x] remove test_point => set_test_point from procedure, try to make test_point
+  a global variable, thx to this procedure will be shorter,
+- [x] crate a new packet testbench_procedures.vhdl and put there all procedures,
+      in this file,
+- [x] change 7 seg display module. i_7segment_wdata(31:0) shuld change only
+      state of the output. I mean output of the i_7segment_wdata shoudl be
+      directly assigned to the input of the 7 seg display. Not that it is
+      convert to a number... Its odd. Then write tests for this module,
+- [x] add a separate folder: Documentation and put there README and drawio,
+- [x] change i_clk'event to rising_edge(i_clk),
 - [ ] change integer to natural where it's possible,
 - [ ] setup and run Dhrystone,
 - [ ] add script for Vivado and GHDL,
@@ -89,21 +99,9 @@ instructions,
 - [ ] add gif (or maybe link to youtube) how to step by step run project in
 quartus,
 - [ ] add timer with configurable width (timer ov output?),
-- [ ] finish tests and clean them, describe as well. Firstly LUI, then ADDI
-      should run,
-- [ ] remove test_point => set_test_point from procedure, try to make test_point
-  a global variable, thx to this procedure will be shorter,
-- [ ] crate a new packet testbench_procedures.vhdl and put there all procedures,
-      in this file,
-- [ ] change 7 seg display module. i_7segment_wdata(31:0) shuld change only
-      state of the output. I mean output of the i_7segment_wdata shoudl be
-      directly assigned to the input of the 7 seg display. Not that it is
-      convert to a number... Its odd. Then write tests for this module,
-- [ ] add a separate folder: Documentation and put there README and drawio,
 - [ ] add info, that vivado and modelsim have to be in PATH - modify .bashrc,
 - [ ] in single_stage directory should be only files like flowchart, readme,
       License, etc.,
 - [ ] add a sample system memory map table like here:
     https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O#Examples
 - [ ] add documentation with table with instruction formats, and instructions...
-- [ ] change i_clk'event to rising_edge(i_clk),
