@@ -25,11 +25,13 @@ entity spi is
       i_clk                : in std_logic;
       i_spi_wdata          : in std_logic_vector(31 downto 0);
       i_spi_we             : in std_logic;
+      i_spi_control        : in std_logic_vector(7 downto 0);
       i_spi_miso           : in std_logic;  -- master in, slave out
-      o_spi_ss_n           : out std_logic; -- slave select / chip select
       o_spi_mosi           : out std_logic; -- master out, slave in
-      o_spi_sclk           : out std_logic;
-      o_spi_data           : out std_logic_vector(31 downto 0)
+      o_spi_ss_n           : out std_logic; -- slave select / chip select
+      o_spi_sclk           : out std_logic; -- spi clock
+      o_spi_data           : out std_logic_vector(31 downto 0);
+      o_spi_status         : out std_logic_vector(31 downto 0)
 );
 end entity spi;
 
@@ -52,105 +54,65 @@ architecture rtl of spi is
 
 
    -- General
-   type t_spi_states          is (START, STOP, DATA, IDLE);
+   type t_spi_states          is (IDLE, DATA, STOP);
    signal spi_states          : t_spi_states;
-   signal s_spi_sclk          : std_logic;
-   signal s_toggle_flag       : std_logic;
+   -- Timer
+   signal s_cnt1_overflow     : std_logic;
    -- Transmit purposes
-   signal s_cnt1_we_tx        : std_logic;
-   signal s_cnt1_set_reset_tx : std_logic;
-   signal s_cnt1_overflow_tx  : std_logic;
-   signal s_spi_ss_n          : std_logic;
-   signal buffer_spi_mosi     : std_logic_vector(31 downto 0);
-   signal bit_cnt_tx          : integer range 0 to 32;
+   signal reg_spi_mosi        : std_logic_vector(31 downto 0);
+   signal bit_cnt_tx          : natural range 0 to 32;
    -- Receive purposes
-   signal s_cnt1_we_rx        : std_logic;
-   signal s_cnt1_set_reset_rx : std_logic;
-   signal s_cnt1_overflow_rx  : std_logic;
-   signal s_spi_mosi          : std_logic;
-   signal buffer_spi_miso     : std_logic_vector(7 downto 0);
+   signal reg_spi_miso        : std_logic_vector(7 downto 0);
 
 
 begin
 
 
-   inst_counter_tx : component counter1
+   inst_counter: component counter1
    generic map (
       G_COUNTER1_VALUE => positive(((real(C_FREQUENCY_HZ/G_SPI_FREQUENCY_HZ))/2.0)-1.0)
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
-      i_cnt1_we            => s_cnt1_we_tx,
-      i_cnt1_set_reset     => s_cnt1_set_reset_tx,
-      o_cnt1_overflow      => s_cnt1_overflow_tx,
+      i_cnt1_we            => i_spi_control(0),
+      i_cnt1_set_reset     => i_spi_control(0),
+      o_cnt1_overflow      => s_cnt1_overflow,
       o_cnt1_q             => open
    );
 
 
-   inst_counter_rx : component counter1
-   generic map (
-      G_COUNTER1_VALUE => positive(((real(C_FREQUENCY_HZ/G_SPI_FREQUENCY_HZ))/2.0)-1.0)
-   ) port map (
-      i_rst_n              => i_rst_n,
-      i_clk                => i_clk,
-      i_cnt1_we            => s_cnt1_we_rx,
-      i_cnt1_set_reset     => s_cnt1_set_reset_rx,
-      o_cnt1_overflow      => s_cnt1_overflow_rx,
-      o_cnt1_q             => open
-   );
+   o_spi_sclk <= s_cnt1_overflow when i_spi_we = '1';
+   o_spi_ss_n <= i_spi_control(1) when i_spi_we = '1';
 
 
    p_tx : process (i_clk)
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
-            s_cnt1_we_tx         <= '0';
-            s_cnt1_set_reset_tx  <= '0';
-            s_spi_ss_n           <= '1';
-            s_spi_sclk           <= '0';
             spi_states           <= IDLE;
-            s_toggle_flag        <= '0';
-            s_spi_mosi           <= 'Z';
+            o_spi_mosi           <= 'Z';
             bit_cnt_tx           <= 0;
          else
             case (spi_states) is
 
                when IDLE   =>
 
-                  s_spi_sclk           <= '0';
-                  s_spi_mosi           <= 'Z';
-                  s_toggle_flag        <= '0';
-                  if (i_spi_we = '1') then
-                     spi_states        <= START;
-                     buffer_spi_mosi   <= i_spi_wdata; -- Latch data to send
-                     s_spi_ss_n        <= '0';
+                  o_spi_mosi           <= 'Z';
+                  if (i_spi_we = '1' and i_spi_control(2) = '1') then
+                     spi_states     <= DATA;
+                     reg_spi_mosi   <= i_spi_wdata; -- Latch data to send
                   end if;
-
-               when START  =>
-
-                  spi_states           <= DATA;
-                  s_cnt1_we_tx         <= '1';
-                  s_cnt1_set_reset_tx  <= '1';
 
                when DATA   =>
 
-                  if (s_cnt1_overflow_tx = '1') then
-                     s_spi_sclk           <= not(s_spi_sclk);
-                     if (s_toggle_flag = '0') then
-                        s_toggle_flag        <= '1';
-                        s_spi_mosi           <= buffer_spi_mosi(31);
-                        buffer_spi_mosi      <= buffer_spi_mosi(30 downto 0) &
-                                                buffer_spi_mosi(31);
-                        if (bit_cnt_tx = 32) then
-                           spi_states           <= IDLE;
-                           bit_cnt_tx           <= 0;
-                           s_cnt1_set_reset_tx  <= '0';
-                           s_spi_ss_n           <= '1';
-                        else
-                           bit_cnt_tx           <= bit_cnt_tx + 1;
-                        end if;
+                  if (s_cnt1_overflow = '1') then
+                     o_spi_mosi           <= reg_spi_mosi(31);
+                     reg_spi_mosi          <= reg_spi_mosi(30 downto 0) & reg_spi_mosi(31);
+                     if (bit_cnt_tx = 32) then
+                        spi_states           <= IDLE;
+                        bit_cnt_tx           <= 0;
                      else
-                        s_toggle_flag        <= '0';
+                        bit_cnt_tx           <= bit_cnt_tx + 1;
                      end if;
                   end if;
 
@@ -158,18 +120,11 @@ begin
 
                   spi_states              <= IDLE;
                   bit_cnt_tx              <= 0;
-                  s_cnt1_we_tx            <= '0';
-                  s_cnt1_set_reset_tx     <= '0';
-                  s_spi_ss_n              <= '1';
-                  s_spi_sclk              <= '0';
-                  s_spi_mosi              <= 'Z';
-                  s_toggle_flag           <= '0';
+                  o_spi_mosi              <= 'Z';
 
             end case;
          end if;
-         o_spi_ss_n  <= s_spi_ss_n;
-         o_spi_mosi  <= s_spi_mosi;
-         o_spi_sclk  <= s_spi_sclk;
+         o_spi_mosi  <= o_spi_mosi;
       end if;
    end process;
 
