@@ -32,7 +32,7 @@ entity riscpol is
       i_rst_n                 : in std_logic;
       i_clk                   : in std_logic;
       io_gpio                 : inout std_logic_vector(C_NUMBER_OF_GPIO - 1 downto 0);
-      i_uart_rx               : in std_logic; -- TODO: change to i_uart_rx
+      i_uart_rx               : in std_logic;
       o_uart_tx               : out std_logic;
       o_7segment_1            : out std_logic_vector(6 downto 0);
       o_7segment_2            : out std_logic_vector(6 downto 0);
@@ -75,6 +75,7 @@ architecture rtl of riscpol is
          i_mmio_data_uart     : in std_logic_vector(31 downto 0);
          i_mmio_status_uart   : in std_logic_vector(31 downto 0);
          i_mmio_data_spi      : in std_logic_vector(31 downto 0);
+         i_mmio_status_spi    : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
          o_mmio_re_gpio       : out std_logic;
@@ -132,6 +133,21 @@ architecture rtl of riscpol is
    end component counter1;
 
 
+   component seven_segment is
+      port (
+         i_rst_n           : in std_logic;
+         i_clk             : in std_logic;
+         i_7segment_wdata  : in std_logic_vector(31 downto 0);
+         i_7segment_we     : in std_logic;
+         o_7segment_1      : out std_logic_vector(6 downto 0);
+         o_7segment_2      : out std_logic_vector(6 downto 0);
+         o_7segment_3      : out std_logic_vector(6 downto 0);
+         o_7segment_4      : out std_logic_vector(6 downto 0);
+         o_7segment_anodes : out std_logic_vector(3 downto 0)
+   );
+   end component seven_segment;
+
+
    component uart is
       generic(
          G_BAUD               : positive := C_BAUD
@@ -149,21 +165,6 @@ architecture rtl of riscpol is
    end component uart;
 
 
-   component seven_segment is
-      port (
-         i_rst_n           : in std_logic;
-         i_clk             : in std_logic;
-         i_7segment_wdata  : in std_logic_vector(31 downto 0);
-         i_7segment_we     : in std_logic;
-         o_7segment_1      : out std_logic_vector(6 downto 0);
-         o_7segment_2      : out std_logic_vector(6 downto 0);
-         o_7segment_3      : out std_logic_vector(6 downto 0);
-         o_7segment_4      : out std_logic_vector(6 downto 0);
-         o_7segment_anodes : out std_logic_vector(3 downto 0)
-   );
-   end component seven_segment;
-
-
    component spi is
       generic(
          G_SPI_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ
@@ -173,11 +174,13 @@ architecture rtl of riscpol is
          i_clk                : in std_logic;
          i_spi_wdata          : in std_logic_vector(31 downto 0);
          i_spi_we             : in std_logic;
+         i_spi_control        : in std_logic_vector(7 downto 0);
          i_spi_miso           : in std_logic;  -- master in, slave out
          o_spi_ss_n           : out std_logic; -- slave select / chip select
          o_spi_mosi           : out std_logic; -- master out, slave in
          o_spi_sclk           : out std_logic;
-         o_spi_data           : out std_logic_vector(31 downto 0)
+         o_spi_data           : out std_logic_vector(31 downto 0);
+         o_spi_status         : out std_logic_vector(31 downto 0)
    );
    end component spi;
 
@@ -195,6 +198,7 @@ architecture rtl of riscpol is
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
    signal s_mmio_status_uart  : std_logic_vector(31 downto 0);
    signal s_mmio_data_spi     : std_logic_vector(31 downto 0);
+   signal s_mmio_status_spi   : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
    signal s_mmio_we_7seg      : std_logic;
    -- Core
@@ -223,6 +227,7 @@ architecture rtl of riscpol is
    -- SPI
    signal s_spi_ss_n          : std_logic;
    signal s_spi_mosi          : std_logic;
+   signal s_spi_miso          : std_logic;
    signal s_spi_sclk          : std_logic;
 
 
@@ -255,6 +260,7 @@ begin
       i_mmio_data_uart     => s_uart_data,
       i_mmio_status_uart   => s_uart_status,
       i_mmio_data_spi      => s_mmio_data_spi,
+      i_mmio_status_spi    => s_mmio_status_spi,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_re_gpio       => s_mmio_re_gpio,
@@ -325,7 +331,7 @@ begin
       o_7segment_4         => s_7segment_4,
       o_7segment_anodes    => s_7segment_anodes
    );
-   
+
 
    inst_spi          : component spi
    port map (
@@ -333,11 +339,13 @@ begin
       i_clk                => clk,
       i_spi_wdata          => s_core_data_write,
       i_spi_we             => s_mmio_we_spi,
-      i_spi_miso           => i_spi_miso,
+      i_spi_miso           => s_spi_miso,
+      i_spi_control        => s_core_data_write(7 downto 0),
       o_spi_ss_n           => s_spi_ss_n,
       o_spi_mosi           => s_spi_mosi,
       o_spi_sclk           => s_spi_sclk,
-      o_spi_data           => s_mmio_data_spi
+      o_spi_data           => s_mmio_data_spi,
+      o_spi_status         => s_mmio_status_spi
    );
 
 
