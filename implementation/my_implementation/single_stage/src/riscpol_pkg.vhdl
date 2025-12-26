@@ -30,23 +30,26 @@ package riscpol_pkg is
    -- size that changes the size of C_CODE array in
    -- instruction_memory_design.vhdl file. Must be greater than or equal to the
    -- number of instructions and a power of 2.
+
+   constant C_COUNTER1_VALUE        : integer  := 512; -- Up to what value
+   -- should the counter1 count?
+   constant C_NUMBER_OF_GPIO        : integer  := 8;
+   constant C_BAUD                  : positive := 115200; -- UART baud rate
+
+   constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000; -- TODO: describe
+   -- that for some freq formula is not accurate (for example 2 MHz is not
+   -- possible, it's 1.92 MHz)
+
+   -- TODO: addresses should start from 0 upwards, not from 64 downwards...
    constant C_MMIO_ADDR_GPIO        : integer  := 64; -- At which address is
    -- access to GPIO.
    constant C_MMIO_ADDR_CNT1        : integer  := 63;
    constant C_MMIO_ADDR_7SEGMENT    : integer  := 62;
    constant C_MMIO_ADDR_UART_DATA   : integer  := 61;
    constant C_MMIO_ADDR_UART_STATUS : integer  := 60;
-
-   constant C_COUNTER1_VALUE        : integer  := 512; -- Up to what value
-   -- should the counter1 count?
-   constant C_NUMBER_OF_GPIO        : integer  := 8;
-   constant C_BAUD                  : positive := 115200; -- UART baud rate
-   
-   
-   constant C_MMIO_ADDR_SPI         : integer  := 59;
-   constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000; -- TODO: describe 
-   -- that for some freq formula is not accurate (for example 2 MHz is not
-   -- possible, it's 1.92 MHz)
+   constant C_MMIO_ADDR_SPI_DATA    : integer  := 59;
+   constant C_MMIO_ADDR_SPI_STATUS  : integer  := 58;
+   constant C_MMIO_ADDR_SPI_CONTROL : integer  := 57;
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
