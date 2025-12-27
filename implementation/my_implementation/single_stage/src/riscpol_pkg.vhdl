@@ -39,8 +39,10 @@ package riscpol_pkg is
    constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000; -- TODO: describe
    -- that for some freq formula is not accurate (for example 2 MHz is not
    -- possible, it's 1.92 MHz)
+   constant C_SPI_DATA_LENGTH       : positive := 32;
 
    -- TODO: addresses should start from 0 upwards, not from 64 downwards...
+   -- also I think addresses are wrong... 
    constant C_MMIO_ADDR_GPIO        : integer  := 64; -- At which address is
    -- access to GPIO.
    constant C_MMIO_ADDR_CNT1        : integer  := 63;

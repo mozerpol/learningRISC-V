@@ -82,7 +82,8 @@ architecture rtl of riscpol is
          o_mmio_we_cnt1       : out std_logic;
          o_mmio_we_uart       : out std_logic;
          o_mmio_we_7seg       : out std_logic;
-         o_mmio_we_spi        : out std_logic;
+         o_mmio_we_spi_ctrl   : out std_logic;
+         o_mmio_we_spi_data   : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -167,14 +168,15 @@ architecture rtl of riscpol is
 
    component spi is
       generic(
-         G_SPI_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ
+         G_SPI_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ;
+         G_SPI_DATA_LENGTH    : positive := C_SPI_DATA_LENGTH
       );
       port (
          i_rst_n              : in std_logic;
          i_clk                : in std_logic;
          i_spi_wdata          : in std_logic_vector(31 downto 0);
-         i_spi_we             : in std_logic;
-         i_spi_control        : in std_logic_vector(7 downto 0);
+         i_spi_we_ctrl        : in std_logic;
+         i_spi_we_data        : in std_logic;
          i_spi_miso           : in std_logic;  -- master in, slave out
          o_spi_ss_n           : out std_logic; -- slave select / chip select
          o_spi_mosi           : out std_logic; -- master out, slave in
@@ -193,7 +195,8 @@ architecture rtl of riscpol is
    signal s_mmio_we_gpio      : std_logic;
    signal s_mmio_re_gpio      : std_logic;
    signal s_mmio_we_cnt1      : std_logic;
-   signal s_mmio_we_spi       : std_logic;
+   signal s_mmio_we_spi_ctrl  : std_logic;
+   signal s_mmio_we_spi_data  : std_logic;
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
    signal s_mmio_status_uart  : std_logic_vector(31 downto 0);
@@ -267,7 +270,8 @@ begin
       o_mmio_we_cnt1       => s_mmio_we_cnt1,
       o_mmio_we_uart       => s_mmio_we_uart,
       o_mmio_we_7seg       => s_mmio_we_7seg,
-      o_mmio_we_spi        => s_mmio_we_spi,
+      o_mmio_we_spi_ctrl   => s_mmio_we_spi_ctrl,
+      o_mmio_we_spi_data   => s_mmio_we_spi_data,
       o_mmio_data          => s_mmio_data
    );
 
@@ -338,9 +342,9 @@ begin
       i_rst_n              => rst_n,
       i_clk                => clk,
       i_spi_wdata          => s_core_data_write,
-      i_spi_we             => s_mmio_we_spi,
+      i_spi_we_ctrl        => s_mmio_we_spi_ctrl,
+      i_spi_we_data        => s_mmio_we_spi_data,
       i_spi_miso           => s_spi_miso,
-      i_spi_control        => s_core_data_write(7 downto 0),
       o_spi_ss_n           => s_spi_ss_n,
       o_spi_mosi           => s_spi_mosi,
       o_spi_sclk           => s_spi_sclk,

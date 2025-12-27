@@ -37,7 +37,8 @@ entity mmio is
       o_mmio_we_cnt1       : out std_logic;
       o_mmio_we_uart       : out std_logic;
       o_mmio_we_7seg       : out std_logic;
-      o_mmio_we_spi        : out std_logic;
+      o_mmio_we_spi_ctrl   : out std_logic;
+      o_mmio_we_spi_data   : out std_logic;
       o_mmio_data          : out std_logic_vector(31 downto 0)
 );
 end mmio;
@@ -72,49 +73,56 @@ begin
                o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '0';
+               o_mmio_we_spi_ctrl  <= '0';
+               o_mmio_we_spi_data  <= '0';
             when C_MMIO_ADDR_CNT1 - 1     =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '1';
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '0';
+               o_mmio_we_spi_ctrl  <= '0';
+               o_mmio_we_spi_data  <= '0';
             when C_MMIO_ADDR_7SEGMENT - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '1';
-               o_mmio_we_spi       <= '0';
+               o_mmio_we_spi_ctrl  <= '0';
+               o_mmio_we_spi_data  <= '0';
             when C_MMIO_ADDR_UART_DATA - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '1';
                o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '0';
+               o_mmio_we_spi_ctrl  <= '0';
+               o_mmio_we_spi_data  <= '0';
             when C_MMIO_ADDR_SPI_DATA - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '1';
+               o_mmio_we_spi_ctrl  <= '0';
+               o_mmio_we_spi_data  <= '1';
             when C_MMIO_ADDR_SPI_CONTROL - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '1';
+               o_mmio_we_spi_ctrl  <= '1';
+               o_mmio_we_spi_data  <= '0';
             when others                   =>
                o_mmio_we_ram       <= '1';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
                o_mmio_we_uart      <= '0';
                o_mmio_we_7seg      <= '0';
-               o_mmio_we_spi       <= '0';
+               o_mmio_we_spi_ctrl  <= '0';
+               o_mmio_we_spi_data  <= '0';
          end case;
       else
          o_mmio_we_ram       <= '0';
@@ -122,7 +130,8 @@ begin
          o_mmio_we_cnt1      <= '0';
          o_mmio_we_uart      <= '0';
          o_mmio_we_7seg      <= '0';
-         o_mmio_we_spi       <= '0';
+         o_mmio_we_spi_ctrl  <= '0';
+         o_mmio_we_spi_data  <= '0';
       end if;
    end process;
 
