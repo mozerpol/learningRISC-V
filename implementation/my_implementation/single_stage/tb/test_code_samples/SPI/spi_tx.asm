@@ -1,18 +1,23 @@
-###################################
-##         Check SPI tx          ##
-###################################
-addi  x1,  x1,   814   # Delay purposes, x1 = 814, 0x32e
-addi  x2,  x0,   0
-addi  x3,  x0,   0xff
-lui   x4,  699051
-addi  x4,  x4,   -1366 # x4 = 0x AAAAAAAA
-sw    x3,  239(x0)     # Send the value stored in the register x3
-loop32:
-addi  x2,  x2,   1     # Increment x2
-bne   x1,  x2,   loop32# Is there enough delay? No: go to loop32
-addi  x2,  x0,   0
-sw    x4,  239(x0)     # Send the value stored in the register x4
-loop33:
-addi  x2,  x2,   1     # Increment x2
-bne   x1,  x2,   loop33# Is there enough delay? No: go to loop32
-addi  x2,  x0,   0
+################################################################################
+##                                                                            ##
+##                                    SPI                                     ##
+##                                                                            ##
+################################################################################
+########################################
+##                TX                  ##
+########################################
+addi  x1,  x0,   1     # x1 = 0x00000001, turn on sclk 
+addi  x1,  x1,   2     # x1 = 0x00000011, chip enable
+addi  x2,  x0,   0     # x2 = 0x00000000
+addi  x3,  x0,   0xAA  # x3 = 0x000000AA, data1 to send
+lui   x4,  703711      # x4 = 0xabcdef00, data2 to send
+addi  x4,  x4,   -238  # x4 = 0xabcdef12, data2 to send
+sw    x1,  227(x0)     # Turn on sclk and chip enable
+nop
+nop
+nop
+sw    x3,  235(x0)     # Send sign data1 by SPI
+
+loop35:
+lw    x2,  231(x0)     # Load SPI status bit to x2 register
+bne   x2,  x0,   loop35# Check if uart tx is busy
