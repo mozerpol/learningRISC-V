@@ -169,7 +169,9 @@ architecture rtl of riscpol is
    component spi is
       generic(
          G_SPI_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ;
-         G_SPI_DATA_LENGTH    : positive := C_SPI_DATA_LENGTH
+         G_SPI_DATA_LENGTH    : positive := C_SPI_DATA_LENGTH;
+         G_SPI_CPOL           : natural range 0 to 1 := C_SPI_CPOL;
+         G_SPI_CPHA           : natural range 0 to 1 := C_SPI_CPHA
       );
       port (
          i_rst_n              : in std_logic;

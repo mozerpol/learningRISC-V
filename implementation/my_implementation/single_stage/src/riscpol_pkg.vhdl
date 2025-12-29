@@ -40,6 +40,8 @@ package riscpol_pkg is
    -- that for some freq formula is not accurate (for example 2 MHz is not
    -- possible, it's 1.92 MHz)
    constant C_SPI_DATA_LENGTH       : positive := 32;
+   constant C_SPI_CPOL              : natural  := 0;
+   constant C_SPI_CPHA              : natural  := 1;
 
    -- TODO: addresses should start from 0 upwards, not from 64 downwards...
    -- also I think addresses are wrong... 
