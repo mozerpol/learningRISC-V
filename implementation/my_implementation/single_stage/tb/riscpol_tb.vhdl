@@ -120,7 +120,7 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
 
-      wait for 500 us;
+      wait for 100 us;
       
       --------------------------------------------------------------------------
       --                                                                      --
