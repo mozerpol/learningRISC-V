@@ -223,21 +223,21 @@ add wave         -group 7SEGMENT -group INTERNAL_SIGNALS         -radix bin /ris
 
 
 add wave -expand -group SPI         -radix dec /riscpol_tb/inst_riscpol/inst_spi/G_SPI_FREQUENCY_HZ
-add wave         -group SPI         -radix dec /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_tx
+add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_ss_n
+add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_sclk
+add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_mosi
+add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_mosi
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_miso
 add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/i_spi_wdata
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_we_ctrl
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_we_data
 add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/o_spi_data
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_status
-add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_mosi
-add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_sclk
-add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_ss_n
+add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_spi_sclk
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/inst_spi/fsm_tx
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_rising_edge_sclk_tx
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix dec /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_tx
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_miso
-add wave         -group SPI -group INTERNAL_SIGNALS         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_mosi
 add wave         -group SPI -group COUNTER         -radix dec /riscpol_tb/inst_riscpol/inst_spi/inst_counter/G_COUNTER1_VALUE
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/o_cnt1_overflow
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_set_reset
