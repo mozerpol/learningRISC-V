@@ -238,6 +238,7 @@ add wave         -group SPI -group INTERNAL_SIGNALS         -radix bin /riscpol_
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_rising_edge_sclk_tx
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix dec /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_tx
 add wave         -group SPI -group INTERNAL_SIGNALS         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_miso
+add wave         -group SPI -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_clock_on_tx 
 add wave         -group SPI -group COUNTER         -radix dec /riscpol_tb/inst_riscpol/inst_spi/inst_counter/G_COUNTER1_VALUE
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/o_cnt1_overflow
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_set_reset
