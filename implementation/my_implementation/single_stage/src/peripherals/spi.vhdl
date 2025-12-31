@@ -75,6 +75,7 @@ architecture rtl of spi is
    signal s_spi_sclk          : std_logic;
    signal s_spi_ss_n_tx       : std_logic;
 
+signal s_clock_on_tx : std_logic;
 
 begin
 
@@ -111,8 +112,16 @@ begin
          else
             -- TODO: I think the fastest way is to add control signal:
             -- if (s_clock_on_tx = '1') then... change state
-            if (s_cnt1_overflow = '1') then
-               s_spi_sclk        <= not(s_spi_sclk);
+            if (s_clock_on_tx = '1') then
+                if (s_cnt1_overflow = '1') then
+                   s_spi_sclk        <= not(s_spi_sclk);
+                end if;
+            else
+                if (G_SPI_CPOL = 1) then
+                   s_spi_sclk        <= '1';
+                else
+                   s_spi_sclk        <= '0';
+                end if;
             end if;
          end if;
       end if;
@@ -129,6 +138,7 @@ begin
             s_status_tx_busy        <= '0';
             s_cnt1_set_reset        <= '0';
             s_spi_ss_n_tx           <= '1';
+            s_clock_on_tx           <= '0'; 
          else
             case (fsm_tx) is
 
@@ -147,6 +157,7 @@ begin
                when LEADING_EDGE =>
 
                   s_spi_ss_n_tx     <= '0';
+                  s_clock_on_tx     <= '1';
                   if (C_SPI_CPHA = 0) then
                      o_spi_mosi   <= reg_spi_mosi(0); -- LSB is send first
                      reg_spi_mosi <= reg_spi_mosi(0) & reg_spi_mosi(31 downto 1);
@@ -161,8 +172,9 @@ begin
                      if (s_cnt1_overflow = '1') then
                         if (bit_cnt_tx = G_SPI_DATA_LENGTH) then
                            o_spi_mosi   <= 'Z';
-                           fsm_tx       <= TRAILING_EDGE;
                            bit_cnt_tx   <= 0;
+                           s_clock_on_tx     <= '0';
+                           fsm_tx       <= TRAILING_EDGE;
                         else
                            o_spi_mosi   <= reg_spi_mosi(0); -- LSB is send first
                            reg_spi_mosi <= reg_spi_mosi(0) & reg_spi_mosi(31 downto 1);
@@ -170,25 +182,26 @@ begin
                         end if;
                      end if;
                   end if;
-                  
-                  -- TODO: problem with the last edge, fix it.
+                 
                when TRAILING_EDGE   =>
                
-                  s_spi_ss_n_tx     <= '1';
                   if (C_SPI_CPHA = 0) then
                      if (s_cnt1_overflow = '1') then
-                        fsm_tx       <= IDLE;
+                        s_spi_ss_n_tx     <= '1';
+                        fsm_tx            <= IDLE;
                      end if;
                   else
-                       fsm_tx       <= IDLE;
+                      s_spi_ss_n_tx     <= '1';
+                      fsm_tx            <= IDLE;
                   end if;
 
                when others =>
 
-                  fsm_tx                     <= IDLE;
-                  bit_cnt_tx                 <= 0;
-                  o_spi_mosi                 <= 'Z';
-                  s_status_tx_busy           <= '0';
+                  fsm_tx            <= IDLE;
+                  bit_cnt_tx        <= 0;
+                  o_spi_mosi        <= 'Z';
+                  s_status_tx_busy  <= '0';
+                  s_clock_on_tx     <= '0';
 
             end case;
          end if;
