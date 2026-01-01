@@ -10,6 +10,7 @@
 
 library ieee;
    use ieee.std_logic_1164.all;
+   use ieee.numeric_std.all;
 library riscpol_lib;
    use riscpol_lib.all;
    use riscpol_lib.riscpol_pkg.all;
@@ -75,7 +76,6 @@ architecture rtl of spi is
    signal s_spi_sclk          : std_logic;
    signal s_spi_ss_n_tx       : std_logic;
 
-signal s_clock_on_tx : std_logic;
 
 begin
 
@@ -101,27 +101,24 @@ begin
 
 
    p_spi_clock_gen : process (i_clk)
+      variable v_cnt_bits : std_logic_vector(4 downto 0);
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
+            v_cnt_bits := (others => '0');
             if (G_SPI_CPOL = 1) then
                s_spi_sclk        <= '1';
             else
                s_spi_sclk        <= '0';
             end if;
          else
-            -- TODO: I think the fastest way is to add control signal:
-            -- if (s_clock_on_tx = '1') then... change state
-            if (s_clock_on_tx = '1') then
-                if (s_cnt1_overflow = '1') then
-                   s_spi_sclk        <= not(s_spi_sclk);
-                end if;
-            else
-                if (G_SPI_CPOL = 1) then
-                   s_spi_sclk        <= '1';
-                else
-                   s_spi_sclk        <= '0';
-                end if;
+            if (s_cnt1_overflow = '1') then
+               if (v_cnt_bits(v_cnt_bits'length-1) = '0') then
+                  v_cnt_bits        := std_logic_vector(unsigned(v_cnt_bits) + 1);
+                  s_spi_sclk        <= not(s_spi_sclk);
+               else
+                  v_cnt_bits := (others => '0');
+               end if;
             end if;
          end if;
       end if;
@@ -138,7 +135,6 @@ begin
             s_status_tx_busy        <= '0';
             s_cnt1_set_reset        <= '0';
             s_spi_ss_n_tx           <= '1';
-            s_clock_on_tx           <= '0'; 
          else
             case (fsm_tx) is
 
@@ -157,8 +153,7 @@ begin
                when LEADING_EDGE =>
 
                   s_spi_ss_n_tx     <= '0';
-                  s_clock_on_tx     <= '1';
-                  if (C_SPI_CPHA = 0) then
+                  if (G_SPI_CPHA = 0) then
                      o_spi_mosi   <= reg_spi_mosi(0); -- LSB is send first
                      reg_spi_mosi <= reg_spi_mosi(0) & reg_spi_mosi(31 downto 1);
                      bit_cnt_tx   <= bit_cnt_tx + 1;
@@ -167,13 +162,12 @@ begin
 
                when DATA   =>
 
-                  if ((C_SPI_CPHA = 0 and s_spi_sclk = '1') or
-                     (C_SPI_CPHA = 1 and s_spi_sclk = '0')) then
+                  if ((G_SPI_CPHA = 0 and s_spi_sclk = '1') or
+                     (G_SPI_CPHA = 1 and s_spi_sclk = '0')) then
                      if (s_cnt1_overflow = '1') then
                         if (bit_cnt_tx = G_SPI_DATA_LENGTH) then
                            o_spi_mosi   <= 'Z';
                            bit_cnt_tx   <= 0;
-                           s_clock_on_tx     <= '0';
                            fsm_tx       <= TRAILING_EDGE;
                         else
                            o_spi_mosi   <= reg_spi_mosi(0); -- LSB is send first
@@ -182,10 +176,10 @@ begin
                         end if;
                      end if;
                   end if;
-                 
+
                when TRAILING_EDGE   =>
-               
-                  if (C_SPI_CPHA = 0) then
+
+                  if (G_SPI_CPHA = 0) then
                      if (s_cnt1_overflow = '1') then
                         s_spi_ss_n_tx     <= '1';
                         fsm_tx            <= IDLE;
@@ -201,7 +195,6 @@ begin
                   bit_cnt_tx        <= 0;
                   o_spi_mosi        <= 'Z';
                   s_status_tx_busy  <= '0';
-                  s_clock_on_tx     <= '0';
 
             end case;
          end if;
