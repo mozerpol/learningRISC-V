@@ -41,7 +41,7 @@ package riscpol_pkg is
    -- possible, it's 1.92 MHz)
    constant C_SPI_DATA_LENGTH       : positive := 8;
    constant C_SPI_CPOL              : natural  := 0;
-   constant C_SPI_CPHA              : natural  := 1;
+   constant C_SPI_CPHA              : natural  := 0;
 
    -- TODO: addresses should start from 0 upwards, not from 64 downwards...
    -- also I think addresses are wrong... 
