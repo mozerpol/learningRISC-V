@@ -202,6 +202,13 @@ begin
    end process;
 
 
+ -- TODO:
+ -- add a new port i_spi_re_data. When high state occurs on this input bit
+ -- it means turn on sclk, after shift data in rx register. After rx is complete
+ -- then set o_spi_status valid data bit.
+ -- Add additional process for reseting this valid data bit. Maybe modify 
+ -- i_spi_we_ctrl input signal?
+
    p_rx : process (i_clk)
    begin
       if (rising_edge(i_clk)) then
