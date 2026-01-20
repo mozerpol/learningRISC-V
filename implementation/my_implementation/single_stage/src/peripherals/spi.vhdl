@@ -45,7 +45,7 @@ architecture rtl of spi is
 
    component counter1 is
       generic(
-         G_COUNTER1_VALUE : positive
+         G_COUNTER1_VALUE  : positive
       ); port(
          i_rst_n           : in std_logic;
          i_clk             : in std_logic;
@@ -65,12 +65,16 @@ architecture rtl of spi is
    signal s_cnt1_we           : std_logic;
    signal s_cnt1_set_reset    : std_logic;
    -- Transmit purposes
+   signal s_cnt1_set_reset_tx : std_logic;
    signal fsm_tx              : t_spi_states;
    signal reg_spi_mosi        : std_logic_vector(31 downto 0);
    signal bit_cnt_tx          : natural range 0 to G_SPI_DATA_LENGTH;
    signal s_status_tx_busy    : std_logic;
    signal s_rising_edge_sclk_tx : std_logic;
+   signal s_sclk_on_tx        : std_logic;
    -- Receive purposes
+   signal s_sclk_on_rx        : std_logic;
+   signal s_cnt1_set_reset_rx : std_logic;
    signal reg_spi_miso        : std_logic_vector(7 downto 0);
    signal s_status_rx_ready   : std_logic;
    signal s_spi_sclk          : std_logic;
@@ -101,23 +105,18 @@ begin
 
 
    p_spi_clock_gen : process (i_clk)
-      variable v_cnt_bits : std_logic_vector(4 downto 0);
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
-            v_cnt_bits := (others => '0');
             if (G_SPI_CPOL = 1) then
                s_spi_sclk        <= '1';
             else
                s_spi_sclk        <= '0';
             end if;
          else
-            if (s_cnt1_overflow = '1') then
-               if (v_cnt_bits(v_cnt_bits'length-1) = '0') then
-                  v_cnt_bits        := std_logic_vector(unsigned(v_cnt_bits) + 1);
+            if (s_sclk_on_tx = '1' or s_sclk_on_rx = '1') then
+               if (s_cnt1_overflow = '1') then
                   s_spi_sclk        <= not(s_spi_sclk);
-               else
-                  v_cnt_bits := (others => '0');
                end if;
             end if;
          end if;
@@ -133,8 +132,9 @@ begin
             o_spi_mosi              <= 'Z';
             bit_cnt_tx              <= 0;
             s_status_tx_busy        <= '0';
-            s_cnt1_set_reset        <= '0';
             s_spi_ss_n_tx           <= '1';
+            s_sclk_on_tx            <= '0';
+            s_cnt1_set_reset        <= '0';
          else
             case (fsm_tx) is
 
@@ -142,11 +142,11 @@ begin
 
                   o_spi_mosi        <= 'Z';
                   s_status_tx_busy  <= '0';
-                  s_cnt1_set_reset  <= '0';
                   if (i_spi_we_data = '1') then
                      fsm_tx            <= LEADING_EDGE;
                      reg_spi_mosi      <= i_spi_wdata; -- Latch data to send
                      s_status_tx_busy  <= '1';
+                     s_sclk_on_tx      <= '1';
                      s_cnt1_set_reset  <= '1';
                   end if;
 
@@ -169,6 +169,7 @@ begin
                            o_spi_mosi   <= 'Z';
                            bit_cnt_tx   <= 0;
                            fsm_tx       <= TRAILING_EDGE;
+                        s_sclk_on_tx      <= '0';
                         else
                            o_spi_mosi   <= reg_spi_mosi(0); -- LSB is send first
                            reg_spi_mosi <= reg_spi_mosi(0) & reg_spi_mosi(31 downto 1);
@@ -183,8 +184,11 @@ begin
                      if (s_cnt1_overflow = '1') then
                         s_spi_ss_n_tx     <= '1';
                         fsm_tx            <= IDLE;
+                     s_cnt1_set_reset  <= '0';
                      end if;
                   else
+                     s_cnt1_set_reset  <= '0';
+                      --s_sclk_on_tx      <= '0';
                       s_spi_ss_n_tx     <= '1';
                       fsm_tx            <= IDLE;
                   end if;
@@ -192,6 +196,8 @@ begin
                when others =>
 
                   fsm_tx            <= IDLE;
+                  s_cnt1_set_reset  <= '0';
+                  s_sclk_on_tx      <= '0';
                   bit_cnt_tx        <= 0;
                   o_spi_mosi        <= 'Z';
                   s_status_tx_busy  <= '0';
@@ -206,7 +212,7 @@ begin
  -- add a new port i_spi_re_data. When high state occurs on this input bit
  -- it means turn on sclk, after shift data in rx register. After rx is complete
  -- then set o_spi_status valid data bit.
- -- Add additional process for reseting this valid data bit. Maybe modify 
+ -- Add additional process for reseting this valid data bit. Maybe modify
  -- i_spi_we_ctrl input signal?
 
    p_rx : process (i_clk)
