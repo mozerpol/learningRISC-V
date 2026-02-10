@@ -81,7 +81,7 @@ architecture rtl of spi is
    signal s_sclk_on_rx        : std_logic;
    signal s_spi_ss_n_rx       : std_logic;
    signal half_of_data_rx_f   : std_logic;
-   
+
 
 begin
 
@@ -118,7 +118,7 @@ begin
          else
             if (s_sclk_on_tx = '1' or s_sclk_on_rx = '1') then
                if (s_cnt1_overflow = '1') then
-                  s_spi_sclk        <= not(s_spi_sclk);
+                  s_spi_sclk           <= not(s_spi_sclk);
                end if;
             end if;
          end if;
@@ -130,38 +130,38 @@ begin
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
-            fsm_tx                  <= IDLE;
-            o_spi_mosi              <= 'Z';
-            bit_cnt_tx              <= 0;
-            s_status_tx_busy        <= '0';
-            s_spi_ss_n_tx           <= '1';
-            s_sclk_on_tx            <= '0';
-            s_cnt1_set_reset_tx     <= '0';
-            half_of_data_tx_f       <= '0';
+            fsm_tx               <= IDLE;
+            o_spi_mosi           <= 'Z';
+            bit_cnt_tx           <= 0;
+            s_status_tx_busy     <= '0';
+            s_spi_ss_n_tx        <= '1';
+            s_sclk_on_tx         <= '0';
+            s_cnt1_set_reset_tx  <= '0';
+            half_of_data_tx_f    <= '0';
          else
             case (fsm_tx) is
 
                when IDLE   =>
 
-                  o_spi_mosi        <= 'Z';
-                  s_status_tx_busy  <= '0';
+                  o_spi_mosi           <= 'Z';
+                  s_status_tx_busy     <= '0';
                   if (i_spi_we_data = '1') then
-                     reg_spi_mosi      <= i_spi_wdata(7 downto 0); -- Latch data to send
-                     fsm_tx            <= LEADING_EDGE;
-                     s_cnt1_set_reset_tx <= '1';
+                     reg_spi_mosi         <= i_spi_wdata(7 downto 0); -- Latch data to send
+                     fsm_tx               <= LEADING_EDGE;
+                     s_cnt1_set_reset_tx  <= '1';
                   end if;
 
                when LEADING_EDGE =>
 
                   if (s_cnt1_overflow = '1') then
-                     s_spi_ss_n_tx     <= '0';
-                     s_sclk_on_tx      <= '1';
-                     bit_cnt_tx        <= bit_cnt_tx + 1;
-                     fsm_tx            <= DATA;
+                     s_spi_ss_n_tx        <= '1';
+                     s_sclk_on_tx         <= '1';
+                     bit_cnt_tx           <= bit_cnt_tx + 1;
+                     fsm_tx               <= DATA;
                      if (G_SPI_CPHA = 0) then
-                        o_spi_mosi        <= reg_spi_mosi(0); -- LSB is send first
-                        reg_spi_mosi      <= reg_spi_mosi(0) & reg_spi_mosi(7 downto 1);
-                        half_of_data_tx_f <= '1';
+                        o_spi_mosi           <= reg_spi_mosi(0); -- LSB is send first
+                        reg_spi_mosi         <= reg_spi_mosi(0) & reg_spi_mosi(7 downto 1);
+                        half_of_data_tx_f    <= '1';
                      end if;
                   end if;
 
@@ -169,20 +169,20 @@ begin
 
                   if (s_cnt1_overflow = '1') then
                      if (bit_cnt_tx = 16) then
-                        s_sclk_on_tx      <= '0';
-                        bit_cnt_tx        <= 0;
-                        fsm_tx            <= TRAILING_EDGE;
+                        s_sclk_on_tx         <= '0';
+                        bit_cnt_tx           <= 0;
+                        fsm_tx               <= TRAILING_EDGE;
                         if (G_SPI_CPHA = 0) then
-                           o_spi_mosi       <= 'Z';
+                           o_spi_mosi           <= 'Z';
                         end if;
                      else
-                        bit_cnt_tx        <= bit_cnt_tx + 1;
+                        bit_cnt_tx           <= bit_cnt_tx + 1;
                         if (half_of_data_tx_f = '1') then
-                            half_of_data_tx_f <= '0';
+                            half_of_data_tx_f    <= '0';
                         else
-                           o_spi_mosi        <= reg_spi_mosi(0); -- LSB is send first
-                           reg_spi_mosi      <= reg_spi_mosi(0) & reg_spi_mosi(7 downto 1);
-                           half_of_data_tx_f <= '1';
+                           o_spi_mosi           <= reg_spi_mosi(0); -- LSB is send first
+                           reg_spi_mosi         <= reg_spi_mosi(0) & reg_spi_mosi(7 downto 1);
+                           half_of_data_tx_f    <= '1';
                         end if;
                      end if;
                   end if;
@@ -190,22 +190,22 @@ begin
                when TRAILING_EDGE =>
 
                   if (s_cnt1_overflow = '1') then
-                     fsm_tx            <= IDLE;
-                     s_cnt1_set_reset_tx <= '0';
-                     s_spi_ss_n_tx     <= '1';
-                     o_spi_mosi       <= 'Z';
+                     fsm_tx               <= IDLE;
+                     s_cnt1_set_reset_tx  <= '0';
+                     s_spi_ss_n_tx        <= '1';
+                     o_spi_mosi           <= 'Z';
                   end if;
 
                when others =>
 
-                fsm_tx                  <= IDLE;
-                o_spi_mosi              <= 'Z';
-                bit_cnt_tx              <= 0;
-                s_status_tx_busy        <= '0';
-                s_spi_ss_n_tx           <= '1';
-                s_sclk_on_tx            <= '0';
-                s_cnt1_set_reset_tx     <= '0';
-                half_of_data_tx_f       <= '0';
+                  fsm_tx               <= IDLE;
+                  o_spi_mosi           <= 'Z';
+                  bit_cnt_tx           <= 0;
+                  s_status_tx_busy     <= '0';
+                  s_spi_ss_n_tx        <= '1';
+                  s_sclk_on_tx         <= '0';
+                  s_cnt1_set_reset_tx  <= '0';
+                  half_of_data_tx_f    <= '0';
 
             end case;
          end if;
