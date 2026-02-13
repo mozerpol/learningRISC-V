@@ -39,7 +39,6 @@ package riscpol_pkg is
    constant C_SPI_FREQUENCY_HZ      : positive := 1_000_000; -- TODO: describe
    -- that for some freq formula is not accurate (for example 2 MHz is not
    -- possible, it's 1.92 MHz)
-   constant C_SPI_DATA_LENGTH       : positive := 8;
    constant C_SPI_CPOL              : natural  := 0;
    constant C_SPI_CPHA              : natural  := 0;
 
@@ -51,9 +50,9 @@ package riscpol_pkg is
    constant C_MMIO_ADDR_7SEGMENT    : integer  := 62;
    constant C_MMIO_ADDR_UART_DATA   : integer  := 61;
    constant C_MMIO_ADDR_UART_STATUS : integer  := 60;
-   constant C_MMIO_ADDR_SPI_DATA    : integer  := 59;
+   constant C_MMIO_ADDR_SPI_SEND_DATA    : integer  := 59;
    constant C_MMIO_ADDR_SPI_STATUS  : integer  := 58;
-   constant C_MMIO_ADDR_SPI_CONTROL : integer  := 57;
+   constant C_MMIO_ADDR_SPI_READ_DATA : integer  := 57;
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);

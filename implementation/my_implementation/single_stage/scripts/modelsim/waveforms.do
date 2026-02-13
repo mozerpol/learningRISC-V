@@ -44,8 +44,8 @@ add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bi
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/s_7segment_4_tb
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/s_7segment_anodes_tb
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix hex /riscpol_tb/inst_riscpol/s_mmio_data_spi
-add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/s_mmio_we_spi_ctrl
-add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/s_mmio_we_spi_data
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/s_mmio_rd_spi
+add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/s_mmio_we_spi
 
 
 add wave         -group ALU         -radix hex /riscpol_tb/inst_riscpol/inst_core/inst_alu/i_alu_operand_1
@@ -158,8 +158,8 @@ add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mm
 add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram
 add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_7seg
 add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_uart
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_spi_ctrl
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_spi_data
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_rd_spi
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_spi
 add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_data
 
 
@@ -226,21 +226,20 @@ add wave -expand -group SPI         -radix dec /riscpol_tb/inst_riscpol/inst_spi
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_ss_n
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_sclk
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_mosi
-add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_mosi
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_miso
 add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/i_spi_wdata
-add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_we_ctrl
-add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_we_data
+add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_read
+add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/i_spi_write
 add wave         -group SPI         -radix hex /riscpol_tb/inst_riscpol/inst_spi/o_spi_data
 add wave         -group SPI         -radix bin /riscpol_tb/inst_riscpol/inst_spi/o_spi_status
 add wave         -group SPI -group INTERNAL_PROC_TX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/fsm_tx
-add wave         -group SPI -group INTERNAL_PROC_TX         -radix dec /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_tx
-add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_miso
-add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/half_of_data_tx_f
+add wave         -group SPI -group INTERNAL_PROC_TX         -radix dec /riscpol_tb/inst_riscpol/inst_spi/cnt_bit_tx
+add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/slv_spi_miso
+add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/s_half_of_data_tx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/fsm_rx
-add wave         -group SPI -group INTERNAL_PROC_RX         -radix dec /riscpol_tb/inst_riscpol/inst_spi/bit_cnt_rx
-add wave         -group SPI -group INTERNAL_PROC_RX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/reg_spi_mosi
-add wave         -group SPI -group INTERNAL_PROC_RX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/half_of_data_rx_f
+add wave         -group SPI -group INTERNAL_PROC_RX         -radix dec /riscpol_tb/inst_riscpol/inst_spi/cnt_bit_rx
+add wave         -group SPI -group INTERNAL_PROC_RX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/slv_spi_mosi
+add wave         -group SPI -group INTERNAL_PROC_RX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/s_half_of_data_rx
 add wave         -group SPI -group COUNTER         -radix dec /riscpol_tb/inst_riscpol/inst_spi/inst_counter/G_COUNTER1_VALUE
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/o_cnt1_overflow
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_set_reset
