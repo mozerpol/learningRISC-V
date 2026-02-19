@@ -55,8 +55,8 @@ begin
       std_logic_vector(to_unsigned(i_mmio_q_cnt1, 32)) when C_MMIO_ADDR_CNT1 - 1,
       i_mmio_data_uart                                 when C_MMIO_ADDR_UART_DATA - 1, 
       i_mmio_status_uart                               when C_MMIO_ADDR_UART_STATUS - 1, 
-      i_mmio_data_spi                                  when C_MMIO_ADDR_SPI_READ_DATA - 1,
-      i_mmio_status_spi                                when C_MMIO_ADDR_SPI_STATUS - 1,
+      i_mmio_data_spi                                  when C_MMIO_ADDR_SPI_READ_DATA,
+      i_mmio_status_spi                                when C_MMIO_ADDR_SPI_STATUS,
       i_mmio_data_ram                                  when others;
 
 
@@ -67,6 +67,8 @@ begin
    begin
       if (i_mmio_write_enable = '1') then
          case (i_mmio_waddr) is
+            -- TODO: it shouldn't be "-1", it's confusing during programming, 
+            -- that i have to remember to sub "-1" from address in instruction. 
             when C_MMIO_ADDR_GPIO - 1     =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '1';
@@ -99,7 +101,7 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-            when C_MMIO_ADDR_SPI_SEND_DATA - 1 =>
+            when C_MMIO_ADDR_SPI_SEND_DATA =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';
@@ -107,7 +109,7 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '1';
-            when C_MMIO_ADDR_SPI_READ_DATA - 1 =>
+            when C_MMIO_ADDR_SPI_READ_DATA =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
                o_mmio_we_cnt1      <= '0';

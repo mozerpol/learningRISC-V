@@ -52,7 +52,8 @@ begin
       variable v_ram_address : std_logic_vector(31 downto 0);
    begin
       if (i_rst_n = '0') then
-         o_write_enable    <= C_READ_ENABLE;
+         o_write_enable    <= C_READ_ENABLE; -- TODO: if it is '1' it can be 
+         -- assignet without using constant.
          o_byte_enable     <= (others => '0');
          o_raddr           <= 0;
          o_waddr           <= 0;
@@ -62,6 +63,8 @@ begin
          v_ram_address     := std_logic_vector(unsigned(i_rs1_data) + unsigned(i_imm));
          o_waddr           <= to_integer(unsigned(v_ram_address(7 downto 2)));
          o_raddr           <= 0;
+         -- TODO: others => '0' is not necessary
+         -- get rid of waddr and raddr, should be addr only.
          case i_data_mem_mgmt_ctrl is
             when C_SW   =>
                o_write_enable <= C_WRITE_ENABLE;
