@@ -88,7 +88,7 @@ architecture rtl of riscpol is
    );
    end component mmio;
 
-
+   -- TODO: modify memory for one addr bus, inside ram it can be merged
    component byte_enabled_simple_dual_port_ram is
       generic (
          ADDR_WIDTH           : natural := C_RAM_LENGTH;
