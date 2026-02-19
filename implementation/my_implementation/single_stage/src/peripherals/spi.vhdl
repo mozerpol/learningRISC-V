@@ -143,8 +143,8 @@ begin
                when ST_IDLE   =>
 
                   o_spi_mosi           <= 'Z';
-                  s_status_tx_busy     <= '0';
                   if (i_spi_write = '1') then
+                     s_status_tx_busy     <= '0';
                      slv_spi_mosi         <= i_spi_wdata(7 downto 0); -- Latch data to send
                      fsm_tx               <= ST_LEADING_EDGE;
                      s_cnt1_set_reset_tx  <= '1';
@@ -193,6 +193,7 @@ begin
                      s_cnt1_set_reset_tx  <= '0';
                      s_spi_ss_n_tx        <= '1';
                      o_spi_mosi           <= 'Z';
+                     s_status_tx_busy     <= '1';
                   end if;
 
                when others =>
