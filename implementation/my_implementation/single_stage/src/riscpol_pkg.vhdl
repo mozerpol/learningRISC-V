@@ -45,14 +45,17 @@ package riscpol_pkg is
    -- TODO: addresses should start from 0 upwards, not from 64 downwards...
    -- also I think addresses are wrong... 
    constant C_MMIO_ADDR_GPIO        : integer  := 64; -- At which address is
-   -- access to GPIO.
-   constant C_MMIO_ADDR_CNT1        : integer  := 63;
-   constant C_MMIO_ADDR_7SEGMENT    : integer  := 62;
-   constant C_MMIO_ADDR_UART_DATA   : integer  := 61;
-   constant C_MMIO_ADDR_UART_STATUS : integer  := 60;
-   constant C_MMIO_ADDR_SPI_SEND_DATA    : integer  := 59;
-   constant C_MMIO_ADDR_SPI_STATUS  : integer  := 58;
-   constant C_MMIO_ADDR_SPI_READ_DATA : integer  := 57;
+   -- access to GPIO. -- 0
+   -- TODO: remove addr, it's not necessary, it's obvius it's a addr, addresses
+   -- should start from 0
+   constant C_MMIO_ADDR_CNT1        : integer  := 63; -- 1
+   constant C_MMIO_ADDR_7SEGMENT    : integer  := 62; -- 2
+   constant C_MMIO_ADDR_UART_DATA   : integer  := 61; -- TODO: rename: SEND_DATA
+   -- 3
+   constant C_MMIO_ADDR_UART_STATUS : integer  := 60; -- 4
+   constant C_MMIO_ADDR_SPI_SEND_DATA    : integer  := 5; -- 5
+   constant C_MMIO_ADDR_SPI_READ_DATA : integer  := 6;
+   constant C_MMIO_ADDR_SPI_STATUS  : integer  := 7;
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
