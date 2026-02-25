@@ -6,11 +6,12 @@
 ########################################
 ##                TX                  ##
 ########################################
+addi  x0,  x0,   0
 addi  x2,  x0,   1     # x2 = 0x00000001, compare with SPI status register
 addi  x3,  x0,   0x95  # x3 = 0x00000095, data to send. 0x95 = 0b10010101
-sw    x3,  20(x0)     # Send data by SPI
+sw    x3,  20(x0)      # Send data by SPI
 loop35:
-lw    x2,  28(x0)     # Load SPI status bit to x2 register
+lw    x2,  28(x0)      # Load SPI status bit to x2 register
 beq   x2,  x0,   loop35# Check if uart tx is busy
 ########################################
 ##                RX                  ##
