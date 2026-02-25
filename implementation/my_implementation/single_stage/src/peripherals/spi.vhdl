@@ -153,7 +153,7 @@ begin
                when ST_LEADING_EDGE =>
 
                   if (s_cnt1_overflow = '1') then
-                     s_spi_ss_n_tx        <= '1';
+                     s_spi_ss_n_tx        <= '0';
                      s_sclk_on_tx         <= '1';
                      cnt_bit_tx           <= cnt_bit_tx + 1;
                      fsm_tx               <= ST_DATA;

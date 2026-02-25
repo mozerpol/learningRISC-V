@@ -257,7 +257,7 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk);
    end procedure;
 
-
+   -- TODO: instruction argument is it necessary, check_uart_rx is without this
    procedure check_uart_tx(constant instruction       : in string;
                         constant desired_value        : in std_logic_vector(31 downto 0);
                         signal clk                    : in std_logic;
@@ -343,27 +343,31 @@ package body riscpol_tb_pkg is
 
 
    procedure check_spi_tx(constant instruction        : in string;
-                        constant value_to_send        : in std_logic_vector(31 downto 0);
-                        signal clk                    : in std_logic;
-                        signal test_point             : out integer) is
+                          constant value_to_send        : in std_logic_vector(31 downto 0);
+                          signal clk                    : in std_logic;
+                          signal test_point             : out integer) is
       constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
+      alias spy_spi_sclk is <<signal .riscpol_tb.inst_riscpol.o_spi_sclk: std_logic >>;
+      alias spy_spi_ss_n is <<signal .riscpol_tb.inst_riscpol.o_spi_ss_n: std_logic >>;
       alias spy_spi_mosi is <<signal .riscpol_tb.inst_riscpol.o_spi_mosi: std_logic >>;
    begin
-         wait until rising_edge(clk);
-         wait until rising_edge(clk);
-         wait until rising_edge(clk);
-      for i in 0 to 31 loop
-         wait for C_WAIT_TIME;
-         if (spy_spi_mosi /= value_to_send(31-i)) then
+      wait until spy_spi_ss_n = '0';
+      wait until rising_edge(spy_spi_sclk);
+      for i in 0 to 7 loop
+         if (spy_spi_mosi /= value_to_send(i)) then
             echo("ERROR SPI TX: " & instruction);
             echo("value_to_send: " & to_string(value_to_send));
-            echo("Shoudl be: " & to_string(value_to_send(31-i)));
+            echo("Shoudl be: " & to_string(value_to_send(i)));
             echo("spi_mosi: " & to_string(spy_spi_mosi));
             echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
             echo("");
          end if;
+         wait for C_WAIT_TIME;
       end loop;
-         wait for C_WAIT_TIME/2;
+         wait until rising_edge(clk); -- lw gpr(x), 28(x0)
+         wait until rising_edge(clk); -- Check   beq   x2,  x0,   loop35
+         wait until rising_edge(clk);
          wait until rising_edge(clk);
          wait until rising_edge(clk);
    end procedure;
