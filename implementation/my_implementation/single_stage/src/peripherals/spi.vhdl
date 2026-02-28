@@ -235,8 +235,11 @@ begin
             case (fsm_tx) is
 
                when ST_IDLE   =>
-
-                  if (i_spi_read = '1') then
+                  
+                  if (i_spi_read = '1' and i_spi_wdata(0) = '1') then
+                     -- start reading data from slave
+                  elsif (i_spi_read = '1' and i_spi_wdata(0) = '0') then
+                     -- pass readed data to the core
                   end if;
 
                when others =>

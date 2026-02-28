@@ -79,7 +79,7 @@ package riscpol_tb_pkg is
    procedure check_spi_tx(constant instruction        : in string;
                         constant value_to_send        : in std_logic_vector(31 downto 0);
                         signal clk                    : in std_logic;
-                        signal test_point             : out integer);
+                        signal test_point             : out integer) is
 
 end riscpol_tb_pkg;
 
@@ -343,9 +343,9 @@ package body riscpol_tb_pkg is
 
 
    procedure check_spi_tx(constant instruction        : in string;
-                          constant value_to_send        : in std_logic_vector(31 downto 0);
-                          signal clk                    : in std_logic;
-                          signal test_point             : out integer) is
+                        constant value_to_send        : in std_logic_vector(31 downto 0);
+                        signal clk                    : in std_logic;
+                        signal test_point             : out integer) is
       constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
       alias spy_spi_sclk is <<signal .riscpol_tb.inst_riscpol.o_spi_sclk: std_logic >>;
       alias spy_spi_ss_n is <<signal .riscpol_tb.inst_riscpol.o_spi_ss_n: std_logic >>;
@@ -365,8 +365,8 @@ package body riscpol_tb_pkg is
          end if;
          wait for C_WAIT_TIME;
       end loop;
-         wait until rising_edge(clk); -- lw gpr(x), 28(x0)
-         wait until rising_edge(clk); -- Check   beq   x2,  x0,   loop35
+         wait until rising_edge(clk); -- Load spi status register to gpr
+         wait until rising_edge(clk); -- Check status spi register
          wait until rising_edge(clk);
          wait until rising_edge(clk);
          wait until rising_edge(clk);
