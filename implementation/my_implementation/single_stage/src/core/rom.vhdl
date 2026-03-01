@@ -28,12 +28,11 @@ package rom is
    type t_rom  is array (0 to C_ROM_LENGTH-1) of std_logic_vector(31 downto 0);
 
    constant C_CODE : t_rom := (
-      x"00000013",
-      x"00100113",
+      x"00000113",
       x"09500193",
       x"00302a23",
       x"01c02103",
-      x"fe010ee3",
+      x"fe011ee3",
       x"00000013",
       x"00000093",
       x"00108093",
