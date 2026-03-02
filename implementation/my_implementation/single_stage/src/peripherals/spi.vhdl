@@ -77,6 +77,7 @@ architecture rtl of spi is
    signal slv_spi_miso        : std_logic_vector(7 downto 0);
    signal cnt_bit_rx          : natural range 0 to 16;
    signal s_status_rx_ready   : std_logic;
+   signal s_status_rx_busy    : std_logic;
    signal s_sclk_on_rx        : std_logic;
    signal s_spi_ss_n_rx       : std_logic;
    signal s_half_of_data_rx   : std_logic;
@@ -100,9 +101,10 @@ begin
 
    o_spi_sclk                 <= s_spi_sclk;
    o_spi_ss_n                 <= s_spi_ss_n_tx and s_spi_ss_n_rx;
-   o_spi_status(0)            <= s_status_tx_busy;
-   o_spi_status(1)            <= s_status_rx_ready;
-   o_spi_status(31 downto 2)  <= (others => '0');
+   o_spi_status(0)            <= s_status_tx_busy; -- TODO: is it busy or ready?
+   o_spi_status(1)            <= s_status_rx_busy;
+   o_spi_status(2)            <= s_status_rx_ready;
+   o_spi_status(31 downto 3)  <= (others => '0');
 
 
    p_spi_clock_gen : process (i_clk)
@@ -144,7 +146,7 @@ begin
 
                   o_spi_mosi           <= 'Z';
                   if (i_spi_write = '1') then
-                     s_status_tx_busy     <= '0';
+                     s_status_tx_busy     <= '1';
                      slv_spi_mosi         <= i_spi_wdata(7 downto 0); -- Latch data to send
                      fsm_tx               <= ST_LEADING_EDGE;
                      s_cnt1_set_reset_tx  <= '1';
@@ -193,7 +195,7 @@ begin
                      s_cnt1_set_reset_tx  <= '0';
                      s_spi_ss_n_tx        <= '1';
                      o_spi_mosi           <= 'Z';
-                     s_status_tx_busy     <= '1';
+                     s_status_tx_busy     <= '0';
                   end if;
 
                when others =>
@@ -227,24 +229,77 @@ begin
             fsm_rx                  <= ST_IDLE;
             cnt_bit_rx              <= 0;
             s_status_rx_ready       <= '0';
+            s_status_rx_busy        <= '0';
             s_spi_ss_n_rx           <= '1';
             s_sclk_on_rx            <= '0';
             s_cnt1_set_reset_rx     <= '0';
             s_half_of_data_rx       <= '0';
          else
-            case (fsm_tx) is
+            case (fsm_rx) is
 
                when ST_IDLE   =>
-                  
+
                   if (i_spi_read = '1' and i_spi_wdata(0) = '1') then
                      -- start reading data from slave
+                     fsm_rx               <= ST_LEADING_EDGE;
+                     s_cnt1_set_reset_rx  <= '1';
+                     s_status_rx_busy     <= '1';
                   elsif (i_spi_read = '1' and i_spi_wdata(0) = '0') then
-                     -- pass readed data to the core
+                     s_status_rx_ready       <= '0';
+                  end if;
+
+               when ST_LEADING_EDGE =>
+
+                  if (s_cnt1_overflow = '1') then
+                     s_spi_ss_n_rx        <= '0';
+                     s_sclk_on_rx         <= '1';
+                     cnt_bit_rx           <= cnt_bit_rx + 1;
+                     fsm_rx               <= ST_DATA;
+                     if (G_SPI_CPHA = 0) then
+                        s_half_of_data_rx    <= '1';
+                     end if;
+                  end if;
+
+               when ST_DATA   =>
+
+                  if (s_cnt1_overflow = '1') then
+                     if (cnt_bit_rx = 16) then
+                        s_sclk_on_rx         <= '0';
+                        cnt_bit_rx           <= 0;
+                        fsm_rx               <= ST_TRAILING_EDGE;
+                        if (G_SPI_CPHA = 0) then
+
+                        end if;
+                     else
+                        cnt_bit_rx           <= cnt_bit_rx + 1;
+                        if (s_half_of_data_rx = '1') then
+                            s_half_of_data_rx    <= '0';
+                        else
+                           s_half_of_data_rx    <= '1';
+                        end if;
+                     end if;
+                  end if;
+
+               when ST_TRAILING_EDGE =>
+
+                  if (s_cnt1_overflow = '1') then
+                     fsm_rx               <= ST_IDLE;
+                     s_cnt1_set_reset_rx  <= '0';
+                     s_spi_ss_n_rx        <= '1';
+                     s_status_rx_busy     <= '0';
+                     s_status_rx_ready    <= '1';
                   end if;
 
                when others =>
 
-                  NULL;
+                  fsm_rx               <= ST_IDLE;
+                  cnt_bit_rx           <= 0;
+                  s_status_rx_ready    <= '0';
+                  s_status_rx_busy     <= '0';
+                  s_spi_ss_n_rx        <= '1';
+                  s_sclk_on_rx         <= '0';
+                  s_cnt1_set_reset_rx  <= '0';
+                  s_half_of_data_rx    <= '0';
 
             end case;
          end if;
