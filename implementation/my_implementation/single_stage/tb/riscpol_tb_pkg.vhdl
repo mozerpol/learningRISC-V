@@ -79,7 +79,7 @@ package riscpol_tb_pkg is
    procedure check_spi_tx(constant instruction        : in string;
                         constant value_to_send        : in std_logic_vector(31 downto 0);
                         signal clk                    : in std_logic;
-                        signal test_point             : out integer) is
+                        signal test_point             : out integer);
 
 end riscpol_tb_pkg;
 
