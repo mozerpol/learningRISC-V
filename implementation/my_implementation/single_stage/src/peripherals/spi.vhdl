@@ -76,7 +76,6 @@ architecture rtl of spi is
    signal fsm_rx              : t_spi_states;
    signal slv_spi_miso        : std_logic_vector(7 downto 0);
    signal cnt_bit_rx          : natural range 0 to 16;
-   signal s_status_rx_ready   : std_logic;
    signal s_status_rx_busy    : std_logic;
    signal s_sclk_on_rx        : std_logic;
    signal s_spi_ss_n_rx       : std_logic;
@@ -101,10 +100,9 @@ begin
 
    o_spi_sclk                 <= s_spi_sclk;
    o_spi_ss_n                 <= s_spi_ss_n_tx and s_spi_ss_n_rx;
-   o_spi_status(0)            <= s_status_tx_busy; -- TODO: is it busy or ready?
+   o_spi_status(0)            <= s_status_tx_busy;
    o_spi_status(1)            <= s_status_rx_busy;
-   o_spi_status(2)            <= s_status_rx_ready;
-   o_spi_status(31 downto 3)  <= (others => '0');
+   o_spi_status(31 downto 2)  <= (others => '0');
 
 
    p_spi_clock_gen : process (i_clk)
@@ -215,20 +213,12 @@ begin
    end process p_tx;
 
 
- -- TODO:
- -- add a new port i_spi_re_data. When high state occurs on this input bit
- -- it means turn on sclk, after shift data in rx register. After rx is complete
- -- then set o_spi_status valid data bit.
- -- Add additional process for reseting this valid data bit. Maybe modify
- -- i_spi_we_ctrl input signal?
-
    p_rx : process (i_clk)
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             fsm_rx                  <= ST_IDLE;
             cnt_bit_rx              <= 0;
-            s_status_rx_ready       <= '0';
             s_status_rx_busy        <= '0';
             s_spi_ss_n_rx           <= '1';
             s_sclk_on_rx            <= '0';
@@ -239,13 +229,11 @@ begin
 
                when ST_IDLE   =>
 
-                  if (i_spi_read = '1' and i_spi_wdata(0) = '1') then
-                     -- start reading data from slave
+                  if (i_spi_read = '1') then
+                     -- Start reading data from slave
                      fsm_rx               <= ST_LEADING_EDGE;
                      s_cnt1_set_reset_rx  <= '1';
                      s_status_rx_busy     <= '1';
-                  elsif (i_spi_read = '1' and i_spi_wdata(0) = '0') then
-                     s_status_rx_ready       <= '0';
                   end if;
 
                when ST_LEADING_EDGE =>
@@ -257,6 +245,7 @@ begin
                      fsm_rx               <= ST_DATA;
                      if (G_SPI_CPHA = 0) then
                         s_half_of_data_rx    <= '1';
+                        slv_spi_miso         <= i_spi_miso & slv_spi_miso(7 downto 1);
                      end if;
                   end if;
 
@@ -275,7 +264,8 @@ begin
                         if (s_half_of_data_rx = '1') then
                             s_half_of_data_rx    <= '0';
                         else
-                           s_half_of_data_rx    <= '1';
+                            slv_spi_miso         <= i_spi_miso & slv_spi_miso(7 downto 1);
+                            s_half_of_data_rx    <= '1';
                         end if;
                      end if;
                   end if;
@@ -287,14 +277,13 @@ begin
                      s_cnt1_set_reset_rx  <= '0';
                      s_spi_ss_n_rx        <= '1';
                      s_status_rx_busy     <= '0';
-                     s_status_rx_ready    <= '1';
+                     o_spi_data(7 downto 0)  <= slv_spi_miso; -- Pass readed data to the core
                   end if;
 
                when others =>
 
                   fsm_rx               <= ST_IDLE;
                   cnt_bit_rx           <= 0;
-                  s_status_rx_ready    <= '0';
                   s_status_rx_busy     <= '0';
                   s_spi_ss_n_rx        <= '1';
                   s_sclk_on_rx         <= '0';

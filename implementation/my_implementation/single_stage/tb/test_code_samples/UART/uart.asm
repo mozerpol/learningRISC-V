@@ -27,7 +27,7 @@ addi  x1,  x0,   0xAB  # x1 = 0x000000AB
 addi  x2,  x0,   0x12  # x2 = 0x00000012
 addi  x3,  x0,   0xCD  # x3 = 0x000000CD
 addi  x4,  x0,   0x99  # x4 = 0x00000099
-addi  x5,  x0,   0     # x5 = 0x000000AB
+addi  x5,  x0,   0     # x5 = 0x00000000
 
 loop31:
 lw    x5,  243(x0)     # Load UART rx data register to x5 register

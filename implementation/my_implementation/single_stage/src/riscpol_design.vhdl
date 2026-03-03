@@ -231,7 +231,6 @@ architecture rtl of riscpol is
    -- SPI
    signal s_spi_ss_n          : std_logic;
    signal s_spi_mosi          : std_logic;
-   signal s_spi_miso          : std_logic;
    signal s_spi_sclk          : std_logic;
 
 
@@ -270,8 +269,8 @@ begin
       o_mmio_re_gpio       => s_mmio_re_gpio,
       o_mmio_we_cnt1       => s_mmio_we_cnt1,
       o_mmio_we_uart       => s_mmio_we_uart,
-      o_mmio_we_7seg       => s_mmio_we_7seg,      
-      o_mmio_we_spi        => s_mmio_we_spi,      
+      o_mmio_we_7seg       => s_mmio_we_7seg,
+      o_mmio_we_spi        => s_mmio_we_spi,
       o_mmio_rd_spi        => s_mmio_rd_spi,
       o_mmio_data          => s_mmio_data
    );
@@ -345,7 +344,7 @@ begin
       i_spi_wdata          => s_core_data_write,
       i_spi_write          => s_mmio_we_spi,
       i_spi_read           => s_mmio_rd_spi,
-      i_spi_miso           => s_spi_miso,
+      i_spi_miso           => i_spi_miso,
       o_spi_ss_n           => s_spi_ss_n,
       o_spi_mosi           => s_spi_mosi,
       o_spi_sclk           => s_spi_sclk,
@@ -353,7 +352,7 @@ begin
       o_spi_status         => s_mmio_status_spi
    );
 
-
+   -- TODO: only rst and clk should be here
    rst_n                   <= i_rst_n;
    clk                     <= i_clk;
    io_gpio                 <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
