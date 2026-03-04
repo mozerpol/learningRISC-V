@@ -80,6 +80,13 @@ package riscpol_tb_pkg is
                         constant value_to_send        : in std_logic_vector(31 downto 0);
                         signal clk                    : in std_logic;
                         signal test_point             : out integer);
+   --
+   procedure check_spi_rx(constant instruction        : in string;
+                        constant desired_value        : in std_logic_vector(7 downto 0);
+                        signal spi_miso               : out std_logic;
+                        signal clk                    : in std_logic;
+                        signal test_point             : out integer);
+
 
 end riscpol_tb_pkg;
 
@@ -304,7 +311,7 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk);
    end procedure;
 
-
+   -- TODO: mishmash with check_spi_rx - in SPI case "rx" means something different
    procedure check_uart_rx(constant value_to_send     : in std_logic_vector(31 downto 0);
                         constant number_bytes_to_send : in positive range 1 to 4;
                         signal uart_rx                : out std_logic;
@@ -370,6 +377,30 @@ package body riscpol_tb_pkg is
          wait until rising_edge(clk);
          wait until rising_edge(clk);
          wait until rising_edge(clk);
+   end procedure;
+
+
+   procedure check_spi_rx(constant instruction        : in string;
+                        constant desired_value        : in std_logic_vector(7 downto 0);
+                        signal spi_miso               : out std_logic;
+                        signal clk                    : in std_logic;
+                        signal test_point             : out integer) is
+      constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
+      alias spy_spi_sclk is <<signal .riscpol_tb.inst_riscpol.o_spi_sclk: std_logic >>;
+      alias spy_spi_ss_n is <<signal .riscpol_tb.inst_riscpol.o_spi_ss_n: std_logic >>;
+   begin
+      wait until spy_spi_ss_n = '0';
+
+      for i in 0 to 7 loop
+          spi_miso      <= desired_value(i);
+          wait until falling_edge(spy_spi_sclk);
+      end loop;
+      spi_miso      <= 'Z';
+      wait until rising_edge(clk); -- Load spi status register to gpr
+      wait until rising_edge(clk); -- Check status spi register
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
    end procedure;
 
 

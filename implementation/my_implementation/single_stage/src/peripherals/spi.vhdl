@@ -245,7 +245,6 @@ begin
                      fsm_rx               <= ST_DATA;
                      if (G_SPI_CPHA = 0) then
                         s_half_of_data_rx    <= '1';
-                        slv_spi_miso         <= i_spi_miso & slv_spi_miso(7 downto 1);
                      end if;
                   end if;
 
@@ -263,8 +262,8 @@ begin
                         cnt_bit_rx           <= cnt_bit_rx + 1;
                         if (s_half_of_data_rx = '1') then
                             s_half_of_data_rx    <= '0';
-                        else
                             slv_spi_miso         <= i_spi_miso & slv_spi_miso(7 downto 1);
+                        else
                             s_half_of_data_rx    <= '1';
                         end if;
                      end if;

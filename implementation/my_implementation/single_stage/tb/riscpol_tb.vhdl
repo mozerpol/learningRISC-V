@@ -120,7 +120,10 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
 
-      s_spi_miso_tb  <= '1';
+      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x0,  x0,   0", x"00000000", clk_tb, test_point); -- sw    x0,  24(x0)      # Start SPI read data
+      check_spi_rx("sw    x0,  24(x0)", x"95", s_spi_miso_tb, clk_tb, test_point);
 
       wait for 100 us;
 
