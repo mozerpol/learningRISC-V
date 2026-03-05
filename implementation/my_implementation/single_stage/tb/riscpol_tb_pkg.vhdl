@@ -380,6 +380,8 @@ package body riscpol_tb_pkg is
    end procedure;
 
 
+
+
    procedure check_spi_rx(constant instruction        : in string;
                         constant desired_value        : in std_logic_vector(7 downto 0);
                         signal spi_miso               : out std_logic;
@@ -388,14 +390,34 @@ package body riscpol_tb_pkg is
       constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
       alias spy_spi_sclk is <<signal .riscpol_tb.inst_riscpol.o_spi_sclk: std_logic >>;
       alias spy_spi_ss_n is <<signal .riscpol_tb.inst_riscpol.o_spi_ss_n: std_logic >>;
+      alias spy_gpr is <<signal .riscpol_tb.inst_riscpol.inst_core.inst_reg_file.gpr: t_gpr >>;
+      variable extracted_gpr : natural range 0 to 32;
    begin
+      extracted_gpr := gpr_extraction_from_string(instruction);
       wait until spy_spi_ss_n = '0';
-
       for i in 0 to 7 loop
-          spi_miso      <= desired_value(i);
-          wait until falling_edge(spy_spi_sclk);
+          if (C_SPI_CPHA = 0) then
+              spi_miso      <= desired_value(i);
+              wait until falling_edge(spy_spi_sclk);
+          else
+              spi_miso      <= desired_value(i);
+              wait until rising_edge(spy_spi_sclk);
+          end if;
       end loop;
       spi_miso      <= 'Z';
+      wait until spy_spi_ss_n = '1';
+      wait until rising_edge(clk); -- Load spi status register to gpr
+      wait until rising_edge(clk); -- Check status spi register
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      if (spy_gpr(extracted_gpr)(7 downto 0) /= desired_value) then
+         echo("ERROR SPI RX: " & instruction);
+         echo("desired_value: " & to_hstring(desired_value));
+         echo("GPR value: " & to_hstring(spy_gpr(extracted_gpr)));
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
       wait until rising_edge(clk); -- Load spi status register to gpr
       wait until rising_edge(clk); -- Check status spi register
       wait until rising_edge(clk);

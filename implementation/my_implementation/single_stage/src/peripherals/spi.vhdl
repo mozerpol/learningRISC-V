@@ -277,6 +277,7 @@ begin
                      s_spi_ss_n_rx        <= '1';
                      s_status_rx_busy     <= '0';
                      o_spi_data(7 downto 0)  <= slv_spi_miso; -- Pass readed data to the core
+                     o_spi_data(31 downto 8) <= (others => '0');
                   end if;
 
                when others =>
