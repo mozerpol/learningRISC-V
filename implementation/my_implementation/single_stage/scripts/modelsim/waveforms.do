@@ -239,6 +239,7 @@ add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_
 add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/s_status_tx_busy
 add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/slv_spi_mosi
 
+
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/fsm_rx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix dec /riscpol_tb/inst_riscpol/inst_spi/cnt_bit_rx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_status_rx_busy
