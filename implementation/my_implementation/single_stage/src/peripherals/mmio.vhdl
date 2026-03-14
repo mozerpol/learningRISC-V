@@ -31,6 +31,8 @@ entity mmio is
       i_mmio_status_uart   : in std_logic_vector(31 downto 0);
       i_mmio_data_spi      : in std_logic_vector(31 downto 0);
       i_mmio_status_spi    : in std_logic_vector(31 downto 0);
+      i_mmio_data_i2c      : in std_logic_vector(31 downto 0);
+      i_mmio_status_i2c    : in std_logic_vector(31 downto 0);
       o_mmio_we_ram        : out std_logic;
       o_mmio_we_gpio       : out std_logic;
       o_mmio_re_gpio       : out std_logic;
@@ -39,6 +41,8 @@ entity mmio is
       o_mmio_we_7seg       : out std_logic;
       o_mmio_we_spi        : out std_logic;
       o_mmio_rd_spi        : out std_logic;
+      o_mmio_we_i2c        : out std_logic;
+      o_mmio_rd_i2c        : out std_logic;
       o_mmio_data          : out std_logic_vector(31 downto 0)
 );
 end mmio;
@@ -53,8 +57,8 @@ begin
    with i_mmio_raddr select o_mmio_data <=
       i_mmio_q_gpio                                    when C_MMIO_ADDR_GPIO - 1,
       std_logic_vector(to_unsigned(i_mmio_q_cnt1, 32)) when C_MMIO_ADDR_CNT1 - 1,
-      i_mmio_data_uart                                 when C_MMIO_ADDR_UART_DATA - 1, 
-      i_mmio_status_uart                               when C_MMIO_ADDR_UART_STATUS - 1, 
+      i_mmio_data_uart                                 when C_MMIO_ADDR_UART_DATA - 1,
+      i_mmio_status_uart                               when C_MMIO_ADDR_UART_STATUS - 1,
       i_mmio_data_spi                                  when C_MMIO_ADDR_SPI_READ_DATA,
       i_mmio_status_spi                                when C_MMIO_ADDR_SPI_STATUS,
       i_mmio_data_ram                                  when others;
@@ -67,8 +71,8 @@ begin
    begin
       if (i_mmio_write_enable = '1') then
          case (i_mmio_waddr) is
-            -- TODO: it shouldn't be "-1", it's confusing during programming, 
-            -- that i have to remember to sub "-1" from address in instruction. 
+            -- TODO: it shouldn't be "-1", it's confusing during programming,
+            -- that i have to remember to sub "-1" from address in instruction.
             when C_MMIO_ADDR_GPIO - 1     =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '1';
