@@ -17,6 +17,8 @@ library riscpol_lib;
 library counter1_lib;
 
 
+--TODO: check if spi transmit data in a correct way (according with
+-- documentation), big or little endian. The same, check rx spi.
 entity spi is
    generic(
       G_SPI_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ;
