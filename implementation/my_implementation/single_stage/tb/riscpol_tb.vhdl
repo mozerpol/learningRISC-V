@@ -44,7 +44,9 @@ architecture tb of riscpol_tb is
       i_spi_miso              : in std_logic;
       o_spi_mosi              : out std_logic;
       o_spi_ss_n              : out std_logic;
-      o_spi_sclk              : out std_logic
+      o_spi_sclk              : out std_logic;
+      io_i2c_scl              : inout std_logic;
+      io_i2c_sda              : inout std_logic
    );
    end component riscpol;
 
@@ -67,6 +69,8 @@ architecture tb of riscpol_tb is
    signal s_spi_mosi_tb       : std_logic;
    signal s_spi_ss_n_tb       : std_logic;
    signal s_spi_sclk_tb       : std_logic;
+   signal s_i2c_scl_tb        : std_logic;
+   signal s_i2c_sda_tb        : std_logic;
 
 
 begin
@@ -87,7 +91,9 @@ begin
       i_spi_miso        => s_spi_miso_tb,
       o_spi_mosi        => s_spi_mosi_tb,
       o_spi_ss_n        => s_spi_ss_n_tb,
-      o_spi_sclk        => s_spi_sclk_tb
+      o_spi_sclk        => s_spi_sclk_tb,
+      io_i2c_scl        => s_i2c_scl_tb,
+      io_i2c_sda        => s_i2c_sda_tb
    );
 
 
@@ -108,6 +114,8 @@ begin
       gpio_tb        <= (others => 'Z');
       uart_rx_tb     <= '1';
       s_spi_miso_tb  <= 'Z';
+      s_i2c_scl_tb   <= 'Z';
+      s_i2c_sda_tb   <= 'Z';
       wait for C_CLK_PERIOD*20;
       rst_n_tb       <= '1';
       -- After the reset, three delays are required for the simulation purposes.
