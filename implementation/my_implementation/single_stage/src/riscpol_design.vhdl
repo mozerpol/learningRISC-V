@@ -25,6 +25,7 @@ library mmio_lib;
 library uart_lib;
 library seven_segment_lib;
 library spi_lib;
+library i2c_lib;
 
 
 entity riscpol is
@@ -42,7 +43,9 @@ entity riscpol is
       i_spi_miso              : in std_logic;
       o_spi_mosi              : out std_logic;
       o_spi_ss_n              : out std_logic;
-      o_spi_sclk              : out std_logic
+      o_spi_sclk              : out std_logic;
+      io_i2c_scl              : inout std_logic;
+      io_i2c_sda              : inout std_logic
    );
 end entity riscpol;
 
@@ -76,6 +79,8 @@ architecture rtl of riscpol is
          i_mmio_status_uart   : in std_logic_vector(31 downto 0);
          i_mmio_data_spi      : in std_logic_vector(31 downto 0);
          i_mmio_status_spi    : in std_logic_vector(31 downto 0);
+         i_mmio_data_i2c      : in std_logic_vector(31 downto 0);
+         i_mmio_status_i2c    : in std_logic_vector(31 downto 0);
          o_mmio_we_ram        : out std_logic;
          o_mmio_we_gpio       : out std_logic;
          o_mmio_re_gpio       : out std_logic;
@@ -84,6 +89,8 @@ architecture rtl of riscpol is
          o_mmio_we_7seg       : out std_logic;
          o_mmio_we_spi        : out std_logic;
          o_mmio_rd_spi        : out std_logic;
+         o_mmio_we_i2c        : out std_logic;
+         o_mmio_rd_i2c        : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -188,6 +195,24 @@ architecture rtl of riscpol is
    end component spi;
 
 
+   component i2c is
+      generic(
+         G_I2C_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ
+      );
+      port (
+         i_rst_n              : in std_logic;
+         i_clk                : in std_logic;
+         i_i2c_wdata          : in std_logic_vector(31 downto 0);
+         i_i2c_write          : in std_logic;
+         i_i2c_read           : in std_logic;
+         io_i2c_scl           : inout std_logic;
+         io_i2c_sda           : inout std_logic;
+         o_i2c_data           : out std_logic_vector(31 downto 0);
+         o_i2c_status         : out std_logic_vector(31 downto 0)
+   );
+   end component i2c;
+
+
    -- General
    signal rst_n               : std_logic;
    signal clk                 : std_logic;
@@ -198,13 +223,17 @@ architecture rtl of riscpol is
    signal s_mmio_we_cnt1      : std_logic;
    signal s_mmio_we_spi       : std_logic;
    signal s_mmio_rd_spi       : std_logic;
+   signal s_mmio_data_spi     : std_logic_vector(31 downto 0);
+   signal s_mmio_status_spi   : std_logic_vector(31 downto 0);
    signal s_mmio_data         : std_logic_vector(31 downto 0);
    signal s_mmio_data_uart    : std_logic_vector(31 downto 0);
    signal s_mmio_status_uart  : std_logic_vector(31 downto 0);
-   signal s_mmio_data_spi     : std_logic_vector(31 downto 0);
-   signal s_mmio_status_spi   : std_logic_vector(31 downto 0);
    signal s_mmio_we_uart      : std_logic;
    signal s_mmio_we_7seg      : std_logic;
+   signal s_mmio_we_i2c       : std_logic;
+   signal s_mmio_rd_i2c       : std_logic;
+   signal s_mmio_data_i2c     : std_logic_vector(31 downto 0);
+   signal s_mmio_status_i2c   : std_logic_vector(31 downto 0);
    -- Core
    signal s_core_data_write   : std_logic_vector(31 downto 0);
    signal s_core_write_enable : std_logic;
@@ -232,6 +261,9 @@ architecture rtl of riscpol is
    signal s_spi_ss_n          : std_logic;
    signal s_spi_mosi          : std_logic;
    signal s_spi_sclk          : std_logic;
+   -- I2C
+   signal s_i2c_scl           : std_logic;
+   signal s_i2c_sda           : std_logic;
 
 
 begin
@@ -264,6 +296,10 @@ begin
       i_mmio_status_uart   => s_uart_status,
       i_mmio_data_spi      => s_mmio_data_spi,
       i_mmio_status_spi    => s_mmio_status_spi,
+
+      i_mmio_data_i2c      => s_mmio_data_spi,
+      i_mmio_status_i2c    => s_mmio_status_spi,
+
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_re_gpio       => s_mmio_re_gpio,
@@ -351,6 +387,21 @@ begin
       o_spi_data           => s_mmio_data_spi,
       o_spi_status         => s_mmio_status_spi
    );
+
+
+   inst_i2c          : component i2c
+   port map(
+      i_rst_n              => rst_n,
+      i_clk                => clk,
+      i_i2c_wdata          => s_core_data_write,
+      i_i2c_write          => s_mmio_we_i2c,
+      i_i2c_read           => s_mmio_rd_i2c,
+      io_i2c_scl           => s_i2c_scl,
+      io_i2c_sda           => s_i2c_sda,
+      o_i2c_data           => s_mmio_data_i2c,
+      o_i2c_status         => s_mmio_status_spi
+   );
+
 
    -- TODO: only rst and clk should be here
    rst_n                   <= i_rst_n;
