@@ -296,10 +296,8 @@ begin
       i_mmio_status_uart   => s_uart_status,
       i_mmio_data_spi      => s_mmio_data_spi,
       i_mmio_status_spi    => s_mmio_status_spi,
-
-      i_mmio_data_i2c      => s_mmio_data_spi,
-      i_mmio_status_i2c    => s_mmio_status_spi,
-
+      i_mmio_data_i2c      => s_mmio_data_i2c,
+      i_mmio_status_i2c    => s_mmio_status_i2c,
       o_mmio_we_ram        => s_mmio_we_ram,
       o_mmio_we_gpio       => s_mmio_we_gpio,
       o_mmio_re_gpio       => s_mmio_re_gpio,
@@ -308,6 +306,8 @@ begin
       o_mmio_we_7seg       => s_mmio_we_7seg,
       o_mmio_we_spi        => s_mmio_we_spi,
       o_mmio_rd_spi        => s_mmio_rd_spi,
+      o_mmio_we_i2c        => s_mmio_we_i2c,
+      o_mmio_rd_i2c        => s_mmio_rd_i2c,
       o_mmio_data          => s_mmio_data
    );
 
@@ -399,7 +399,7 @@ begin
       io_i2c_scl           => s_i2c_scl,
       io_i2c_sda           => s_i2c_sda,
       o_i2c_data           => s_mmio_data_i2c,
-      o_i2c_status         => s_mmio_status_spi
+      o_i2c_status         => s_mmio_status_i2c
    );
 
 

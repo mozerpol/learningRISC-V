@@ -61,9 +61,12 @@ begin
       i_mmio_status_uart                               when C_MMIO_ADDR_UART_STATUS - 1,
       i_mmio_data_spi                                  when C_MMIO_ADDR_SPI_READ_DATA,
       i_mmio_status_spi                                when C_MMIO_ADDR_SPI_STATUS,
+      i_mmio_data_i2c                                  when C_MMIO_ADDR_I2C_READ_DATA,
+      i_mmio_status_i2c                                when C_MMIO_ADDR_I2C_STATUS,
       i_mmio_data_ram                                  when others;
 
 
+   -- TODO: this could be moved below, to the process??
    o_mmio_re_gpio <= '1' when i_mmio_raddr = C_MMIO_ADDR_GPIO - 1 else '0';
 
 
@@ -81,6 +84,8 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
             when C_MMIO_ADDR_CNT1 - 1     =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
@@ -89,6 +94,8 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
             when C_MMIO_ADDR_7SEGMENT - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
@@ -97,6 +104,8 @@ begin
                o_mmio_we_7seg      <= '1';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
             when C_MMIO_ADDR_UART_DATA - 1 =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
@@ -105,6 +114,8 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
             when C_MMIO_ADDR_SPI_SEND_DATA =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
@@ -113,6 +124,8 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '1';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
             when C_MMIO_ADDR_SPI_READ_DATA =>
                o_mmio_we_ram       <= '0';
                o_mmio_we_gpio      <= '0';
@@ -121,6 +134,28 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '1';
                o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
+            when C_MMIO_ADDR_I2C_SEND_DATA =>
+               o_mmio_we_ram       <= '0';
+               o_mmio_we_gpio      <= '0';
+               o_mmio_we_cnt1      <= '0';
+               o_mmio_we_uart      <= '0';
+               o_mmio_we_7seg      <= '0';
+               o_mmio_rd_spi       <= '0';
+               o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '1';
+            when C_MMIO_ADDR_I2C_READ_DATA =>
+               o_mmio_we_ram       <= '0';
+               o_mmio_we_gpio      <= '0';
+               o_mmio_we_cnt1      <= '0';
+               o_mmio_we_uart      <= '0';
+               o_mmio_we_7seg      <= '0';
+               o_mmio_rd_spi       <= '0';
+               o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '1';
+               o_mmio_we_i2c       <= '0';
             when others                   =>
                o_mmio_we_ram       <= '1';
                o_mmio_we_gpio      <= '0';
@@ -129,6 +164,8 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
+               o_mmio_rd_i2c       <= '0';
+               o_mmio_we_i2c       <= '0';
          end case;
       else
          o_mmio_we_ram       <= '0';
