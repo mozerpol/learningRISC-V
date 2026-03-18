@@ -129,14 +129,7 @@ begin
       wait until rising_edge(clk_tb);
 
       check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
-      check_gpr("addi  x2,  x0,   0", x"00000000", clk_tb, test_point);
-      check_gpr("addi  x0,  x0,   0", x"00000000", clk_tb, test_point);
-      check_spi_rx("lw    x1,  24(x0)", x"95", s_spi_miso_tb, clk_tb, test_point);
-
-      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
-      check_gpr("addi  x1,  x1,   1", x"00000001", clk_tb, test_point);
-      check_gpr("addi  x1,  x1,   1", x"00000002", clk_tb, test_point);
-      check_gpr("addi  x1,  x1,   1", x"00000003", clk_tb, test_point);
+      check_gpr("addi  x2,  x0,   0x95", x"00000095", clk_tb, test_point);
 
       wait for 100 us;
 

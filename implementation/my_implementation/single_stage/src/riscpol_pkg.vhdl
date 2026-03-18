@@ -46,6 +46,8 @@ package riscpol_pkg is
    -- that for some freq formula is not accurate (for example 2 MHz is not
    -- possible, it's 1.92 MHz)
 
+   constant C_I2C_ADDR_WIDTH_BITS   : positive := 10;
+
    -- TODO: addresses should start from 0 upwards, not from 64 downwards...
    -- also I think addresses are wrong...
    constant C_MMIO_ADDR_GPIO        : integer  := 64; -- At which address is

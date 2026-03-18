@@ -57,7 +57,9 @@ architecture rtl of spi is
    );
    end component counter1;
 
-
+   -- TODO: it's not necessary has to "spi" word inside of the names of signals.
+   -- It could be imporant for output/input sigs to the module, but for internal
+   -- names it's obvius that are SPI.
    -- General
    type t_spi_states          is (ST_IDLE, ST_LEADING_EDGE, ST_DATA, ST_TRAILING_EDGE);
    -- Timer
