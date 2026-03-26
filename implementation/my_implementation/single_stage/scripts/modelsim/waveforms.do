@@ -143,27 +143,6 @@ add wave         -group CORE         -radix dec /riscpol_tb/inst_riscpol/inst_co
 add wave         -group CORE         -radix dec /riscpol_tb/inst_riscpol/inst_core/o_core_addr_write
 
 
-add wave         -group MMIO         -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_raddr
-add wave         -group MMIO         -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_waddr
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_write_enable
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_q_cnt1
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_q_gpio
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_ram
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_uart
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_status_uart
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_status_spi
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_spi
-add wave         -group MMIO         -radix dec /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_cnt1
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_gpio
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_re_gpio
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_7seg
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_uart
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_rd_spi
-add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_spi
-add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_data
-
-
 add wave         -group GPIO         -radix hex /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_wdata
 add wave         -group GPIO         -radix bin /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_we
 add wave         -group GPIO         -radix bin /riscpol_tb/inst_riscpol/inst_gpio/i_gpio_re
@@ -239,7 +218,6 @@ add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_
 add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/s_status_tx_busy
 add wave         -group SPI -group INTERNAL_PROC_TX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/slv_spi_mosi
 
-
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/fsm_rx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix dec /riscpol_tb/inst_riscpol/inst_spi/cnt_bit_rx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_status_rx_busy
@@ -253,20 +231,51 @@ add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_r
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_set_reset
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_we
 
+
+add wave         -group MMIO         -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_raddr
+add wave         -group MMIO         -radix dec /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_waddr
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_write_enable
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_q_cnt1
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_q_gpio
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_ram
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_uart
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_status_uart
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_status_spi
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/i_mmio_data_spi
+add wave         -group MMIO         -radix dec /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_cnt1
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_gpio
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_re_gpio
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_ram
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_7seg
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_uart
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_rd_spi
+add wave         -group MMIO         -radix bin /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_we_spi
+add wave         -group MMIO         -radix hex /riscpol_tb/inst_riscpol/inst_mmio/o_mmio_data
+
+
 add wave -expand -group I2C         -radix bin /riscpol_tb/inst_riscpol/i_rst_n
 add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/i_clk
 add wave         -group I2C         -radix dec /riscpol_tb/inst_riscpol/inst_i2c/G_I2C_FREQUENCY_HZ
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_wdata
 add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_write
 add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_read
+add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_control
 add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/io_i2c_scl
 add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/io_i2c_sda
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/o_i2c_data
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/o_i2c_status
-add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/slv_tx
 add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/fsm_tx
-add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_bit_tx
+add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_addr
+add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_data
+add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_addr
+add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_bytes
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_busy
+add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_sda_control
+add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_addr_buff
+add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_data_buff
+add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_addr
+add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bits
+add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bytes
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_cnt1_set_reset_tx
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_scl
 
