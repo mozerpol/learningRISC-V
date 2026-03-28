@@ -91,6 +91,7 @@ architecture rtl of riscpol is
          o_mmio_rd_spi        : out std_logic;
          o_mmio_we_i2c        : out std_logic;
          o_mmio_rd_i2c        : out std_logic;
+         o_mmio_i2c_control   : out std_logic;
          o_mmio_data          : out std_logic_vector(31 downto 0)
    );
    end component mmio;
@@ -205,6 +206,7 @@ architecture rtl of riscpol is
          i_i2c_wdata          : in std_logic_vector(31 downto 0);
          i_i2c_write          : in std_logic;
          i_i2c_read           : in std_logic;
+         i_i2c_control        : in std_logic;
          io_i2c_scl           : inout std_logic;
          io_i2c_sda           : inout std_logic;
          o_i2c_data           : out std_logic_vector(31 downto 0);
@@ -234,6 +236,7 @@ architecture rtl of riscpol is
    signal s_mmio_rd_i2c       : std_logic;
    signal s_mmio_data_i2c     : std_logic_vector(31 downto 0);
    signal s_mmio_status_i2c   : std_logic_vector(31 downto 0);
+   signal s_mmio_i2c_control  : std_logic;
    -- Core
    signal s_core_data_write   : std_logic_vector(31 downto 0);
    signal s_core_write_enable : std_logic;
@@ -308,6 +311,7 @@ begin
       o_mmio_rd_spi        => s_mmio_rd_spi,
       o_mmio_we_i2c        => s_mmio_we_i2c,
       o_mmio_rd_i2c        => s_mmio_rd_i2c,
+      o_mmio_i2c_control   => s_mmio_i2c_control,
       o_mmio_data          => s_mmio_data
    );
 
@@ -396,6 +400,7 @@ begin
       i_i2c_wdata          => s_core_data_write,
       i_i2c_write          => s_mmio_we_i2c,
       i_i2c_read           => s_mmio_rd_i2c,
+      i_i2c_control        => s_mmio_i2c_control,
       io_i2c_scl           => s_i2c_scl,
       io_i2c_sda           => s_i2c_sda,
       o_i2c_data           => s_mmio_data_i2c,
