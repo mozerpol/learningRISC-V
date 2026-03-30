@@ -421,6 +421,8 @@ begin
    o_spi_mosi              <= s_spi_mosi;
    o_spi_ss_n              <= s_spi_ss_n;
    o_spi_sclk              <= s_spi_sclk;
+   io_i2c_sda              <= s_i2c_sda;
+   io_i2c_scl              <= s_i2c_scl;
 
 
 end architecture rtl;
