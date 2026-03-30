@@ -22,6 +22,8 @@ add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscp
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/i_spi_miso
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_spi_ss_n
 add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/o_spi_sclk
+add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/io_i2c_scl
+add wave         -group riscpol_DESIGN         -radix bin /riscpol_tb/inst_riscpol/io_i2c_sda
 
 
 add wave         -group riscpol_DESIGN -group INTERNAL_SIGNALS         -radix bin /riscpol_tb/inst_riscpol/s_mmio_we_ram
@@ -226,7 +228,6 @@ add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/s_cnt1_set_reset_rx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix hex /riscpol_tb/inst_riscpol/inst_spi/s_half_of_data_rx
 add wave         -group SPI -group INTERNAL_PROC_RX         -radix bin /riscpol_tb/inst_riscpol/inst_spi/slv_spi_miso
-add wave         -group SPI -group COUNTER         -radix dec /riscpol_tb/inst_riscpol/inst_spi/inst_counter/G_COUNTER1_VALUE
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/o_cnt1_overflow
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_set_reset
 add wave         -group SPI -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_spi/inst_counter/i_cnt1_we
@@ -264,6 +265,8 @@ add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c
 add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/io_i2c_sda
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/o_i2c_data
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/o_i2c_status
+add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/s_clock_flip
+add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/s_scl_rising_edge
 add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/fsm_tx
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_addr
 add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_data
@@ -277,8 +280,9 @@ add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bits
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bytes
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_cnt1_set_reset_tx
-add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_scl
-
+add wave         -group I2C -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/o_cnt1_overflow
+add wave         -group I2C -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/i_cnt1_set_reset
+add wave         -group I2C -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/i_cnt1_we
 
 add wave         -group RAM         -radix dec /riscpol_tb/inst_riscpol/inst_ram/i_ram_raddr
 add wave         -group RAM         -radix dec /riscpol_tb/inst_riscpol/inst_ram/i_ram_waddr
