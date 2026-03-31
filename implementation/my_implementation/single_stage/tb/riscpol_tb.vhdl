@@ -114,7 +114,7 @@ begin
       gpio_tb        <= (others => 'Z');
       uart_rx_tb     <= '1';
       s_spi_miso_tb  <= 'Z';
-      s_i2c_scl_tb   <= 'Z';
+      s_i2c_scl_tb   <= 'H';
       s_i2c_sda_tb   <= 'Z';
       wait for C_CLK_PERIOD*20;
       rst_n_tb       <= '1';
@@ -128,8 +128,13 @@ begin
       wait until rising_edge(clk_tb);
       wait until rising_edge(clk_tb);
 
-      check_gpr("addi  x1,  x0,   0", x"00000000", clk_tb, test_point);
+      check_gpr("addi  x1,  x0,   0x495", x"00000495", clk_tb, test_point);
       check_gpr("addi  x2,  x0,   0x95", x"00000095", clk_tb, test_point);
+ --     s_i2c_scl_tb   <= '1';
+      check_i2c_tx(x"95", x"00000095", 4, clk_tb, test_point);
+
+
+      s_i2c_sda_tb   <= 'Z';
 
       wait for 100 us;
 

@@ -56,11 +56,14 @@ architecture rtl of i2c is
    -- General
    type t_i2c_states          is (ST_IDLE, ST_START, ST_SEND_ADDR, ST_RW_BIT,
                                   ST_SEND_DATA, ST_ACK, ST_DATA_FRAME, ST_STOP);
+   type t_clock_states        is (ST_ONE_FOURTH, ST_TWO_FOURTH, ST_THREE_FOURTH,
+                                  ST_FOUR_FOURTH);
    -- Timer
    signal s_cnt1_overflow     : std_logic;
    -- Clock generation
    signal s_clock_flip        : std_logic;
-   signal s_scl_rising_edge   : std_logic;
+   signal s_shift_data        : std_logic;
+   signal fsm_clk             : t_clock_states;
    -- Transmit purposes
    signal s_cnt1_set_reset_tx : std_logic;
    signal fsm_tx              : t_i2c_states;
@@ -84,7 +87,7 @@ begin
 
    inst_counter: component counter1
    generic map (
-      G_COUNTER1_VALUE => positive(((real(C_FREQUENCY_HZ/G_I2C_FREQUENCY_HZ))/2.0)-1.0)
+      G_COUNTER1_VALUE => positive(((real(C_FREQUENCY_HZ/G_I2C_FREQUENCY_HZ))/4.0)-1.0)
    ) port map (
       i_rst_n              => i_rst_n,
       i_clk                => i_clk,
@@ -109,19 +112,39 @@ begin
          if (i_rst_n = '0') then
             s_clock_flip    <= '0';
             io_i2c_scl      <= 'Z';
+            fsm_clk         <= ST_ONE_FOURTH;
          else
             if (s_cnt1_overflow = '1') then -- if (s_cnt1_overflow = '1' and io_i2c_scl = '0') then
-               if (s_clock_flip = '0') then
-                  s_clock_flip    <= '1';
-                  io_i2c_scl      <= '0';
-                  s_scl_rising_edge <= '1';
-               else
-                  s_clock_flip    <= '0';
-                  io_i2c_scl      <= 'Z'; -- The clock signal is pulled up to
-                  -- VCC via the pull up resistor.
-               end if;
+               case (fsm_clk) is
+                  when ST_ONE_FOURTH =>
+                     -- The clock signal is pulled up to VCC via the pull up resistor.
+                     io_i2c_scl      <= 'Z';
+                     fsm_clk         <= ST_TWO_FOURTH;
+
+                  when ST_TWO_FOURTH =>
+
+                     io_i2c_scl      <= 'Z';
+                     fsm_clk <= ST_THREE_FOURTH;
+
+                  when ST_THREE_FOURTH =>
+
+                     io_i2c_scl      <= '0';
+                     fsm_clk <= ST_FOUR_FOURTH;
+
+                  when ST_FOUR_FOURTH =>
+
+                     s_shift_data    <= '1';
+                     io_i2c_scl      <= '0';
+                     fsm_clk <= ST_ONE_FOURTH;
+
+                  when others =>
+
+                     io_i2c_scl      <= 'Z';
+                     fsm_clk <= ST_ONE_FOURTH;
+
+               end case;
             else
-               s_scl_rising_edge <= '0';
+               s_shift_data    <= '0';
             end if;
          end if;
       end if;
@@ -159,7 +182,7 @@ begin
                       else
                       -- Latch data and send
                           slv_tx_data          <= i_i2c_wdata; -- Latch data to send
-                          s_cnt1_set_reset_tx  <= '1';
+                          --s_cnt1_set_reset_tx  <= '1';
                           s_status_tx_data_buff<= '1';
                           s_status_tx_busy     <= '1';
                           fsm_tx               <= ST_START;
@@ -168,14 +191,16 @@ begin
 
                when ST_START   =>
 
-                  if (s_scl_rising_edge = '1') then
+                 -- if (s_shift_data = '1') then
                      fsm_tx               <= ST_SEND_ADDR;
+                     s_sda                <= '0';
                      s_sda_control        <= '1';
-                  end if;
+                     s_cnt1_set_reset_tx  <= '1';
+               --   end if;
 
                when ST_SEND_ADDR   =>
 
-                  if (s_scl_rising_edge = '1') then
+                  if (s_shift_data = '1') then
                      if (cnt_tx_addr = 7) then
                         fsm_tx               <= ST_RW_BIT;
                         s_sda                <= slv_tx_addr(cnt_tx_addr);
@@ -188,14 +213,14 @@ begin
 
                when ST_RW_BIT   =>
 
-                  if (s_scl_rising_edge = '1') then
+                  if (s_shift_data = '1') then
                      fsm_tx               <= ST_ACK;
                      s_sda                <= '1';
                   end if;
 
                when ST_ACK   =>
 
-                  if (s_scl_rising_edge = '1') then
+                  if (s_shift_data = '1') then
                         if (cnt_tx_data_bytes = 4) then
                         -- To prevent sending more data than is in the buffer
                             fsm_tx               <= ST_STOP;
@@ -210,7 +235,7 @@ begin
 
                when ST_SEND_DATA   =>
 
-                  if (s_scl_rising_edge = '1') then
+                  if (s_shift_data = '1') then
                       if (cnt_tx_data_bits = 7) then
                           fsm_tx               <= ST_ACK;
                           cnt_tx_data_bits     <= 0;
@@ -224,7 +249,7 @@ begin
 
                when ST_STOP   =>
 
-                  if (s_scl_rising_edge = '1') then
+                  if (s_shift_data = '1') then
                       s_sda                <= 'Z';
                       s_sda_control        <= '0';
                       s_cnt1_set_reset_tx  <= '0';

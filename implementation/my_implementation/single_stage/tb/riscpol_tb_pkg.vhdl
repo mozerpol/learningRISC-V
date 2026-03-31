@@ -87,6 +87,12 @@ package riscpol_tb_pkg is
                         signal clk                    : in std_logic;
                         signal test_point             : out integer);
 
+   --
+   procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
+                        constant value_to_send        : in std_logic_vector(31 downto 0);
+                        constant number_bytes_to_send : in positive range 1 to 4;
+                        signal clk                    : in std_logic;
+                        signal test_point             : out integer);
 
 end riscpol_tb_pkg;
 
@@ -379,7 +385,7 @@ package body riscpol_tb_pkg is
          wait until rising_edge(clk);
    end procedure;
 
-
+   -- TODO: does instruction is really necessary? I tells about nth...
    procedure check_spi_rx(constant instruction        : in string;
                         constant desired_value        : in std_logic_vector(7 downto 0);
                         signal spi_miso               : out std_logic;
@@ -410,6 +416,41 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk); -- Load received data on SPI to gpr
       wait until rising_edge(clk);
       wait until rising_edge(clk);
+   end procedure;
+
+
+   procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
+                        constant value_to_send        : in std_logic_vector(31 downto 0);
+                        constant number_bytes_to_send : in positive range 1 to 4;
+                        signal clk                    : in std_logic;
+                        signal test_point             : out integer) is
+      constant C_WAIT_TIME    : time := (1000000000/C_I2C_FREQUENCY_HZ) * ns;
+      alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
+      alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
+   begin
+      wait until spy_i2c_sda = '0'; -- Detect start bit
+      wait until spy_i2c_scl = '0'; -- Detect start bit
+      --i2c_scl    <= 'Z';
+     -- wait until rising_edge(spy_i2c_sda);
+     -- wait for C_WAIT_TIME;
+      test_point <= test_point + 1;
+      for i in 0 to 7 loop
+         if (spy_i2c_sda /= value_to_send(i)) then
+            echo("ERROR I2C TX");
+            echo("value_to_send: " & to_string(value_to_send));
+            echo("Shoudl be: " & to_string(value_to_send(i)));
+            echo("i2c sda: " & to_string(spy_i2c_sda));
+            echo("Test_point: " & integer'image(test_point+1));
+          --  test_point <= test_point + 1;
+            echo("");
+         end if;
+         wait for C_WAIT_TIME;
+      end loop;
+         wait until rising_edge(clk); --
+         wait until rising_edge(clk); --
+         wait until rising_edge(clk);
+         wait until rising_edge(clk);
+         wait until rising_edge(clk);
    end procedure;
 
 
