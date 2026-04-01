@@ -42,7 +42,7 @@ package riscpol_pkg is
    constant C_SPI_CPOL              : natural  := 0;
    constant C_SPI_CPHA              : natural  := 0;
 
-   constant C_I2C_FREQUENCY_HZ      : positive := 1_000_000; -- TODO: describe
+   constant C_I2C_FREQUENCY_HZ      : positive := 3_400_000; -- TODO: describe
    -- that for some freq formula is not accurate (for example 2 MHz is not
    -- possible, it's 1.92 MHz)
 

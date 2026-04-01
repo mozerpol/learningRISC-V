@@ -158,7 +158,7 @@ begin
             fsm_tx               <= ST_IDLE;
             s_status_tx_busy     <= '0';
             s_cnt1_set_reset_tx  <= '0';
-            s_sda                <= '1';
+            s_sda                <= 'Z';
             s_sda_control        <= '0';
             s_status_tx_addr_buff<= '0';
             s_status_tx_data_buff<= '0';
@@ -215,7 +215,7 @@ begin
 
                   if (s_shift_data = '1') then
                      fsm_tx               <= ST_ACK;
-                     s_sda                <= '1';
+                     s_sda                <= 'Z';
                   end if;
 
                when ST_ACK   =>

@@ -429,11 +429,8 @@ package body riscpol_tb_pkg is
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
    begin
       wait until spy_i2c_sda = '0'; -- Detect start bit
-      wait until spy_i2c_scl = '0'; -- Detect start bit
-      --i2c_scl    <= 'Z';
-     -- wait until rising_edge(spy_i2c_sda);
-     -- wait for C_WAIT_TIME;
-      test_point <= test_point + 1;
+      wait until spy_i2c_scl = '0';
+
       for i in 0 to 7 loop
          if (spy_i2c_sda /= value_to_send(i)) then
             echo("ERROR I2C TX");
@@ -444,7 +441,7 @@ package body riscpol_tb_pkg is
           --  test_point <= test_point + 1;
             echo("");
          end if;
-         wait for C_WAIT_TIME;
+       --  wait for C_WAIT_TIME;
       end loop;
          wait until rising_edge(clk); --
          wait until rising_edge(clk); --

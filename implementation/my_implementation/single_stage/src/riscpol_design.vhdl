@@ -198,7 +198,7 @@ architecture rtl of riscpol is
 
    component i2c is
       generic(
-         G_I2C_FREQUENCY_HZ   : positive := C_SPI_FREQUENCY_HZ
+         G_I2C_FREQUENCY_HZ   : positive := C_I2C_FREQUENCY_HZ
       );
       port (
          i_rst_n              : in std_logic;

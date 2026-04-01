@@ -280,7 +280,9 @@ add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bits
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bytes
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_cnt1_set_reset_tx
+add wave         -group I2C -group COUNTER         -radix dec /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/G_COUNTER1_VALUE
 add wave         -group I2C -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/o_cnt1_overflow
+add wave         -group I2C -group COUNTER         -radix dec /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/o_cnt1_q
 add wave         -group I2C -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/i_cnt1_set_reset
 add wave         -group I2C -group COUNTER         -radix bin /riscpol_tb/inst_riscpol/inst_i2c/inst_counter/i_cnt1_we
 
