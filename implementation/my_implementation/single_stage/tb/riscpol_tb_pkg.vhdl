@@ -91,6 +91,7 @@ package riscpol_tb_pkg is
    procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
                         constant value_to_send        : in std_logic_vector(31 downto 0);
                         constant number_bytes_to_send : in positive range 1 to 4;
+                        signal i2c_sda                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer);
 
@@ -418,31 +419,56 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk);
    end procedure;
 
-
+-- TODO: add r/w option
    procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
                         constant value_to_send        : in std_logic_vector(31 downto 0);
                         constant number_bytes_to_send : in positive range 1 to 4;
+                        signal i2c_sda                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer) is
-      constant C_WAIT_TIME    : time := (1000000000/C_I2C_FREQUENCY_HZ) * ns;
+      constant C_WAIT_TIME    : time := (C_FREQUENCY_HZ/C_I2C_FREQUENCY_HZ) * C_CLK_PERIOD;
       alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
    begin
-      wait until spy_i2c_sda = '0'; -- Detect start bit
-      wait until spy_i2c_scl = '0';
-
+      wait until spy_i2c_sda = '0'; -- Wait for start bit
+      -- Check start bit
+      if (spy_i2c_scl /= 'H') then
+         echo("ERROR I2C TX");
+         echo("Start bit should be 1");
+         echo("");
+         test_point <= test_point + 1;
+      end if;
+      -- Check data frame
       for i in 0 to 7 loop
+         wait until rising_edge(spy_i2c_scl);
          if (spy_i2c_sda /= value_to_send(i)) then
             echo("ERROR I2C TX");
             echo("value_to_send: " & to_string(value_to_send));
             echo("Shoudl be: " & to_string(value_to_send(i)));
             echo("i2c sda: " & to_string(spy_i2c_sda));
             echo("Test_point: " & integer'image(test_point+1));
-          --  test_point <= test_point + 1;
+            test_point <= test_point + 1;
             echo("");
          end if;
-       --  wait for C_WAIT_TIME;
       end loop;
+      -- Check R/W bit
+      wait until rising_edge(spy_i2c_scl);
+      if (spy_i2c_sda /= '0') then
+         echo("ERROR I2C TX");
+         echo("Write bit should be 0");
+         echo("");
+         test_point <= test_point + 1;
+      end if;
+      wait until falling_edge(spy_i2c_scl);
+      wait for C_WAIT_TIME/4;
+      -- Send ACK
+      i2c_sda <= 'L';
+      test_point <= test_point + 1;
+      wait until falling_edge(spy_i2c_scl);
+      wait for C_WAIT_TIME/4;
+      i2c_sda <= 'Z';
+      test_point <= test_point + 1;
+
          wait until rising_edge(clk); --
          wait until rising_edge(clk); --
          wait until rising_edge(clk);

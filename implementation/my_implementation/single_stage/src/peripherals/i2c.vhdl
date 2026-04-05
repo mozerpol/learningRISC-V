@@ -63,6 +63,7 @@ architecture rtl of i2c is
    -- Clock generation
    signal s_clock_flip        : std_logic;
    signal s_shift_data        : std_logic;
+   signal s_ack_en            : std_logic;
    signal fsm_clk             : t_clock_states;
    -- Transmit purposes
    signal s_cnt1_set_reset_tx : std_logic;
@@ -118,6 +119,7 @@ begin
             if (s_cnt1_overflow = '1') then -- if (s_cnt1_overflow = '1' and io_i2c_scl = '0') then
                case (fsm_clk) is
                   when ST_ONE_FOURTH =>
+                     s_ack_en        <= '1';
                      -- The clock signal is pulled up to VCC via the pull up resistor.
                      io_i2c_scl      <= 'Z';
                      fsm_clk         <= ST_TWO_FOURTH;
@@ -145,6 +147,7 @@ begin
 
                end case;
             else
+               s_ack_en        <= '0';
                s_shift_data    <= '0';
             end if;
          end if;
