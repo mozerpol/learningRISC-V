@@ -75,13 +75,16 @@ architecture rtl of i2c is
    signal s_sda_control       : std_logic;
    signal s_status_tx_addr_buff : std_logic;
    signal s_status_tx_data_buff : std_logic;
-   signal cnt_tx_addr         : natural range 0 to 9;
+   signal cnt_tx_addr         : natural range 0 to 36;
    signal cnt_tx_data_bits    : natural range 0 to 31;
    signal cnt_tx_data_bytes   : natural range 0 to 4;
+   signal cnt_tx_rw           : natural range 0 to 4;
    -- Receive purposes
    signal s_status_rx_busy    : std_logic;
    signal s_sda               : std_logic;
    signal s_tx_rw_bit         : std_logic;
+   signal cnt : integer range 0 to 50;
+   signal cnt_tx_ack : integer range 0 to 4;
 
 
 begin
@@ -112,14 +115,12 @@ begin
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
-            s_clock_flip    <= '0';
             io_i2c_scl      <= 'Z';
             fsm_clk         <= ST_ONE_FOURTH;
          else
             if (s_cnt1_overflow = '1') then -- if (s_cnt1_overflow = '1' and io_i2c_scl = '0') then
                case (fsm_clk) is
                   when ST_ONE_FOURTH =>
-                     s_ack_en        <= '1';
                      -- The clock signal is pulled up to VCC via the pull up resistor.
                      io_i2c_scl      <= 'Z';
                      fsm_clk         <= ST_TWO_FOURTH;
@@ -136,7 +137,6 @@ begin
 
                   when ST_FOUR_FOURTH =>
 
-                     s_shift_data    <= '1';
                      io_i2c_scl      <= '0';
                      fsm_clk <= ST_ONE_FOURTH;
 
@@ -146,9 +146,6 @@ begin
                      fsm_clk <= ST_ONE_FOURTH;
 
                end case;
-            else
-               s_ack_en        <= '0';
-               s_shift_data    <= '0';
             end if;
          end if;
       end if;
@@ -169,6 +166,9 @@ begin
             cnt_tx_addr          <= 0;
             cnt_tx_data_bits     <= 0;
             cnt_tx_data_bytes    <= 0;
+            cnt                  <= 0;
+            cnt_tx_rw            <= 0;
+            cnt_tx_ack           <= 0;
          else
             case (fsm_tx) is
 
@@ -203,14 +203,27 @@ begin
 
                when ST_SEND_ADDR   =>
 
-                  if (s_shift_data = '1') then
-                     if (cnt_tx_addr = 7) then
+                  if (s_cnt1_overflow = '1') then
+                     cnt_tx_addr          <= cnt_tx_addr + 1;
+                     if (cnt_tx_addr = 35) then
                         fsm_tx               <= ST_RW_BIT;
-                        s_sda                <= slv_tx_addr(cnt_tx_addr);
                         cnt_tx_addr          <= 0;
-                     else
-                        cnt_tx_addr          <= cnt_tx_addr + 1;
-                        s_sda                <= slv_tx_addr(cnt_tx_addr);
+                     elsif (cnt_tx_addr = 31) then
+                        s_sda                <= slv_tx_addr(7);
+                     elsif (cnt_tx_addr = 27) then
+                        s_sda                <= slv_tx_addr(6);
+                     elsif (cnt_tx_addr = 23) then
+                        s_sda                <= slv_tx_addr(5);
+                     elsif (cnt_tx_addr = 19) then
+                        s_sda                <= slv_tx_addr(4);
+                     elsif (cnt_tx_addr = 15) then
+                        s_sda                <= slv_tx_addr(3);
+                     elsif (cnt_tx_addr = 11) then
+                        s_sda                <= slv_tx_addr(2);
+                     elsif (cnt_tx_addr = 7) then
+                        s_sda                <= slv_tx_addr(1);
+                     elsif (cnt_tx_addr = 3) then
+                        s_sda                <= slv_tx_addr(0);
                      end if;
                   end if;
 
@@ -218,26 +231,39 @@ begin
 
                   -- R/W bit = 1 = read
                   -- R/W bit = 0 = write
-                  if (s_shift_data = '1') then
-                     fsm_tx               <= ST_ACK;
-                     s_sda                <= s_tx_rw_bit;
+                  s_sda                <= s_tx_rw_bit;
+                  if (s_cnt1_overflow = '1') then
+                     if (cnt_tx_rw = 3) then
+                        cnt_tx_rw            <= 0;
+                        s_sda_control        <= '0';
+                        fsm_tx               <= ST_ACK;
+                     else
+                        cnt_tx_rw            <= cnt_tx_rw + 1;
+                     end if;
                   end if;
 
                when ST_ACK   =>
 
-                  if (s_shift_data = '1') then
-                     s_sda_control        <= '0';
-                     if (io_i2c_sda = '0') then -- Check if ACK
-                        -- OK
-                        -- fsm_tx               <= ST_SEND_DATA;
+                  if (s_cnt1_overflow = '1') then
+                     if (cnt_tx_ack = 3) then -- Change state
+                        cnt_tx_ack           <= 0;
+                        fsm_tx               <= ST_SEND_DATA;
+                     elsif (cnt_tx_ack = 1) then -- Check if ACK
+                        cnt_tx_ack           <= cnt_tx_ack + 1;
+                        if (io_i2c_sda = '0') then
+                           -- OK
+                        else
+                           -- Error
+                        end if;
                      else
-                        -- Error
+                        cnt_tx_ack           <= cnt_tx_ack + 1;
                      end if;
                   end if;
 
                when ST_SEND_DATA   =>
 
-                  if (s_shift_data = '1') then
+                  -- TODO: finish it, just finished ACK.
+                  if (s_cnt1_overflow = '1') then
                      if (cnt_tx_data_bytes = 4) then
                         -- To prevent sending more data than is in the buffer
                         fsm_tx               <= ST_STOP;
