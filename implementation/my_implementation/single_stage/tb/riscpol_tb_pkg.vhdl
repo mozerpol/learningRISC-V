@@ -1,5 +1,6 @@
 library ieee;
    use ieee.std_logic_1164.all;
+   use ieee.math_real.all;
 context ieee.ieee_std_context;
    use std.textio.all;
 library riscpol_lib;
@@ -426,7 +427,8 @@ package body riscpol_tb_pkg is
                         signal i2c_sda                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer) is
-      constant C_WAIT_TIME    : time := (C_FREQUENCY_HZ/C_I2C_FREQUENCY_HZ) * C_CLK_PERIOD;
+      -- C_WAIT_TIME - 1/4 of the entire i2c clock cycle (scl signal)
+      constant C_WAIT_TIME    : time := ceil((real(C_FREQUENCY_HZ/C_I2C_FREQUENCY_HZ))/4.0) * C_CLK_PERIOD;
       alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
    begin
@@ -460,20 +462,20 @@ package body riscpol_tb_pkg is
          test_point <= test_point + 1;
       end if;
       wait until falling_edge(spy_i2c_scl);
-      wait for C_WAIT_TIME/4;
+      test_point <= 66;
+      wait for C_WAIT_TIME;
+      test_point <= 67;
       -- Send ACK
       i2c_sda <= 'L';
-      test_point <= test_point + 1;
       wait until falling_edge(spy_i2c_scl);
-      wait for C_WAIT_TIME/4;
+      wait for C_WAIT_TIME;
       i2c_sda <= 'Z';
-      test_point <= test_point + 1;
 
-         wait until rising_edge(clk); --
-         wait until rising_edge(clk); --
-         wait until rising_edge(clk);
-         wait until rising_edge(clk);
-         wait until rising_edge(clk);
+     wait until rising_edge(clk); --
+     wait until rising_edge(clk); --
+     wait until rising_edge(clk);
+     wait until rising_edge(clk);
+     wait until rising_edge(clk);
    end procedure;
 
 
