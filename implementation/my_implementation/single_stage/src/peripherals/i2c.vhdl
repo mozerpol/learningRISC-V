@@ -75,7 +75,7 @@ architecture rtl of i2c is
    signal s_sda_control       : std_logic;
    signal s_status_tx_addr_buff : std_logic;
    signal s_status_tx_data_buff : std_logic;
-   signal cnt_tx_addr         : natural range 0 to 36;
+   signal cnt_tx_addr         : natural range 0 to 41;
    signal cnt_tx_data_bits    : natural range 0 to 31;
    signal cnt_tx_data_bytes   : natural range 0 to 4;
    signal cnt_tx_rw           : natural range 0 to 4;
@@ -205,9 +205,14 @@ begin
 
                   if (s_cnt1_overflow = '1') then
                      cnt_tx_addr          <= cnt_tx_addr + 1;
-                     if (cnt_tx_addr = 35) then
-                        fsm_tx               <= ST_RW_BIT;
+                     if (cnt_tx_addr = 39) then
+                        s_sda_control        <= '0';
                         cnt_tx_addr          <= 0;
+                        fsm_tx               <= ST_ACK;
+                     elsif (cnt_tx_addr = 35) then
+                        -- R/W bit = 1 = read
+                        -- R/W bit = 0 = write
+                        s_sda                <= s_tx_rw_bit; -- Set R/W bit
                      elsif (cnt_tx_addr = 31) then
                         s_sda                <= slv_tx_addr(7);
                      elsif (cnt_tx_addr = 27) then
@@ -227,36 +232,17 @@ begin
                      end if;
                   end if;
 
-               when ST_RW_BIT   =>
-
-                  -- R/W bit = 1 = read
-                  -- R/W bit = 0 = write
-                  s_sda                <= s_tx_rw_bit;
-                  if (s_cnt1_overflow = '1') then
-                     if (cnt_tx_rw = 3) then
-                        cnt_tx_rw            <= 0;
-                        s_sda_control        <= '0';
-                        fsm_tx               <= ST_ACK;
-                     else
-                        cnt_tx_rw            <= cnt_tx_rw + 1;
-                     end if;
-                  end if;
-
                when ST_ACK   =>
 
                   if (s_cnt1_overflow = '1') then
+                     cnt_tx_ack           <= cnt_tx_ack + 1;
                      if (cnt_tx_ack = 3) then -- Change state
                         cnt_tx_ack           <= 0;
                         fsm_tx               <= ST_SEND_DATA;
-                     elsif (cnt_tx_ack = 1) then -- Check if ACK
-                        cnt_tx_ack           <= cnt_tx_ack + 1;
-                        if (io_i2c_sda = '0') then
-                           -- OK
-                        else
+                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then -- Check if ACK
+                        if (io_i2c_sda = '1') then
                            -- Error
                         end if;
-                     else
-                        cnt_tx_ack           <= cnt_tx_ack + 1;
                      end if;
                   end if;
 
