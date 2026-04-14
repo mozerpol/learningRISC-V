@@ -462,14 +462,14 @@ package body riscpol_tb_pkg is
          test_point <= test_point + 1;
       end if;
       wait until falling_edge(spy_i2c_scl);
-      test_point <= 66;
       wait for C_WAIT_TIME;
-      test_point <= 67;
       -- Send ACK
-      i2c_sda <= 'L';
+      test_point <= 666;
+      i2c_sda <= '0';
       wait until falling_edge(spy_i2c_scl);
       wait for C_WAIT_TIME;
-      i2c_sda <= 'Z';
+      i2c_sda <= 'H';
+      test_point <= 777;
 
      wait until rising_edge(clk); --
      wait until rising_edge(clk); --

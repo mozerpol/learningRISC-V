@@ -76,7 +76,7 @@ architecture rtl of i2c is
    signal s_status_tx_addr_buff : std_logic;
    signal s_status_tx_data_buff : std_logic;
    signal cnt_tx_addr         : natural range 0 to 41;
-   signal cnt_tx_data_bits    : natural range 0 to 31;
+   signal cnt_tx_data_bits    : natural range 0 to 41;
    signal cnt_tx_data_bytes   : natural range 0 to 4;
    signal cnt_tx_rw           : natural range 0 to 4;
    -- Receive purposes
@@ -85,6 +85,7 @@ architecture rtl of i2c is
    signal s_tx_rw_bit         : std_logic;
    signal cnt : integer range 0 to 50;
    signal cnt_tx_ack : integer range 0 to 4;
+   signal s_status_tx_ack_error : std_logic;
 
 
 begin
@@ -108,7 +109,8 @@ begin
    o_i2c_status(1)            <= s_status_tx_addr_buff;
    o_i2c_status(2)            <= s_status_tx_data_buff;
    o_i2c_status(3)            <= s_status_rx_busy;
-   o_i2c_status(31 downto 4)  <= (others => '0');
+   o_i2c_status(4)            <= s_status_tx_ack_error;
+   o_i2c_status(31 downto 5)  <= (others => '0');
 
 
    p_i2c_clock_gen : process (i_clk)
@@ -169,6 +171,7 @@ begin
             cnt                  <= 0;
             cnt_tx_rw            <= 0;
             cnt_tx_ack           <= 0;
+            s_status_tx_ack_error <= '0';
          else
             case (fsm_tx) is
 
@@ -239,9 +242,11 @@ begin
                      if (cnt_tx_ack = 3) then -- Change state
                         cnt_tx_ack           <= 0;
                         fsm_tx               <= ST_SEND_DATA;
-                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then -- Check if ACK
+                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then
+                     -- Check if ACK two times
                         if (io_i2c_sda = '1') then
-                           -- Error
+                           -- TODO: check if status error works when ack = 0
+                           s_status_tx_ack_error <= '1';
                         end if;
                      end if;
                   end if;
@@ -250,6 +255,7 @@ begin
 
                   -- TODO: finish it, just finished ACK.
                   if (s_cnt1_overflow = '1') then
+                     s_sda_control        <= '1';
                      if (cnt_tx_data_bytes = 4) then
                         -- To prevent sending more data than is in the buffer
                         fsm_tx               <= ST_STOP;
@@ -258,14 +264,30 @@ begin
                         fsm_tx               <= ST_STOP;
                         cnt_tx_data_bytes    <= 0;
                      else
-                        if (cnt_tx_data_bits = 7) then
+                        cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
+                        if (cnt_tx_data_bits = 23) then
+                           s_sda_control        <= '0';
                            fsm_tx               <= ST_ACK;
                            cnt_tx_data_bits     <= 0;
                            cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
-                        else
+                        elsif (cnt_tx_data_bits = 19) then
                            s_sda                <= slv_tx_data(0);
                            slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                           cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
+                        elsif (cnt_tx_data_bits = 15) then
+                           s_sda                <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
+                        elsif (cnt_tx_data_bits = 11) then
+                           s_sda                <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
+                        elsif (cnt_tx_data_bits = 7) then
+                           s_sda                <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
+                        elsif (cnt_tx_data_bits = 3) then
+                           s_sda                <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
+                        elsif (cnt_tx_data_bits = 0) then
+                           s_sda                <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
                         end if;
                      end if;
                   end if;
