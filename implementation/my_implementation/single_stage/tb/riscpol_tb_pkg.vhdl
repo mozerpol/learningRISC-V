@@ -431,7 +431,9 @@ package body riscpol_tb_pkg is
       constant C_WAIT_TIME    : time := ceil((real(C_FREQUENCY_HZ/C_I2C_FREQUENCY_HZ))/4.0) * C_CLK_PERIOD;
       alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
+      
    begin
+   
       wait until spy_i2c_sda = '0'; -- Wait for start bit
       -- Check start bit
       if (spy_i2c_scl /= 'H') then
@@ -465,7 +467,7 @@ package body riscpol_tb_pkg is
       wait for C_WAIT_TIME;
       -- Send ACK
       test_point <= 666;
-      i2c_sda <= '0';
+      i2c_sda <= '1';
       wait until falling_edge(spy_i2c_scl);
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
@@ -476,6 +478,7 @@ package body riscpol_tb_pkg is
      wait until rising_edge(clk);
      wait until rising_edge(clk);
      wait until rising_edge(clk);
+     
    end procedure;
 
 
