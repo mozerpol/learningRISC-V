@@ -290,6 +290,7 @@ begin
       i_mmio_write_enable  => s_core_write_enable,
       i_mmio_waddr         => s_core_addr_write,
       i_mmio_raddr         => s_core_addr_read,
+      -- TODO: wtf below? I think I can't still read from GPIO!!!
       i_mmio_q_gpio(31 downto C_NUMBER_OF_GPIO)   => (others => '0'),
       i_mmio_q_gpio(C_NUMBER_OF_GPIO -1 downto 0) =>
                                        io_gpio(C_NUMBER_OF_GPIO - 1 downto 0),
@@ -401,14 +402,14 @@ begin
       i_i2c_write          => s_mmio_we_i2c,
       i_i2c_read           => s_mmio_rd_i2c,
       i_i2c_control        => s_mmio_i2c_control,
-      io_i2c_scl           => s_i2c_scl,
-      io_i2c_sda           => s_i2c_sda,
+      io_i2c_scl           => io_i2c_scl,
+      io_i2c_sda           => io_i2c_sda,
       o_i2c_data           => s_mmio_data_i2c,
       o_i2c_status         => s_mmio_status_i2c
    );
 
 
-   -- TODO: only rst and clk should be here
+   -- TODO: only rst and clk should be here, but I'm not sure
    rst_n                   <= i_rst_n;
    clk                     <= i_clk;
    io_gpio                 <= s_q_gpio(C_NUMBER_OF_GPIO - 1 downto 0);
@@ -421,8 +422,6 @@ begin
    o_spi_mosi              <= s_spi_mosi;
    o_spi_ss_n              <= s_spi_ss_n;
    o_spi_sclk              <= s_spi_sclk;
-   io_i2c_sda              <= s_i2c_sda;
-   io_i2c_scl              <= s_i2c_scl;
-
+   
 
 end architecture rtl;
