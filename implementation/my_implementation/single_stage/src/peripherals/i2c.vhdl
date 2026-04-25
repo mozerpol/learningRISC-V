@@ -86,6 +86,7 @@ architecture rtl of i2c is
    signal cnt : integer range 0 to 50;
    signal cnt_tx_ack : integer range 0 to 4;
    signal s_status_tx_ack_error : std_logic;
+   signal dupa : std_logic;
 
 
 begin
@@ -104,7 +105,9 @@ begin
    );
 
 
-   io_i2c_sda                 <= s_sda when s_sda_control = '1' else 'Z';
+   io_i2c_sda                 <= 'Z' when s_sda = '1' else '0';
+   dupa                       <= io_i2c_sda;
+       
    o_i2c_status(0)            <= s_status_tx_busy;
    o_i2c_status(1)            <= s_status_tx_addr_buff;
    o_i2c_status(2)            <= s_status_tx_data_buff;
@@ -113,6 +116,9 @@ begin
    o_i2c_status(31 downto 5)  <= (others => '0');
 
 
+
+   
+   
    p_i2c_clock_gen : process (i_clk)
    begin
       if (rising_edge(i_clk)) then
@@ -161,7 +167,7 @@ begin
             fsm_tx               <= ST_IDLE;
             s_status_tx_busy     <= '0';
             s_cnt1_set_reset_tx  <= '0';
-            s_sda                <= 'Z';
+            s_sda                <= '1';
             s_sda_control        <= '0';
             s_status_tx_addr_buff<= '0';
             s_status_tx_data_buff<= '0';
@@ -177,6 +183,7 @@ begin
 
                when ST_IDLE   =>
 
+                  s_sda_control        <= '0';
                   if (i_i2c_write = '1') then
                      if (i_i2c_control = '0') then
                      -- Set address and number of bytes to send
@@ -206,10 +213,10 @@ begin
 
                when ST_SEND_ADDR   =>
 
+                  s_sda_control        <= '1';
                   if (s_cnt1_overflow = '1') then
                      cnt_tx_addr          <= cnt_tx_addr + 1;
                      if (cnt_tx_addr = 39) then
-                        s_sda_control        <= '0';
                         cnt_tx_addr          <= 0;
                         fsm_tx               <= ST_ACK;
                      elsif (cnt_tx_addr = 35) then
@@ -235,22 +242,6 @@ begin
                      end if;
                   end if;
 
-               when ST_ACK   =>
-
-                  if (s_cnt1_overflow = '1') then
-                     cnt_tx_ack           <= cnt_tx_ack + 1;
-                     if (cnt_tx_ack = 3) then -- Change state
-                        cnt_tx_ack           <= 0;
-                        fsm_tx               <= ST_SEND_DATA;
-                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then
-                     -- Check if ACK two times
-                        if (io_i2c_sda = '1') then
-                           -- TODO: check if status error works when ack = 0
-                           s_status_tx_ack_error <= '1';
-                        end if;
-                     end if;
-                  end if;
-
                when ST_SEND_DATA   =>
 
                   -- TODO: finish it, just finished ACK.
@@ -266,7 +257,6 @@ begin
                      else
                         cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
                         if (cnt_tx_data_bits = 23) then
-                           s_sda_control        <= '0';
                            fsm_tx               <= ST_ACK;
                            cnt_tx_data_bits     <= 0;
                            cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
@@ -289,6 +279,28 @@ begin
                            s_sda                <= slv_tx_data(0);
                            slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
                         end if;
+                     end if;
+                  end if;
+
+               when ST_ACK   =>
+
+                  --s_sda_control        <= '0';
+                  s_sda                <= '1';
+                  if (s_cnt1_overflow = '1') then
+                     cnt_tx_ack           <= cnt_tx_ack + 1;
+                     if (cnt_tx_ack = 3) then -- Change state
+                        cnt_tx_ack           <= 0;
+                        fsm_tx               <= ST_ACK; --ST_SEND_DATA;
+                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then
+                     -- Check if ACK two times
+                       -- if (dupa /= '0') then
+                       --    s_status_tx_ack_error <= '1';
+                       -- end if;
+                       if (dupa = '0') then
+                           s_status_tx_ack_error <= '0';
+                       else
+                           s_status_tx_ack_error <= '1';
+                       end if;
                      end if;
                   end if;
 
