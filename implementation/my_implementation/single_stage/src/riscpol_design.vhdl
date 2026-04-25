@@ -265,8 +265,6 @@ architecture rtl of riscpol is
    signal s_spi_mosi          : std_logic;
    signal s_spi_sclk          : std_logic;
    -- I2C
-   signal s_i2c_scl           : std_logic;
-   signal s_i2c_sda           : std_logic;
 
 
 begin

@@ -86,7 +86,6 @@ architecture rtl of i2c is
    signal cnt : integer range 0 to 50;
    signal cnt_tx_ack : integer range 0 to 4;
    signal s_status_tx_ack_error : std_logic;
-   signal dupa : std_logic;
 
 
 begin
@@ -106,7 +105,6 @@ begin
 
 
    io_i2c_sda                 <= 'Z' when s_sda = '1' else '0';
-   dupa                       <= io_i2c_sda;
        
    o_i2c_status(0)            <= s_status_tx_busy;
    o_i2c_status(1)            <= s_status_tx_addr_buff;
@@ -293,10 +291,7 @@ begin
                         fsm_tx               <= ST_ACK; --ST_SEND_DATA;
                      elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then
                      -- Check if ACK two times
-                       -- if (dupa /= '0') then
-                       --    s_status_tx_ack_error <= '1';
-                       -- end if;
-                       if (dupa = '0') then
+                       if (io_i2c_sda = '0') then
                            s_status_tx_ack_error <= '0';
                        else
                            s_status_tx_ack_error <= '1';
