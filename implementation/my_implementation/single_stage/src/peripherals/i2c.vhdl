@@ -105,14 +105,13 @@ begin
       o_cnt1_q             => open
    );
 
-
-   o_i2c_sda_drive            <= 'Z' when s_sda_drive = '1' else '0';
-   o_i2c_scl_drive            <= 'Z' when s_sda_drive = '1' else '0';
+   o_i2c_sda_drive            <= '0' when s_sda_drive = '0' else '1';
+   o_i2c_scl_drive            <= '0' when s_scl_drive = '0' else '1';
    -- Where
    -- s_sda_drive = 1 - master releases SDA, pull-up goes high
    -- s_sda_drive = 0 - master pulls down SDA to 0
 
-       
+
    o_i2c_status(0)            <= s_status_tx_busy;
    o_i2c_status(1)            <= s_status_tx_addr_buff;
    o_i2c_status(2)            <= s_status_tx_data_buff;
@@ -125,35 +124,35 @@ begin
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
-            o_i2c_scl_drive <= '1';
+            s_scl_drive <= '1';
             fsm_clk         <= ST_ONE_FOURTH;
          else
             if (s_cnt1_overflow = '1') then -- if (s_cnt1_overflow = '1' and io_i2c_scl = '0') then
                case (fsm_clk) is
                   when ST_ONE_FOURTH =>
                      -- The clock signal is pulled up to VCC via the pull up resistor.
-                     o_i2c_scl_drive <= '1';
+                     s_scl_drive     <= '1';
                      fsm_clk         <= ST_TWO_FOURTH;
 
                   when ST_TWO_FOURTH =>
 
-                     o_i2c_scl_drive <= '1';
-                     fsm_clk <= ST_THREE_FOURTH;
+                     s_scl_drive     <= '1';
+                     fsm_clk         <= ST_THREE_FOURTH;
 
                   when ST_THREE_FOURTH =>
 
-                     o_i2c_scl_drive <= '0';
-                     fsm_clk <= ST_FOUR_FOURTH;
+                     s_scl_drive     <= '0';
+                     fsm_clk         <= ST_FOUR_FOURTH;
 
                   when ST_FOUR_FOURTH =>
 
-                     o_i2c_scl_drive <= '0';
-                     fsm_clk <= ST_ONE_FOURTH;
+                     s_scl_drive     <= '0';
+                     fsm_clk         <= ST_ONE_FOURTH;
 
                   when others =>
 
-                     o_i2c_scl_drive <= '1';
-                     fsm_clk <= ST_ONE_FOURTH;
+                     s_scl_drive     <= '1';
+                     fsm_clk         <= ST_ONE_FOURTH;
 
                end case;
             end if;
@@ -253,10 +252,16 @@ begin
                         cnt_tx_data_bytes    <= 0;
                      else
                         cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
-                        if (cnt_tx_data_bits = 23) then
+                        if (cnt_tx_data_bits = 31) then
                            fsm_tx               <= ST_ACK;
                            cnt_tx_data_bits     <= 0;
                            cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
+                        elsif (cnt_tx_data_bits = 27) then
+                           s_sda_drive          <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
+                        elsif (cnt_tx_data_bits = 23) then
+                           s_sda_drive          <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
                         elsif (cnt_tx_data_bits = 19) then
                            s_sda_drive          <= slv_tx_data(0);
                            slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
@@ -286,13 +291,14 @@ begin
                      cnt_tx_ack           <= cnt_tx_ack + 1;
                      if (cnt_tx_ack = 3) then -- Change state
                         cnt_tx_ack           <= 0;
-                        fsm_tx               <= ST_ACK; --ST_SEND_DATA;
-                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then
+                        fsm_tx               <= ST_SEND_DATA;
+                     elsif (cnt_tx_ack = 2 or cnt_tx_ack = 3) then
                      -- Check if ACK two times
                        if (i_i2c_sda = '0') then
                            s_status_tx_ack_error <= '0';
                        else
                            s_status_tx_ack_error <= '1';
+                           fsm_tx               <= ST_STOP;
                        end if;
                      end if;
                   end if;
