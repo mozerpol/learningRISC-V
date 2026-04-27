@@ -429,11 +429,10 @@ begin
    o_spi_ss_n              <= s_spi_ss_n;
    o_spi_sclk              <= s_spi_sclk;
 
-   io_i2c_sda              <= '0' when s_i2c_sda_drive = '1' else 'Z';
-   io_i2c_scl              <= '0' when s_i2c_scl_drive = '1' else 'Z';
+   io_i2c_sda              <= '0' when s_i2c_sda_drive = '0' else 'Z';
+   io_i2c_scl              <= '0' when s_i2c_scl_drive = '0' else 'Z';
    s_i2c_sda_in            <= io_i2c_sda;
    s_i2c_scl_in            <= io_i2c_scl;
 
-   
 
 end architecture rtl;
