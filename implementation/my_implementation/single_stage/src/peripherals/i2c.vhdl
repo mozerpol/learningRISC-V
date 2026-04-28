@@ -252,13 +252,16 @@ begin
                         cnt_tx_data_bytes    <= 0;
                      else
                         cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
-                        if (cnt_tx_data_bits = 31) then
+                        --if (cnt_tx_data_bits = 31) then
+                        --   fsm_tx               <= ST_ACK;
+                        --   cnt_tx_data_bits     <= 0;
+                        --   cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
+                        if (cnt_tx_data_bits = 27) then
+                           s_sda_drive          <= slv_tx_data(0);
+                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
                            fsm_tx               <= ST_ACK;
                            cnt_tx_data_bits     <= 0;
                            cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
-                        elsif (cnt_tx_data_bits = 27) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
                         elsif (cnt_tx_data_bits = 23) then
                            s_sda_drive          <= slv_tx_data(0);
                            slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
