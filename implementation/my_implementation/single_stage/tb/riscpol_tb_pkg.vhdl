@@ -432,16 +432,26 @@ package body riscpol_tb_pkg is
       alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
       variable v_value_to_send : std_logic_vector(31 downto 0);
+      variable v_address : std_logic_vector(7 downto 0);
 
    begin
 
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
-      -- bit_vector) to values ​​of type std_logic ('0', 'H').
+      -- bit_vector) to values ​​of type std_logic ('0', 'H') for data.
       for i in 0 to 7*number_bytes_to_send loop
          if (value_to_send(i) = '1') then
             v_value_to_send(i) := 'H';
          else
             v_value_to_send(i) := value_to_send(i);
+         end if;
+      end loop;
+      -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
+      -- bit_vector) to values ​​of type std_logic ('0', 'H') for address.
+      for i in 0 to 7 loop
+         if (address(i) = '1') then
+            v_address(i) := 'H';
+         else
+            v_address(i) := address(i);
          end if;
       end loop;
 
@@ -453,6 +463,38 @@ package body riscpol_tb_pkg is
          echo("");
          test_point <= test_point + 1;
       end if;
+      -- Check address frame
+      for i in 0 to 7 loop
+         wait until rising_edge(spy_i2c_scl);
+         if (spy_i2c_sda /= v_address(i)) then
+            echo("ERROR I2C TX - address");
+            echo("address: " & to_string(address));
+            echo("Shoudl be: " & to_string(v_address(i)));
+            echo("i2c sda: " & to_string(spy_i2c_sda));
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+            echo("");
+         end if;
+      end loop;
+      ---- Check R/W bit ----
+      wait until rising_edge(spy_i2c_scl);
+      if (spy_i2c_sda /= '0') then
+         echo("ERROR I2C TX - data");
+         echo("Write bit should be 0");
+         echo("");
+         test_point <= test_point + 1;
+      end if;
+      wait until falling_edge(spy_i2c_scl);
+      wait for C_WAIT_TIME;
+      ---------------------
+
+      -- Send ACK
+      test_point <= 666;
+      i2c_sda <= '0';
+      wait until falling_edge(spy_i2c_scl);
+      wait for C_WAIT_TIME;
+      i2c_sda <= 'H';
+      test_point <= 777;
       -- Check data frame
       for i in 0 to 7 loop
          wait until rising_edge(spy_i2c_scl);
@@ -466,16 +508,6 @@ package body riscpol_tb_pkg is
             echo("");
          end if;
       end loop;
-      -- Check R/W bit
-      wait until rising_edge(spy_i2c_scl);
-      if (spy_i2c_sda /= '0') then
-         echo("ERROR I2C TX");
-         echo("Write bit should be 0");
-         echo("");
-         test_point <= test_point + 1;
-      end if;
-      wait until falling_edge(spy_i2c_scl);
-      wait for C_WAIT_TIME;
       -- Send ACK
       test_point <= 666;
       i2c_sda <= '0';
@@ -483,6 +515,20 @@ package body riscpol_tb_pkg is
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
       test_point <= 777;
+      -- Check data frame
+      for i in 8 to 15 loop
+         wait until rising_edge(spy_i2c_scl);
+         if (spy_i2c_sda /= v_value_to_send(i)) then
+            echo("ERROR I2C TX");
+            echo("value_to_send: " & to_string(v_value_to_send));
+            echo("Shoudl be: " & to_string(v_value_to_send(i)));
+            echo("i2c sda: " & to_string(spy_i2c_sda));
+            echo("Test_point: " & integer'image(test_point+1));
+            test_point <= test_point + 1;
+            echo("");
+         end if;
+      end loop;
+
 
      wait until rising_edge(clk); --
      wait until rising_edge(clk); --

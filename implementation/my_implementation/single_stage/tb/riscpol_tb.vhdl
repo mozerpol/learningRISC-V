@@ -129,10 +129,9 @@ begin
       wait until rising_edge(clk_tb);
 
       check_gpr("addi  x1,  x0,   0x495", x"00000495", clk_tb, test_point);
-      check_gpr("addi  x2,  x0,   0x95", x"00000095", clk_tb, test_point);
- --     s_i2c_scl_tb   <= '1';
-      check_i2c_tx(x"95", x"00000095", 4, s_i2c_sda_tb, clk_tb, test_point);
-
+      check_gpr("lui   x2,  0xE7C", x"00E7C000", clk_tb, test_point);
+      check_gpr("addi  x2,  x2,   0x381", x"00e7c381", clk_tb, test_point);
+      check_i2c_tx(x"95", x"00E7C381", 4, s_i2c_sda_tb, clk_tb, test_point);
 
       wait for 100 us;
 
