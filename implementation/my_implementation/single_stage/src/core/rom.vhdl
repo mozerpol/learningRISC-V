@@ -29,7 +29,8 @@ package rom is
 
    constant C_CODE : t_rom := (
       x"49500093",
-      x"09500113",
+      x"00e7c137",
+      x"38110113",
       x"02102023",
       x"02202223",
       others => x"00000000"
