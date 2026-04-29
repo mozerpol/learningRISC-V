@@ -1,6 +1,6 @@
-addi  x1,  x0,   0x495 # x1 = 0x00000495, where:
+addi  x1,  x0,   0x395 # x1 = 0x00000395, where:
 # 0x95 - slave address
-# 0x4 - number of bytes to send
+# 0x3 - number of bytes to send
 # 0x0 - R/W bit - write to slave
 
 lui   x2,  0xE7C       # x2 = 0x00E7C000, data to send
