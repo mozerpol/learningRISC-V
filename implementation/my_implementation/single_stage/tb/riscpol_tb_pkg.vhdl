@@ -456,14 +456,14 @@ package body riscpol_tb_pkg is
       end loop;
 
       wait until spy_i2c_sda = '0'; -- Wait for start bit
-      -- Check start bit
+      ---- Check start bit ----
       if (spy_i2c_scl /= 'H') then
          echo("ERROR I2C TX");
          echo("Start bit should be 1");
          echo("");
          test_point <= test_point + 1;
       end if;
-      -- Check address frame
+      ---- Check address frame ----
       for i in 0 to 7 loop
          wait until rising_edge(spy_i2c_scl);
          if (spy_i2c_sda /= v_address(i)) then
@@ -484,49 +484,44 @@ package body riscpol_tb_pkg is
          echo("");
          test_point <= test_point + 1;
       end if;
+      ---- Set ACK ----
+      test_point <= 100;
       wait until falling_edge(spy_i2c_scl);
       wait for C_WAIT_TIME;
-      ---------------------
+      -- Send ACK
+      test_point <= 200;
+      i2c_sda <= '0';
+      wait until falling_edge(spy_i2c_scl);
+      wait for C_WAIT_TIME;
+      i2c_sda <= 'H';
 
-      -- Send ACK
-      test_point <= 666;
-      i2c_sda <= '0';
-      wait until falling_edge(spy_i2c_scl);
-      wait for C_WAIT_TIME;
-      i2c_sda <= 'H';
-      test_point <= 777;
-      -- Check data frame
-      for i in 0 to 7 loop
-         wait until rising_edge(spy_i2c_scl);
-         if (spy_i2c_sda /= v_value_to_send(i)) then
-            echo("ERROR I2C TX");
-            echo("value_to_send: " & to_string(v_value_to_send));
-            echo("Shoudl be: " & to_string(v_value_to_send(i)));
-            echo("i2c sda: " & to_string(spy_i2c_sda));
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-         end if;
-      end loop;
-      -- Send ACK
-      test_point <= 666;
-      i2c_sda <= '0';
-      wait until falling_edge(spy_i2c_scl);
-      wait for C_WAIT_TIME;
-      i2c_sda <= 'H';
-      test_point <= 777;
-      -- Check data frame
-      for i in 8 to 15 loop
-         wait until rising_edge(spy_i2c_scl);
-         if (spy_i2c_sda /= v_value_to_send(i)) then
-            echo("ERROR I2C TX");
-            echo("value_to_send: " & to_string(v_value_to_send));
-            echo("Shoudl be: " & to_string(v_value_to_send(i)));
-            echo("i2c sda: " & to_string(spy_i2c_sda));
-            echo("Test_point: " & integer'image(test_point+1));
-            test_point <= test_point + 1;
-            echo("");
-         end if;
+      for i in 0 to number_bytes_to_send-1 loop
+         test_point <= 300+i;
+         -- Check data frame
+         for j in 0 to 7 loop
+            wait until rising_edge(spy_i2c_scl);
+            if (spy_i2c_sda /= v_value_to_send(j+8*i)) then
+               echo("ERROR I2C TX");
+               echo("value_to_send: " & to_string(v_value_to_send));
+               echo("Shoudl be: " & to_string(v_value_to_send(j+8*i)));
+               echo("i2c sda: " & to_string(spy_i2c_sda));
+               echo("Test_point: " & integer'image(test_point+1));
+               test_point <= test_point + 1;
+               echo("");
+            end if;
+         end loop;
+
+         test_point <= 400;
+         wait until falling_edge(spy_i2c_scl);
+         wait for C_WAIT_TIME;
+         -- Send ACK
+         test_point <= 500;
+         i2c_sda <= '0';
+         wait until falling_edge(spy_i2c_scl);
+         wait for C_WAIT_TIME;
+         i2c_sda <= 'H';
+         test_point <= 600;
+
       end loop;
 
 
