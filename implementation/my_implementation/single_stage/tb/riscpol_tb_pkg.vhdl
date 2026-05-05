@@ -19,6 +19,8 @@ package riscpol_tb_pkg is
    -- like time or iteration.
    procedure echo (arg : in string := "");
 
+   -- TODO: replace everywhere: for i in 0 to 7 loop to: for i in 0 to variable'length-1 loop
+
    -- The function extracts the GPR register from the passed instruction.
    function gpr_extraction_from_string(instruction : string) return integer;
 
@@ -424,6 +426,7 @@ package body riscpol_tb_pkg is
    procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
                         constant value_to_send        : in std_logic_vector(31 downto 0);
                         constant number_bytes_to_send : in positive range 1 to 4;
+                        --signal rw_bit                 : in std_logic;
                         signal i2c_sda                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer) is
@@ -438,7 +441,7 @@ package body riscpol_tb_pkg is
 
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
       -- bit_vector) to values ​​of type std_logic ('0', 'H') for data.
-      for i in 0 to 7*number_bytes_to_send loop
+      for i in 0 to value_to_send'length-1 loop
          if (value_to_send(i) = '1') then
             v_value_to_send(i) := 'H';
          else
@@ -447,7 +450,7 @@ package body riscpol_tb_pkg is
       end loop;
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
       -- bit_vector) to values ​​of type std_logic ('0', 'H') for address.
-      for i in 0 to 7 loop
+      for i in 0 to address'length-1 loop
          if (address(i) = '1') then
             v_address(i) := 'H';
          else
@@ -455,16 +458,17 @@ package body riscpol_tb_pkg is
          end if;
       end loop;
 
-      wait until spy_i2c_sda = '0'; -- Wait for start bit
-      ---- Check start bit ----
+      -- Wait for start bit
+      wait until spy_i2c_sda = '0';
+      -- Check start bit
       if (spy_i2c_scl /= 'H') then
          echo("ERROR I2C TX");
          echo("Start bit should be 1");
          echo("");
          test_point <= test_point + 1;
       end if;
-      ---- Check address frame ----
-      for i in 0 to 7 loop
+      -- Check address frame
+      for i in 0 to address'length-1 loop
          wait until rising_edge(spy_i2c_scl);
          if (spy_i2c_sda /= v_address(i)) then
             echo("ERROR I2C TX - address");
@@ -478,25 +482,22 @@ package body riscpol_tb_pkg is
       end loop;
       ---- Check R/W bit ----
       wait until rising_edge(spy_i2c_scl);
-      if (spy_i2c_sda /= '0') then
+      if (spy_i2c_sda /= '0') then -- TODO: if (spy_i2c_sda /= rw_bit)
          echo("ERROR I2C TX - data");
          echo("Write bit should be 0");
          echo("");
          test_point <= test_point + 1;
       end if;
       ---- Set ACK ----
-      test_point <= 100;
       wait until falling_edge(spy_i2c_scl);
       wait for C_WAIT_TIME;
       -- Send ACK
-      test_point <= 200;
       i2c_sda <= '0';
       wait until falling_edge(spy_i2c_scl);
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
 
       for i in 0 to number_bytes_to_send-1 loop
-         test_point <= 300+i;
          -- Check data frame
          for j in 0 to 7 loop
             wait until rising_edge(spy_i2c_scl);
@@ -511,19 +512,15 @@ package body riscpol_tb_pkg is
             end if;
          end loop;
 
-         test_point <= 400;
          wait until falling_edge(spy_i2c_scl);
          wait for C_WAIT_TIME;
          -- Send ACK
-         test_point <= 500;
          i2c_sda <= '0';
          wait until falling_edge(spy_i2c_scl);
          wait for C_WAIT_TIME;
          i2c_sda <= 'H';
-         test_point <= 600;
 
       end loop;
-
 
      wait until rising_edge(clk); --
      wait until rising_edge(clk); --
