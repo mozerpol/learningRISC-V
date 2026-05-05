@@ -131,7 +131,7 @@ begin
       check_gpr("addi  x1,  x0,   0x495", x"00000395", clk_tb, test_point);
       check_gpr("lui   x2,  0xE7C", x"00E7C000", clk_tb, test_point);
       check_gpr("addi  x2,  x2,   0x381", x"00e7c381", clk_tb, test_point);
-      check_i2c_tx(x"95", x"00E7C381", 3, s_i2c_sda_tb, clk_tb, test_point);
+      check_i2c_tx(x"95", x"00E7C381", 3, '0', s_i2c_sda_tb, clk_tb, test_point);
 
       wait for 100 us;
 

@@ -72,15 +72,15 @@ package riscpol_tb_pkg is
                         signal test_point             : out integer);
 
    --
-   procedure check_uart_rx(constant value_to_send     : in std_logic_vector(31 downto 0);
-                        constant number_bytes_to_send : in positive range 1 to 4;
+   procedure check_uart_rx(constant data     : in std_logic_vector(31 downto 0);
+                        constant number_of_bytes : in positive range 1 to 4;
                         signal uart_rx                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer);
 
    --
    procedure check_spi_tx(constant instruction        : in string;
-                        constant value_to_send        : in std_logic_vector(31 downto 0);
+                        constant data        : in std_logic_vector(31 downto 0);
                         signal clk                    : in std_logic;
                         signal test_point             : out integer);
    -- The test is only applicable for CPHA = 0 and CPOL = 0
@@ -92,11 +92,13 @@ package riscpol_tb_pkg is
 
    --
    procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
-                        constant value_to_send        : in std_logic_vector(31 downto 0);
-                        constant number_bytes_to_send : in positive range 1 to 4;
+                        constant data                 : in std_logic_vector(31 downto 0);
+                        constant number_of_bytes      : in positive range 1 to 4;
+                        constant rw_bit               : in std_logic;
                         signal i2c_sda                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer);
+
 
 end riscpol_tb_pkg;
 
@@ -322,8 +324,8 @@ package body riscpol_tb_pkg is
    end procedure;
 
    -- TODO: mishmash with check_spi_rx - in SPI case "rx" means something different
-   procedure check_uart_rx(constant value_to_send     : in std_logic_vector(31 downto 0);
-                        constant number_bytes_to_send : in positive range 1 to 4;
+   procedure check_uart_rx(constant data     : in std_logic_vector(31 downto 0);
+                        constant number_of_bytes : in positive range 1 to 4;
                         signal uart_rx                : out std_logic;
                         signal clk                    : in std_logic;
                         signal test_point             : out integer) is
@@ -331,19 +333,19 @@ package body riscpol_tb_pkg is
       alias spy_uart_data     is <<signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_data: std_logic_vector(31 downto 0) >>;
       alias spy_uart_status   is <<signal .riscpol_tb.inst_riscpol.inst_uart.o_uart_status: std_logic_vector(31 downto 0) >>;
    begin
-      for j in 0 to number_bytes_to_send-1 loop
+      for j in 0 to number_of_bytes-1 loop
          -- Start bit
          uart_rx <= '0';
          wait for C_WAIT_TIME;
          -- Data bits
          for i in 0 to 7 loop
-            uart_rx <= value_to_send(8*j+i);
+            uart_rx <= data(8*j+i);
             wait for C_WAIT_TIME;
          end loop;
          -- Stop bit
          uart_rx <= '1';
          wait until spy_uart_status(1) = '1';
-         if (spy_uart_data(7 downto 0) /= value_to_send(8*j+7 downto 8*j)) then
+         if (spy_uart_data(7 downto 0) /= data(8*j+7 downto 8*j)) then
             echo("ERROR UART rx: " & to_string(spy_uart_data(8*j+7 downto 8*j)));
             echo("The bit does not match the expected value.");
             echo("Test_point: " & integer'image(test_point+1));
@@ -360,7 +362,7 @@ package body riscpol_tb_pkg is
 
 
    procedure check_spi_tx(constant instruction        : in string;
-                        constant value_to_send        : in std_logic_vector(31 downto 0);
+                        constant data        : in std_logic_vector(31 downto 0);
                         signal clk                    : in std_logic;
                         signal test_point             : out integer) is
       constant C_WAIT_TIME    : time := (1000000000/C_SPI_FREQUENCY_HZ) * ns;
@@ -371,10 +373,10 @@ package body riscpol_tb_pkg is
       wait until spy_spi_ss_n = '0';
       wait until rising_edge(spy_spi_sclk);
       for i in 0 to 7 loop
-         if (spy_spi_mosi /= value_to_send(i)) then
+         if (spy_spi_mosi /= data(i)) then
             echo("ERROR SPI TX: " & instruction);
-            echo("value_to_send: " & to_string(value_to_send));
-            echo("Shoudl be: " & to_string(value_to_send(i)));
+            echo("data: " & to_string(data));
+            echo("Shoudl be: " & to_string(data(i)));
             echo("spi_mosi: " & to_string(spy_spi_mosi));
             echo("Test_point: " & integer'image(test_point+1));
             test_point <= test_point + 1;
@@ -422,30 +424,29 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk);
    end procedure;
 
--- TODO: add r/w option
-   procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
-                        constant value_to_send        : in std_logic_vector(31 downto 0);
-                        constant number_bytes_to_send : in positive range 1 to 4;
-                        --signal rw_bit                 : in std_logic;
-                        signal i2c_sda                : out std_logic;
-                        signal clk                    : in std_logic;
-                        signal test_point             : out integer) is
+   procedure check_i2c_tx(constant address         : in std_logic_vector(7 downto 0);
+                        constant data              : in std_logic_vector(31 downto 0);
+                        constant number_of_bytes   : in positive range 1 to 4;
+                        constant rw_bit            : in std_logic;
+                        signal i2c_sda             : out std_logic;
+                        signal clk                 : in std_logic;
+                        signal test_point          : out integer) is
       -- C_WAIT_TIME - 1/4 of the entire i2c clock cycle (scl signal)
       constant C_WAIT_TIME    : time := ceil((real(C_FREQUENCY_HZ/C_I2C_FREQUENCY_HZ))/4.0) * C_CLK_PERIOD;
       alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
-      variable v_value_to_send : std_logic_vector(31 downto 0);
+      variable v_data    : std_logic_vector(31 downto 0);
       variable v_address : std_logic_vector(7 downto 0);
 
    begin
 
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
       -- bit_vector) to values ​​of type std_logic ('0', 'H') for data.
-      for i in 0 to value_to_send'length-1 loop
-         if (value_to_send(i) = '1') then
-            v_value_to_send(i) := 'H';
+      for i in 0 to data'length-1 loop
+         if (data(i) = '1') then
+            v_data(i) := 'H';
          else
-            v_value_to_send(i) := value_to_send(i);
+            v_data(i) := data(i);
          end if;
       end loop;
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
@@ -462,16 +463,17 @@ package body riscpol_tb_pkg is
       wait until spy_i2c_sda = '0';
       -- Check start bit
       if (spy_i2c_scl /= 'H') then
-         echo("ERROR I2C TX");
+         echo("ERROR I2C");
          echo("Start bit should be 1");
          echo("");
          test_point <= test_point + 1;
       end if;
+
       -- Check address frame
       for i in 0 to address'length-1 loop
          wait until rising_edge(spy_i2c_scl);
          if (spy_i2c_sda /= v_address(i)) then
-            echo("ERROR I2C TX - address");
+            echo("ERROR I2C - address");
             echo("address: " & to_string(address));
             echo("Shoudl be: " & to_string(v_address(i)));
             echo("i2c sda: " & to_string(spy_i2c_sda));
@@ -480,47 +482,51 @@ package body riscpol_tb_pkg is
             echo("");
          end if;
       end loop;
-      ---- Check R/W bit ----
+
+      -- Check R/W bit
       wait until rising_edge(spy_i2c_scl);
-      if (spy_i2c_sda /= '0') then -- TODO: if (spy_i2c_sda /= rw_bit)
-         echo("ERROR I2C TX - data");
-         echo("Write bit should be 0");
+      if (spy_i2c_sda /= rw_bit) then
+         echo("ERROR I2C - R/W bit");
+         echo("Shoudl be: " & to_string(rw_bit));
+         echo("rw_bit is: " & to_string(spy_i2c_sda));
+         echo("Test_point: " & integer'image(test_point+1));
          echo("");
          test_point <= test_point + 1;
       end if;
-      ---- Set ACK ----
       wait until falling_edge(spy_i2c_scl);
-      wait for C_WAIT_TIME;
+
       -- Send ACK
+      wait for C_WAIT_TIME;
       i2c_sda <= '0';
       wait until falling_edge(spy_i2c_scl);
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
 
-      for i in 0 to number_bytes_to_send-1 loop
-         -- Check data frame
+      -- Check data frame
+      for i in 0 to number_of_bytes-1 loop
          for j in 0 to 7 loop
             wait until rising_edge(spy_i2c_scl);
-            if (spy_i2c_sda /= v_value_to_send(j+8*i)) then
+            if (spy_i2c_sda /= v_data(j+8*i)) then
                echo("ERROR I2C TX");
-               echo("value_to_send: " & to_string(v_value_to_send));
-               echo("Shoudl be: " & to_string(v_value_to_send(j+8*i)));
+               echo("data: " & to_string(v_data));
+               echo("Shoudl be: " & to_string(v_data(j+8*i)));
                echo("i2c sda: " & to_string(spy_i2c_sda));
                echo("Test_point: " & integer'image(test_point+1));
                test_point <= test_point + 1;
                echo("");
             end if;
          end loop;
-
          wait until falling_edge(spy_i2c_scl);
-         wait for C_WAIT_TIME;
+
          -- Send ACK
+         wait for C_WAIT_TIME;
          i2c_sda <= '0';
          wait until falling_edge(spy_i2c_scl);
          wait for C_WAIT_TIME;
          i2c_sda <= 'H';
-
       end loop;
+
+     i2c_sda <= 'H';
 
      wait until rising_edge(clk); --
      wait until rising_edge(clk); --
