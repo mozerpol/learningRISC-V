@@ -20,6 +20,8 @@ package riscpol_tb_pkg is
    procedure echo (arg : in string := "");
 
    -- TODO: replace everywhere: for i in 0 to 7 loop to: for i in 0 to variable'length-1 loop
+   -- TODO: try to replace test functions tx and rx into one test function, for example
+   -- I have now uart_tx and uart_rx, try to create one test function: uart.
 
    -- The function extracts the GPR register from the passed instruction.
    function gpr_extraction_from_string(instruction : string) return integer;
@@ -502,37 +504,52 @@ package body riscpol_tb_pkg is
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
 
-      -- Check data frame
-      for i in 0 to number_of_bytes-1 loop
-         for j in 0 to 7 loop
-            wait until rising_edge(spy_i2c_scl);
-            if (spy_i2c_sda /= v_data(j+8*i)) then
-               echo("ERROR I2C TX");
-               echo("data: " & to_string(v_data));
-               echo("Shoudl be: " & to_string(v_data(j+8*i)));
-               echo("i2c sda: " & to_string(spy_i2c_sda));
-               echo("Test_point: " & integer'image(test_point+1));
-               test_point <= test_point + 1;
-               echo("");
-            end if;
+      if (rw_bit = '0') then
+      -- Check received data frame from master
+         for i in 0 to number_of_bytes-1 loop
+            for j in 0 to 7 loop
+               wait until rising_edge(spy_i2c_scl);
+               if (spy_i2c_sda /= v_data(j+8*i)) then
+                  echo("ERROR I2C TX");
+                  echo("data: " & to_string(v_data));
+                  echo("Shoudl be: " & to_string(v_data(j+8*i)));
+                  echo("i2c sda: " & to_string(spy_i2c_sda));
+                  echo("Test_point: " & integer'image(test_point+1));
+                  test_point <= test_point + 1;
+                  echo("");
+               end if;
+            end loop;
+            wait until falling_edge(spy_i2c_scl);
+
+            -- Send ACK
+            test_point <= 444;
+            wait for C_WAIT_TIME;
+            i2c_sda <= '0';
+            wait until falling_edge(spy_i2c_scl);
+            wait for C_WAIT_TIME;
+            i2c_sda <= 'H';
+            test_point <= 555;
          end loop;
-         wait until falling_edge(spy_i2c_scl);
+      else
+      -- Transmit data frame to the master and check ...
+         for i in 0 to number_of_bytes-1 loop
+            for j in 0 to 7 loop
+               -- wait until rising_edge(spy_i2c_scl);
+               wait for C_WAIT_TIME;
+            end loop;
+            wait until falling_edge(spy_i2c_scl);
+            -- wait for ack
+         end loop;
+      end if;
 
-         -- Send ACK
-         wait for C_WAIT_TIME;
-         i2c_sda <= '0';
-         wait until falling_edge(spy_i2c_scl);
-         wait for C_WAIT_TIME;
-         i2c_sda <= 'H';
-      end loop;
+      i2c_sda <= 'H';
 
-     i2c_sda <= 'H';
-
-     wait until rising_edge(clk); --
-     wait until rising_edge(clk); --
-     wait until rising_edge(clk);
-     wait until rising_edge(clk);
-     wait until rising_edge(clk);
+      wait until rising_edge(clk); --
+      wait until rising_edge(clk); --
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      wait until rising_edge(clk);
+      test_point <= 666;
 
    end procedure;
 

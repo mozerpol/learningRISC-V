@@ -115,9 +115,9 @@ begin
    o_i2c_status(0)            <= s_status_tx_busy;
    o_i2c_status(1)            <= s_status_tx_addr_buff;
    o_i2c_status(2)            <= s_status_tx_data_buff;
-   o_i2c_status(3)            <= s_status_rx_busy;
-   o_i2c_status(4)            <= s_status_tx_ack_error;
-   o_i2c_status(31 downto 5)  <= (others => '0');
+   o_i2c_status(3)            <= s_status_tx_ack_error;
+   o_i2c_status(4)            <= s_status_rx_busy;
+   o_i2c_status(31 downto 5)  <= (others => '0'); -- TODO: add possibility to reset all flags
 
 
    p_i2c_clock_gen : process (i_clk)
@@ -167,17 +167,17 @@ begin
          if (i_rst_n = '0') then
             fsm_tx               <= ST_IDLE;
             s_status_tx_busy     <= '0';
-            s_cnt1_set_reset_tx  <= '0';
-            s_sda_drive          <= '1';
             s_status_tx_addr_buff<= '0';
             s_status_tx_data_buff<= '0';
+            s_status_tx_ack_error <= '0';
+            s_cnt1_set_reset_tx  <= '0';
+            s_sda_drive          <= '1';
             cnt_tx_addr          <= 0;
             cnt_tx_data_bits     <= 0;
             cnt_tx_data_bytes    <= 0;
             cnt                  <= 0;
             cnt_tx_rw            <= 0;
             cnt_tx_ack           <= 0;
-            s_status_tx_ack_error <= '0';
          else
             case (fsm_tx) is
 
@@ -247,9 +247,10 @@ begin
                         -- To prevent sending more data than is in the buffer
                         fsm_tx               <= ST_STOP;
                         cnt_tx_data_bytes    <= 0;
-                     elsif (cnt_tx_data_bytes = to_integer(unsigned(slv_tx_bytes))) then
+                     elsif (cnt_tx_data_bytes = to_integer(unsigned(slv_tx_bytes))) then -- or cnt_tx_data_bytes = 4
                         fsm_tx               <= ST_STOP;
                         cnt_tx_data_bytes    <= 0;
+                        s_sda_drive          <= '0';
                      else
                         cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
                         if (cnt_tx_data_bits = 31) then
@@ -310,8 +311,10 @@ begin
                   s_sda_drive          <= '1';
                   s_cnt1_set_reset_tx  <= '0';
                   s_cnt1_set_reset_tx  <= '0';
-                  s_status_tx_data_buff<= '0';
                   s_status_tx_busy     <= '0';
+                  s_status_tx_addr_buff<= '0';
+                  s_status_tx_data_buff<= '0';
+                  s_status_tx_ack_error <= '0';
                   fsm_tx               <= ST_IDLE;
 
                when others =>
@@ -325,6 +328,17 @@ begin
          end if;
       end if;
    end process p_i2c;
+
+
+   p_i2c_rx : process (i_clk)
+   begin
+      if (rising_edge(i_clk)) then
+         if (i_rst_n = '0') then
+            s_status_rx_busy <= '0';
+         else
+         end if;
+      end if;
+   end process p_i2c_rx;
 
 
 end architecture rtl;
