@@ -55,39 +55,34 @@ architecture rtl of i2c is
    end component counter1;
 
 
-   -- General
-   type t_i2c_states          is (ST_IDLE, ST_START, ST_SEND_ADDR, ST_RW_BIT,
-                                  ST_SEND_DATA, ST_ACK, ST_DATA_FRAME, ST_STOP);
-   type t_clock_states        is (ST_ONE_FOURTH, ST_TWO_FOURTH, ST_THREE_FOURTH,
-                                  ST_FOUR_FOURTH);
    -- Timer
    signal s_cnt1_overflow     : std_logic;
    -- Clock generation
-   signal s_clock_flip        : std_logic;
-   signal s_shift_data        : std_logic;
-   signal s_ack_en            : std_logic;
+   type t_clock_states        is (ST_ONE_FOURTH, ST_TWO_FOURTH, ST_THREE_FOURTH,
+                                  ST_FOUR_FOURTH);
    signal fsm_clk             : t_clock_states;
+   signal s_sda_drive         : std_logic;
+   signal s_scl_drive         : std_logic;
    -- Transmit purposes
-   signal s_cnt1_set_reset_tx : std_logic;
+   type t_i2c_states          is (ST_IDLE, ST_START, ST_SEND_ADDR, ST_RW_BIT,
+                                  ST_SEND_DATA, ST_ACK, ST_DATA_FRAME, ST_STOP);
    signal fsm_tx              : t_i2c_states;
+   signal s_cnt1_set_reset_tx : std_logic;
    signal s_status_tx_busy    : std_logic;
-   signal slv_tx_data         : std_logic_vector(31 downto 0);
-   signal slv_tx_addr         : std_logic_vector(7 downto 0);
-   signal slv_tx_bytes        : std_logic_vector(2 downto 0);
    signal s_status_tx_addr_buff : std_logic;
    signal s_status_tx_data_buff : std_logic;
-   signal cnt_tx_addr         : natural range 0 to 41;
-   signal cnt_tx_data_bits    : natural range 0 to 41;
+   signal s_status_tx_ack_error : std_logic;
+   signal slv_tx_addr         : std_logic_vector(7 downto 0);
+   signal slv_tx_bytes        : std_logic_vector(2 downto 0);
+   signal slv_tx_data         : std_logic_vector(31 downto 0);
+   signal s_tx_rw_bit         : std_logic;
+   signal cnt_tx_addr         : natural range 0 to 40;
+   signal cnt_tx_data_bits    : natural range 0 to 32;
    signal cnt_tx_data_bytes   : natural range 0 to 4;
-   signal cnt_tx_rw           : natural range 0 to 4;
+   signal cnt_tx_ack          : integer range 0 to 4;
+   signal cnt_tx_stop         : natural range 0 to 1;
    -- Receive purposes
    signal s_status_rx_busy    : std_logic;
-   signal s_tx_rw_bit         : std_logic;
-   signal cnt : integer range 0 to 50;
-   signal cnt_tx_ack : integer range 0 to 4;
-   signal s_status_tx_ack_error : std_logic;
-   signal s_sda_drive : std_logic;
-   signal s_scl_drive : std_logic;
 
 
 begin
@@ -105,13 +100,12 @@ begin
       o_cnt1_q             => open
    );
 
+
    o_i2c_sda_drive            <= '0' when s_sda_drive = '0' else '1';
    o_i2c_scl_drive            <= '0' when s_scl_drive = '0' else '1';
    -- Where
    -- s_sda_drive = 1 - master releases SDA, pull-up goes high
    -- s_sda_drive = 0 - master pulls down SDA to 0
-
-
    o_i2c_status(0)            <= s_status_tx_busy;
    o_i2c_status(1)            <= s_status_tx_addr_buff;
    o_i2c_status(2)            <= s_status_tx_data_buff;
@@ -124,10 +118,10 @@ begin
    begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
-            s_scl_drive <= '1';
+            s_scl_drive     <= '1';
             fsm_clk         <= ST_ONE_FOURTH;
          else
-            if (s_cnt1_overflow = '1') then -- if (s_cnt1_overflow = '1' and io_i2c_scl = '0') then
+            if (s_cnt1_overflow = '1') then
                case (fsm_clk) is
                   when ST_ONE_FOURTH =>
                      -- The clock signal is pulled up to VCC via the pull up resistor.
@@ -166,18 +160,17 @@ begin
       if (rising_edge(i_clk)) then
          if (i_rst_n = '0') then
             fsm_tx               <= ST_IDLE;
+            s_cnt1_set_reset_tx  <= '0';
+            s_sda_drive          <= '1'; -- Hi-Z
             s_status_tx_busy     <= '0';
             s_status_tx_addr_buff<= '0';
             s_status_tx_data_buff<= '0';
             s_status_tx_ack_error <= '0';
-            s_cnt1_set_reset_tx  <= '0';
-            s_sda_drive          <= '1';
             cnt_tx_addr          <= 0;
             cnt_tx_data_bits     <= 0;
             cnt_tx_data_bytes    <= 0;
-            cnt                  <= 0;
-            cnt_tx_rw            <= 0;
             cnt_tx_ack           <= 0;
+            cnt_tx_stop          <= 0;
          else
             case (fsm_tx) is
 
@@ -206,8 +199,8 @@ begin
                when ST_START   =>
 
                   fsm_tx               <= ST_SEND_ADDR;
-                  s_sda_drive          <= '0';
-                  s_cnt1_set_reset_tx  <= '1';
+                  s_sda_drive          <= '0'; -- Set start bit
+                  s_cnt1_set_reset_tx  <= '1'; -- Turn on scl
 
                when ST_SEND_ADDR   =>
 
@@ -220,71 +213,25 @@ begin
                         -- R/W bit = 1 = read
                         -- R/W bit = 0 = write
                         s_sda_drive          <= s_tx_rw_bit; -- Set R/W bit
-                     elsif (cnt_tx_addr = 31) then
-                        s_sda_drive          <= slv_tx_addr(7);
-                     elsif (cnt_tx_addr = 27) then
-                        s_sda_drive          <= slv_tx_addr(6);
-                     elsif (cnt_tx_addr = 23) then
-                        s_sda_drive          <= slv_tx_addr(5);
-                     elsif (cnt_tx_addr = 19) then
-                        s_sda_drive          <= slv_tx_addr(4);
-                     elsif (cnt_tx_addr = 15) then
-                        s_sda_drive          <= slv_tx_addr(3);
-                     elsif (cnt_tx_addr = 11) then
-                        s_sda_drive          <= slv_tx_addr(2);
-                     elsif (cnt_tx_addr = 7) then
-                        s_sda_drive          <= slv_tx_addr(1);
-                     elsif (cnt_tx_addr = 3) then
+                     elsif (((cnt_tx_addr - 3) mod 4) = 0) then
+                     -- Set addr bit for cnt_tx_addr = 3, 7, 11, 15, 19, 23, 27, 31
                         s_sda_drive          <= slv_tx_addr(0);
+                        slv_tx_addr          <= slv_tx_addr(0) & slv_tx_addr(7 downto 1);
                      end if;
                   end if;
 
                when ST_SEND_DATA   =>
 
-                  -- TODO: finish it, just finished ACK.
                   if (s_cnt1_overflow = '1') then
-                     if (cnt_tx_data_bytes = 4) then
-                        -- To prevent sending more data than is in the buffer
-                        fsm_tx               <= ST_STOP;
-                        cnt_tx_data_bytes    <= 0;
-                     elsif (cnt_tx_data_bytes = to_integer(unsigned(slv_tx_bytes))) then -- or cnt_tx_data_bytes = 4
-                        fsm_tx               <= ST_STOP;
-                        cnt_tx_data_bytes    <= 0;
-                        s_sda_drive          <= '0';
-                     else
                         cnt_tx_data_bits     <= cnt_tx_data_bits + 1;
                         if (cnt_tx_data_bits = 31) then
                            fsm_tx               <= ST_ACK;
                            cnt_tx_data_bits     <= 0;
-                           cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
-                         --  s_sda_drive          <= slv_tx_data(0);
-                        --   slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 27) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 23) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 19) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 15) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 11) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 7) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 3) then
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
-                        elsif (cnt_tx_data_bits = 0) then
+                        elsif (((cnt_tx_data_bits - 3) mod 4 = 0) or (cnt_tx_data_bits = 0)) then
+                        -- Set data bit for cnt_tx_data_bits = 0, 3, 7, 11, 15, 19, 23, 27
                            s_sda_drive          <= slv_tx_data(0);
                            slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
                         end if;
-                     end if;
                   end if;
 
                when ST_ACK   =>
@@ -292,37 +239,58 @@ begin
                   s_sda_drive          <= '1';
                   if (s_cnt1_overflow = '1') then
                      cnt_tx_ack           <= cnt_tx_ack + 1;
-                     if (cnt_tx_ack = 3) then -- Change state
+                     if (cnt_tx_ack = 3) then
                         cnt_tx_ack           <= 0;
-                        fsm_tx               <= ST_SEND_DATA;
-                     elsif (cnt_tx_ack = 2 or cnt_tx_ack = 3) then
-                     -- Check if ACK two times
-                       if (i_i2c_sda = '0') then
+                        if (cnt_tx_data_bytes = 4) then
+                        -- To prevent sending more data than is in the buffer
+                           fsm_tx               <= ST_STOP;
+                           cnt_tx_data_bytes    <= 0;
+                           s_sda_drive          <= '0';
+                        elsif (cnt_tx_data_bytes = to_integer(unsigned(slv_tx_bytes))) then
+                        -- Check if all bytes were sent
+                           fsm_tx               <= ST_STOP;
+                           s_sda_drive          <= '0';
+                           cnt_tx_data_bytes    <= 0;
+                        else
+                        -- Send the rest of the data bytes
+                           fsm_tx               <= ST_SEND_DATA;
+                           cnt_tx_data_bytes    <= cnt_tx_data_bytes + 1;
+                        end if;
+                     elsif (cnt_tx_ack = 1 or cnt_tx_ack = 2) then
+                     -- Check ACK two times
+                        if (i_i2c_sda = '0') then
                            s_status_tx_ack_error <= '0';
-                       else
+                        else
                            s_status_tx_ack_error <= '1';
                            fsm_tx               <= ST_STOP;
-                       end if;
+                        end if;
                      end if;
                   end if;
 
                when ST_STOP   =>
 
-                  s_sda_drive          <= '1';
-                  s_cnt1_set_reset_tx  <= '0';
-                  s_cnt1_set_reset_tx  <= '0';
-                  s_status_tx_busy     <= '0';
-                  s_status_tx_addr_buff<= '0';
-                  s_status_tx_data_buff<= '0';
-                  s_status_tx_ack_error <= '0';
-                  fsm_tx               <= ST_IDLE;
+                  if (s_cnt1_overflow = '1') then
+                     if (cnt_tx_stop = 1) then
+                        fsm_tx               <= ST_IDLE;
+                        s_cnt1_set_reset_tx  <= '0';
+                        s_sda_drive          <= '1'; -- Hi-Z
+                        s_status_tx_busy     <= '0';
+                        s_status_tx_addr_buff<= '0';
+                        s_status_tx_data_buff<= '0';
+                        s_status_tx_ack_error<= '0';
+                        cnt_tx_addr          <= 0;
+                        cnt_tx_data_bits     <= 0;
+                        cnt_tx_data_bytes    <= 0;
+                        cnt_tx_ack           <= 0;
+                        cnt_tx_stop          <= 0;
+                     else
+                        cnt_tx_stop <= cnt_tx_stop + 1;
+                     end if;
+                  end if;
 
                when others =>
 
                   fsm_tx               <= ST_IDLE;
-                  s_status_tx_busy     <= '0';
-                  s_cnt1_set_reset_tx  <= '0';
-                  s_sda_drive          <= '1';
 
             end case;
          end if;
@@ -336,6 +304,7 @@ begin
          if (i_rst_n = '0') then
             s_status_rx_busy <= '0';
          else
+
          end if;
       end if;
    end process p_i2c_rx;
