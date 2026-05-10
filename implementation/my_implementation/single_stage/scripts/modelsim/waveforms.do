@@ -266,13 +266,15 @@ add wave         -group I2C         -radix bin /riscpol_tb/inst_riscpol/inst_i2c
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/o_i2c_data
 add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/o_i2c_status
 
+add wave         -group I2C         -radix hex /riscpol_tb/inst_riscpol/inst_i2c/fsm_clk
+
 add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/fsm_tx
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_cnt1_set_reset_tx
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_busy
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_addr_buff
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_data_buff
 add wave         -group I2C -group TX  -radix bin /riscpol_tb/inst_riscpol/inst_i2c/s_status_tx_ack_error
-add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_addr
+add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_addr
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_bytes
 add wave         -group I2C -group TX  -radix hex /riscpol_tb/inst_riscpol/inst_i2c/slv_tx_data
 add wave         -group I2C -group TX  -radix dec /riscpol_tb/inst_riscpol/inst_i2c/cnt_tx_data_bits
