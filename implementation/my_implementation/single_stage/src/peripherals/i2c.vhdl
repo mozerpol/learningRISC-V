@@ -121,6 +121,9 @@ begin
             s_scl_drive     <= '1';
             fsm_clk         <= ST_ONE_FOURTH;
          else
+            if (s_cnt1_set_reset_tx = '0') then
+               fsm_clk         <= ST_ONE_FOURTH;
+            end if;
             if (s_cnt1_overflow = '1') then
                case (fsm_clk) is
                   when ST_ONE_FOURTH =>
@@ -206,17 +209,16 @@ begin
 
                   if (s_cnt1_overflow = '1') then
                      cnt_tx_addr          <= cnt_tx_addr + 1;
-                     if (cnt_tx_addr = 39) then
+                     if (cnt_tx_addr = 35) then
                         cnt_tx_addr          <= 0;
                         fsm_tx               <= ST_ACK;
-                     elsif (cnt_tx_addr = 35) then
+                     elsif (cnt_tx_addr = 31) then
                         -- R/W bit = 1 = read
                         -- R/W bit = 0 = write
                         s_sda_drive          <= s_tx_rw_bit; -- Set R/W bit
                      elsif (((cnt_tx_addr - 3) mod 4) = 0) then
-                     -- Set addr bit for cnt_tx_addr = 3, 7, 11, 15, 19, 23, 27, 31
-                        s_sda_drive          <= slv_tx_addr(0);
-                        slv_tx_addr          <= slv_tx_addr(0) & slv_tx_addr(7 downto 1);
+                        s_sda_drive          <= slv_tx_addr(6);
+                        slv_tx_addr          <= '0' & slv_tx_addr(5 downto 0) & slv_tx_addr(6);
                      end if;
                   end if;
 
@@ -229,8 +231,8 @@ begin
                            cnt_tx_data_bits     <= 0;
                         elsif (((cnt_tx_data_bits - 3) mod 4 = 0) or (cnt_tx_data_bits = 0)) then
                         -- Set data bit for cnt_tx_data_bits = 0, 3, 7, 11, 15, 19, 23, 27
-                           s_sda_drive          <= slv_tx_data(0);
-                           slv_tx_data          <= slv_tx_data(0) & slv_tx_data(31 downto 1);
+                           s_sda_drive          <= slv_tx_data(31);
+                           slv_tx_data          <= slv_tx_data(30 downto 0) & slv_tx_data(31);
                         end if;
                   end if;
 
