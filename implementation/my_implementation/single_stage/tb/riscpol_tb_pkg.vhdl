@@ -20,8 +20,6 @@ package riscpol_tb_pkg is
    procedure echo (arg : in string := "");
 
    -- TODO: replace everywhere: for i in 0 to 7 loop to: for i in 0 to variable'length-1 loop
-   -- TODO: try to replace test functions tx and rx into one test function, for example
-   -- I have now uart_tx and uart_rx, try to create one test function: uart.
 
    -- The function extracts the GPR register from the passed instruction.
    function gpr_extraction_from_string(instruction : string) return integer;
@@ -93,7 +91,7 @@ package riscpol_tb_pkg is
                         signal test_point             : out integer);
 
    --
-   procedure check_i2c_tx(constant address            : in std_logic_vector(7 downto 0);
+   procedure check_i2c_tx(constant address            : in std_logic_vector(6 downto 0);
                         constant data                 : in std_logic_vector(31 downto 0);
                         constant number_of_bytes      : in positive range 1 to 4;
                         constant rw_bit               : in std_logic;
@@ -426,7 +424,10 @@ package body riscpol_tb_pkg is
       wait until rising_edge(clk);
    end procedure;
 
-   procedure check_i2c_tx(constant address         : in std_logic_vector(7 downto 0);
+
+-- TODO: if it's transmit procedure then it's not necessary to has rw_bit on the
+-- port list.
+   procedure check_i2c_tx(constant address         : in std_logic_vector(6 downto 0);
                         constant data              : in std_logic_vector(31 downto 0);
                         constant number_of_bytes   : in positive range 1 to 4;
                         constant rw_bit            : in std_logic;
@@ -435,8 +436,9 @@ package body riscpol_tb_pkg is
                         signal test_point          : out integer) is
       -- C_WAIT_TIME - 1/4 of the entire i2c clock cycle (scl signal)
       constant C_WAIT_TIME    : time := ceil((real(C_FREQUENCY_HZ/C_I2C_FREQUENCY_HZ))/4.0) * C_CLK_PERIOD;
-      alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl: std_logic >>;
-      alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda: std_logic >>;
+      alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl : std_logic >>;
+      alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda : std_logic >>;
+      alias spy_i2c_status is <<signal .riscpol_tb.inst_riscpol.inst_i2c.o_i2c_status : std_logic_vector(31 downto 0) >>;
       variable v_data    : std_logic_vector(31 downto 0);
       variable v_address : std_logic_vector(7 downto 0);
 
@@ -445,19 +447,19 @@ package body riscpol_tb_pkg is
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
       -- bit_vector) to values ​​of type std_logic ('0', 'H') for data.
       for i in 0 to data'length-1 loop
-         if (data(i) = '1') then
+         if (data(data'length-i-1) = '1') then
             v_data(i) := 'H';
          else
-            v_data(i) := data(i);
+            v_data(i) := data(data'length-i-1);
          end if;
       end loop;
       -- Function to translate values ​​of numeric type (e.g. integer/unsigned/
       -- bit_vector) to values ​​of type std_logic ('0', 'H') for address.
       for i in 0 to address'length-1 loop
-         if (address(i) = '1') then
+         if (address(address'length-1-i) = '1') then
             v_address(i) := 'H';
          else
-            v_address(i) := address(i);
+            v_address(i) := address(address'length-1-i);
          end if;
       end loop;
 
@@ -471,11 +473,13 @@ package body riscpol_tb_pkg is
          test_point <= test_point + 1;
       end if;
 
+-- TODO: check status register
+
       -- Check address frame
       for i in 0 to address'length-1 loop
          wait until rising_edge(spy_i2c_scl);
          if (spy_i2c_sda /= v_address(i)) then
-            echo("ERROR I2C - address");
+            echo("ERROR I2C TX - address");
             echo("address: " & to_string(address));
             echo("Shoudl be: " & to_string(v_address(i)));
             echo("i2c sda: " & to_string(spy_i2c_sda));
@@ -488,7 +492,7 @@ package body riscpol_tb_pkg is
       -- Check R/W bit
       wait until rising_edge(spy_i2c_scl);
       if (spy_i2c_sda /= rw_bit) then
-         echo("ERROR I2C - R/W bit");
+         echo("ERROR I2C TX - R/W bit");
          echo("Shoudl be: " & to_string(rw_bit));
          echo("rw_bit is: " & to_string(spy_i2c_sda));
          echo("Test_point: " & integer'image(test_point+1));
@@ -510,7 +514,7 @@ package body riscpol_tb_pkg is
             for j in 0 to 7 loop
                wait until rising_edge(spy_i2c_scl);
                if (spy_i2c_sda /= v_data(j+8*i)) then
-                  echo("ERROR I2C TX");
+                  echo("ERROR I2C TX - data");
                   echo("data: " & to_string(v_data));
                   echo("Shoudl be: " & to_string(v_data(j+8*i)));
                   echo("i2c sda: " & to_string(spy_i2c_sda));
@@ -522,13 +526,11 @@ package body riscpol_tb_pkg is
             wait until falling_edge(spy_i2c_scl);
 
             -- Send ACK
-            test_point <= 444;
             wait for C_WAIT_TIME;
             i2c_sda <= '0';
             wait until falling_edge(spy_i2c_scl);
             wait for C_WAIT_TIME;
             i2c_sda <= 'H';
-            test_point <= 555;
          end loop;
       else
       -- Transmit data frame to the master and check ...
@@ -543,13 +545,16 @@ package body riscpol_tb_pkg is
       end if;
 
       i2c_sda <= 'H';
+      -- Wait until status busy flag is 0
+      wait until spy_i2c_status(0) = '0';
 
-      wait until rising_edge(clk); --
-      wait until rising_edge(clk); --
+      -- Sam test sprawdza rejestr status i2c, pozniej trzeba zrobic synchronizacje
+      wait until rising_edge(clk); -- andi x3, x3 0x1 # Check only LSB
+      wait until rising_edge(clk); -- bne x3, x0, loop37#
       wait until rising_edge(clk);
       wait until rising_edge(clk);
       wait until rising_edge(clk);
-      test_point <= 666;
+
 
    end procedure;
 
