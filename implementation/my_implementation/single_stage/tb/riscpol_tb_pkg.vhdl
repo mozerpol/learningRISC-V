@@ -467,13 +467,23 @@ package body riscpol_tb_pkg is
       wait until spy_i2c_sda = '0';
       -- Check start bit
       if (spy_i2c_scl /= 'H') then
-         echo("ERROR I2C");
+         echo("ERROR I2C TX - start bit");
          echo("Start bit should be 1");
+         echo("Test_point: " & integer'image(test_point+1));
+         test_point <= test_point + 1;
+         echo("");
+      end if;
+
+      -- Check status register
+      if ((spy_i2c_status(0) = '0') or
+          (spy_i2c_status(1) = '0') or
+          (spy_i2c_status(2) = '0')) then
+         echo("ERROR I2C TX - status register");
+         echo("Status register should be 0b111");
+         echo("Status register is: " & to_string(spy_i2c_status));
          echo("");
          test_point <= test_point + 1;
       end if;
-
--- TODO: check status register
 
       -- Check address frame
       for i in 0 to address'length-1 loop
