@@ -59,13 +59,13 @@ package riscpol_pkg is
    constant C_MMIO_ADDR_UART_STATUS : integer  := 60; -- 4
 
    constant C_MMIO_ADDR_SPI_SEND_DATA    : integer  := 5;
-   constant C_MMIO_ADDR_SPI_READ_DATA : integer  := 6;
-   constant C_MMIO_ADDR_SPI_STATUS  : integer  := 7;
+   constant C_MMIO_ADDR_SPI_READ_DATA    : integer  := 6;
+   constant C_MMIO_ADDR_SPI_STATUS       : integer  := 7;
 
-   constant C_MMIO_ADDR_I2C_SET_ADDR    : integer  := 8;
+   constant C_MMIO_ADDR_I2C_SET_ADDR     : integer  := 8;
    constant C_MMIO_ADDR_I2C_SEND_DATA    : integer  := 9;
-   constant C_MMIO_ADDR_I2C_READ_DATA : integer  := 10;
-   constant C_MMIO_ADDR_I2C_STATUS  : integer  := 11;
+   constant C_MMIO_ADDR_I2C_READ_DATA    : integer  := 10;
+   constant C_MMIO_ADDR_I2C_STATUS       : integer  := 11;
 
    -- Type for General-Purpose Register
    type t_gpr  is array(0 to 31) of std_logic_vector(31 downto 0);
