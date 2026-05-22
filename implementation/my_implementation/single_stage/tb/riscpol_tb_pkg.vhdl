@@ -550,7 +550,7 @@ package body riscpol_tb_pkg is
             wait for C_WAIT_TIME;
             i2c_sda <= 'H';
          end loop;
-      else
+      else -- TODO: below is not necessary
       -- Transmit data frame to the master and check ...
          for i in 0 to number_of_bytes-1 loop
             for j in 0 to 7 loop
@@ -648,8 +648,8 @@ package body riscpol_tb_pkg is
 
       -- Check R/W bit
       wait until rising_edge(spy_i2c_scl);
-      if (spy_i2c_sda /= '1') then
-         echo("ERROR I2C TX - R/W bit");
+      if (spy_i2c_sda /= 'H') then
+         echo("ERROR I2C RX - R/W bit");
          echo("Shoudl be: 1");
          echo("rw_bit is: " & to_string(spy_i2c_sda));
          echo("Test_point: " & integer'image(test_point+1));
@@ -665,6 +665,25 @@ package body riscpol_tb_pkg is
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
 
+      for i in 0 to number_of_bytes-1 loop
+         for j in 0 to 7 loop
+            i2c_sda <= v_data(j+8*i);
+            wait for C_WAIT_TIME*4; -- Wait the entire SCL clock period
+         end loop;
+         i2c_sda <= 'H';
+         -- Check ACK
+         for k in 0 to 3 loop
+          if (spy_i2c_sda /= '0') then
+             echo("ERROR I2C RX - no ACK");
+             echo("Shoudl be: 0");
+             echo("rw_bit is: " & to_string(spy_i2c_sda));
+             echo("Test_point: " & integer'image(test_point+1));
+             echo("");
+             test_point <= test_point + 1;
+          end if;
+          wait for C_WAIT_TIME;
+         end loop;
+      end loop;
 
       --
       wait until rising_edge(clk); -- andi x3, x3 0x1 # Check only LSB
