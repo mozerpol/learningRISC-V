@@ -61,14 +61,13 @@ architecture rtl of i2c is
    type t_clock_states        is (ST_ONE_FOURTH, ST_TWO_FOURTH, ST_THREE_FOURTH,
                                   ST_FOUR_FOURTH);
    signal fsm_clk             : t_clock_states;
-   signal s_sda_drive         : std_logic;
-   signal s_scl_drive         : std_logic;
-   -- General
+   -- I2C purposes
    type t_i2c_states          is (ST_IDLE, ST_START, ST_SEND_ADDR, ST_RW_BIT,
                                   ST_SEND_DATA, ST_READ_DATA, ST_READ_ACK,
                                   ST_SEND_ACK, ST_DATA_FRAME, ST_STOP);
-   -- I2C purposes
    signal fsm_i2c             : t_i2c_states;
+   signal s_sda_drive         : std_logic;
+   signal s_scl_drive         : std_logic;
    signal s_cnt1_set_reset    : std_logic;
    signal s_status_busy       : std_logic;
    signal s_status_addr_buff  : std_logic;
@@ -103,7 +102,7 @@ begin
 
    o_i2c_sda_drive            <= '0' when s_sda_drive = '0' else '1';
    o_i2c_scl_drive            <= '0' when s_scl_drive = '0' else '1';
-   -- Where
+   -- Where:
    -- s_sda_drive = 1 - master releases SDA, pull-up goes high
    -- s_sda_drive = 0 - master pulls down SDA to 0
    o_i2c_status(0)            <= s_status_busy;
@@ -111,6 +110,7 @@ begin
    o_i2c_status(2)            <= s_status_data_buff;
    o_i2c_status(3)            <= s_status_ack_error;
    o_i2c_status(31 downto 4)  <= (others => '0'); -- TODO: add possibility to reset all flags
+   o_i2c_data                 <= slv_data;
 
 
    p_i2c_clock_gen : process (i_clk)
@@ -197,6 +197,7 @@ begin
                         fsm_i2c              <= ST_START; -- Start
                      end if;
                   elsif (i_i2c_read = '1') then
+                     -- Enable reading data
                      s_status_busy        <= '1'; -- Set busy bit
                      fsm_i2c              <= ST_START; -- Start
                   end if;
@@ -247,10 +248,10 @@ begin
                         fsm_i2c           <= ST_SEND_ACK;
                         cnt_data_bits     <= 0;
                         s_sda_drive       <= '0';
-                     elsif (((cnt_data_bits - 3) mod 4 = 0) or (cnt_data_bits = 0)) then
-                     -- Set data bit for cnt_data_bits = 0, 3, 7, 11, 15, 19, 23, 27
-                        slv_data(0)          <= i_i2c_sda;
-                        slv_data             <= slv_data(30 downto 0) & slv_data(31);
+                     elsif ((cnt_data_bits - 1) mod 4 = 0) then
+                     -- Save data bit for cnt_data_bits = 1, 5, 9, 13, 17, 21, 25, 29
+                        slv_data             <= slv_data(30 downto 0) & i_i2c_sda;
+                        cnt_data_bits        <= cnt_data_bits + 1;
                      end if;
                   end if;
 

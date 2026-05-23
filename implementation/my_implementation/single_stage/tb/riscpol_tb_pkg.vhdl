@@ -685,6 +685,10 @@ package body riscpol_tb_pkg is
          end loop;
       end loop;
 
+      i2c_sda <= 'H';
+      -- Wait until status busy flag is 0
+      wait until spy_i2c_status(0) = '0';
+
       --
       wait until rising_edge(clk); -- andi x3, x3 0x1 # Check only LSB
       wait until rising_edge(clk); -- bne x3, x0, loop37#
