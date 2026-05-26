@@ -110,7 +110,7 @@ begin
    o_i2c_status(2)            <= s_status_data_buff;
    o_i2c_status(3)            <= s_status_ack_error;
    o_i2c_status(31 downto 4)  <= (others => '0'); -- TODO: add possibility to reset all flags
-   o_i2c_data                 <= slv_data;
+   o_i2c_data           <= slv_data;
 
 
    p_i2c_clock_gen : process (i_clk)
@@ -189,17 +189,21 @@ begin
                         s_rw_bit             <= i_i2c_wdata(11);
                         -- Set status bit, address buffer is full
                         s_status_addr_buff   <= '1';
+                        if (i_i2c_wdata(11) = '1') then
+                        -- R/W bit = start reading data from slave, go to start
+                           s_status_busy        <= '1'; -- Set busy bit
+                           fsm_i2c              <= ST_START;
+                        else
+                           fsm_i2c              <= ST_IDLE;
+                        end if;
                      else
-                     -- Latch data
                         slv_data             <= i_i2c_wdata; -- Latch data to send
-                        s_status_data_buff   <= '1';
+                        s_status_data_buff   <= '1'; -- Buffer to send data is full
                         s_status_busy        <= '1'; -- Set busy bit
                         fsm_i2c              <= ST_START; -- Start
                      end if;
-                  elsif (i_i2c_read = '1') then
-                     -- Enable reading data
-                     s_status_busy        <= '1'; -- Set busy bit
-                     fsm_i2c              <= ST_START; -- Start
+                  elsif (i_i2c_read = '1') then -- TODO: does i_i2c_read signal is necessary?
+
                   end if;
 
                when ST_START       =>
@@ -220,6 +224,7 @@ begin
                         -- R/W bit = 0 = write
                         s_sda_drive          <= s_rw_bit; -- Set R/W bit
                      elsif (((cnt_addr - 3) mod 4) = 0) then
+                     -- cnt_addr =
                         s_sda_drive          <= slv_addr(6);
                         slv_addr             <= '0' & slv_addr(5 downto 0) & slv_addr(6);
                      end if;
@@ -295,7 +300,11 @@ begin
                            s_sda_drive          <= '0';
                            cnt_data_bytes       <= 0;
                         else
-                           fsm_i2c              <= ST_READ_DATA;
+                           if (s_rw_bit = '1') then
+                              fsm_i2c              <= ST_READ_DATA;
+                           else
+                              fsm_i2c              <= ST_SEND_DATA;
+                           end if;
                            cnt_data_bytes       <= cnt_data_bytes + 1;
                         end if;
                      elsif (cnt_ack = 1 or cnt_ack = 2) then
