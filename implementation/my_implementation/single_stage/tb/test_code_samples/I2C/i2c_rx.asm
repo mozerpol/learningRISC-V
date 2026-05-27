@@ -18,8 +18,6 @@ lw    x2,  44(x0)      # Load I2C status
 andi  x2,  x2    0x1   # Check the oldest bit (no. 0)
 bne   x2,  x0,   loop41# Check if I2C rx is busy, when = 1, then jump to loop37
 
-lw    x1,  40(x0)      # Load received data to x1 register
-
 addi  x4,  x0,   0x1   # x4 = 0x00000001
 addi  x4,  x4,   0x1   # x4 = 0x00000002
 addi  x4,  x4,   0x1   # x4 = 0x00000003
