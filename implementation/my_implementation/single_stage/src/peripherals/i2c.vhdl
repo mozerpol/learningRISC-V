@@ -110,7 +110,7 @@ begin
    o_i2c_status(2)            <= s_status_data_buff;
    o_i2c_status(3)            <= s_status_ack_error;
    o_i2c_status(31 downto 4)  <= (others => '0'); -- TODO: add possibility to reset all flags
-   o_i2c_data           <= slv_data;
+   o_i2c_data                 <= slv_data;
 
 
    p_i2c_clock_gen : process (i_clk)
