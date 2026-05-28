@@ -586,6 +586,7 @@ package body riscpol_tb_pkg is
       alias spy_i2c_scl is <<signal .riscpol_tb.inst_riscpol.io_i2c_scl : std_logic >>;
       alias spy_i2c_sda is <<signal .riscpol_tb.inst_riscpol.io_i2c_sda : std_logic >>;
       alias spy_i2c_status is <<signal .riscpol_tb.inst_riscpol.inst_i2c.o_i2c_status : std_logic_vector(31 downto 0) >>;
+      alias spy_i2c_data is <<signal .riscpol_tb.inst_riscpol.inst_i2c.o_i2c_data : std_logic_vector(31 downto 0) >>;
       variable v_data    : std_logic_vector(31 downto 0);
       variable v_address : std_logic_vector(7 downto 0);
 
@@ -688,6 +689,18 @@ package body riscpol_tb_pkg is
       i2c_sda <= 'H';
       -- Wait until status busy flag is 0
       wait until spy_i2c_status(0) = '0';
+
+      -- Check reveived data
+      for i in 0 to number_of_bytes*8-1 loop
+         if (v_data(i) /= spy_i2c_data(8*number_of_bytes-1-i)) then
+            echo("ERROR I2C RX - data");
+            echo("Received bit: " & to_string(spy_i2c_data(8*number_of_bytes-1-i)));
+            echo("Should be: " & to_string(v_data(i)));
+            echo("Test_point: " & integer'image(test_point+1));
+            echo("");
+            test_point <= test_point + 1;
+         end if;
+      end loop;
 
       --
       wait until rising_edge(clk); -- andi x3, x3 0x1 # Check only LSB
