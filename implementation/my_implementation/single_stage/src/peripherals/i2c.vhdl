@@ -267,13 +267,16 @@ begin
                         cnt_ack              <= 0;
                         if (cnt_data_bytes = 4) then
                         -- To prevent sending more data than is in the buffer
+                           s_sda_drive          <= '0';
                            fsm_i2c              <= ST_STOP;
                            cnt_data_bytes       <= 0;
                         elsif (cnt_data_bytes = to_integer(unsigned(slv_bytes))) then
                         -- Check if all bytes were sent
+                           s_sda_drive          <= '0';
                            fsm_i2c              <= ST_STOP;
                            cnt_data_bytes       <= 0;
                         else
+                           s_sda_drive          <= '1';
                            fsm_i2c              <= ST_READ_DATA;
                            cnt_data_bytes       <= cnt_data_bytes + 1;
                         end if;
