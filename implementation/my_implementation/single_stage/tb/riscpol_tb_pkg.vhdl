@@ -638,7 +638,7 @@ package body riscpol_tb_pkg is
          wait until rising_edge(spy_i2c_scl);
          if (spy_i2c_sda /= v_address(i)) then
             echo("ERROR I2C RX - address");
-            echo("address: " & to_string(address));
+            echo("Address: " & to_string(address));
             echo("Shoudl be: " & to_string(v_address(i)));
             echo("i2c sda: " & to_string(spy_i2c_sda));
             echo("Test_point: " & integer'image(test_point+1));
@@ -666,6 +666,7 @@ package body riscpol_tb_pkg is
       wait for C_WAIT_TIME;
       i2c_sda <= 'H';
 
+      -- Send data
       for i in 0 to number_of_bytes-1 loop
          for j in 0 to 7 loop
             i2c_sda <= v_data(j+8*i);
@@ -674,15 +675,15 @@ package body riscpol_tb_pkg is
          i2c_sda <= 'H';
          -- Check ACK
          for k in 0 to 3 loop
-          if (spy_i2c_sda /= '0') then
-             echo("ERROR I2C RX - no ACK");
-             echo("Shoudl be: 0");
-             echo("rw_bit is: " & to_string(spy_i2c_sda));
-             echo("Test_point: " & integer'image(test_point+1));
-             echo("");
-             test_point <= test_point + 1;
-          end if;
-          wait for C_WAIT_TIME;
+            wait for C_WAIT_TIME;
+            if (spy_i2c_sda /= '0') then
+               echo("ERROR I2C RX - no ACK");
+               echo("Shoudl be: 0");
+               echo("ACK is: " & to_string(spy_i2c_sda));
+               echo("Test_point: " & integer'image(test_point+1));
+               echo("");
+               test_point <= test_point + 1;
+            end if;
          end loop;
       end loop;
 
