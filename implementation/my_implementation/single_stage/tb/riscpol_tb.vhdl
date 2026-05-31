@@ -145,6 +145,20 @@ begin
       check_gpr("addi  x4,  x4,   0x1", x"00000004", clk_tb, test_point);
       check_gpr("addi  x4,  x4,   0x1", x"00000005", clk_tb, test_point);
       check_gpr("addi  x4,  x4,   0x1", x"00000006", clk_tb, test_point);
+      -- Read three bytes
+      check_gpr("lui   x3,  1", x"00001000", clk_tb, test_point);
+      check_gpr("addi  x3,  x3,   -1195", x"00000B55", clk_tb, test_point);
+      check_i2c_rx(7x"55", x"F0E7C381", 3, s_i2c_sda_tb, clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"00000007", clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"00000008", clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"00000009", clk_tb, test_point);
+      -- Read four bytes
+      check_gpr("lui   x3,  1", x"00001000", clk_tb, test_point);
+      check_gpr("addi  x3,  x3,   -964", x"00000C3C", clk_tb, test_point);
+      check_i2c_rx(7x"3C", x"F0E7C381", 4, s_i2c_sda_tb, clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"0000000A", clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"0000000B", clk_tb, test_point);
+      check_gpr("addi  x4,  x4,   0x1", x"0000000C", clk_tb, test_point);
 
       wait for 100 us;
 
