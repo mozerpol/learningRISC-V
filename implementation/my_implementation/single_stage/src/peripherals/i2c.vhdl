@@ -26,7 +26,6 @@ entity i2c is
       i_clk                : in std_logic;
       i_i2c_wdata          : in std_logic_vector(31 downto 0);
       i_i2c_write          : in std_logic;
-      i_i2c_read           : in std_logic;
       i_i2c_control        : in std_logic;
       i_i2c_sda            : in  std_logic;
       i_i2c_scl            : in  std_logic;
@@ -125,6 +124,7 @@ begin
             end if;
             if (s_cnt1_overflow = '1') then
                case (fsm_clk) is
+
                   when ST_ONE_FOURTH =>
                      -- The clock signal is pulled up to VCC via the pull up resistor.
                      s_scl_drive     <= '1';
@@ -202,8 +202,6 @@ begin
                         s_status_busy        <= '1'; -- Set busy bit
                         fsm_i2c              <= ST_START; -- Start
                      end if;
-                  elsif (i_i2c_read = '1') then -- TODO: does i_i2c_read signal is necessary?
-
                   end if;
 
                when ST_START       =>
@@ -224,7 +222,7 @@ begin
                         -- R/W bit = 0 = write
                         s_sda_drive          <= s_rw_bit; -- Set R/W bit
                      elsif (((cnt_addr - 3) mod 4) = 0) then
-                     -- cnt_addr =
+                     -- cnt_addr = 3, 7, 11, 15, 19, 23, 27
                         s_sda_drive          <= slv_addr(6);
                         slv_addr             <= '0' & slv_addr(5 downto 0) & slv_addr(6);
                      end if;

@@ -259,7 +259,6 @@ add wave         -group I2C -group PORTS -radix bin /riscpol_tb/inst_riscpol/i_c
 add wave         -group I2C -group PORTS -radix dec /riscpol_tb/inst_riscpol/inst_i2c/G_I2C_FREQUENCY_HZ
 add wave         -group I2C -group PORTS -radix hex /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_wdata
 add wave         -group I2C -group PORTS -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_write
-add wave         -group I2C -group PORTS -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_read
 add wave         -group I2C -group PORTS -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_control
 add wave         -group I2C -group PORTS -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_scl
 add wave         -group I2C -group PORTS -radix bin /riscpol_tb/inst_riscpol/inst_i2c/i_i2c_sda

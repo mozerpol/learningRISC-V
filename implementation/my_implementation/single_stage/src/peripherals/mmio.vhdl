@@ -42,7 +42,6 @@ entity mmio is
       o_mmio_we_spi        : out std_logic;
       o_mmio_rd_spi        : out std_logic;
       o_mmio_we_i2c        : out std_logic;
-      o_mmio_rd_i2c        : out std_logic;
       o_mmio_i2c_control   : out std_logic;
       o_mmio_data          : out std_logic_vector(31 downto 0)
 );
@@ -85,7 +84,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_CNT1 - 1     =>
@@ -96,7 +94,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_7SEGMENT - 1 =>
@@ -107,7 +104,6 @@ begin
                o_mmio_we_7seg      <= '1';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_UART_DATA - 1 =>
@@ -118,7 +114,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_SPI_SEND_DATA =>
@@ -129,7 +124,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '1';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_SPI_READ_DATA =>
@@ -140,7 +134,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '1';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_I2C_SET_ADDR =>
@@ -151,7 +144,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '1';
                o_mmio_i2c_control  <= '0';
             when C_MMIO_ADDR_I2C_SEND_DATA =>
@@ -162,7 +154,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '1';
                o_mmio_i2c_control  <= '1';
             when C_MMIO_ADDR_I2C_READ_DATA =>
@@ -173,7 +164,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '1';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
             when others                   =>
@@ -184,7 +174,6 @@ begin
                o_mmio_we_7seg      <= '0';
                o_mmio_rd_spi       <= '0';
                o_mmio_we_spi       <= '0';
-               o_mmio_rd_i2c       <= '0';
                o_mmio_we_i2c       <= '0';
                o_mmio_i2c_control  <= '0';
          end case;
@@ -196,7 +185,6 @@ begin
          o_mmio_we_7seg      <= '0';
          o_mmio_rd_spi       <= '0';
          o_mmio_we_spi       <= '0';
-         o_mmio_rd_i2c       <= '0';
          o_mmio_we_i2c       <= '0';
          o_mmio_i2c_control  <= '0';
       end if;
